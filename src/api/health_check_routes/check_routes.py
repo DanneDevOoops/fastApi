@@ -27,7 +27,6 @@ async def health_check() -> ORJSONResponse:
     :return: JSON response with status code 200
     :rtype: ORJSONResponse
     """
-    logger.info("Health check endpoint called...")
     return ORJSONResponse(
         status_code=status.HTTP_200_OK,
         content="Server is OK"
