@@ -5,24 +5,32 @@
 This module contains the authentication logic for the FastAPI application.
 """
 
+import logging
 import os
+
 from fastapi import Security, HTTPException, status
 from fastapi.security import APIKeyQuery, APIKeyHeader
 
+from src.core.env_config import get_settings
+
+# Init Logger
+settings = get_settings()
+logger = logging.getLogger(settings.app_logger_name or "application_logger")
 
 # Auth headers & query params
-api_key_query = APIKeyQuery(name="api_key", auto_error=False)
-api_key_header = APIKeyHeader(name="x-api-key", auto_error=False)
+query_api_key = APIKeyQuery(name="api_key", auto_error=False)
+header_api_key = APIKeyHeader(name="x-api-key", auto_error=False)
 
 # Allowed API keys for authentication of applications accessing the API
 API_KEYS = [
-    os.getenv("API_KEY_1", None),
-    os.getenv("API_KEY_2", None)
+    os.getenv("APP_HEALTH_API_KEY", None),
+    os.getenv("APP_1_API_KEY", None)
 ]
 
+
 async def get_api_key(
-        query_api_key: str = Security(api_key_query),
-        header_api_key: str = Security(api_key_header),
+        api_key_query: str = Security(query_api_key),
+        api_key_header: str = Security(header_api_key),
 ) -> str:
     """
     Validate the API key provided in the query parameters or headers.
@@ -32,18 +40,24 @@ async def get_api_key(
     found, it is returned. Otherwise, an HTTP 401 Unauthorized exception is
     raised.
 
-    :param query_api_key: The API key provided in the query parameters.
-    :type query_api_key: str
-    :param header_api_key: The API key provided in the headers.
-    :type header_api_key: str
+    :param api_key_query: The API key provided in the query parameters.
+    :type api_key_query: str
+    :param api_key_header: The API key provided in the headers.
+    :type api_key_header: str
     :return: The valid API key.
     :rtype: str
     :raises HTTPException: If the API key is invalid or missing.
     """
     if api_key_query in API_KEYS:
-        return query_api_key
-    if header_api_key in API_KEYS:
-        return header_api_key
+        return api_key_query
+    if api_key_header in API_KEYS:
+        return api_key_header
+
+    logger.warning('API key not found or invalid', extra={
+        'api_key_query': api_key_query,
+        'api_key_header': api_key_header
+    })
+
     raise HTTPException(
         status_code=status.HTTP_401_UNAUTHORIZED,
         detail="Invalid or missing API Key",
