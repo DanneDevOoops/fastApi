@@ -12,11 +12,12 @@ services:
             - PG_DB_USERNAME=${PG_DB_USERNAME}
             - PG_DB_PASSWORD=${PG_DB_PASSWORD}
             - PG_DB_NAME=${PG_DB_NAME}
+            - APP_HEALTH_API_KEY=${APP_HEALTH_API_KEY}
         healthcheck:
-            test: [ "CMD-SHELL", "curl -f http://localhost:${APP_PORT}/api/utils/health_check || exit 1" ]
-            interval: 1s
-            timeout: 3s
-            retries: 10
+            test: [ "CMD-SHELL", "curl -f -H 'x-api-key: '${APP_HEALTH_API_KEY}' http://localhost:${APP_PORT}/api/utils/health_check || exit 1" ]
+            interval: 2s
+            timeout: 5s
+            retries: 3
         ports:
             - "${APP_PORT}:${APP_PORT}"
         networks:
@@ -28,7 +29,8 @@ services:
         restart: always
 
     postgres_db:
-        image: postgres:16.4-alpine
+        image: postgres:16.9-alpine
+        shm_size: 128mb
         env_file:
             - .env
         environment:
@@ -37,14 +39,14 @@ services:
             POSTGRES_DB: "${PG_DB_NAME}"
             POSTGRES_INITDB_ARGS: "--auth-host=scram-sha-256 --auth-local=scram-sha-256"
             POSTGRES_HOST_AUTH_METHOD: "scram-sha-256"
-            POSTGRES_LISTEN_ADDRESSES: "172.10.0.20"
+            POSTGRES_LISTEN_ADDRESSES: 172.10.0.10
         healthcheck:
             test: [ "CMD-SHELL", "pg_isready -U ${PG_DB_USERNAME} -d ${PG_DB_NAME}" ]
-            interval: 1s
+            interval: 2s
             timeout: 3s
-            retries: 10
+            retries: 3
         expose:
-            - ${PG_DB_PORT}:${PG_DB_PORT}
+            - "${PG_DB_PORT}:${PG_DB_PORT}"
         networks:
             skynet:
                 ipv4_address: 172.10.0.20
