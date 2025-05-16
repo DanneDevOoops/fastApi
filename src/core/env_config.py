@@ -54,6 +54,9 @@ class Settings(BaseSettings):
         json_schema_extra={"env_name": "APP_JWT_SECRET_KEY"})
 
     # --- Applications registered with the API -------------------------------
+    app_health_api_key: str = Field(
+        default=None,
+        json_schema_extra={"env_name": "APP_HEALTH_API_KEY"})
     app_1_api_key: str = Field(
         default=None,
         json_schema_extra={"env_name": "APP_1_API_KEY"})
