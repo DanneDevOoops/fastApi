@@ -17,7 +17,6 @@ from src.api.v1_routes import user_routes
 
 api_v1_router = APIRouter(
     prefix="/api/v1",
-    # dependencies=[Depends(get_api_key)],
     responses={
         404: {"description": "Not found"}
     },
@@ -26,5 +25,5 @@ api_v1_router = APIRouter(
 api_v1_router.include_router(
     user_routes.router,
     prefix="/users",
-    tags=["users"]
+    tags=["users"],
 )
