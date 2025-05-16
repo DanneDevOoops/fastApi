@@ -24,10 +24,7 @@ LABEL authors="daniel"
 
 # Step 3 - Update, upgrade and install apt dependencies
 RUN apt-get update && \
-    apt-get upgrade -y && \
-    apt-get install -y --no-install-recommends \
-    curl \
-    tree
+    apt-get upgrade -y
 
 # Step 4 - Upgrade pip in the builder image
 RUN pip install --upgrade pip
@@ -67,32 +64,35 @@ FROM python:3.11-slim-buster as runtime
 ENV VIRTUAL_ENV=/src/.venv \
     PATH="/src/.venv/bin:$PATH"
 
-# Step 14 - Upgrade pip in the runtime image
+# Step 14 - Update apt dependencies & install curl for healthcheck purposes
+RUN apt-get update && apt-get upgrade -y && apt-get install -y --no-install-recommends curl
+
+# Step 15 - Upgrade pip in the runtime image
 RUN pip install --upgrade pip
 
-# Step 14 - Install poetry in the runtime image
+# Step 16 - Install poetry in the runtime image
 RUN pip install poetry==1.8.3
 
-# Step 15 - Copy the virtual environment from the builder image
+# Step 17 - Copy the virtual environment from the builder image
 COPY --from=builder ${VIRTUAL_ENV} ${VIRTUAL_ENV}
 
-# Step 16 - Copy the .env file
+# Step 18 - Copy the .env file
 COPY .env .env
 
-# Step 17 - Ensure the pyproject.toml file is copied to the runtime image
-COPY pyproject.toml poetry.lock ./
+# Step 19 - Ensure the pyproject.toml file is copied to the runtime image
+COPY pyproject.toml poetry.lock alembic.ini Makefile ./
 
-# Step 18 - Copy the application code
+# Step 20 - Copy the application code
 COPY src ./src
 
-# Step 20 - Set the working directory
+# Step 21 - Set the working directory
 WORKDIR /
 
-# Step 21 - Expose the FastAPI port
+# Step 22 - Expose the FastAPI port
 EXPOSE 1337
 
-# Step 22 - Set the entrypoint
+# Step 23 - Set the entrypoint
 ENTRYPOINT ["poetry", "run", "uvicorn"]
 
-# Step 23 - Add the command arguments
+# Step 24 - Add the command arguments
 CMD ["src.main:app", "--reload", "--host", "0.0.0.0", "--port", "1337"]
