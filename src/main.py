@@ -64,7 +64,7 @@ async def app_lifespan(app_instance: FastAPI):
 
     logger.info("Application lifespan startup complete.")
 
-    yield  # Pause for code to run here (API runtime)
+    yield  # API runtime
 
     logger.info("Shutting down the FastAPI application...")
 
@@ -80,7 +80,7 @@ async def app_lifespan(app_instance: FastAPI):
 app = FastAPI(
     title="FastAPI application",
     description="This is a description... write something better",
-    version="0.1.0",
+    version="0.0.0",
     openapi_url="/api/openapi.json",
     lifespan=app_lifespan,
     debug=bool(os.getenv("APP_DEBUG", 'False'))
@@ -97,7 +97,9 @@ app.add_exception_handler(NotFoundException, not_found_exception_handler)
 app.add_exception_handler(ValidationException, validation_exception_handler)
 app.add_exception_handler(HTTPException, http_exception_handler)
 
-# origins allowed
+# headers, methods & origins allowed for CORS
+headers = ["Content-Type", "Authorization", "X-Requested-With"]
+methods = ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"]
 origins = ["*"]
 
 # Middleware
@@ -106,8 +108,8 @@ app.add_middleware(
     CORSMiddleware,
     allow_origins=origins,
     allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
+    allow_methods=methods,
+    allow_headers=headers,
 )
 
 # Include api routers
