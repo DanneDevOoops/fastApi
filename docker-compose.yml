@@ -51,8 +51,14 @@ services:
             interval: 3s
             timeout: 3s
             retries: 3
-        expose:
+        ports:
             - "${PG_DB_PORT}:${PG_DB_PORT}"
+#         The following part is commented out in favour of using 'ports' in development mode. The
+#         level of exposure is higher with 'ports' to allow for connections from the host machine.
+#         This is not recommended for production use, where you should use 'expose' instead if
+#         you like to protect the database from access outside of the docker network.
+#         expose:
+#             - "${PG_DB_PORT}:${PG_DB_PORT}"
         networks:
             skynet:
                 ipv4_address: 172.10.0.20
