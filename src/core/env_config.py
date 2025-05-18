@@ -129,7 +129,7 @@ class Settings(BaseSettings):
         default="a_postgresql_db_password",
         json_schema_extra={"env_name": "PG_DB_PASSWORD"})
     pg_db_backup_dir: str = Field(
-        default="./src/db/backups", json_schema_extra={
+        default="./src/db/db_scripts", json_schema_extra={
             "env_name": "PG_DB_BACKUP_DIR"})
     pg_db_connection_pool_size: int = Field(
         default=100,
