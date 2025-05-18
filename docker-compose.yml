@@ -3,26 +3,31 @@ services:
         build:
             context: .
             dockerfile: fast-api.dockerfile
+            tags:
+                - danjustdanyeah/python-poetry-fastapi-server:latest
         env_file:
             - .env
         environment:
             - APP_PORT=${APP_PORT}
+            - APP_HEALTH_CHECK_API_KEY=${APP_HEALTH_CHECK_API_KEY}
+            - FILE_LOGGER_DOCKER_HOST_MACHINE_PATH=${FILE_LOGGER_DOCKER_HOST_MACHINE_PATH}
             - PG_DB_HOST=${PG_DB_DOCKER_SERVICE_NAME}
             - PG_DB_PORT=${PG_DB_PORT}
+            - PG_DB_NAME=${PG_DB_NAME}
             - PG_DB_USERNAME=${PG_DB_USERNAME}
             - PG_DB_PASSWORD=${PG_DB_PASSWORD}
-            - PG_DB_NAME=${PG_DB_NAME}
-            - APP_HEALTH_API_KEY=${APP_HEALTH_API_KEY}
         healthcheck:
-            test: [ "CMD-SHELL", "curl -f -H 'x-api-key: '${APP_HEALTH_API_KEY}' http://localhost:${APP_PORT}/api/utils/health_check || exit 1" ]
-            interval: 2s
-            timeout: 5s
+            test: [ "CMD-SHELL", "curl -f -H 'X-API-Key: '${APP_HEALTH_CHECK_API_KEY}' http://172.10.0.10:${APP_PORT}/api/utils/health_check || exit 1" ]
+            interval: 3s
+            timeout: 3s
             retries: 3
         ports:
             - "${APP_PORT}:${APP_PORT}"
         networks:
             skynet:
                 ipv4_address: 172.10.0.10
+        volumes:
+            - "${FILE_LOGGER_DOCKER_HOST_MACHINE_PATH}:/logs"
         depends_on:
             postgres_db:
                 condition: service_healthy
@@ -39,10 +44,11 @@ services:
             POSTGRES_DB: "${PG_DB_NAME}"
             POSTGRES_INITDB_ARGS: "--auth-host=scram-sha-256 --auth-local=scram-sha-256"
             POSTGRES_HOST_AUTH_METHOD: "scram-sha-256"
+            PGDATA: "${PG_DB_DOCKER_DATA_PATH}"
             POSTGRES_LISTEN_ADDRESSES: 172.10.0.10
         healthcheck:
             test: [ "CMD-SHELL", "pg_isready -U ${PG_DB_USERNAME} -d ${PG_DB_NAME}" ]
-            interval: 2s
+            interval: 3s
             timeout: 3s
             retries: 3
         expose:
@@ -51,7 +57,7 @@ services:
             skynet:
                 ipv4_address: 172.10.0.20
         volumes:
-            - ${PG_DB_VOLUME_PATH}:${PG_DB_DOCKER_DATA_PATH}
+            - "${PG_DB_VOLUME_PATH}:${PG_DB_DOCKER_DATA_PATH}"
         restart: always
 
 networks:
@@ -63,9 +69,15 @@ networks:
                 - subnet: 172.10.0.0/16
 
 volumes:
+    api_logs:
+        driver: local
+        driver_opts:
+            type: none
+            device: "${FILE_LOGGER_DOCKER_HOST_MACHINE_PATH}"
+            o: bind
     postgres_data:
         driver: local
         driver_opts:
             type: none
-            device: ${PG_DB_VOLUME_PATH}
+            device: "${PG_DB_VOLUME_PATH}"
             o: bind
