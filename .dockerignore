@@ -1,3 +1,6 @@
-README.md
+# Ignore the following files and directories when building the Docker image
 .github/
+docs/
+logs/
 tests/
+README.md
