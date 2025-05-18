@@ -17,7 +17,7 @@
 
 # --- The Builder Image ------------------------------------------------------
 # Step 1 - The builder image, used to build the virtual environment
-FROM python:3.11-buster as builder
+FROM python:3.11-buster AS builder
 
 # Step 2 - Set the author label
 LABEL authors="daniel"
@@ -58,7 +58,7 @@ RUN poetry install --without dev --no-root && rm -rf $POETRY_CACHE_DIR
 # --- The Runtime Image ------------------------------------------------------
 # Step 12 - The runtime image, used to just run the code provided its
 # virtual environment
-FROM python:3.11-slim-buster as runtime
+FROM python:3.11-slim-buster AS runtime
 
 # Step 13 - Set the virtual environment environment variables
 ENV VIRTUAL_ENV=/src/.venv \
