@@ -54,9 +54,9 @@ class Settings(BaseSettings):
         json_schema_extra={"env_name": "APP_JWT_SECRET_KEY"})
 
     # --- Applications registered with the API -------------------------------
-    app_health_api_key: str = Field(
+    app_health_check_api_key: str = Field(
         default=None,
-        json_schema_extra={"env_name": "APP_HEALTH_API_KEY"})
+        json_schema_extra={"env_name": "APP_HEALTH_CHECK_API_KEY"})
     app_1_api_key: str = Field(
         default=None,
         json_schema_extra={"env_name": "APP_1_API_KEY"})
@@ -101,6 +101,9 @@ class Settings(BaseSettings):
     file_logger_propagate: bool = Field(
         default=False,
         json_schema_extra={"env_name": "FILE_LOGGER_PROPAGATE"})
+    file_logger_docker_host_machine_path: str = Field(
+        default="/var/log/fastapi",
+        json_schema_extra={"env_name": "FILE_LOGGER_DOCKER_HOST_MACHINE_PATH"})
 
     # --- Postgres Database --------------------------------------------------
     pg_db_url: str = Field(
