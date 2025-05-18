@@ -30,6 +30,7 @@ from src.core.logger_config import init_logger
 from src.db.connectors.mongo_db import MongoDBConnector
 from src.db.connectors.postgres_db import PgsqlDbSessionManager
 from src.middlewares.logger import LoggerMiddleware
+from src.utils.app_constants import REQUEST_HEADERS, REQUEST_METHODS, REQUEST_ORIGINS
 
 # Initialize settings from environment configuration
 settings = get_settings()
@@ -62,7 +63,7 @@ async def app_lifespan(app_instance: FastAPI):
         conninfo=postgres_connector.get_db_connection_str()
     )
 
-    logger.info("Application lifespan startup complete.")
+    logger.info("Application lifespan startup completed...")
 
     yield  # API runtime
 
@@ -73,7 +74,7 @@ async def app_lifespan(app_instance: FastAPI):
     await app_instance.async_pool.close()
     await mongo_connector.close_connection()
 
-    logger.info("Application shutdown complete")
+    logger.info("Application lifespan shutdown completed...")
 
 
 # Create FastAPI instance with lifespan context manager
@@ -97,25 +98,19 @@ app.add_exception_handler(NotFoundException, not_found_exception_handler)
 app.add_exception_handler(ValidationException, validation_exception_handler)
 app.add_exception_handler(HTTPException, http_exception_handler)
 
-# headers, methods & origins allowed for CORS
-headers = ["Content-Type", "Authorization", "X-Requested-With"]
-methods = ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"]
-origins = ["*"]
-
 # Middleware
 app.add_middleware(LoggerMiddleware)
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=origins,
     allow_credentials=True,
-    allow_methods=methods,
-    allow_headers=headers,
+    allow_headers=REQUEST_HEADERS,
+    allow_methods=REQUEST_METHODS,
+    allow_origins=REQUEST_ORIGINS,
 )
 
-# Include api routers
+# API routers included
 app.include_router(
-    api_utility_router,
-    dependencies=[]
+    api_utility_router
 )
 
 app.include_router(
