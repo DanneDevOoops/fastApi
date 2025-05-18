@@ -251,3 +251,10 @@ fabric.properties
 *.db
 *.sqlite3
 *.sqlite
+
+
+# --- Database data dumps folders ---
+# IMPORTANT NOTE: This is to protect from any data leaks to version control. Do not change this
+# part unless you know what you are doing and intend to push database data to version control.
+src/db/db_scripts/
+db_dumps/
