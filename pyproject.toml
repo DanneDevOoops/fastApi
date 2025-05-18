@@ -16,7 +16,6 @@ pydantic = "^2.9.2"
 pydantic-settings = "^2.5.2"
 python-dotenv = "^1.0.1"
 requests = "^2.32.3"
-sphinx = "^8.0.2"
 uvicorn = "^0.30.6"
 websockets = "^14.1"
 
@@ -47,6 +46,7 @@ flake8 = "^7.1.1"
 isort = "^5.13.2"
 mypy = "^1.11.2"
 pylint = "^3.2.7"
+sphinx = "^8.2.3"
 
 [tool.poetry.extras]
 
