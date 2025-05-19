@@ -36,14 +36,6 @@ class SQLiteConnector:
     :ivar async_session_local: The SQLAlchemy session maker for creating
         async sessions.
     :vartype async_session_local: async_sessionmaker
-
-    Methods
-    -------
-    get_sqlite_db() -> AsyncSession
-        Asynchronously yields a database session.
-
-    get_db_ulr() -> str
-        Returns the database connection string.
     """
 
     def __init__(self, db_path: str | None = None):
@@ -99,9 +91,9 @@ class SQLiteConnector:
                 logger.info("Closing the SQLite database session...")
                 await db.close()
 
-    def get_db_ulr(self) -> str:
+    def get_db_url(self) -> str:
         """
-        Method to get the database URL.
+        Method to get the SQLite database URL.
 
         :return: The database URL.
         :rtype: str
