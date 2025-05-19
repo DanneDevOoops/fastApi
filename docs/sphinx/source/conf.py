@@ -154,7 +154,7 @@ def linkcode_resolve(domain, info):
 # pylint: disable=self-assigning-variable
 linkcode_resolve = linkcode_resolve
 
-# Settings for extension 'sphinx.ext.todo'
+# Settings for extension 'sphinx.ext.to-do' (- separated to avoid marker) ----
 todo_include_todos = True
 todo_emit_warnings = False
 todo_link_only = False
