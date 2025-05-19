@@ -258,3 +258,8 @@ fabric.properties
 # part unless you know what you are doing and intend to push database data to version control.
 src/db/db_scripts/
 db_dumps/
+
+
+# --- Generated doc files ---
+docs/sphinx/source/rst
+docs/sphinx/build/
