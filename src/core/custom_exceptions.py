@@ -24,12 +24,20 @@ class BaseCustomException(Exception):
 
     Attributes
     ----------
-    :message: str
-        The error message describing the error.
-    :status_code: int
-        The HTTP status code for the error.
-    :type: str
-        The type of error.
+    .. attribute:: message
+       :type: str
+
+       The error message describing the error.
+
+    .. attribute:: status_code
+       :type: int
+
+       The HTTP status code for the error.
+
+    .. attribute:: type
+       :type: str
+
+       The type of error.
     """
 
     def __init__(self, message: str, status_code: int, error_type: str):
