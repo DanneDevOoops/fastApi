@@ -1,8 +1,8 @@
 """
 Module: app_constants
 
-This module defines constants used for configuring Cross-Origin Resource Sharing (CORS)
-and HTTP request handling in the application.
+This module defines constants used for configuring Cross-Origin Resource
+Sharing (CORS) and HTTP request handling in the application.
 
 Constants:
 ----------
@@ -11,7 +11,8 @@ Constants:
     - Description: A list of HTTP headers allowed for CORS requests.
     - Values:
         - "Accept": Specifies the media types acceptable for the response.
-        - "Accept-Language": Indicates the preferred language for the response.
+        - "Accept-Language": Indicates the preferred language for the
+            response.
         - "Content-Type": Specifies the media type of the request body.
         - "Authorization": Used for passing authentication credentials.
         - "X-Requested-With": Commonly used for identifying AJAX requests.

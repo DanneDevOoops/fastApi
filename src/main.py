@@ -30,7 +30,8 @@ from src.core.logger_config import init_logger
 from src.db.connectors.mongo_db import MongoDBConnector
 from src.db.connectors.postgres_db import PgsqlDbSessionManager
 from src.middlewares.logger import LoggerMiddleware
-from src.utils.app_constants import REQUEST_HEADERS, REQUEST_METHODS, REQUEST_ORIGINS
+from src.utils.app_constants import REQUEST_HEADERS, REQUEST_METHODS, \
+    REQUEST_ORIGINS
 
 # Initialize settings from environment configuration
 settings = get_settings()

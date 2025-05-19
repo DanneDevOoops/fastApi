@@ -133,7 +133,8 @@ class Settings(BaseSettings):
             "env_name": "PG_DB_BACKUP_DIR"})
     pg_db_docker_host_machine_backup_path: str = Field(
         default="~/documents/db/backup",
-        json_schema_extra={"env_name": "PG_DB_DOCKER_HOST_MACHINE_BACKUP_PATH"})
+        json_schema_extra={
+            "env_name": "PG_DB_DOCKER_HOST_MACHINE_BACKUP_PATH"})
     pg_db_connection_pool_size: int = Field(
         default=100,
         json_schema_extra={"env_name": "PG_DB_CONNECTION_POOL_SIZE"})
