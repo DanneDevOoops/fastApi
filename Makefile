@@ -277,3 +277,24 @@ docker-stop:  # Stop the Docker container
 
 docker-remove:  # Remove the Docker container
 	docker rm fastapi-app
+
+
+# --- Sphinx Documentation Commands ---------------------------------------------
+sphinx-apidoc:  # Generate Sphinx .rst files
+	poetry run sphinx-apidoc -o docs/sphinx/source/rst ./src/
+
+sphinx-build-html:  # Build the Sphinx HTML documentation
+	poetry run sphinx-build -b html -d docs/sphinx/build/doctrees docs/sphinx/source docs/sphinx/build/html
+
+sphinx-coverage-report:  # Generate a documentation coverage report
+	poetry run sphinx-build -M coverage docs/sphinx/source docs/sphinx/build
+
+sphinx-clean-up:  # Clean up all Sphinx generated files
+	rm -rf docs/sphinx/build/*
+	rm -rf docs/sphinx/source/rst/*
+
+sphinx-gen-docs: sphinx-apidoc sphinx-build-html sphinx-coverage-report  # Generate Sphinx documentation
+	@echo "Sphinx documentation generated successfully!"
+
+sphinx-regen-docs: sphinx-clean-up sphinx-apidoc sphinx-build-html sphinx-coverage-report  # Regenerate Sphinx documentation
+	@echo "Sphinx documentation regenerated successfully!"
