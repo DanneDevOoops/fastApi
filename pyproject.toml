@@ -1,7 +1,7 @@
 [tool.poetry]
 name = "fastapi-v1"
-version = "0.1.0"
-description = ""
+version = "0.0.0"
+description = "Add you application description here..."
 authors = ["Daniel Andersson <d.andersson86@icloud.com>"]
 readme = "README.md"
 packages = [{ include = "*", from = "src" }]
