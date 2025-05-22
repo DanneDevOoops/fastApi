@@ -42,7 +42,8 @@ jobs:
         touch gh-pages/.nojekyll
         poetry run sphinx-apidoc -o docs/sphinx/source/rst ./src/
         poetry run sphinx-build -b html -d docs/sphinx/build/doctrees docs/sphinx/source docs/sphinx/build/html
-        cp -r docs/sphinx/build/html/* ./gh-pages
+        cp -r docs/sphinx/build/html/**/* gh-pages/
+        ls -l gh-pages
 
     - name: Deploy docs to GitHub Pages
       if: ${{ github.event_name == 'push' }}
@@ -50,3 +51,4 @@ jobs:
       with:
         branch: gh-pages
         folder: gh-pages
+        token: ${{ secrets.GITHUB_TOKEN }}
