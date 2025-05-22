@@ -65,6 +65,10 @@ class Settings(BaseSettings):
     #     default=None,
     #     json_schema_extra={"env_name": "APP_1_API_KEY"})
 
+    compose_bake: bool = Field(
+        default="True",
+        json_schema_extra={"env_name": "COMPOSE_BAKE"})
+
     # --- Console Logger settings --------------------------------------------
     console_logger_level: str = Field(
         default="DEBUG",
@@ -197,6 +201,10 @@ class Settings(BaseSettings):
     mongo_db_password: str = Field(
         default="a_mongodb_db_password",
         json_schema_extra={"env_name": "MONGO_DB_PASSWORD"})
+    mongo_db_docker_host_volume_path: str = Field(
+        default="~/data/db",
+        json_schema_extra={
+            "env_name": "MONGO_DB_DOCKER_HOST_VOLUME_PATH"})
 
     # SQLite3 Database settings
     sqlite_db_url: str = Field(
