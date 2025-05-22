@@ -65,6 +65,10 @@ class Settings(BaseSettings):
     #     default=None,
     #     json_schema_extra={"env_name": "APP_1_API_KEY"})
 
+    compose_bake: bool = Field(
+        default="True",
+        json_schema_extra={"env_name": "COMPOSE_BAKE"})
+
     # --- Console Logger settings --------------------------------------------
     console_logger_level: str = Field(
         default="DEBUG",
@@ -133,7 +137,8 @@ class Settings(BaseSettings):
             "env_name": "PG_DB_BACKUP_DIR"})
     pg_db_docker_host_machine_backup_path: str = Field(
         default="~/documents/db/backup",
-        json_schema_extra={"env_name": "PG_DB_DOCKER_HOST_MACHINE_BACKUP_PATH"})
+        json_schema_extra={
+            "env_name": "PG_DB_DOCKER_HOST_MACHINE_BACKUP_PATH"})
     pg_db_connection_pool_size: int = Field(
         default=100,
         json_schema_extra={"env_name": "PG_DB_CONNECTION_POOL_SIZE"})
@@ -196,6 +201,10 @@ class Settings(BaseSettings):
     mongo_db_password: str = Field(
         default="a_mongodb_db_password",
         json_schema_extra={"env_name": "MONGO_DB_PASSWORD"})
+    mongo_db_docker_host_volume_path: str = Field(
+        default="~/data/db",
+        json_schema_extra={
+            "env_name": "MONGO_DB_DOCKER_HOST_VOLUME_PATH"})
 
     # SQLite3 Database settings
     sqlite_db_url: str = Field(
