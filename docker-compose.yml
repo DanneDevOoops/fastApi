@@ -1,4 +1,5 @@
 services:
+    # --- FASTAPI SERVER ----------------------------------------------------
     fastapi_server:
         build:
             context: .
@@ -31,8 +32,11 @@ services:
         depends_on:
             postgres_db:
                 condition: service_healthy
+            mongo_db:
+                condition: service_healthy
         restart: always
 
+    # --- POSTGRES DB --------------------------------------------------------
     postgres_db:
         image: postgres:16.9-alpine
         shm_size: 128mb
@@ -66,6 +70,34 @@ services:
             - "${PG_DB_VOLUME_PATH}:${PG_DB_DOCKER_DATA_PATH}"
         restart: always
 
+    # --- MONGO DB -----------------------------------------------------------
+    mongo_db:
+        image: mongodb/mongodb-community-server:latest
+        env_file:
+            - .env
+        environment:
+            MONGODB_INITDB_ROOT_USERNAME: "${MONGO_DB_USERNAME}"
+            MONGODB_INITDB_ROOT_PASSWORD: "${MONGO_DB_PASSWORD}"
+            MONGODB_INITDB_DATABASE: "${MONGO_DB_NAME}"
+            CONN_STR: "${MONGO_DB_URL}"
+            MONGO_DB_DOCKER_HOST_VOLUME_PATH: "${MONGO_DB_DOCKER_HOST_VOLUME_PATH}"
+        healthcheck:
+            test: ["CMD", "mongosh", "--eval", "db.adminCommand('ping')" ]
+            interval: 3s
+            timeout: 3s
+            retries: 3
+        ports:
+            - "${MONGO_DB_PORT}:27017"
+#         expose:
+#             - "${MONGO_DB_PORT}:27017"
+        networks:
+            skynet:
+                ipv4_address: 172.10.0.30
+        volumes:
+            - "${MONGO_DB_DOCKER_HOST_VOLUME_PATH}:/data/db"
+        command: ["mongod", "--bind_ip_all"]
+        restart: always
+
 networks:
     skynet:
         driver: bridge
@@ -75,15 +107,9 @@ networks:
                 - subnet: 172.10.0.0/16
 
 volumes:
-    api_logs:
+    fastapi_logs:
         driver: local
-        driver_opts:
-            type: none
-            device: "${FILE_LOGGER_DOCKER_HOST_MACHINE_PATH}"
-            o: bind
     postgres_data:
         driver: local
-        driver_opts:
-            type: none
-            device: "${PG_DB_VOLUME_PATH}"
-            o: bind
+    mongo_db_data:
+        driver: local

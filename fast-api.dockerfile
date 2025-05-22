@@ -65,7 +65,8 @@ ENV VIRTUAL_ENV=/src/.venv \
     PATH="/src/.venv/bin:$PATH"
 
 # Step 14 - Update apt dependencies & install curl for healthcheck purposes
-RUN apt-get update && apt-get upgrade -y && apt-get install -y --no-install-recommends curl
+RUN apt-get update && apt-get upgrade -y && apt-get install -y \
+    --no-install-recommends curl make
 
 # Step 15 - Upgrade pip in the runtime image
 RUN pip install --upgrade pip
