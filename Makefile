@@ -4,6 +4,7 @@
 alembic-list-templates alembic-revision alembic-revision-and-upgrade \
 alembic-show-branches alembic-show-current alembic-show-heads \
 alembic-show-history alembic-show-revision-details alembic-upgrade \
+create-dot-env-file \
 docker-build docker-remove docker-run docker-stop help poetry-add-group \
 poetry-add-package poetry-add-requirements-txt poetry-config-list \
 poetry-env-info-path poetry-env-list poetry-env-remove-all \
@@ -12,9 +13,12 @@ poetry-install-extras poetry-install-no-root poetry-install-only \
 poetry-install-only-root poetry-install-sync poetry-install-with \
 poetry-install-without poetry-lock poetry-lock-no-update poetry-lock-update \
 poetry-pip-freeze poetry-pip-freeze-to-txt-file poetry-remove-group \
-poetry-remove-lock-file poetry-remove-package poetry-show-latest-top-level \
-poetry-update poetry-update-dry-run poetry-version pylint-app \
-pylint-path pytest uvicorn-run uvicorn-run-app-on-port
+poetry-remove-lock-file poetry-remove-package poetry-shell \
+poetry-show-latest-top-level poetry-update poetry-update-dry-run \
+poetry-version pylint-app pylint-path pytest \
+sphinx-apidoc sphinx-build-html sphinx-clean-up sphinx-coverage-report \
+sphinx-gen-docs sphinx-regen-docs \
+uvicorn-run uvicorn-run-app-on-port
 
 
 
@@ -42,6 +46,12 @@ help:  # Show the available commands
 	@echo "  docker-remove"
 	@echo "  docker-run"
 	@echo "  docker-stop"
+	@echo "  docker-compose-up"
+	@echo "  docker-compose-down"
+
+	@echo "\nEnvironment (.env) Management commands:"
+	@echo "  create-dot-env-file"
+	@echo "  source-env"
 
 	@echo "\nGeneral commands:"
 	@echo "  help"
@@ -88,8 +98,40 @@ help:  # Show the available commands
 	@echo "  uvicorn-run"
 	@echo "  uvicorn-run-app-on-port"
 
+	@echo "\nSphinx commands:"
+	@echo "  sphinx-apidoc"
+	@echo "  sphinx-build-html"
+	@echo "  sphinx-clean-up"
+	@echo "  sphinx-coverage-report"
+	@echo "  sphinx-gen-docs"
+	@echo "  sphinx-regen-docs"
 
-# --- POETRY COMMANDS --------------------------------------------------------
+
+
+# --- General Commands -------------------------------------------------------
+create-dot-env-file: # Create the .env file for environment variables to be set from.
+	@if [ -f .env ]; then \
+		echo "File .env already exists. No action taken."; \
+	else \
+		cp .env.example .env; \
+		echo "File .env created successfully from .env.example."; \
+		echo "Be sure to update the .env file with your own values for the environment variables."; \
+	fi
+
+source-env:  # Source the .env file
+	@if [ -f .env ]; then \
+		source .env; \
+		echo "Sourced .env file."; \
+	else \
+		echo "Error: .env file not found."; \
+		exit 1; \
+	fi
+
+look-at-env-example:  # Show the .env.example file
+	cat .env.example
+
+
+# --- POETRY Commands --------------------------------------------------------
 poetry-version:  # Show poetry version
 	poetry --version
 
@@ -151,6 +193,9 @@ poetry-update-dry-run:  # Update the dependencies without installing
 poetry-env-list:  # List all the environments
 	poetry env list
 
+poetry-env-info:  # Show the info of the virtual environment poetry manages
+	poetry env info
+
 poetry-env-info-path:  # Show the path of the  virtual environment
 	poetry env info --path
 
@@ -194,6 +239,9 @@ poetry-add-requirements-txt:  # Add the requirements file
 	@read -p "Enter the requirements file path to add: " requirements_file; \
 	poetry add cat(requirements.txt)
 
+
+
+# --- Testing & Linting Commands ---------------------------------------------
 pytest:  # Run the pytest
 	poetry run pytest --verbose
 
@@ -205,6 +253,7 @@ pylint-path:  # Run the pylint on the path
 	poetry run pylint --verbose $$path
 
 
+
 # --- FastAPI UVICORN Commands -----------------------------------------------
 uvicorn-run:  # Run the FastAPI app using Uvicorn
 	poetry run uvicorn src.main:app --reload
@@ -212,6 +261,7 @@ uvicorn-run:  # Run the FastAPI app using Uvicorn
 uvicorn-run-app-on-port:  # Run the command in the virtual environment
 	@read -p "Enter the PORT you like the application to run on: " port; \
 	poetry run uvicorn src.main:app --reload --port $$port
+
 
 
 # --- Alembic Commands -------------------------------------------------------
@@ -265,7 +315,8 @@ alembic-help:  # Show the Alembic help
 	poetry run alembic --help
 
 
-# --- Docker Commands ----------------------------------------------------------
+
+# --- Docker Commands --------------------------------------------------------
 docker-build:  # Build the Docker image
 	docker build -t fastapi-app .
 
@@ -278,8 +329,15 @@ docker-stop:  # Stop the Docker container
 docker-remove:  # Remove the Docker container
 	docker rm fastapi-app
 
+docker-compose-up:  # Run the Docker compose environment
+	docker-compose up
 
-# --- Sphinx Documentation Commands ---------------------------------------------
+docker-compose-down:  # Stop the Docker compose environment
+	docker-compose down
+
+
+
+# --- Sphinx Commands --------------------------------------------------------
 sphinx-apidoc:  # Generate Sphinx .rst files
 	poetry run sphinx-apidoc -o docs/sphinx/source/rst ./src/
 
