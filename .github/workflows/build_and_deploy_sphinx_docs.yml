@@ -46,10 +46,10 @@ jobs:
         if [ -f gh-pages/_modules.html ]; then cp gh-pages/_modules.html gh-pages/index.html; fi
         ls -l gh-pages
 
-    - name: Deploy docs to GitHub Pages
+    - name: Deploy to GitHub Pages
       if: ${{ github.event_name == 'push' }}
-      uses: JamesIves/github-pages-deploy-action@4.1.4
+      uses: peaceiris/actions-gh-pages@v4
       with:
-        branch: gh-pages
-        folder: gh-pages
-        token: ${{ secrets.GITHUB_TOKEN }}
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        publish_dir: ./gh-pages
+        publish_branch: gh-pages
