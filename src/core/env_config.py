@@ -211,6 +211,16 @@ class Settings(BaseSettings):
         default="sqlite:///a_sqlite_db_name.db",
         json_schema_extra={"env_name": "SQLITE_DB_URL"})
 
+    # Utils settings
+    nano_id_characters: str = Field(
+        default=
+        "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz",
+        json_schema_extra={
+            "env_name": "NANO_ID_CHARACTERS"})
+    nano_id_size: int = Field(
+        default=25,
+        json_schema_extra={"env_name": "NANO_ID_SIZE"})
+
     # Pydantic config of .env file
     model_config = SettingsConfigDict(env_file=".env")
 
