@@ -262,4 +262,5 @@ db_dumps/
 
 # --- Generated doc files ---
 docs/sphinx/source/rst
+docs/sphinx/source/*.rst
 docs/sphinx/build/
