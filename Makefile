@@ -339,7 +339,7 @@ docker-compose-down:  # Stop the Docker compose environment
 
 # --- Sphinx Commands --------------------------------------------------------
 sphinx-apidoc:  # Generate Sphinx .rst files
-	poetry run sphinx-apidoc -o docs/sphinx/source/rst ./src/
+	poetry run sphinx-apidoc -o docs/sphinx/source/ src/
 
 sphinx-build-html:  # Build the Sphinx HTML documentation
 	poetry run sphinx-build -b html -d docs/sphinx/build/doctrees docs/sphinx/source docs/sphinx/build/html
@@ -349,7 +349,7 @@ sphinx-coverage-report:  # Generate a documentation coverage report
 
 sphinx-clean-up:  # Clean up all Sphinx generated files
 	rm -rf docs/sphinx/build/*
-	rm -rf docs/sphinx/source/rst/*
+	rm -rf docs/sphinx/source/*.rst
 
 sphinx-gen-docs: sphinx-apidoc sphinx-build-html sphinx-coverage-report  # Generate Sphinx documentation
 	@echo "Sphinx documentation generated successfully!"
