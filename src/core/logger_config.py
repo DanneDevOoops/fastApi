@@ -3,55 +3,11 @@
 
 
 """
-Logger Configuration Module
-===========================
+# Logger Configuration
 
-This module contains the logger configuration for the FastAPI application.
-
-.. note::
-    The module is responsible for setting up and configuring the logging
-    system used by the application. It supports both console and file
-    logging, with customizable formatters and handlers. Ensure that the
-    environment variables in `src/core/env_config.py` are properly
-    configured to use this module effectively.
-
-Functions
----------
-- :func:`init_logger`: Initializes and returns a configured logger instance.
-
-Dependencies
-------------
-- `datetime`: Used for generating timestamps for log files.
-- `logging.config`: Provides the ability to configure logging using a
-    dictionary.
-- `os`: Used for file and directory operations.
-- `uvicorn`: Provides default logging formatters for Uvicorn.
-- `src.core.env_config`: Supplies application settings via the `get
-    _settings` function.
-
-Environment Variables
----------------------
-- `app_logger_name`: Name of the logger.
-- `file_logger_dir`: Directory where log files are stored.
-- `file_logger_file_name`: Name of the log file.
-- `console_logger_level`: Logging level for the console logger.
-- `file_logger_level`: Logging level for the file logger.
-- `file_logger_mode`: File mode for the log file (e.g., 'w' for overwrite).
-
-Usage
------
-1. Import the :func:`init_logger` function.
-2. Call the function to initialize the logger.
-3. Use the returned logger instance for logging messages.
-
-Example
--------
-.. code-block:: python
-
-    from src.core.logger_config import init_logger
-
-    logger = init_logger()
-    logger.info("Application started successfully.")
+This module provides centralized logging configuration for the FastAPI
+application. It supports both console and file logging with customizable
+formatters and handlers.
 """
 
 import datetime
