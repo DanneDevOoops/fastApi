@@ -6,14 +6,17 @@ https://www.sphinx-doc.org/en/master/usage/configuration.html
 """
 import os
 import sys
+import toml
+
+py_project = toml.load(os.path.abspath("../../../pyproject.toml"))
 
 # pylint: disable=invalid-name
 # -- Project information -----------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#project-information
 
-project = 'FastAPI application'
-author = '<Your Name Here>'
-release = '0.0.0'
+project = os.getenv('APP_NAME', 'FastAPI Application')
+author = py_project['tool']['poetry']['authors'][0]
+release = py_project['tool']['poetry']['version']
 # pylint: disable=redefined-builtin
 copyright = '2025, <Your Name/Organisation Here>'
 
@@ -23,14 +26,19 @@ copyright = '2025, <Your Name/Organisation Here>'
 # -- Path setup --------------------------------------------------------------
 sys.path.insert(0, os.path.abspath('../../../'))
 
-master_doc = 'rst/modules'
-source_suffix = {'.rst': 'restructuredtext'}
+source_suffix = {
+    '.rst': 'restructuredtext',
+    '.txt': 'restructuredtext',
+    '.md': 'markdown',
+}
+source_encoding = 'utf-8'
+root_doc = 'modules'
 
 extensions = [
     # Built-in extensions
     'sphinx.ext.apidoc',
-    'sphinx.ext.autosummary',
     'sphinx.ext.autodoc',
+    'sphinx.ext.autosummary',
     "sphinx.ext.coverage",
     'sphinx.ext.duration',
     'sphinx.ext.graphviz',
@@ -55,7 +63,7 @@ add_module_names = False
 apidoc_modules = [
     {
         'path': '../../../src/',  # Path to your Python package
-        'destination': 'rst',  # Output directory for generated files
+        'destination': './',  # Output directory for generated files
         'max_depth': 2,  # Maximum depth of submodules
         'follow_links': False,  # Do not follow symbolic links
         'separate_modules': True,  # Combine modules into a single page
@@ -221,6 +229,7 @@ exclude_patterns = [
     '**/db_scripts/*'
     'src/db/migrations',
     'tests/',
+    '_build/',
 ]
 
 # -- Options for HTML output -------------------------------------------------
