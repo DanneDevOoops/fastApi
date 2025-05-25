@@ -359,8 +359,14 @@ sphinx-clean-up:  # Clean up all Sphinx generated files
 	rm -rf docs/sphinx/build/*
 	rm -rf docs/sphinx/source/rst
 
-sphinx-gen-docs: sphinx-apidoc sphinx-build-html sphinx-coverage-report  # Generate Sphinx documentation
+sphinx-gen-docs: sphinx-apidoc sphinx-build-html  # Generate Sphinx documentation
 	@echo "Sphinx documentation generated successfully!"
 
-sphinx-regen-docs: sphinx-clean-up sphinx-apidoc sphinx-build-html sphinx-coverage-report  # Regenerate Sphinx documentation
+sphinx-gen-docs-and-coverage: sphinx-apidoc sphinx-build-html sphinx-coverage-report  # Generate Sphinx documentation
+	@echo "Sphinx documentation and coverage repport generated successfully!"
+
+sphinx-regen-docs: sphinx-clean-up sphinx-apidoc sphinx-build-html  # Regenerate Sphinx documentation
 	@echo "Sphinx documentation regenerated successfully!"
+
+sphinx-regen-docs-and-coverage: sphinx-clean-up sphinx-apidoc sphinx-build-html sphinx-coverage-report # Regenerate Sphinx documentation
+	@echo "Sphinx documentation and coverage repport was regenerated successfully!"
