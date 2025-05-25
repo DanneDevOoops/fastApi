@@ -44,8 +44,6 @@ jobs:
         poetry run sphinx-build -b html -d docs/sphinx/build/doctrees docs/sphinx/source docs/sphinx/build/html
         cp -r docs/sphinx/build/html/**/* gh-pages/
         if [ -f gh-pages/modules.html ]; then cp gh-pages/modules/modules.html gh-pages/index.html; fi
-        echo "--- Titta här nu ---"
-        ls -l gh-pages
 
     - name: Deploy to GitHub Pages
       if: ${{ github.event_name == 'push' }}
