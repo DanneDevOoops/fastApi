@@ -1,6 +1,7 @@
 [![Static Badge](https://img.shields.io/badge/Python-v3.11.7-blue)](https://devguide.python.org/versions/)
 [![Poetry](https://img.shields.io/endpoint?url=https://python-poetry.org/badge/v0.json)](https://python-poetry.org/)  
-![Workflow Status](https://github.com/DMoest/fastApi/actions/workflows/install_and_test_application.yml/badge.svg)
+![Workflow Status](https://github.com/DMoest/fastApi/actions/workflows/install_and_test_application.yml/badge.svg)  
+[![Build & deploy documentation to GH-pages](https://github.com/DanneDevOoops/fastApi/actions/workflows/build_and_deploy_sphinx_docs.yml/badge.svg)](https://github.com/DanneDevOoops/fastApi/actions/workflows/build_and_deploy_sphinx_docs.yml)
 
 # Python FastAPI Application
 
