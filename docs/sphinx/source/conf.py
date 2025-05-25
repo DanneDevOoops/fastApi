@@ -4,6 +4,8 @@ Configuration file for the Sphinx documentation builder.
 For the full list of built-in configuration values, see the documentation:
 https://www.sphinx-doc.org/en/master/usage/configuration.html
 """
+
+from datetime import datetime
 import os
 import sys
 import toml
@@ -18,42 +20,45 @@ project = os.getenv('APP_NAME', 'FastAPI Application')
 author = py_project['tool']['poetry']['authors'][0]
 release = py_project['tool']['poetry']['version']
 # pylint: disable=redefined-builtin
-copyright = '2025, <Your Name/Organisation Here>'
+copyright = '2025, %s', author
 
 # -- General configuration ---------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration
 
 # -- Path setup --------------------------------------------------------------
 sys.path.insert(0, os.path.abspath('../../../'))
-
+root_doc = 'index'
+source_encoding = 'utf-8-sig'
 source_suffix = {
     '.rst': 'restructuredtext',
     '.txt': 'restructuredtext',
     '.md': 'markdown',
 }
-source_encoding = 'utf-8'
-root_doc = 'modules'
 
 extensions = [
     # Built-in extensions
     'sphinx.ext.apidoc',
     'sphinx.ext.autodoc',
+    'sphinx.ext.autosectionlabel',
     'sphinx.ext.autosummary',
     "sphinx.ext.coverage",
     'sphinx.ext.duration',
     'sphinx.ext.graphviz',
-    'sphinx.ext.ifconfig',
+    'sphinx.ext.imgconverter',
+    'sphinx.ext.inheritance_diagram',
     'sphinx.ext.intersphinx',
     'sphinx.ext.linkcode',
     'sphinx.ext.napoleon',
-    'sphinx.ext.todo',
-    'sphinx.ext.viewcode',
 
     # Third party extensions
     'sphinx_autodoc_typehints',
     'sphinx_favicon',
-    'sphinxcontrib.httpdomain'
+    'myst_parser'
 ]
+
+# --- Built-in configurations ------------------------------------------------
+toc_object_entries = True
+toc_object_entries_show_parents = 'all'
 
 # --- Extension configurations -----------------------------------------------
 # Disable module name prefixes in documentation
@@ -62,54 +67,165 @@ add_module_names = False
 # --- Settings for extention 'sphinx.ext.apidoc' -----------------------------
 apidoc_modules = [
     {
-        'path': '../../../src/',  # Path to your Python package
-        'destination': './',  # Output directory for generated files
-        'max_depth': 2,  # Maximum depth of submodules
-        'follow_links': False,  # Do not follow symbolic links
-        'separate_modules': True,  # Combine modules into a single page
-        'include_private': True,  # Exclude private modules
-        'no_headings': False,  # Generate headings for modules
-        'module_first': False,  # Place module documentation before submodules
-        'implicit_namespaces': True,  # Use PEP 420 implicit namespaces
+        'path': '../../../src/api',
+        'destination': './rst/api',
+        'max_depth': 4,
+        'follow_links': False,
+        'separate_modules': True,
+        'include_private': True,
+        'no_headings': False,
+        'module_first': False,
+        'implicit_namespaces': True,
         'automodule_options': {
             'members',
             'show-inheritance',
             'undoc-members',
             'private-members',
-            'special-members',
+            'imported-members'
         },
         'exclude_patterns': [
-            '**/logs/*',
-            '**/tests/*',
-            '**/migrations/*'
+            '**/migrations/*',
+            '**/migrations/psql/**/*',
+            '**/migrations/mongodb/**/*',
+        ],
+    },
+    {
+        'path': '../../../src/core',
+        'destination': './rst/core',
+        'max_depth': 4,
+        'follow_links': False,
+        'separate_modules': True,
+        'include_private': True,
+        'no_headings': False,
+        'module_first': False,
+        'implicit_namespaces': True,
+        'automodule_options': {
+            'members',
+            'show-inheritance',
+            'undoc-members',
+            'private-members',
+            'special-members'
+        },
+        'exclude_patterns': [
+            '**/migrations/*',
+            '**/migrations/psql/**/*',
+            '**/migrations/mongodb/**/*',
+        ],
+    },
+    {
+        'path': '../../../src/db',
+        'destination': './rst/db',
+        'max_depth': 4,
+        'follow_links': False,
+        'separate_modules': True,
+        'include_private': True,
+        'no_headings': False,
+        'module_first': False,
+        'implicit_namespaces': True,
+        'automodule_options': {
+            'members',
+            'show-inheritance',
+            'undoc-members',
+            'private-members',
+            'special-members'
+        },
+        'exclude_patterns': [
+            '**/config/base.py',
+            '**/migrations/*',
+            '**/migrations/psql',
+            '**/migrations/psql/env',
+            '**/migrations/psql/versions',
+            '**/migrations/mongodb/**/*',
+        ],
+    },
+    {
+        'path': '../../../src/middlewares',
+        'destination': './rst/middlewares',
+        'max_depth': 4,
+        'follow_links': False,
+        'separate_modules': True,
+        'include_private': True,
+        'no_headings': False,
+        'module_first': False,
+        'implicit_namespaces': True,
+        'automodule_options': {
+            'members',
+            'show-inheritance',
+            'undoc-members',
+            'private-members',
+            'special-members'
+        },
+        'exclude_patterns': [
+            '**/migrations/*',
+            '**/migrations/psql/**/*',
+            '**/migrations/mongodb/**/*',
+        ],
+    },
+    {
+        'path': '../../../src/utils',
+        'destination': './rst/utils',
+        'max_depth': 4,
+        'follow_links': False,
+        'separate_modules': True,
+        'include_private': True,
+        'no_headings': False,
+        'module_first': False,
+        'implicit_namespaces': True,
+        'automodule_options': {
+            'members',
+            'show-inheritance',
+            'undoc-members',
+            'private-members',
+            'special-members'
+        },
+        'exclude_patterns': [
+            '**/migrations/*',
+            '**/migrations/psql/**/*',
+            '**/migrations/mongodb/**/*',
         ],
     },
 ]
 
 # --- Settings for extention 'sphinx.ext.autosummary' ------------------------
 autosummary_generate = True
-autosummary_generate_overwrite = True  # Overwrite existing stub files
-autosummary_imported_members = False  # Exclude imported members
-autosummary_ignore_module_all = True  # Ignore __all__ attribute in modules
-autosummary_filename_map = {}  # Map object names to filenames
+autosummary_generate_overwrite = False
+autosummary_imported_members = False
+autosummary_ignore_module_all = True
+autosummary_filename_map = {}
 
 # Autodoc Extension settings
 autodoc_typehints = 'description'
-# --- Autodoc Extension settings ---------------------------------------------
+
+# --- Settings fo 'sphinx.ext.autosectionlabel' ------------------------------
+autosectionlabel_prefix_document = True
+autosectionlabel_maxdepth = None
+
+# --- Settings for 'sphinx.ext.autodoc' --------------------------------------
 autodoc_mock_imports = [
-    # Alembic and related libraries
+    # Alembic related libraries
     'alembic',
 
-    # SQLAlchemy and related libraries
+    # FastAPI related libraries
+    'fastapi',
+
+    # SQLAlchemy related libraries
     'sqlalchemy',
     'sqlalchemy.dialects.postgresql',
     'sqlalchemy.orm',
 
-    # FastAPI, PostgreSQL, and related libraries
+    # Database related libraries
     'src.db.migrations.psql',
     'src.db.migrations.psql.env',
-    'src.db.migrations.mongodb'
+    'src.db.migrations.psql.versions',
+    'src.db.migrations.mongodb',
 ]
+
+autodoc_default_options = {
+    'members': True,
+    'undoc-members': False,
+    'inherited-members': False,
+    'show-inheritance': True,
+}
 
 # --- Settings for extention 'sphinx.ext.napoleon' ---------------------------
 napoleon_google_docstring = True
@@ -126,6 +242,10 @@ napoleon_use_rtype = True
 napoleon_preprocess_types = False
 napoleon_type_aliases = None
 napoleon_attr_annotations = True
+
+# --- Settings for 'sphinx.ext.imgconverter' ---------------------------------
+image_converter = 'convert'
+# image_converter_args = ['convert']
 
 # --- Settings for extention 'sphinx.ext.intersphinx' ------------------------
 # intersphinx_resolve_self = ''
@@ -168,24 +288,34 @@ todo_emit_warnings = False
 todo_link_only = False
 
 # --- Settings for 'sphinx.ext.coverage' -------------------------------------
-coverage_modules = ['src']
+coverage_modules = [
+    'api',
+    'core',
+    'db',
+    'middlewares',
+    'utils'
+]
 
 # Ignore specific modules, functions, classes, or objects using regex
 coverage_ignore_modules = [
-    'src.db.migrations',
-    'src.db.migrations.psql',
-    'src.db.migrations.mongodb',
+    'db.config.base',
+    'db.migrations',
+    'db.migrations.psql',
+    'db.migrations.psql.env',
+    'db.migrations.psql.versions',
+    'db.migrations.mongodb',
+    'db.migrations.mongodb.versions'
 ]
 coverage_ignore_functions = [r'^test_.*']
 coverage_ignore_classes = []
 coverage_ignore_pyobjects = []
 
 # Additional options
-coverage_write_headline = True  # Write headlines in the report
-coverage_skip_undoc_in_source = False  # Include objects without docstrings
-coverage_show_missing_items = False  # Print missing items to stdout
-coverage_statistics_to_report = True  # Include a tabular report in the output
-coverage_statistics_to_stdout = True  # Print the tabular report to stdout
+coverage_write_headline = True
+coverage_skip_undoc_in_source = False
+coverage_show_missing_items = False
+coverage_statistics_to_report = True
+coverage_statistics_to_stdout = True
 
 # --- Settings for 'sphinx.ext.graphviz' -------------------------------------
 graphviz_dot = 'dot'
@@ -223,32 +353,71 @@ typehints_use_signature_return = False
 templates_path = ['_templates']
 exclude_patterns = [
     '.github/',
+    '.venv/',
     'db_dumps/',
     'docs/',
     'logs/',
-    '**/db_scripts/*'
-    'src/db/migrations',
+    'src/db/db_scripts/'
+    'src/db/migrations/',
     'tests/',
-    '_build/',
+    'db/migrations/*',
+    'db.migrations.psql',
+    'db/migrations/psql/**/*',
+    'db/migrations/psql/**/*',
+    'db/migrations/mongodb/**/*',
+    '**/migrations/**/*',
+    '**/migrations/psql/**/*',
+    '**/migrations/mongodb/**/*'
 ]
 
 # -- Options for HTML output -------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#options-for-html-output
 
-html_theme = 'sphinx_rtd_theme'
+# Built-in themes ref:
+html_theme = 'alabaster'
+# html_theme = 'classic'
+# html_theme = 'sphinxdoc'
+# html_theme = 'scrolls'
+# html_theme = 'agogo'
+# html_theme = 'traditional'
+# html_theme = 'nature'
+# html_theme = 'haiku'
+# html_theme = 'pyramid'
+# html_theme = 'bizstyle'
+
+
+# Third party themes
+# html_theme = 'sphinx_rtd_theme'
+html_theme_options = {
+    # 'navigation_depth': 10,
+    # 'prev_next_buttons_location': 'bottom',
+    # 'collapse_navigation': True,
+    # 'sticky_navigation': True,
+    # 'includehidden': True,
+    # 'titles_only': True,
+    # 'style_external_links': True,
+    # 'style_nav_header_background': '#0095b9',
+
+    #     "rightsidebar": "true",
+    #     "relbarbgcolor": "black"
+}
+
+# html_logo = '_static/python.png'
+html_last_updated_fmt = datetime.utcnow().strftime('%Y-%m-%d')
+# html_last_updated_use_utc = False
+# html_permalinks = True
+# html_domain_indices = True
+# html_use_index = True
+# html_split_index = False
+# html_copy_source = True
+# html_show_copyright = True
+# html_show_search_summary = False
+# html_show_sphinx = False
+# html_output_encoding = 'utf-8'
+# html_compact_lists = True
 html_static_path = ['_static']
 
 # Documentation root path
-# html_baseurl = 'https://dmoest.github.io/ekobot_fast_api/'
+html_baseurl = 'https://DanneDevOoops.github.io/fastApi/'
 
 # -- Options for HTMLHelp output ---------------------------------------------
-html_theme_options = {
-    'navigation_depth': 10,
-    'prev_next_buttons_location': 'bottom',
-    'collapse_navigation': True,
-    'sticky_navigation': True,
-    'includehidden': True,
-    'titles_only': True,
-    'style_external_links': True,
-    'style_nav_header_background': '#0095b9',
-}
