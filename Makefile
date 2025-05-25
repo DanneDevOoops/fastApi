@@ -4,20 +4,24 @@
 alembic-list-templates alembic-revision alembic-revision-and-upgrade \
 alembic-show-branches alembic-show-current alembic-show-heads \
 alembic-show-history alembic-show-revision-details alembic-upgrade \
-create-dot-env-file \
-docker-build docker-remove docker-run docker-stop help poetry-add-group \
-poetry-add-package poetry-add-requirements-txt poetry-config-list \
-poetry-env-info-path poetry-env-list poetry-env-remove-all \
-poetry-export-to-requirements poetry-install poetry-install-all-extras \
-poetry-install-extras poetry-install-no-root poetry-install-only \
-poetry-install-only-root poetry-install-sync poetry-install-with \
-poetry-install-without poetry-lock poetry-lock-no-update poetry-lock-update \
-poetry-pip-freeze poetry-pip-freeze-to-txt-file poetry-remove-group \
-poetry-remove-lock-file poetry-remove-package poetry-shell \
-poetry-show-latest-top-level poetry-update poetry-update-dry-run \
-poetry-version pylint-app pylint-path pytest \
-sphinx-apidoc sphinx-build-html sphinx-clean-up sphinx-coverage-report \
-sphinx-gen-docs sphinx-regen-docs \
+create-dot-env-file look-at-env-example source-env \
+docker-build docker-remove docker-run docker-stop docker-compose-up docker-compose-down \
+help \
+poetry-add-group poetry-add-package poetry-add-requirements-txt \
+poetry-config-list poetry-env-info poetry-env-info-path poetry-env-list \
+poetry-env-remove-all poetry-export-to-requirements poetry-install \
+poetry-install-all-extras poetry-install-extras poetry-install-no-root \
+poetry-install-only poetry-install-only-root poetry-install-sync \
+poetry-install-with poetry-install-without poetry-lock poetry-lock-no-update \
+poetry-lock-update poetry-pip-freeze poetry-pip-freeze-to-txt-file \
+poetry-remove-group poetry-remove-lock-file poetry-remove-package \
+poetry-shell poetry-show-latest-top-level poetry-update \
+poetry-update-dry-run poetry-version \
+pylint-app pylint-path \
+pytest \
+sphinx-apidoc sphinx-build-html sphinx-build-html-for-gh-pages \
+sphinx-clean-up sphinx-coverage-report sphinx-gen-docs \
+sphinx-gen-docs-and-coverage sphinx-regen-docs sphinx-regen-docs-and-coverage \
 uvicorn-run uvicorn-run-app-on-port
 
 
@@ -51,6 +55,7 @@ help:  # Show the available commands
 
 	@echo "\nEnvironment (.env) Management commands:"
 	@echo "  create-dot-env-file"
+	@echo "  look-at-env-example"
 	@echo "  source-env"
 
 	@echo "\nGeneral commands:"
@@ -61,6 +66,7 @@ help:  # Show the available commands
 	@echo "  poetry-add-package"
 	@echo "  poetry-add-requirements-txt"
 	@echo "  poetry-config-list"
+	@echo "  poetry-env-info"
 	@echo "  poetry-env-info-path"
 	@echo "  poetry-env-list"
 	@echo "  poetry-env-remove-all"
@@ -82,6 +88,7 @@ help:  # Show the available commands
 	@echo "  poetry-remove-group"
 	@echo "  poetry-remove-lock-file"
 	@echo "  poetry-remove-package"
+	@echo "  poetry-shell"
 	@echo "  poetry-show-latest-top-level"
 	@echo "  poetry-update"
 	@echo "  poetry-update-dry-run"
@@ -101,10 +108,13 @@ help:  # Show the available commands
 	@echo "\nSphinx commands:"
 	@echo "  sphinx-apidoc"
 	@echo "  sphinx-build-html"
+	@echo "  sphinx-build-html-for-gh-pages"
 	@echo "  sphinx-clean-up"
 	@echo "  sphinx-coverage-report"
 	@echo "  sphinx-gen-docs"
+	@echo "  sphinx-gen-docs-and-coverage"
 	@echo "  sphinx-regen-docs"
+	@echo "  sphinx-regen-docs-and-coverage"
 
 
 
@@ -351,6 +361,9 @@ sphinx-apidoc:  # Generate Sphinx .rst files
 
 sphinx-build-html:  # Build the Sphinx HTML documentation
 	poetry run sphinx-build -b html -d docs/sphinx/build/doctrees docs/sphinx/source docs/sphinx/build/html
+
+sphinx-build-html-for-gh-pages:  # Build the Sphinx HTML documentation
+	poetry run sphinx-build -b html -d docs/sphinx/build/doctrees docs/sphinx/source gh-pages
 
 sphinx-coverage-report:  # Generate a documentation coverage report
 	poetry run sphinx-build -M coverage docs/sphinx/source docs/sphinx/build
