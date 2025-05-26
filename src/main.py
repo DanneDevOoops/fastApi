@@ -52,7 +52,7 @@ async def app_lifespan(app_instance: FastAPI):
     app_instance.settings = settings
 
     # Initialize the database connector instances
-    logger.info("Initializing the database managers...")
+    logger.info("Initializing the database connectors...")
     postgres_connector = PgsqlDbSessionManager()
     mongo_connector = MongoDBConnector(uri=settings.mongo_db_url)
 
@@ -71,7 +71,7 @@ async def app_lifespan(app_instance: FastAPI):
     logger.info("Shutting down the FastAPI application...")
 
     # Close the database connection pool
-    logger.info("Closing the database session managers...")
+    logger.info("Closing the database session connectors...")
     await app_instance.async_pool.close()
     await mongo_connector.close_connection()
 
