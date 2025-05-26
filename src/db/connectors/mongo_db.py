@@ -15,6 +15,7 @@ Each class includes a detailed docstring with information about its purpose.
 """
 
 import logging
+from typing import Any, AsyncGenerator
 
 from motor.motor_asyncio import AsyncIOMotorClient
 from pymongo.errors import ConnectionFailure
@@ -27,28 +28,47 @@ logger = logging.getLogger(settings.app_logger_name)
 
 class MongoDBConnector:
     """
-    MongoDBConnector is a singleton class that creates a single instance of an
-    async MongoDB client.
+    Singleton class for managing an asynchronous MongoDB client connection.
 
-    This class defines the following methods:
+    The `MongoDBConnector` ensures only one instance of the async
+    `AsyncIOMotorClient` is created and shared throughout the application.
+    It provides methods for connecting to MongoDB, retrieving collections,
+    testing the connection, and closing the client.
 
-    - __new__: Creates a single instance of the MongoDBConnector class.
-    - client: Returns the MongoDB client instance.
-    - test_connection: Asynchronously tests the connection to the MongoDB
-        deployment.
-    - get_collection: Returns a MongoDB collection.
-    - close_connection: Closes the MongoDB connection.
+    Example:
+        connector = MongoDBConnector(uri)
+        collection = connector.get_collection("my_collection")
+
+    .. graphviz::
+       :class: MongoDBConnector
+       :name: inheritance_diagram_mongodbconnector
+       :alt: MongoDBConnector inheritance diagram
+       :caption: MongoDBConnector inheritance diagram
+       :align: center
+
+        digraph inheritance {
+            MongoDBConnector [shape=box, style=filled, fillcolor=lightblue];
+            AsyncIOMotorClient [shape=box, style=filled, fillcolor=lightgray];
+            MongoDBConnector -> AsyncIOMotorClient [label="uses"];
+        }
+
+    .. inheritance-diagram:: MongoDBConnector
+       :include-subclasses:
     """
     _instance = None
     _uri = None
 
     def __new__(cls, uri) -> AsyncIOMotorClient:
         """
-        Creates a single instance of the MongoDBConnector class.
+        Instantiate or return the singleton MongoDBConnector.
 
-        :param uri: The MongoDB connection URI.
+        Ensures that only one instance of the connector exists. If an
+        instance does not exist, it initializes the MongoDB client with the
+        provided URI.
+
+        :param uri: MongoDB connection URI.
         :type uri: str
-        :return: The MongoDBConnector instance.
+        :return: The singleton instance of the connector.
         :rtype: MongoDBConnector
         """
         logger.info("Initializing the MongoDBConnector instance...")
@@ -67,34 +87,34 @@ class MongoDBConnector:
 
         :return: The MongoDB client instance.
         :rtype: AsyncIOMotorClient
-
         """
         return self._client
 
     async def test_connection(self):
         """
-        Asynchronously tests the connection to the MongoDB deployment.
+        Asynchronously test the connection to the MongoDB deployment.
+
+        :raises ConnectionFailure: If unable to connect to MongoDB.
         """
         logger.info("Testing the MongoDB Connection...")
 
         try:
             await self._client.admin.command('ping')
-            print("Successfully CONNECTED to MongoDB!")
-        except ConnectionFailure as e:
-            print(f"Failed to connect to MongoDB:\n{e}")
+            logger.info("Successfully CONNECTED to MongoDB!")
+        except ConnectionFailure:
+            logger.error("Failed to connect to MongoDB.")
             raise
 
     def get_collection(self, collection_name: str):
         """
-        Returns a MongoDB collection.
+        Retrieve a MongoDB collection by name.
 
-        :param collection_name: The name of the MongoDB collection.
+        :param collection_name: Name of the MongoDB collection to retrieve.
         :type collection_name: str
-        :return: The MongoDB collection.
+        :return: The requested MongoDB collection.
         :rtype: Collection
         """
-        logger.info("Get MongoDB collection...")
-
+        logger.info("Get MongoDB collection: '%s'", collection_name)
         return self._client.db_name[collection_name]
 
     async def close_connection(self):
@@ -107,7 +127,7 @@ class MongoDBConnector:
 
 
 # Register MongoDBConnector as a FastAPI dependency
-async def get_mongo_connector() -> MongoDBConnector:
+async def get_mongo_connector() -> AsyncGenerator[AsyncIOMotorClient, Any]:
     """
     Returns the MongoDBConnector instance.
 
@@ -117,5 +137,5 @@ async def get_mongo_connector() -> MongoDBConnector:
     logger.info("Getting the MongoDBConnector instance...")
     mongo_connector = MongoDBConnector(uri=settings.mongo_db_url)
     yield mongo_connector
-    await mongo_connector.close_connection()
+    mongo_connector.close_connection()
     logger.info("MongoDB connection closed...")
