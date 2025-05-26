@@ -44,3 +44,4 @@ documentation for details.
 
    coverage
    readme
+   docstrings
