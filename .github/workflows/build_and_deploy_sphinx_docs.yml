@@ -39,7 +39,6 @@ jobs:
     - name: Build docs with Sphinx
       run: |
         mkdir gh-pages
-        touch gh-pages/.nojekyll
         make sphinx-build-html-for-gh-pages
 
     - name: Deploy to GitHub Pages
