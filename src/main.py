@@ -9,6 +9,7 @@ This module is the main entry point of the FastAPI application.
 import os
 from contextlib import asynccontextmanager
 
+from beanie import init_beanie
 from fastapi import FastAPI, Depends
 from psycopg_pool import AsyncConnectionPool
 from starlette.middleware.cors import CORSMiddleware
@@ -16,6 +17,7 @@ from starlette.middleware.cors import CORSMiddleware
 from src.api.api_utilities import api_utility_router
 from src.api.api_v1 import api_v1_router
 from src.api.api_v1_ws_router import api_ws_router
+from src.api.api_v2 import api_v2_router
 from src.core.auth import get_api_key
 from src.core.custom_exceptions import AuthException, BadRequestException, \
     ConflictException, DatabaseException, InternalServerException, \
@@ -29,6 +31,7 @@ from src.core.exception_handlers import auth_exception_handler, \
 from src.core.logger_config import init_logger
 from src.db.connectors.mongo_db import MongoDBConnector
 from src.db.connectors.postgres_db import PgsqlDbSessionManager
+from src.db.models.v2_models.user_model import User
 from src.middlewares.logger import LoggerMiddleware
 from src.utils.app_constants import REQUEST_HEADERS, REQUEST_METHODS, \
     REQUEST_ORIGINS
@@ -48,15 +51,24 @@ async def app_lifespan(app_instance: FastAPI):
     logger.info("Application lifespan started...")
 
     # Initialize the application settings
-    logger.info("Initializing the FastAPI application...")
+    logger.info("Initializing the FastAPI application environment...")
     app_instance.settings = settings
 
     # Initialize the database connector instances
     logger.info("Initializing the database connectors...")
     postgres_connector = PgsqlDbSessionManager()
-    mongo_connector = MongoDBConnector(uri=settings.mongo_db_url)
+    mongo_connector = MongoDBConnector(
+        uri=settings.mongo_db_url,
+        db_name=settings.mongo_db_name
+    )
+    app_instance.mongo_connector = mongo_connector
 
-    # sqlite_connector = SQLiteConnector()
+    # Initialize Beanie
+    logger.info("Initializing Beanie...")
+    await init_beanie(
+        database=mongo_connector.db,
+        document_models=[User]
+    )
 
     # Initialize the database connection pool
     logger.info("Initializing the async database connection pool...")
@@ -73,7 +85,7 @@ async def app_lifespan(app_instance: FastAPI):
     # Close the database connection pool
     logger.info("Closing the database session connectors...")
     await app_instance.async_pool.close()
-    await mongo_connector.close_connection()
+    await mongo_connector.close()
 
     logger.info("Application lifespan shutdown completed...")
 
@@ -116,6 +128,11 @@ app.include_router(
 
 app.include_router(
     api_v1_router,
+    dependencies=[Depends(get_api_key)]
+)
+
+app.include_router(
+    api_v2_router,
     dependencies=[Depends(get_api_key)]
 )
 
