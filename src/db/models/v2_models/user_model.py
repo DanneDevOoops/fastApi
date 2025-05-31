@@ -1,0 +1,348 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+
+
+"""
+User model definitions for MongoDB with Beanie ODM.
+
+This module defines Pydantic and Beanie models for user data, supporting
+CRUD operations, batch processing, and schema validation for API v2.
+It includes models for user creation, updates (full and partial), and
+batch operations, with automatic timestamping and MongoDB ObjectId handling.
+
+Classes:
+- User: Main Beanie document model for users.
+- UsersBatch: Model for batch user operations.
+- CreateUser: Schema for creating a new user.
+- PatchUserData: Schema for partial user updates.
+- UpdateUser: Schema for full user updates.
+"""
+
+from datetime import datetime, timezone
+from typing import Optional, Dict, List
+
+from beanie import Document
+from bson import ObjectId
+from pydantic import BaseModel, Field
+
+from src.utils.nano_id import generate_nano_id
+
+
+class User(Document):
+    """
+    User document model for MongoDB.
+
+    :param id: Unique identifier for the user (MongoDB `_id`).
+    :type id: str
+    :param username: Username for authentication.
+    :type username: str
+    :param password: User password (hashed).
+    :type password: Optional[str]
+    :param firstname: User's first name.
+    :type firstname: Optional[str]
+    :param lastname: User's last name.
+    :type lastname: Optional[str]
+    :param address: User's address.
+    :type address: Optional[str]
+    :param zip_code: Postal code.
+    :type zip_code: Optional[str]
+    :param city: City of residence.
+    :type city: Optional[str]
+    :param country: Country of residence.
+    :type country: Optional[str]
+    :param phone: Contact phone number.
+    :type phone: Optional[str]
+    :param email: Email address.
+    :type email: Optional[str]
+    :param tags: Additional metadata as key-value pairs.
+    :type tags: Optional[Dict]
+    :param created_at: Timestamp when the user was created (UTC).
+    :type created_at: datetime
+    :param updated_at: Timestamp when the user was last updated (UTC).
+    :type updated_at: datetime
+    :param deleted_at: Timestamp when the user was deleted, if applicable.
+    :type deleted_at: Optional[datetime]
+
+    :cvar model_config: Allows arbitrary types and encodes ObjectId as string.
+    :cvar Settings: Contains collection name and utility methods.
+    """
+    # Unique identifier
+    id: str = Field(alias="_id")
+    username: str
+
+    # Authentication information
+    password: Optional[str]
+
+    # Contact information
+    firstname: Optional[str]
+    lastname: Optional[str]
+    address: Optional[str]
+    zip_code: Optional[str]
+    city: Optional[str]
+    country: Optional[str]
+    phone: Optional[str]
+    email: Optional[str]
+
+    # Metadata
+    tags: Optional[Dict] = Field(default_factory=dict)
+
+    # Timestamps
+    created_at: datetime = Field(
+        default_factory=lambda: datetime.now(timezone.utc))
+    updated_at: datetime = Field(
+        default_factory=lambda: datetime.now(timezone.utc))
+    deleted_at: Optional[datetime] = None
+
+    # Model configuration
+    model_config = {
+        "arbitrary_types_allowed": True,
+        "json_encoders": {ObjectId: str}
+    }
+
+    class Settings:
+        """
+        Settings for the User model.
+
+        :cvar name: The name of the MongoDB collection for users.
+        :type name: str
+
+        :return: String representation of the Settings instance.
+        :rtype: str
+
+        :return: List of attributes and methods of the Settings instance.
+        :rtype: list
+        """
+        name = "users"
+
+        def __str__(self) -> str:
+            """
+            String representation of the Settings instance.
+            """
+            return f"User.Settings.name: {self.name}"
+
+        def __dir__(self):
+            """
+            Returns the list of attributes and methods of the Settings
+            instance.
+            """
+            return self.__dict__.keys()
+
+
+class UsersBatch(BaseModel):
+    """
+    Represents a batch of users for bulk operations.
+
+    :param id: List of user IDs included in the batch operation.
+    :type id: List[str]
+
+    :cvar Settings: Contains collection name and utility methods.
+    """
+    id: List[str]
+
+    class Settings:
+        """
+        Settings for the User model.
+
+        :cvar name: The name of the MongoDB collection for users.
+        :type name: str
+        """
+        name = "users"
+
+        def __str__(self) -> str:
+            """
+            String representation of the Settings instance.
+            """
+            return f"UsersBatch.Settings.name: {self.name}"
+
+        def __dir__(self):
+            """
+            Returns the list of attributes and methods of the Settings
+            instance.
+            """
+            return self.__dict__.keys()
+
+
+class CreateUser(BaseModel):
+    """
+    Represents a request to create or update a user.
+
+    :param id: Unique identifier for the user (MongoDB `_id`).
+    :type id: Optional[str]
+    :param username: Username for authentication.
+    :type username: str
+    :param password: User password (hashed).
+    :type password: str
+    :param firstname: User's first name.
+    :type firstname: Optional[str]
+    :param lastname: User's last name.
+    :type lastname: Optional[str]
+    :param address: User's address.
+    :type address: Optional[str]
+    :param zip_code: Postal code.
+    :type zip_code: Optional[str]
+    :param city: City of residence.
+    :type city: Optional[str]
+    :param country: Country of residence.
+    :type country: Optional[str]
+    :param phone: Contact phone number.
+    :type phone: Optional[str]
+    :param email: Email address.
+    :type email: str
+    :param tags: Additional metadata as key-value pairs.
+    :type tags: Optional[Dict]
+    :param created_at: Timestamp when the user was created (UTC).
+    :type created_at: datetime
+    :param updated_at: Timestamp when the user was last updated (UTC).
+    :type updated_at: datetime
+    :param deleted_at: Timestamp when the user was deleted, if applicable.
+    :type deleted_at: Optional[datetime]
+
+    :cvar model_config: Allows arbitrary types and encodes ObjectId as string.
+    :cvar Settings: Contains collection name and utility methods.
+    """
+    id: Optional[str] = Field(
+        alias="_id", default_factory=generate_nano_id)
+    username: str
+    password: str
+
+    firstname: Optional[str]
+    lastname: Optional[str]
+    address: Optional[str]
+    zip_code: Optional[str]
+    city: Optional[str]
+    country: Optional[str]
+    phone: Optional[str]
+    email: str
+
+    tags: Optional[Dict] = Field(default_factory=dict)
+
+    # Timestamps
+    created_at: datetime = Field(
+        default_factory=lambda: datetime.now(timezone.utc))
+    updated_at: datetime = Field(
+        default_factory=lambda: datetime.now(timezone.utc))
+    deleted_at: None | datetime = None
+
+    # Configuration for the CreateUser model
+    model_config = {
+        "arbitrary_types_allowed": True,
+        "json_encoders": {ObjectId: str}
+    }
+
+    class Settings:
+        """
+        Settings for the User model.
+
+        :cvar name: The name of the MongoDB collection for users.
+        :type name: str
+
+        :return: String representation of the Settings instance.
+        :rtype: str
+
+        :return: List of attributes and methods of the Settings instance.
+        :rtype: list
+        """
+        name = "users"
+
+        def __str__(self) -> str:
+            """
+            String representation of the Settings instance.
+            """
+            return f"CreateUser.Settings.name: {self.name}"
+
+        def __dir__(self):
+            """
+            Returns the list of attributes and methods of the Settings
+            instance.
+            """
+            return self.__dict__.keys()
+
+
+class PatchUserData(CreateUser):
+    """
+    Represents a request to partially update a user.
+
+    :param firstname: User's first name (optional, can be omitted or
+        set to None).
+    :type firstname: Optional[str]
+    :param lastname: User's last name (optional, can be omitted or
+        set to None).
+    :type lastname: Optional[str]
+    :param address: User's address (optional, can be omitted or
+        set to None).
+    :type address: Optional[str]
+    :param zip_code: Postal code (optional, can be omitted or set to None).
+    :type zip_code: Optional[str]
+    :param city: City of residence (optional, can be omitted or set to None).
+    :type city: Optional[str]
+    :param country: Country of residence (optional, can be omitted or
+        set to None).
+    :type country: Optional[str]
+    :param phone: Contact phone number (optional, can be omitted or
+        set to None).
+    :type phone: Optional[str]
+    :param email: Email address (optional, can be omitted or set to None).
+    :type email: Optional[str]
+    :param tags: Additional metadata as key-value pairs (optional, can be
+        omitted or set to None).
+    :type tags: Optional[Dict]
+    """
+    firstname: Optional[str] = None
+    lastname: Optional[str] = None
+    address: Optional[str] = None
+    zip_code: Optional[str] = None
+    city: Optional[str] = None
+    country: Optional[str] = None
+    phone: Optional[str] = None
+    email: Optional[str] = None
+    tags: Optional[Dict] = None
+
+
+class UpdateUser(CreateUser):
+    """
+    Represents a request to update a user.
+    Inherits from CreateUser to allow full updates.
+
+    :param username: Username for authentication.
+    :type username: str
+    :param password: User password (hashed).
+    :type password: str
+    :param firstname: User's first name.
+    :type firstname: str
+    :param lastname: User's last name.
+    :type lastname: str
+    :param address: User's address.
+    :type address: str
+    :param zip_code: Postal code.
+    :type zip_code: str
+    :param city: City of residence.
+    :type city: str
+    :param country: Country of residence.
+    :type country: str
+    :param phone: Contact phone number.
+    :type phone: str
+    :param email: Email address.
+    :type email: str
+    :param tags: Additional metadata as key-value pairs.
+    :type tags: Optional[Dict]
+    :param updated_at: Timestamp when the user was last updated (UTC).
+    :type updated_at: datetime
+    :param deleted_at: Timestamp when the user was deleted, if applicable.
+    :type deleted_at: Optional[datetime]
+    """
+    username: str
+    password: str
+    firstname: str
+    lastname: str
+    address: str
+    zip_code: str
+    city: str
+    country: str
+    phone: str
+    email: str
+    tags: Optional[Dict] = Field(default_factory=dict)
+
+    # Timestamps
+    updated_at: datetime = Field(
+        default_factory=lambda: datetime.now(timezone.utc))
+    deleted_at: None | datetime = None
