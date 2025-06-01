@@ -45,13 +45,19 @@ class Settings(BaseSettings):
         default="application_logger",
         json_schema_extra={"env_name": "LOGGER_NAME"})
 
-    # --- Secret Keys (JWT) --------------------------------------------------
-    app_algorithm: str = Field(
+    # --- JWT Token settings -------------------------------------------------
+    app_jwt_algorithm: str = Field(
         default="HS256",
         json_schema_extra={"env_name": "APP_ALGORITHM"})
     app_jwt_secret_key: str = Field(
         default="a_secret_key",
         json_schema_extra={"env_name": "APP_JWT_SECRET_KEY"})
+    app_jwt_expiration: int = Field(
+        default=1200,
+        json_schema_extra={"env_name": "APP_JWT_EXPIRATION"})
+    app_jwt_token_type: str = Field(
+        default="bearer",
+        json_schema_extra={"env_name": "APP_JWT_TOKEN_TYPE"})
 
     # --- Applications registered with the API -------------------------------
     app_health_check_api_key: str = Field(
@@ -206,12 +212,12 @@ class Settings(BaseSettings):
         json_schema_extra={
             "env_name": "MONGO_DB_DOCKER_HOST_VOLUME_PATH"})
 
-    # SQLite3 Database settings
+    # --- SQLite3 Database settings ------------------------------------------
     sqlite_db_url: str = Field(
         default="sqlite:///a_sqlite_db_name.db",
         json_schema_extra={"env_name": "SQLITE_DB_URL"})
 
-    # Utils settings
+    # --- App utility settings -----------------------------------------------
     nano_id_characters: str = Field(
         default=
         "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz",
