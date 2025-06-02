@@ -17,19 +17,24 @@ from typing import List
 
 from fastapi import APIRouter, status
 from fastapi.responses import ORJSONResponse
+from passlib.context import CryptContext
 from starlette.responses import Response
 
+from core.custom_exceptions import HTTPException
 from src.core.env_config import get_settings
 from src.db.models.v2_models.user_model import CreateUser, User, UsersBatch, \
     PatchUserData
-from src.db.serializers.v2_serializers.v2_user_serializers import \
-    user_serializer
+from src.db.serializers.v2_serializers.v2_model_serializers import \
+    model_serialize
 
 router = APIRouter()
 
 settings = get_settings()
 logger = logging.getLogger(
     settings.app_logger_name or "application_logger")
+
+# --- Authentication --------
+bcrypt_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
 
 @router.options("", operation_id="options_user_route_v2")
@@ -65,9 +70,9 @@ async def get_all_users_v2() -> ORJSONResponse:
     :rtype: ORJSONResponse
     """
     logger.info("Fetching all users from the database")
-    all_users = await User.find(User.deleted_at == None).to_list()
+    all_users = await User.find({"deleted_at": None}).to_list()
     return ORJSONResponse(
-        content=list(map(user_serializer, all_users)),
+        content=list(map(model_serialize, all_users)),
         status_code=status.HTTP_200_OK
     )
 
@@ -92,7 +97,7 @@ async def get_all_soft_deleted_users_v2() -> ORJSONResponse:
     all_soft_deleted_users = await User.find(
         User.deleted_at != None).to_list()
     return ORJSONResponse(
-        content=list(map(user_serializer, all_soft_deleted_users)),
+        content=list(map(model_serialize, all_soft_deleted_users)),
         status_code=status.HTTP_200_OK
     )
 
@@ -128,7 +133,7 @@ async def get_user_by_id_v2(user_id: str) -> ORJSONResponse:
         )
 
     return ORJSONResponse(
-        content=user_serializer(user),
+        content=model_serialize(user),
         status_code=status.HTTP_200_OK
     )
 
@@ -143,23 +148,49 @@ async def create_new_user_v2(user_data: CreateUser) -> ORJSONResponse:
     """
     Create a new User in version 2 of the API.
 
-    Accepts user data in the request body and creates a new user record in
-    the database.
+    Creates a new user record in the MongoDB database with the provided
+    user data. The password is securely hashed before storage. The response
+    excludes sensitive fields such as password, role, updated_at,
+    and deleted_at.
 
     :param user_data: The data required to create a new user.
     :type user_data: CreateUser
-    :return: The newly created user data with status code 201.
+    :return: The created user data (excluding sensitive fields),
+        or an error message if creation fails.
     :rtype: ORJSONResponse
     """
-    new_user = User(**user_data.model_dump())
-    logger.info("Creating a new user with data: %s", new_user)
-    new_user_in_db = await new_user.create()
+    logger.info("Creating a new user with data: %s", user_data)
+    try:
+        new_user = User(**user_data.model_dump())
+        new_user.password = bcrypt_context.hash(new_user.password)
 
-    # Placeholder for user creation logic
-    return ORJSONResponse(
-        content=user_serializer(new_user_in_db),
-        status_code=status.HTTP_201_CREATED
-    )
+        # Find the current max index
+        last_user = await User.find().sort("-index").first_or_none()
+        next_index = (
+                last_user.index + 1
+        ) if last_user and last_user.index is not None else 1
+        new_user.index = next_index
+
+        # Create the new user into the database
+        new_user_in_db = await new_user.create()
+        logger.info("Created a new user: %s", new_user)
+
+        # Serialized user data for response
+        serialized_user_data = model_serialize(new_user_in_db)
+        for key in ['password', 'role', 'updated_at', 'deleted_at']:
+            serialized_user_data.pop(key, None)
+
+        return ORJSONResponse(
+            content=serialized_user_data,
+            status_code=status.HTTP_201_CREATED
+        )
+
+    except HTTPException as e:
+        logger.error("Authentication error: %s", str(e))
+        return ORJSONResponse(
+            content={"detail": "Cant create user due to an unexpected error."},
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR
+        )
 
 
 @router.post("/batch",
@@ -189,7 +220,7 @@ async def get_users_batch_by_ids_v2(
          User.deleted_at: None}).to_list()
 
     return ORJSONResponse(
-        content=list(map(user_serializer, list_of_users)),
+        content=list(map(model_serialize, list_of_users)),
         status_code=status.HTTP_200_OK
     )
 
@@ -226,7 +257,7 @@ async def soft_delete_user_by_id_v2(user_id: str) -> ORJSONResponse:
     user.deleted_at = datetime.now(timezone.utc)
     await user.save()
     return ORJSONResponse(
-        content=user_serializer(user),
+        content=model_serialize(user),
         status_code=status.HTTP_200_OK
     )
 
@@ -272,7 +303,7 @@ PatchUserData) -> ORJSONResponse:
     updated_user = await user.save()
 
     return ORJSONResponse(
-        content=user_serializer(updated_user),
+        content=model_serialize(updated_user),
         status_code=status.HTTP_200_OK
     )
 

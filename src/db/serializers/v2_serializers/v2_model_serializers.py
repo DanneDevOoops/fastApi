@@ -54,19 +54,23 @@ def list_serial(individual):
     return list(map(individual_serializer, individual))
 
 
-def user_serializer(user):
+def model_serialize(input_data_model) -> dict:
     """
     Serialize a single User document or model.
 
-    Converts a User model instance or dictionary to a standard dictionary,
-    stringifying the `id` field and removing the MongoDB `_id` key.
+    Converts a data model instance or dictionary to a standard dictionary,
+    stringify the `id` field and removing the MongoDB `_id` key.
 
-    :param user: The User document or model to serialize.
-    :type user: Any
+    :param input_data_model: The beanie Document model to serialize.
+    :type input_data_model: Any
     :return: A dictionary representation of the User.
     :rtype: dict
     """
-    data = user.model_dump() if hasattr(user, "model_dump") else dict(user)
+    data = input_data_model.model_dump() if hasattr(input_data_model,
+                                                    "model_dump") \
+        else (
+        dict(
+            input_data_model))
     if "_id" in data and data["_id"] is not None:
         data["id"] = str(data["_id"])
         del data["_id"]
@@ -84,4 +88,4 @@ def user_list_serializer(users):
     :return: A list of serialized User dictionaries.
     :rtype: list[dict]
     """
-    return list(map(user_serializer, users))
+    return list(map(model_serialize, users))
