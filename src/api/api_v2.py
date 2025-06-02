@@ -7,6 +7,8 @@ This module defines the User API routes for the FastAPI application.
 
 from fastapi import APIRouter
 
+from src.api.v2_routes import application_routes
+from src.api.v2_routes import auth_routes
 from src.api.v2_routes import user_routes
 
 api_v2_router = APIRouter(
@@ -14,6 +16,19 @@ api_v2_router = APIRouter(
     responses={
         404: {"description": "Not found"}
     },
+)
+
+# Included routers in api/v2
+api_v2_router.include_router(
+    application_routes.router,
+    prefix="/applications",
+    tags=["applications"],
+)
+
+api_v2_router.include_router(
+    auth_routes.router,
+    prefix="/auth",
+    tags=["auth"],
 )
 
 api_v2_router.include_router(
