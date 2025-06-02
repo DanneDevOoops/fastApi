@@ -8,6 +8,7 @@ Write a good module docstring here...
 """
 
 import logging
+from datetime import datetime, timezone
 
 from fastapi import APIRouter, status
 from fastapi.responses import ORJSONResponse
@@ -17,7 +18,8 @@ from src.core.auth import create_application_access_token, hash_key_v2
 from src.core.env_config import get_settings
 from src.db.models.v2_models.application_model import Application, \
     CreateApplication
-from src.db.models.v2_models.application_model import NewApplication
+from src.db.models.v2_models.application_model import NewApplication, \
+    PatchUpdateApplication
 from src.db.serializers.v2_serializers.v2_model_serializers import (
     model_serialize)
 
@@ -135,4 +137,44 @@ async def create_application(app_data: CreateApplication) -> ORJSONResponse:
     return ORJSONResponse(
         content={**new_app},
         status_code=status.HTTP_201_CREATED
+    )
+
+
+@router.patch("/{app_id}",
+              name="update_application_route_v2",
+              description="Route to update an existing application/service "
+                          "in the mongo database.",
+              operation_id="update_application_route_v2",
+              response_model=NewApplication,
+              status_code=status.HTTP_200_OK)
+async def patch_update_application(
+        app_id: str, app_data: PatchUpdateApplication) -> ORJSONResponse:
+    """
+    Update an existing application/service.
+    """
+    logger.info("Updating application/service with ID %s", app_id)
+    app = await Application.find_one(
+        Application.id == app_id,
+        Application.deleted_at == None)
+
+    if not app:
+        logger.warning("Application with ID %s not found.", app_id)
+        return ORJSONResponse(
+            content={"detail": f"Application ({app_id}) not found"},
+            status_code=status.HTTP_404_NOT_FOUND
+        )
+
+    # Update the application data with the provided attributes
+    app_data_dict = app_data.model_dump(exclude_unset=True)
+    for key, value in app_data_dict.items():
+        setattr(app, key, value)
+
+    # Save updated data & serialize for response
+    app.updated_at = datetime.now(timezone.utc)
+    await app.save()
+    updated_app = model_serialize(app)
+
+    return ORJSONResponse(
+        content=updated_app,
+        status_code=status.HTTP_200_OK
     )
