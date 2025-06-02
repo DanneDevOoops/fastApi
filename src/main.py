@@ -31,6 +31,7 @@ from src.core.exception_handlers import auth_exception_handler, \
 from src.core.logger_config import init_logger
 from src.db.connectors.mongo_db import MongoDBConnector
 from src.db.connectors.postgres_db import PgsqlDbSessionManager
+from src.db.models.v2_models.application_model import Application
 from src.db.models.v2_models.user_model import User
 from src.middlewares.logger import LoggerMiddleware
 from src.utils.app_constants import REQUEST_HEADERS, REQUEST_METHODS, \
@@ -67,7 +68,11 @@ async def app_lifespan(app_instance: FastAPI):
     logger.info("Initializing Beanie...")
     await init_beanie(
         database=mongo_connector.db,
-        document_models=[User]
+        # Here is where you initialization mongo db models
+        document_models=[
+            Application,
+            User
+        ]
     )
 
     # Initialize the database connection pool
