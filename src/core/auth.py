@@ -48,30 +48,7 @@ def get_auth_headers_and_query_params() -> tuple:
     return header_key, query_key
 
 
-def get_allowed_api_keys(env_settings) -> list[str]:
-    """
-    Generate a list of allowed API keys from the application settings.
-
-    NOTE: This is where you will add any application api keys you want to
-    use for authentication with the API. When adding a new key, be sure
-    to check the `src/core/env_config.py` for configured env variables
-    before adding just anything here.
-
-    :param env_settings: The application environment settings object.
-    :type env_settings: object
-    :return: A list of valid API-Keys strings.
-    :rtype: list[str]
-    """
-    return [
-        key for key in [
-            env_settings.app_health_check_api_key or None,
-            env_settings.app_1_api_key or None,
-        ] if key is not None
-    ]
-
-
 # Auth headers & query params
-ALLOWED_API_KEYS = get_allowed_api_keys(settings)
 header_api_key, query_api_key = get_auth_headers_and_query_params()
 
 
