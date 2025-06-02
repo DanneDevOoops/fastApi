@@ -20,7 +20,7 @@ from fastapi.responses import ORJSONResponse
 from passlib.context import CryptContext
 from starlette.responses import Response
 
-from core.custom_exceptions import HTTPException
+from src.core.custom_exceptions import HTTPException
 from src.core.env_config import get_settings
 from src.db.models.v2_models.user_model import CreateUser, User, UsersBatch, \
     PatchUserData
