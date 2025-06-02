@@ -157,11 +157,11 @@ async def get_current_user(
             )
 
         return {"username": username, "id": user_id}
-    except JWTError:
+    except JWTError as e:
         raise HTTPException(
             detail="Invalid authentication credentials",
-            status_code=status.HTTP_401_UNAUTHORIZED,
-        )
+            status_code=status.HTTP_401_UNAUTHORIZED
+        ) from e
 
 
 def create_application_access_token(
@@ -221,9 +221,9 @@ def decode_application_access_token(
     except JWTError as e:
         logger.error("Failed to decode application access token: %s", e)
         raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED,
-            detail="Invalid authentication credentials"
-        )
+            detail="Invalid authentication credentials",
+            status_code=status.HTTP_401_UNAUTHORIZED
+        ) from e
 
 
 async def get_api_key(
