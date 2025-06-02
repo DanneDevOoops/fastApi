@@ -59,18 +59,7 @@ class Settings(BaseSettings):
         default="bearer",
         json_schema_extra={"env_name": "APP_JWT_TOKEN_TYPE"})
 
-    # --- Applications registered with the API -------------------------------
-    app_health_check_api_key: str = Field(
-        default=None,
-        json_schema_extra={"env_name": "APP_HEALTH_CHECK_API_KEY"})
-    app_1_api_key: str = Field(
-        default=None,
-        json_schema_extra={"env_name": "APP_1_API_KEY"})
-
-    # app_2_api_key: str = Field(
-    #     default=None,
-    #     json_schema_extra={"env_name": "APP_1_API_KEY"})
-
+    # --- Docker settings ----------------------------------------------------
     compose_bake: bool = Field(
         default="True",
         json_schema_extra={"env_name": "COMPOSE_BAKE"})
