@@ -247,17 +247,36 @@ async def get_api_key(
     :rtype: str
     :raises HTTPException: If the API key is invalid or missing.
     """
-    if api_key_header in ALLOWED_API_KEYS:
-        return api_key_header
-    if api_key_query in ALLOWED_API_KEYS:
-        return api_key_query
+    if api_key_header:
+        logger.info("API key provided in header: %s", api_key_header)
+        if token_payload := decode_application_access_token(api_key_header):
+            logger.info("Token payload: %s", token_payload)
+            # Fetch the service details to verify the API key against
+            service_details = await Application.find_one(
+                Application.id == token_payload.get("id"),
+                Application.deleted_at == None
+            )
+            logger.info("Service details found: %s", service_details)
+            if verify_password_v2(api_key_header, service_details.api_key):
+                logger.info("API key in header is valid.")
+                return api_key_header
+    elif api_key_query:
+        logger.info("API key provided in query: %s", api_key_query)
+        if token_payload := decode_application_access_token(api_key_query):
+            logger.info("Token payload: %s", token_payload)
+            # Fetch the service details to verify the API key against
+            service_details = await Application.find_one(
+                Application.id == token_payload.get("id"),
+                Application.deleted_at == None
+            )
+            logger.info("Service details found: %s", service_details)
+            if verify_password_v2(api_key_query, service_details.api_key):
+                logger.info("API key in query is valid.")
+                return api_key_query
 
     # This part only happens if the API key is not found in the allowed
     # keys to trigger the warning log and raise an HTTPException return.
-    logger.warning('API key not found or invalid', extra={
-        'api_key_query': api_key_query,
-        'api_key_header': api_key_header
-    })
+    logger.warning('API key not invalid or found')
 
     raise HTTPException(
         status_code=status.HTTP_401_UNAUTHORIZED,
