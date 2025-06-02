@@ -19,13 +19,24 @@ Classes:
 """
 
 from datetime import datetime, timezone
+from enum import Enum
 from typing import Optional, Dict, List
 
-from beanie import Document
+from beanie import Document, Indexed
 from bson import ObjectId
 from pydantic import BaseModel, Field
 
+import pymongo
+
 from src.utils.nano_id import generate_nano_id
+
+
+class UserRole(str, Enum):
+    """
+    Enum for user roles in the system.
+    """
+    USER = "user"
+    ADMIN = "admin"
 
 
 class User(Document):
@@ -67,21 +78,24 @@ class User(Document):
     :cvar Settings: Contains collection name and utility methods.
     """
     # Unique identifier
-    id: str = Field(alias="_id")
-    username: str
+    id: str = Field(alias="_id", default_factory=generate_nano_id)
+    username: Indexed(str, pymongo.TEXT, unique=True, name="user-username")
+    index: Indexed(int, pymongo.ASCENDING, unique=True, name="user-index")
 
-    # Authentication information
-    password: Optional[str]
+    # Authentication & Role
+    role: Indexed(str, unique=False, name="user-role") = Field(
+        default=UserRole.USER)
+    password: str
 
     # Contact information
-    firstname: Optional[str]
-    lastname: Optional[str]
-    address: Optional[str]
-    zip_code: Optional[str]
-    city: Optional[str]
-    country: Optional[str]
-    phone: Optional[str]
-    email: Optional[str]
+    firstname: str
+    lastname: str
+    address: str
+    zip_code: str
+    city: str
+    country: str
+    phone: str
+    email: Indexed(str, pymongo.ASCENDING, unique=True, name="user-email")
 
     # Metadata
     tags: Optional[Dict] = Field(default_factory=dict)
@@ -200,28 +214,29 @@ class CreateUser(BaseModel):
     :cvar model_config: Allows arbitrary types and encodes ObjectId as string.
     :cvar Settings: Contains collection name and utility methods.
     """
-    id: Optional[str] = Field(
-        alias="_id", default_factory=generate_nano_id)
+    index: Optional[int] = Field(default_factory=int, unique=True)
     username: str
     password: str
 
-    firstname: Optional[str]
-    lastname: Optional[str]
-    address: Optional[str]
-    zip_code: Optional[str]
-    city: Optional[str]
-    country: Optional[str]
-    phone: Optional[str]
+    # Contact information
+    firstname: str
+    lastname: str
+    address: str
+    zip_code: str
+    city: str
+    country: str
     email: str
+    phone: str
 
+    # Metadata
     tags: Optional[Dict] = Field(default_factory=dict)
 
     # Timestamps
-    created_at: datetime = Field(
+    created_at: Optional[datetime] = Field(
         default_factory=lambda: datetime.now(timezone.utc))
-    updated_at: datetime = Field(
+    updated_at: Optional[datetime] = Field(
         default_factory=lambda: datetime.now(timezone.utc))
-    deleted_at: None | datetime = None
+    deleted_at: Optional[None | datetime] = None
 
     # Configuration for the CreateUser model
     model_config = {
@@ -298,7 +313,7 @@ class PatchUserData(CreateUser):
     tags: Optional[Dict] = None
 
 
-class UpdateUser(CreateUser):
+class UpdateUserData(CreateUser):
     """
     Represents a request to update a user.
     Inherits from CreateUser to allow full updates.
