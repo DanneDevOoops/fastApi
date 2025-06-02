@@ -8,8 +8,9 @@ Auth model description here...
 
 from pydantic import BaseModel, field_serializer
 
-from db.serializers.v2_serializers.v2_model_serializers import model_serialize
 from src.db.models.v2_models.user_model import User
+from src.db.serializers.v2_serializers.v2_model_serializers import \
+    model_serialize
 
 
 class AuthTokenResponse(BaseModel):
