@@ -178,3 +178,49 @@ class CreateApplication(BaseModel):
                 "name", "index", "description", "api_key", "host_ip",
                 "host_port", "tags", "created_at", "updated_at",
                 "deleted_at"]
+
+
+class PatchUpdateApplication(BaseModel):
+    """
+    Model for patching an existing application/service.
+    """
+    # Unique identifiers
+    name: Optional[str] = None
+
+    # Details
+    description: Optional[str] = None
+    ip_adress: Optional[str] = None
+    port: Optional[int] = None
+
+    # Metadata
+    tags: Optional[Dict] = None
+
+    # Model configuration
+    model_config = {
+        "arbitrary_types_allowed": True,
+        "json_encoders": {ObjectId: str}
+    }
+
+    class Settings:
+        """
+        Settings for the PatchUpdateApplication model.
+        """
+        name = "applications"
+
+        def __str__(self) -> str:
+            """
+            String representation of the PatchUpdateApplication model.
+
+            :return: The name of the application.
+            :rtype: str
+            """
+            return self.name
+
+        def __dir__(self):
+            """
+            Return the list of attributes for the PatchUpdateApplication model.
+
+            :return: List of attributes.
+            :rtype: list
+            """
+            return ["name", "description", "ip_adress", "port", "tags"]
