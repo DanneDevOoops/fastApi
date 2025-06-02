@@ -219,7 +219,6 @@ def decode_application_access_token(
             algorithms=[settings.app_jwt_algorithm])
         return payload
     except JWTError as e:
-        logger.error("Failed to decode application access token: %s", e)
         raise HTTPException(
             detail="Invalid authentication credentials",
             status_code=status.HTTP_401_UNAUTHORIZED
@@ -248,30 +247,23 @@ async def get_api_key(
     :raises HTTPException: If the API key is invalid or missing.
     """
     if api_key_header:
-        logger.info("API key provided in header: %s", api_key_header)
         if token_payload := decode_application_access_token(api_key_header):
-            logger.info("Token payload: %s", token_payload)
             # Fetch the service details to verify the API key against
             service_details = await Application.find_one(
                 Application.id == token_payload.get("id"),
                 Application.deleted_at == None
             )
-            logger.info("Service details found: %s", service_details)
             if verify_password_v2(api_key_header, service_details.api_key):
-                logger.info("API key in header is valid.")
                 return api_key_header
+
     elif api_key_query:
-        logger.info("API key provided in query: %s", api_key_query)
         if token_payload := decode_application_access_token(api_key_query):
-            logger.info("Token payload: %s", token_payload)
             # Fetch the service details to verify the API key against
             service_details = await Application.find_one(
                 Application.id == token_payload.get("id"),
                 Application.deleted_at == None
             )
-            logger.info("Service details found: %s", service_details)
             if verify_password_v2(api_key_query, service_details.api_key):
-                logger.info("API key in query is valid.")
                 return api_key_query
 
     # This part only happens if the API key is not found in the allowed
