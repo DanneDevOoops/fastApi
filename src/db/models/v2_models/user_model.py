@@ -22,21 +22,29 @@ from datetime import datetime, timezone
 from enum import Enum
 from typing import Optional, Dict, List
 
+import pymongo
 from beanie import Document, Indexed
 from bson import ObjectId
 from pydantic import BaseModel, Field
-
-import pymongo
 
 from src.utils.nano_id import generate_nano_id
 
 
 class UserRole(str, Enum):
     """
-    Enum for user roles in the system.
+    Enum for user roles in the system. Privileges and access levels are
+    determined by the role assigned to the user.
+
+    Available roles:
+    - USER: Regular user with standard access.
+    - ADMIN: User with administrative privileges.
+    - SUPERUSER: User with elevated privileges, typically for system
+        maintenance or higher level management tasks. This role is the only one
+        that can create, update into or delete admin users.
     """
     USER = "user"
     ADMIN = "admin"
+    SUPERUSER = "superuser"
 
 
 class User(Document):
@@ -45,26 +53,30 @@ class User(Document):
 
     :param id: Unique identifier for the user (MongoDB `_id`).
     :type id: str
-    :param username: Username for authentication.
+    :param username: Username for authentication (unique, indexed).
     :type username: str
+    :param index: Unique integer index for the user (indexed).
+    :type index: int
+    :param role: User role (default: "user").
+    :type role: str
     :param password: User password (hashed).
-    :type password: Optional[str]
+    :type password: str
     :param firstname: User's first name.
-    :type firstname: Optional[str]
+    :type firstname: str
     :param lastname: User's last name.
-    :type lastname: Optional[str]
+    :type lastname: str
     :param address: User's address.
-    :type address: Optional[str]
+    :type address: str
     :param zip_code: Postal code.
-    :type zip_code: Optional[str]
+    :type zip_code: str
     :param city: City of residence.
-    :type city: Optional[str]
+    :type city: str
     :param country: Country of residence.
-    :type country: Optional[str]
+    :type country: str
     :param phone: Contact phone number.
-    :type phone: Optional[str]
-    :param email: Email address.
-    :type email: Optional[str]
+    :type phone: str
+    :param email: Email address (unique, indexed).
+    :type email: str
     :param tags: Additional metadata as key-value pairs.
     :type tags: Optional[Dict]
     :param created_at: Timestamp when the user was created (UTC).
@@ -83,11 +95,11 @@ class User(Document):
     index: Indexed(int, pymongo.ASCENDING, unique=True, name="user-index")
 
     # Authentication & Role
+    password: str
     role: Indexed(str, unique=False, name="user-role") = Field(
         default=UserRole.USER)
-    password: str
 
-    # Contact information
+    # Contact info
     firstname: str
     lastname: str
     address: str
@@ -144,21 +156,29 @@ class User(Document):
 
 class UsersBatch(BaseModel):
     """
-    Represents a batch of users for bulk operations.
+    Represents a batch of user IDs for bulk operations such as deletion,
+    updates, or retrieval.
 
     :param id: List of user IDs included in the batch operation.
     :type id: List[str]
 
-    :cvar Settings: Contains collection name and utility methods.
+    :cvar Settings: Contains collectio name and utility methods for batch
+    operations.
     """
     id: List[str]
 
     class Settings:
         """
-        Settings for the User model.
+        Settings for the UsersBatch model.
 
         :cvar name: The name of the MongoDB collection for users.
         :type name: str
+
+        :return: String representation of the Settings instance.
+        :rtype: str
+
+        :return: List of attributes and methods of the Settings instance.
+        :rtype: list
         """
         name = "users"
 
@@ -178,36 +198,37 @@ class UsersBatch(BaseModel):
 
 class CreateUser(BaseModel):
     """
-    Represents a request to create or update a user.
+    Represents a request to create a new user.
 
-    :param id: Unique identifier for the user (MongoDB `_id`).
-    :type id: Optional[str]
+    :param index: Unique integer index for the user (optional,
+        auto-generated).
+    :type index: Optional[int]
     :param username: Username for authentication.
     :type username: str
     :param password: User password (hashed).
     :type password: str
     :param firstname: User's first name.
-    :type firstname: Optional[str]
+    :type firstname: str
     :param lastname: User's last name.
-    :type lastname: Optional[str]
+    :type lastname: str
     :param address: User's address.
-    :type address: Optional[str]
+    :type address: str
     :param zip_code: Postal code.
-    :type zip_code: Optional[str]
+    :type zip_code: str
     :param city: City of residence.
-    :type city: Optional[str]
+    :type city: str
     :param country: Country of residence.
-    :type country: Optional[str]
-    :param phone: Contact phone number.
-    :type phone: Optional[str]
+    :type country: str
     :param email: Email address.
     :type email: str
+    :param phone: Contact phone number.
+    :type phone: str
     :param tags: Additional metadata as key-value pairs.
     :type tags: Optional[Dict]
     :param created_at: Timestamp when the user was created (UTC).
-    :type created_at: datetime
+    :type created_at: Optional[datetime]
     :param updated_at: Timestamp when the user was last updated (UTC).
-    :type updated_at: datetime
+    :type updated_at: Optional[datetime]
     :param deleted_at: Timestamp when the user was deleted, if applicable.
     :type deleted_at: Optional[datetime]
 
@@ -275,31 +296,34 @@ class CreateUser(BaseModel):
 
 class PatchUserData(CreateUser):
     """
-    Represents a request to partially update a user.
+    Represents a request to partially update user information.
 
-    :param firstname: User's first name (optional, can be omitted or
-        set to None).
+    :param firstname: User's first name (optional,
+        can be omitted or set to None).
     :type firstname: Optional[str]
-    :param lastname: User's last name (optional, can be omitted or
-        set to None).
+    :param lastname: User's last name (optional,
+        can be omitted or set to None).
     :type lastname: Optional[str]
-    :param address: User's address (optional, can be omitted or
-        set to None).
+    :param address: User's address (optional,
+        can be omitted or set to None).
     :type address: Optional[str]
-    :param zip_code: Postal code (optional, can be omitted or set to None).
-    :type zip_code: Optional[str]
-    :param city: City of residence (optional, can be omitted or set to None).
-    :type city: Optional[str]
-    :param country: Country of residence (optional, can be omitted or
-        set to None).
-    :type country: Optional[str]
-    :param phone: Contact phone number (optional, can be omitted or
-        set to None).
-    :type phone: Optional[str]
-    :param email: Email address (optional, can be omitted or set to None).
-    :type email: Optional[str]
-    :param tags: Additional metadata as key-value pairs (optional, can be
+    :param zip_code: Postal code (optional, can be
         omitted or set to None).
+    :type zip_code: Optional[str]
+    :param city: City of residence (optional, can be
+        omitted or set to None).
+    :type city: Optional[str]
+    :param country: Country of residence (optional, can be
+        omitted or set to None).
+    :type country: Optional[str]
+    :param phone: Contact phone number (optional, can be
+        omitted or set to None).
+    :type phone: Optional[str]
+    :param email: Email address (optional, can be omitted
+        or set to None).
+    :type email: Optional[str]
+    :param tags: Additional metadata as key-value pairs (optional,
+        can be omitted or set to None).
     :type tags: Optional[Dict]
     """
     firstname: Optional[str] = None
@@ -315,7 +339,7 @@ class PatchUserData(CreateUser):
 
 class UpdateUserData(CreateUser):
     """
-    Represents a request to update a user.
+    Represents a request to update a user with full data replacement.
     Inherits from CreateUser to allow full updates.
 
     :param username: Username for authentication.
