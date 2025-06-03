@@ -351,6 +351,43 @@ class PatchUpdateApplication(BaseModel):
             return ["name", "description", "ip_adress", "port", "tags"]
 
 
+class PutApplicationData(BaseModel):
+    """
+    some...
+    """
+    name: str
+    description: str
+    ip_adress: str
+    port: int
+    tags: Optional[Dict] = None
+
+    model_config = {
+        "arbitrary_types_allowed": True,
+        "json_encoders": {ObjectId: str}
+    }
+
+    class Settings:
+        """
+        Settings for the PutApplicationData model.
+
+        :cvar name: The name of the MongoDB collection for applications.
+        :type name: str
+
+        :return: String representation of the Settings instance.
+        :rtype: str
+
+        :return: List of attributes for the PutApplicationData model.
+        :rtype: list
+        """
+        name = "applications"
+
+        def __str__(self) -> str:
+            return self.name
+
+        def __dir__(self):
+            return ["name", "description", "ip_adress", "port", "tags"]
+
+
 class DeleteApplication(BaseModel):
     """
     Represents a request to delete an existing application or service.
