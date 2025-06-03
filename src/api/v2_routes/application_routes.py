@@ -17,11 +17,10 @@ from starlette.responses import Response
 from src.core.auth import create_application_access_token, hash_key_v2
 from src.core.env_config import get_settings
 from src.db.models.v2_models.application_model import Application, \
-    CreateApplication
-from src.db.models.v2_models.application_model import NewApplication, \
-    PatchUpdateApplication
-from src.db.serializers.v2_serializers.v2_model_serializers import (
-    model_serialize)
+    NewApplication, CreateApplication, PatchUpdateApplication, \
+    PutApplicationData
+from src.db.serializers.v2_serializers.v2_model_serializers import \
+    model_serialize
 
 router = APIRouter()
 settings = get_settings()
@@ -140,6 +139,39 @@ async def create_application(app_data: CreateApplication) -> ORJSONResponse:
     )
 
 
+@router.patch("/delete/{app_id}",
+              name="soft_delete_application_route_v2",
+              description="Route to soft delete an existing "
+                          "application/service from the mongo database.",
+              operation_id="soft_delete_application_route_v2",
+              response_model=Application,
+              status_code=status.HTTP_200_OK)
+async def soft_delete_application(app_id: str) -> ORJSONResponse:
+    """
+    Delete an existing application/service by its ID.
+    """
+    logger.info("Deleting application/service with ID %s", app_id)
+    app = await Application.find_one(
+        Application.id == app_id,
+        Application.deleted_at == None)
+
+    if not app:
+        logger.warning("Application with ID %s not found.", app_id)
+        return ORJSONResponse(
+            content={"detail": f"Application ({app_id}) not found"},
+            status_code=status.HTTP_404_NOT_FOUND
+        )
+
+    # Soft delete the application by setting deleted_at timestamp
+    app.deleted_at = datetime.now(timezone.utc)
+    await app.save()
+
+    return ORJSONResponse(
+        content={"detail": f"Application {app_id} soft deleted successfully"},
+        status_code=status.HTTP_200_OK
+    )
+
+
 @router.patch("/{app_id}",
               name="update_application_route_v2",
               description="Route to update an existing application/service "
@@ -171,10 +203,80 @@ async def patch_update_application(
 
     # Save updated data & serialize for response
     app.updated_at = datetime.now(timezone.utc)
-    await app.save()
-    updated_app = model_serialize(app)
+    app = await app.save()
 
     return ORJSONResponse(
-        content=updated_app,
+        content=model_serialize(app),
+        status_code=status.HTTP_200_OK
+    )
+
+
+@router.put("/{app_id}",
+            name="update_application_put_route_v2",
+            description="Route to update an existing application/service "
+                        "in the mongo database using PUT method.",
+            operation_id="update_application_put_route_v2",
+            response_model=PutApplicationData,
+            status_code=status.HTTP_200_OK)
+async def put_update_application(
+        app_id: str, app_data: PutApplicationData) -> ORJSONResponse:
+    """
+    Update an existing application/service using PUT method.
+    This method is used to update the application/service data.
+    """
+    logger.info("Updating application/service with ID %s using PUT", app_id)
+    app = await Application.find_one(
+        Application.id == app_id,
+        Application.deleted_at == None)
+
+    if not app:
+        logger.warning("Application with ID %s not found.", app_id)
+        return ORJSONResponse(
+            content={"detail": f"Application ({app_id}) not found"},
+            status_code=status.HTTP_404_NOT_FOUND
+        )
+
+    # Update the application data with the provided attributes
+    app_data_dict = app_data.model_dump(exclude_unset=True)
+    for key, value in app_data_dict.items():
+        setattr(app, key, value)
+
+    # Save updated data & serialize for response
+    app.updated_at = datetime.now(timezone.utc)
+    app = await app.save()
+
+    return ORJSONResponse(
+        content=model_serialize(app),
+        status_code=status.HTTP_200_OK
+    )
+
+
+@router.delete("/delete/{app_id}",
+               name="hard_delete_application_route_v2",
+               description="Route to hard delete an existing "
+                           "application/service from the mongo database.",
+               operation_id="hard_delete_application_route_v2",
+               response_model=Application,
+               status_code=status.HTTP_200_OK)
+async def hard_delete_application(app_id: str) -> ORJSONResponse:
+    """
+    Hard delete an existing application/service by its ID.
+    """
+    logger.info("Hard deleting application/service with ID %s", app_id)
+    app = await Application.find_one(
+        Application.id == app_id)
+
+    if not app:
+        logger.warning("Application with ID %s not found.", app_id)
+        return ORJSONResponse(
+            content={"detail": f"Application ({app_id}) not found"},
+            status_code=status.HTTP_404_NOT_FOUND
+        )
+
+    # Hard delete the application from the database
+    await app.delete()
+
+    return ORJSONResponse(
+        content={"detail": f"Application {app_id} deleted successfully"},
         status_code=status.HTTP_200_OK
     )
