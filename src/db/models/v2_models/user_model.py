@@ -40,7 +40,7 @@ class UserRole(str, Enum):
     - ADMIN: User with administrative privileges.
     - SUPERUSER: User with elevated privileges, typically for system
         maintenance or higher level management tasks. This role is the only one
-        that can create, update into or delete admin users.
+        that can create, update into, or delete admin users.
     """
     USER = "user"
     ADMIN = "admin"
@@ -89,17 +89,14 @@ class User(Document):
     :cvar model_config: Allows arbitrary types and encodes ObjectId as string.
     :cvar Settings: Contains collection name and utility methods.
     """
-    # Unique identifier
     id: str = Field(alias="_id", default_factory=generate_nano_id)
     username: Indexed(str, pymongo.TEXT, unique=True, name="user-username")
     index: Indexed(int, pymongo.ASCENDING, unique=True, name="user-index")
 
-    # Authentication & Role
     password: str
     role: Indexed(str, unique=False, name="user-role") = Field(
         default=UserRole.USER)
 
-    # Contact info
     firstname: str
     lastname: str
     address: str
@@ -109,17 +106,14 @@ class User(Document):
     phone: str
     email: Indexed(str, pymongo.ASCENDING, unique=True, name="user-email")
 
-    # Metadata
     tags: Optional[Dict] = Field(default_factory=dict)
 
-    # Timestamps
     created_at: datetime = Field(
         default_factory=lambda: datetime.now(timezone.utc))
     updated_at: datetime = Field(
         default_factory=lambda: datetime.now(timezone.utc))
     deleted_at: Optional[datetime] = None
 
-    # Model configuration
     model_config = {
         "arbitrary_types_allowed": True,
         "json_encoders": {ObjectId: str}
@@ -162,8 +156,8 @@ class UsersBatch(BaseModel):
     :param id: List of user IDs included in the batch operation.
     :type id: List[str]
 
-    :cvar Settings: Contains collectio name and utility methods for batch
-    operations.
+    :cvar Settings: Contains collectio name and utility methods for
+        batch operations.
     """
     id: List[str]
 
@@ -238,8 +232,6 @@ class CreateUser(BaseModel):
     index: Optional[int] = Field(default_factory=int, unique=True)
     username: str
     password: str
-
-    # Contact information
     firstname: str
     lastname: str
     address: str
@@ -248,18 +240,13 @@ class CreateUser(BaseModel):
     country: str
     email: str
     phone: str
-
-    # Metadata
     tags: Optional[Dict] = Field(default_factory=dict)
-
-    # Timestamps
     created_at: Optional[datetime] = Field(
         default_factory=lambda: datetime.now(timezone.utc))
     updated_at: Optional[datetime] = Field(
         default_factory=lambda: datetime.now(timezone.utc))
     deleted_at: Optional[None | datetime] = None
 
-    # Configuration for the CreateUser model
     model_config = {
         "arbitrary_types_allowed": True,
         "json_encoders": {ObjectId: str}
@@ -308,22 +295,22 @@ class PatchUserData(CreateUser):
         can be omitted or set to None).
     :type address: Optional[str]
     :param zip_code: Postal code (optional, can be
-        omitted or set to None).
+        omitted, or set to None).
     :type zip_code: Optional[str]
     :param city: City of residence (optional, can be
-        omitted or set to None).
+        omitted, or set to None).
     :type city: Optional[str]
     :param country: Country of residence (optional, can be
-        omitted or set to None).
+        omitted, or set to None).
     :type country: Optional[str]
     :param phone: Contact phone number (optional, can be
-        omitted or set to None).
+        omitted, or set to None).
     :type phone: Optional[str]
     :param email: Email address (optional, can be omitted
         or set to None).
     :type email: Optional[str]
     :param tags: Additional metadata as key-value pairs (optional,
-        can be omitted or set to None).
+        can be omitted, or set to None).
     :type tags: Optional[Dict]
     """
     firstname: Optional[str] = None
@@ -335,6 +322,34 @@ class PatchUserData(CreateUser):
     phone: Optional[str] = None
     email: Optional[str] = None
     tags: Optional[Dict] = None
+
+    class Settings:
+        """
+        Settings for the User model.
+
+        :cvar name: The name of the MongoDB collection for users.
+        :type name: str
+
+        :return: String representation of the Settings instance.
+        :rtype: str
+
+        :return: List of attributes and methods of the Settings instance.
+        :rtype: list
+        """
+        name = "users"
+
+        def __str__(self) -> str:
+            """
+            String representation of the Settings instance.
+            """
+            return f"CreateUser.Settings.name: {self.name}"
+
+        def __dir__(self):
+            """
+            Returns the list of attributes and methods of the Settings
+            instance.
+            """
+            return self.__dict__.keys()
 
 
 class UpdateUserData(CreateUser):
@@ -381,7 +396,72 @@ class UpdateUserData(CreateUser):
     email: str
     tags: Optional[Dict] = Field(default_factory=dict)
 
-    # Timestamps
     updated_at: datetime = Field(
         default_factory=lambda: datetime.now(timezone.utc))
     deleted_at: None | datetime = None
+
+    class Settings:
+        """
+        Settings for the User model.
+
+        :cvar name: The name of the MongoDB collection for users.
+        :type name: str
+
+        :return: String representation of the Settings instance.
+        :rtype: str
+
+        :return: List of attributes and methods of the Settings instance.
+        :rtype: list
+        """
+        name = "users"
+
+        def __str__(self) -> str:
+            """
+            String representation of the Settings instance.
+            """
+            return f"CreateUser.Settings.name: {self.name}"
+
+        def __dir__(self):
+            """
+            Returns the list of attributes and methods of the Settings
+            instance.
+            """
+            return self.__dict__.keys()
+
+
+class DeleteUser(BaseModel):
+    """
+    Represents a request to delete a user by ID.
+
+    :param id: Unique identifier of the user to be deleted.
+    :type id: str
+    """
+    id: str
+
+    class Settings:
+        """
+        Settings for the User model.
+
+        :cvar name: The name of the MongoDB collection for users.
+        :type name: str
+
+        :return: String representation of the Settings instance.
+        :rtype: str
+
+        :return: List of attributes and methods of the Settings instance.
+        :rtype: list
+        """
+        name = "users"
+
+        def __str__(self) -> str:
+            """
+            String representation of the Settings instance.
+            """
+            return f"CreateUser.Settings.name: {self.name}"
+
+        def __dir__(self):
+            """
+            Returns the list of attributes and methods of the Settings
+            instance.
+            """
+            return self.__dict__.keys()
