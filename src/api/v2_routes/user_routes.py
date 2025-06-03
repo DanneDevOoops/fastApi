@@ -23,7 +23,7 @@ from starlette.responses import Response
 from src.core.custom_exceptions import HTTPException
 from src.core.env_config import get_settings
 from src.db.models.v2_models.user_model import CreateUser, User, UsersBatch, \
-    PatchUserData
+    PatchUserData, PutUserData
 from src.db.serializers.v2_serializers.v2_model_serializers import \
     model_serialize
 
@@ -225,12 +225,12 @@ async def get_users_batch_by_ids_v2(
     )
 
 
-@router.post("/delete/{user_id}",
-             name="delete_user_by_id_v2",
-             description="Delete a User by ID from the MongoDB",
-             operation_id="delete_user_by_id_v2",
-             status_code=status.HTTP_200_OK,
-             response_model=None)
+@router.patch("/delete/{user_id}",
+              name="delete_user_by_id_v2",
+              description="Delete a User by ID from the MongoDB",
+              operation_id="delete_user_by_id_v2",
+              status_code=status.HTTP_200_OK,
+              response_model=None)
 async def soft_delete_user_by_id_v2(user_id: str) -> ORJSONResponse:
     """
     Soft delete a User by ID in version 2 of the API.
@@ -308,7 +308,43 @@ PatchUserData) -> ORJSONResponse:
     )
 
 
-@router.delete("/{user_id}",
+@router.put("/{user_id}",
+            name="put_update_user_by_id_v2",
+            description="Update a Users data in the MongoDB",
+            operation_id="put_update_user_by_id_v2",
+            status_code=status.HTTP_200_OK,
+            response_model=User)
+async def put_update_user_by_id_v2(
+        user_id: str, user_data: PutUserData) -> ORJSONResponse:
+    """
+    Update a User's data by ID in version 2 of the API.
+    """
+    logger.info("Updating user with ID: %s", user_id)
+    user = await User.find_one(
+        User.id == user_id,
+        User.deleted_at == None)
+
+    if not user:
+        return ORJSONResponse(
+            content={"detail": "User not found"},
+            status_code=status.HTTP_404_NOT_FOUND
+        )
+
+    # Update user fields with request model data
+    for field, value in user_data.model_dump(exclude_unset=True).items():
+        setattr(user, field, value)
+    # Update the timestamp to the current time
+    user.updated_at = datetime.now(timezone.utc)
+    # Save to update the user in the database
+    user_updated = await user.save()
+
+    return ORJSONResponse(
+        content=model_serialize(user_updated),
+        status_code=status.HTTP_200_OK
+    )
+
+
+@router.delete("/delete/{user_id}",
                name="delete_user_by_id_v2",
                description="Delete a User by ID from the MongoDB",
                operation_id="delete_user_by_id_v2",
