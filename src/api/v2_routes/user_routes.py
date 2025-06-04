@@ -254,6 +254,9 @@ async def soft_delete_user_by_id_v2(user_id: str) -> ORJSONResponse:
             content={"detail": "User not found or already marked as deleted"},
             status_code=status.HTTP_404_NOT_FOUND
         )
+
+    # Set the updated_at & deleted_at fields to the current time
+    user.updated_at = datetime.now(timezone.utc)
     user.deleted_at = datetime.now(timezone.utc)
     await user.save()
     return ORJSONResponse(
