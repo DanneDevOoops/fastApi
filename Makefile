@@ -42,7 +42,7 @@ help:  # Show the available commands
 	@echo "  alembic-show-current"
 	@echo "  alembic-show-heads"
 	@echo "  alembic-show-history"
-	@echo "  alembic-show-revision-details"
+	@echo "  ≈"
 	@echo "  alembic-upgrade"
 
 	@echo "\nDocker commands:"
