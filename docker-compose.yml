@@ -20,11 +20,6 @@ services:
             - PG_DB_NAME=${PG_DB_NAME}
             - PG_DB_USERNAME=${PG_DB_USERNAME}
             - PG_DB_PASSWORD=${PG_DB_PASSWORD}
-#         healthcheck:
-#             test: [ "CMD-SHELL", "curl -f -H 'X-API-Key: '${APP_HEALTH_CHECK_API_KEY}' http://172.10.0.10:${APP_PORT}/api/utils/health_check || exit 1" ]
-#             interval: 3s
-#             timeout: 3s
-#             retries: 3
         ports:
             - "${APP_PORT}:${APP_PORT}"
         networks:
