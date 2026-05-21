@@ -22,8 +22,9 @@ from starlette.responses import Response
 
 from src.core.custom_exceptions import HTTPException
 from src.core.env_config import get_settings
-from src.db.models.v2_models.user_model import CreateUser, User, UsersBatch, \
-    PatchUserData, PutUserData
+from src.db.models.v2_models.user_model_v2 import (CreateUser, PatchUserData,
+                                                   PutUserData, User,
+                                                   UsersBatch)
 from src.db.serializers.v2_serializers.v2_model_serializers import \
     model_serialize
 

@@ -1,9 +1,8 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
-
 """
-Utility routes for the FastAPI application.
+Checking routes for the FastAPI application.
 """
 
 import logging
@@ -18,7 +17,6 @@ settings = get_settings()
 logger = logging.getLogger(settings.app_logger_name or "application_logger")
 
 
-# Health check endpoint
 @health_check_router.get("")
 async def health_check() -> ORJSONResponse:
     """
@@ -27,6 +25,7 @@ async def health_check() -> ORJSONResponse:
     :return: JSON response with status code 200
     :rtype: ORJSONResponse
     """
+    logger.debug("Health check endpoint accessed")
     return ORJSONResponse(
         status_code=status.HTTP_200_OK,
         content="Server is OK"
