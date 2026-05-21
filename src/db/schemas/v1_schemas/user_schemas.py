@@ -56,26 +56,25 @@ class UserUpdate(BaseModel):
     """
     Schema for updating an existing User instance.
     """
-    id: Optional[str]
-    username: Optional[str]
-    email: Optional[str]
-    password: Optional[str]
-    first_name: Optional[str]
-    last_name: Optional[str]
-    phone_number: Optional[str]
-    address: Optional[str]
-    city: Optional[str]
-    state: Optional[str]
-    country: Optional[str]
-    zip_code: Optional[str]
+    username: Optional[str] = None
+    email: Optional[str] = None
+    password: Optional[str] = None
+    first_name: Optional[str] = None
+    last_name: Optional[str] = None
+    phone_number: Optional[str] = None
+    address: Optional[str] = None
+    city: Optional[str] = None
+    state: Optional[str] = None
+    country: Optional[str] = None
+    zip_code: Optional[str] = None
 
     # User roles
-    is_active: Optional[bool]
-    is_superuser: Optional[bool]
+    is_active: Optional[bool] = None
+    is_superuser: Optional[bool] = None
 
     # Timestamps
-    updated_at: Optional[datetime] = datetime.utcnow()
-    deleted_at: Optional[datetime]
+    updated_at: Optional[datetime] = None
+    deleted_at: Optional[datetime] = None
 
     @field_serializer('updated_at', 'deleted_at')
     def serialize_datetime(self, value: Optional[datetime]) -> \
