@@ -65,7 +65,7 @@ services:
             skynet:
                 ipv4_address: 172.10.0.20
         volumes:
-            - "${PG_DB_VOLUME_PATH}:${PG_DB_DOCKER_DATA_PATH}"
+            - "postgres_data:${PG_DB_DOCKER_DATA_PATH}"
         restart: always
 
     # --- MONGO DB -----------------------------------------------------------
@@ -92,7 +92,7 @@ services:
             skynet:
                 ipv4_address: 172.10.0.30
         volumes:
-            - "${MONGO_DB_DOCKER_HOST_VOLUME_PATH}:/data/db"
+            - "mongo_db_data:/data/db"
         command: ["mongod", "--bind_ip_all"]
         restart: always
 
