@@ -13,7 +13,7 @@ for application data management.
 """
 
 from datetime import datetime, timezone
-from typing import Optional, Dict
+from typing import Dict, Optional
 
 import pymongo
 from beanie import Document, Indexed

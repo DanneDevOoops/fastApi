@@ -12,7 +12,7 @@ ensuring type safety and consistent structure for authentication workflows.
 
 from pydantic import BaseModel, field_serializer
 
-from src.db.models.v2_models.user_model import User
+from src.db.models.v2_models.user_model_v2 import User
 from src.db.serializers.v2_serializers.v2_model_serializers import \
     model_serialize
 

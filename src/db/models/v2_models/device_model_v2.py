@@ -7,12 +7,12 @@ Write a good module docstring here...
 """
 
 from datetime import datetime, timezone
-from typing import Optional, List
+from typing import List, Optional
 
 from beanie import Document, Indexed
 from pydantic import Field
 
-from src.db.models.v2_models.sensor_model import Sensor
+from src.db.models.v2_models.sensor_model_v2 import Sensor
 from src.utils.nano_id import generate_nano_id
 
 

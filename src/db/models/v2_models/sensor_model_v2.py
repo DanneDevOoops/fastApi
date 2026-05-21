@@ -11,7 +11,7 @@ from typing import Optional
 
 from beanie import Document, Indexed
 from bson import ObjectId
-from pydantic import Field, BaseModel
+from pydantic import BaseModel, Field
 
 from src.utils.nano_id import generate_nano_id
 

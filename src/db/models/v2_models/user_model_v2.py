@@ -20,7 +20,7 @@ Classes:
 
 from datetime import datetime, timezone
 from enum import Enum
-from typing import Optional, Dict, List
+from typing import Dict, List, Optional
 
 import pymongo
 from beanie import Document, Indexed
