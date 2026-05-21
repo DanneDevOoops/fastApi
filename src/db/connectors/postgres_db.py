@@ -14,8 +14,8 @@ import logging
 from asyncio import current_task
 from collections.abc import AsyncIterator
 
-from sqlalchemy.ext.asyncio import async_sessionmaker, async_scoped_session, \
-    create_async_engine, AsyncSession
+from sqlalchemy.ext.asyncio import (AsyncSession, async_scoped_session,
+                                    async_sessionmaker, create_async_engine)
 
 from src.core.custom_exceptions import DatabaseException
 from src.core.env_config import get_settings
