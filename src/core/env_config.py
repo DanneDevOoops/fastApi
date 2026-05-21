@@ -43,12 +43,12 @@ class Settings(BaseSettings):
         json_schema_extra={"env_name": "APP_RELOAD"})
     app_logger_name: str = Field(
         default="application_logger",
-        json_schema_extra={"env_name": "LOGGER_NAME"})
+        json_schema_extra={"env_name": "APP_LOGGER_NAME"})
 
     # --- JWT Token settings -------------------------------------------------
     app_jwt_algorithm: str = Field(
         default="HS256",
-        json_schema_extra={"env_name": "APP_ALGORITHM"})
+        json_schema_extra={"env_name": "APP_JWT_ALGORITHM"})
     app_jwt_secret_key: str = Field(
         default="a_secret_key",
         json_schema_extra={"env_name": "APP_JWT_SECRET_KEY"})
