@@ -8,7 +8,7 @@ This module contains the WebSockets for the application.
 
 import logging
 
-from fastapi import WebSocket, WebSocketDisconnect, APIRouter
+from fastapi import APIRouter, WebSocket, WebSocketDisconnect
 from fastapi.responses import HTMLResponse
 
 from src.core.env_config import get_settings
