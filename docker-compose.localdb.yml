@@ -1,0 +1,12 @@
+# Description: Docker Compose override for local database mode
+# Use with: docker compose --env-file .env.localdb -f docker-compose.yml -f docker-compose.localdb.yml up -d
+# This disables the fastapi_server -> postgres_db dependency, allowing FastAPI to connect to local Postgres
+# ---
+
+services:
+    fastapi_server:
+        # Override: Remove dependency on postgres_db service (will use local Postgres)
+        depends_on:
+            mongo_db:
+                condition: service_healthy
+

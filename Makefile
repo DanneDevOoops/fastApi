@@ -4,8 +4,11 @@
 alembic-list-templates alembic-revision alembic-revision-and-upgrade \
 alembic-show-branches alembic-show-current alembic-show-heads \
 alembic-show-history alembic-show-revision-details alembic-upgrade \
+alembic-docker-upgrade-current alembic-docker-revision alembic-docker-revision-auto \
+alembic-docker-upgrade alembic-docker-current \
 create-dot-env-file look-at-env-example source-env \
 docker-build docker-remove docker-run docker-stop docker-compose-up docker-compose-down \
+docker-mode docker-mode-stop local-db-mode local-db-mode-stop docker-logs local-db-logs \
 help \
 poetry-add-group poetry-add-package poetry-add-requirements-txt \
 poetry-config-list poetry-env-info poetry-env-info-path poetry-env-list \
@@ -42,8 +45,13 @@ help:  # Show the available commands
 	@echo "  alembic-show-current"
 	@echo "  alembic-show-heads"
 	@echo "  alembic-show-history"
-	@echo "  alembic-show-revision-details"
+	@echo "  ≈"
 	@echo "  alembic-upgrade"
+	@echo "  alembic-docker-upgrade-current"
+	@echo "  alembic-docker-revision MSG=your_message"
+	@echo "  alembic-docker-revision-auto MSG=your_message"
+	@echo "  alembic-docker-upgrade REV=head"
+	@echo "  alembic-docker-current"
 
 	@echo "\nDocker commands:"
 	@echo "  docker-build"
@@ -52,6 +60,16 @@ help:  # Show the available commands
 	@echo "  docker-stop"
 	@echo "  docker-compose-up"
 	@echo "  docker-compose-down"
+	@echo ""
+	@echo "Docker Mode (All services in containers):"
+	@echo "  docker-mode                  # Start FastAPI, Postgres, MongoDB in Docker"
+	@echo "  docker-mode-stop             # Stop Docker mode"
+	@echo "  docker-logs                  # View FastAPI logs in Docker mode"
+	@echo ""
+	@echo "Local DB Mode (Local Postgres + Docker MongoDB/FastAPI):"
+	@echo "  local-db-mode                # Start FastAPI, MongoDB in Docker (use local Postgres)"
+	@echo "  local-db-mode-stop           # Stop Local DB mode"
+	@echo "  local-db-logs                # View FastAPI logs in Local DB mode"
 
 	@echo "\nEnvironment (.env) Management commands:"
 	@echo "  create-dot-env-file"
@@ -324,6 +342,32 @@ alembic-show-revision-details:  # Show the Alembic configuration
 alembic-help:  # Show the Alembic help
 	poetry run alembic --help
 
+alembic-docker-upgrade-current:  # Start Docker services and run Alembic upgrade+current inside fastapi_server
+	@echo "Running Alembic in Docker mode (.env.docker)..."
+	docker compose --env-file .env.docker up -d postgres_db fastapi_server
+	docker compose --env-file .env.docker exec fastapi_server poetry run alembic upgrade head
+	docker compose --env-file .env.docker exec fastapi_server poetry run alembic current
+
+alembic-docker-revision:  # Create a manual Alembic revision in Docker (requires MSG="...")
+	@test -n "$(MSG)" || (echo "Usage: make alembic-docker-revision MSG=your_message" && exit 1)
+	docker compose --env-file .env.docker up -d postgres_db fastapi_server
+	docker compose --env-file .env.docker exec fastapi_server poetry run alembic revision -m "$(MSG)"
+
+alembic-docker-revision-auto:  # Create autogen Alembic revision in Docker (requires MSG="...")
+	@test -n "$(MSG)" || (echo "Usage: make alembic-docker-revision-auto MSG=your_message" && exit 1)
+	docker compose --env-file .env.docker up -d postgres_db fastapi_server
+	docker compose --env-file .env.docker exec fastapi_server poetry run alembic revision --autogenerate -m "$(MSG)"
+	docker compose --env-file .env.docker exec fastapi_server poetry run alembic current
+
+alembic-docker-upgrade:  # Upgrade Alembic in Docker (optional REV, default=head)
+	docker compose --env-file .env.docker up -d postgres_db fastapi_server
+	docker compose --env-file .env.docker exec fastapi_server poetry run alembic upgrade $(if $(REV),$(REV),head)
+	docker compose --env-file .env.docker exec fastapi_server poetry run alembic current
+
+alembic-docker-current:  # Show current Alembic revision in Docker
+	docker compose --env-file .env.docker up -d postgres_db fastapi_server
+	docker compose --env-file .env.docker exec fastapi_server poetry run alembic current
+
 
 
 # --- Docker Commands --------------------------------------------------------
@@ -344,6 +388,45 @@ docker-compose-up:  # Run the Docker compose environment
 
 docker-compose-down:  # Stop the Docker compose environment
 	docker-compose down
+
+# --- Docker Mode Commands (Postgres + MongoDB + FastAPI in containers) -----
+docker-mode:  # Start all services in Docker (FastAPI, Postgres, MongoDB)
+	@echo "🐳 Starting Docker mode (isolated Docker volumes)..."
+	docker compose --env-file .env.docker up -d postgres_db mongo_db fastapi_server
+	@echo "✅ Docker mode started!"
+	@echo "📊 FastAPI: http://localhost:1337"
+	@echo "🐘 Postgres: postgres_db:5432"
+	@echo "🍃 MongoDB: mongo_db:27017"
+	@echo ""
+	@echo "View logs with: make docker-logs"
+
+docker-mode-stop:  # Stop Docker mode services
+	@echo "🛑 Stopping Docker mode..."
+	docker compose --env-file .env.docker down
+	@echo "✅ Docker mode stopped!"
+
+docker-logs:  # View FastAPI logs in Docker mode
+	docker compose --env-file .env.docker logs -f fastapi_server
+
+# --- Local DB Mode Commands (Local Postgres + Docker MongoDB/FastAPI) -------
+local-db-mode:  # Start FastAPI and MongoDB in Docker, connect to local Postgres
+	@echo "🏠 Starting Local DB mode (Docker FastAPI+MongoDB, local Postgres)..."
+	@echo "ℹ️  Ensure local Postgres is running on 127.0.0.1:5432"
+	docker compose --env-file .env.localdb -f docker-compose.yml -f docker-compose.localdb.yml up -d
+	@echo "✅ Local DB mode started!"
+	@echo "📊 FastAPI: http://localhost:1337"
+	@echo "🐘 Postgres: 127.0.0.1:5432 (local)"
+	@echo "🍃 MongoDB: mongo_db:27017 (Docker)"
+	@echo ""
+	@echo "View logs with: make local-db-logs"
+
+local-db-mode-stop:  # Stop Local DB mode services
+	@echo "🛑 Stopping Local DB mode..."
+	docker compose -f docker-compose.yml -f docker-compose.localdb.yml down
+	@echo "✅ Local DB mode stopped!"
+
+local-db-logs:  # View FastAPI logs in Local DB mode
+	docker compose -f docker-compose.yml -f docker-compose.localdb.yml logs -f fastapi_server
 
 
 

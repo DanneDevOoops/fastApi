@@ -3,29 +3,41 @@
 
 
 """
-Application model for the database
+User model for the database
 """
 
 from datetime import datetime
 
-from sqlalchemy import Column, String, Boolean, DateTime
+from sqlalchemy import Boolean, Column, DateTime, String
 from sqlalchemy.orm import Mapped
 
 from src.db.config.base import Base
 
 
-class ApplicationModel(Base):
+class User(Base):
     """
-    Application model for the database
+    User model for the database
     """
-    __tablename__ = 'applications'
+    __tablename__ = 'users'
 
     id: Mapped[str] = Column(String, primary_key=True, index=True)
-    name: Mapped[str] = Column(String, unique=True, index=True)
-    description: Mapped[str] = Column(String)
-    url: Mapped[str] = Column(String)
+    username: Mapped[str] = Column(String, unique=True, index=True)
+    email: Mapped[str] = Column(String, unique=True, index=True)
+    password: Mapped[str] = Column(String)
+
+    # User details
+    first_name: Mapped[str] = Column(String)
+    last_name: Mapped[str] = Column(String)
+    phone_number: Mapped[str] = Column(String)
+    address: Mapped[str] = Column(String)
+    city: Mapped[str] = Column(String)
+    state: Mapped[str] = Column(String)
+    country: Mapped[str] = Column(String)
+    zip_code: Mapped[str] = Column(String)
+
+    # User roles
     is_active: Mapped[bool] = Column(Boolean, default=True)
-    api_key: Mapped[str] = Column(String)
+    is_superuser: Mapped[bool] = Column(Boolean, default=False)
 
     # Timestamps
     created_at: Mapped[datetime] = Column(DateTime, default=datetime.utcnow)
@@ -48,18 +60,18 @@ class ApplicationModel(Base):
         :return: The string representation of the model
         :rtype: str
         """
-        return (f"ApplicationModel(id={self.id}, name={self.name}, "
-                f"description={self.description}, url={self.url})")
+        return (f"UserModel(id={self.id}, username={self.username}, email"
+                f"={self.email})")
 
     def __eq__(self, other) -> bool:
         """
-        Check if two ApplicationModel instances are equal
+        Check if two UserModel instances are equal
 
-        :param other: The other ApplicationModel instance to compare with
-        :type other: ApplicationModel
+        :param other: The other UserModel instance to compare with
+        :type other: User
         :return: True if the two instances are equal, False otherwise
         :rtype: bool
         """
-        if isinstance(other, ApplicationModel):
+        if isinstance(other, User):
             return self.id == other.id
         return False

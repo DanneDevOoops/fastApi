@@ -17,13 +17,14 @@ from typing import List
 
 from fastapi import APIRouter, status
 from fastapi.responses import ORJSONResponse
-from passlib.context import CryptContext
 from starlette.responses import Response
 
+from src.core.auth import hash_key_v2
 from src.core.custom_exceptions import HTTPException
 from src.core.env_config import get_settings
-from src.db.models.v2_models.user_model import CreateUser, User, UsersBatch, \
-    PatchUserData, PutUserData
+from src.db.models.v2_models.user_model_v2 import (CreateUser, PatchUserData,
+                                                   PutUserData, User,
+                                                   UsersBatch)
 from src.db.serializers.v2_serializers.v2_model_serializers import \
     model_serialize
 
@@ -32,9 +33,6 @@ router = APIRouter()
 settings = get_settings()
 logger = logging.getLogger(
     settings.app_logger_name or "application_logger")
-
-# --- Authentication --------
-bcrypt_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
 
 @router.options("", operation_id="options_user_route_v2")
@@ -162,7 +160,7 @@ async def create_new_user_v2(user_data: CreateUser) -> ORJSONResponse:
     logger.info("Creating a new user with data: %s", user_data)
     try:
         new_user = User(**user_data.model_dump())
-        new_user.password = bcrypt_context.hash(new_user.password)
+        new_user.password = hash_key_v2(new_user.password)
 
         # Find the current max index
         last_user = await User.find().sort("-index").first_or_none()
@@ -254,6 +252,9 @@ async def soft_delete_user_by_id_v2(user_id: str) -> ORJSONResponse:
             content={"detail": "User not found or already marked as deleted"},
             status_code=status.HTTP_404_NOT_FOUND
         )
+
+    # Set the updated_at & deleted_at fields to the current time
+    user.updated_at = datetime.now(timezone.utc)
     user.deleted_at = datetime.now(timezone.utc)
     await user.save()
     return ORJSONResponse(

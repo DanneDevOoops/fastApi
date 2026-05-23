@@ -20,7 +20,7 @@ Classes:
 
 from datetime import datetime, timezone
 from enum import Enum
-from typing import Optional, Dict, List
+from typing import Dict, List, Optional
 
 import pymongo
 from beanie import Document, Indexed
@@ -229,7 +229,7 @@ class CreateUser(BaseModel):
     :cvar model_config: Allows arbitrary types and encodes ObjectId as string.
     :cvar Settings: Contains collection name and utility methods.
     """
-    index: Optional[int] = Field(default_factory=int, unique=True)
+    index: Optional[int] = Field(default_factory=int)
     username: str
     password: str
     firstname: str

@@ -8,12 +8,12 @@ Utility routes for the FastAPI application.
 
 from fastapi import APIRouter, Depends
 
-from src.core.auth import get_api_key
 from src.api.health_check_routes import check_routes
+from src.core.auth import get_health_check_api_key
 
 api_utility_router = APIRouter(
     prefix="/api/utils",
-    dependencies=[Depends(get_api_key)],
+    dependencies=[Depends(get_health_check_api_key)],
     responses={
         404: {"description": "Not found"}
     },

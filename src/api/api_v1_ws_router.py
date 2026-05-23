@@ -17,7 +17,7 @@ from src.api.v1_routes.web_socket_routes import ws_router
 
 api_ws_router = APIRouter(
     prefix="/api/v1",
-    # dependencies=[Depends(get_api_key)],
+    # dependencies=[Depends(get_api_key_v2)],
     responses={
         404: {"description": "Not found"}
     },

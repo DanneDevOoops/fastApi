@@ -49,7 +49,7 @@ def generate_nano_id(size: int | None = None) -> str:
     )
 
     if not size:
-        # Default size is 25 if not specified in the environment variable
+        # Default size is 24 if not specified in the environment variable
         id_size: int = int(os.getenv('NANO_ID_SIZE', '24'))
     else:
         id_size: int = size

@@ -105,7 +105,9 @@ usage, refer to the official
 If you need to check for `make` on your system:
 
 ```shell
-which make && make --version 
+which make \ 
+&& \
+make --version 
 ```
 
 As you follow these instructions further, you'll encounter references to the
@@ -160,7 +162,8 @@ modify the `Makefile` to suit your needs.
 
    ```shell
    make poetry-install
-   ```
+   ``
+   `
 
    Verify that the dependencies are installed correctly into your virtualenv:
 
@@ -406,6 +409,8 @@ make alembic-upgrade-head
 After running migrations, your database tables will be created and ready for
 use.
 
+---
+
 </details>
 
 
@@ -441,6 +446,8 @@ through the API routes registered in the `api_v2_router`.
 To disable MongoDB integration, comment out its connection initialization and
 the api_v2_router registration in src/main.py. This will prevent the
 application from attempting to connect to MongoDB or expose related API routes.
+
+---
 
 </details>
 
@@ -575,7 +582,7 @@ powerful and flexible framework that makes it straightforward to write simple,
 scalable tests for a variety of scenarios.
 
 <details><summary style="font-size: 14px; font-weight: bold; 
-color: lightgoldenrodyellow;">Using Pylint</summary>
+color: lightgoldenrodyellow;">Using PyTest</summary>
 
 ### Running PyTest
 

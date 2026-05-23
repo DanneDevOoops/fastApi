@@ -12,16 +12,14 @@ import logging
 from fastapi import APIRouter, status
 from fastapi.responses import ORJSONResponse
 
-from src.core.auth import verify_password_v2, create_user_access_token
+from src.core.auth import create_user_access_token, verify_password_v2
 from src.core.env_config import get_settings
-from src.db.models.v2_models.auth_model import UserPasswordSignin
-from src.db.models.v2_models.user_model import User
+from src.db.models.v2_models.auth_model_v2 import UserPasswordSignin
+from src.db.models.v2_models.user_model_v2 import User
 from src.db.serializers.v2_serializers.v2_model_serializers import \
     model_serialize
 
 router = APIRouter()
-
-# Initialize settings and logger
 settings = get_settings()
 logger = logging.getLogger(
     settings.app_logger_name or "application_logger")
@@ -62,7 +60,9 @@ async def signin_user(signin_data: UserPasswordSignin) -> ORJSONResponse:
         signin_data.username, serialized_user_data['id'],
         serialized_user_data['role'])
 
-    # TODO: Determine which fields should be removed from the response, if any?
+    # TODO: Determine which fields should be removed  # pylint: disable=W0511
+    #  from the response, if any?  # pylint: disable=W0511
+    # pylint: enable=W0511
     # Remove some potentially sensitive data from the user response.
     # The idea is to not show hints, etc. that could be used to exploit the
     # application or the user account.

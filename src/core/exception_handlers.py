@@ -8,12 +8,13 @@ Exception handlers module for the FastAPI application.
 
 import logging
 
-from fastapi import Request, HTTPException
+from fastapi import HTTPException, Request
 from fastapi.responses import ORJSONResponse
 
-from src.core.custom_exceptions import AuthException, BadRequestException, \
-    ConflictException, DatabaseException, InternalServerException, \
-    NotFoundException, ValidationException
+from src.core.custom_exceptions import (AuthException, BadRequestException,
+                                        ConflictException, DatabaseException,
+                                        InternalServerException,
+                                        NotFoundException, ValidationException)
 from src.core.env_config import get_settings
 
 settings = get_settings()
