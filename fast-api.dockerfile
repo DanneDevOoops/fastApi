@@ -1,30 +1,30 @@
+# ----------------------------------------------------------------------------
 # Dockerfile to run a FastAPI application in a containerized environment
 # ----------------------------------------------------------------------------
 # Author: Daniel Andersson
 # Date: 2024-09-17
 # Version: 0.1.0
 # ----------------------------------------------------------------------------
-# This Dockerfile is used to build a virtualized container for a FastAPI application with
-# where poetry is used for dependency management. The Dockerfile is designed to be used with
-# Python 3.11 and its divided into two stages. The first stage is the builder image, where
-# the virtual environment is created and the dependencies are installed. The second stage is
-# the runtime image, where the virtual environment is copied from the builder image and the
-# application code is copied. The entrypoint is set to run the FastAPI application with the
-# development server.
+# This Dockerfile is used to build a virtualized container for a FastAPI
+# application with where poetry is used for dependency management. The
+# Dockerfile is designed to be used with Python 3.11 and its divided into
+# two stages. The first stage is the builder image, where the virtual
+# environment is created and the dependencies are installed. The second
+# stage is the runtime image, where the virtual environment is copied from
+# the builder image and the application code is copied. The entrypoint is
+# set to run the FastAPI application with the development server.
 #
-#
-#
+
 
 # --- The Builder Image ------------------------------------------------------
 # Step 1 - The builder image, used to build the virtual environment
-FROM python:3.11-buster AS builder
+FROM python:3.11-bookworm AS builder
 
 # Step 2 - Set the author label
 LABEL authors="daniel"
 
-# Step 3 - Update, upgrade and install apt dependencies
-RUN apt-get update && \
-    apt-get upgrade -y
+# Step 3 - Update package index for deterministic installs in this stage
+RUN apt-get update && rm -rf /var/lib/apt/lists/*
 
 # Step 4 - Upgrade pip in the builder image
 RUN pip install --upgrade pip
@@ -58,15 +58,18 @@ RUN poetry install --without dev --no-root && rm -rf $POETRY_CACHE_DIR
 # --- The Runtime Image ------------------------------------------------------
 # Step 12 - The runtime image, used to just run the code provided its
 # virtual environment
-FROM python:3.11-slim-buster AS runtime
+FROM python:3.11-slim-bookworm AS runtime
 
 # Step 13 - Set the virtual environment environment variables
-ENV VIRTUAL_ENV=/src/.venv \
+ENV POETRY_NO_INTERACTION=1 \
+    POETRY_VIRTUALENVS_IN_PROJECT=1 \
+    VIRTUAL_ENV=/src/.venv \
     PATH="/src/.venv/bin:$PATH"
 
-# Step 14 - Update apt dependencies & install curl for healthcheck purposes
-RUN apt-get update && apt-get upgrade -y && apt-get install -y \
-    --no-install-recommends curl make
+# Step 14 - Install runtime OS packages and clean apt cache in the same layer
+RUN apt-get update && apt-get install -y \
+    --no-install-recommends curl make && \
+    rm -rf /var/lib/apt/lists/*
 
 # Step 15 - Upgrade pip in the runtime image
 RUN pip install --upgrade pip

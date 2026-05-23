@@ -13,7 +13,7 @@ for application data management.
 """
 
 from datetime import datetime, timezone
-from typing import Optional, Dict
+from typing import Dict, Optional
 
 import pymongo
 from beanie import Document, Indexed
@@ -229,7 +229,7 @@ class CreateApplication(BaseModel):
     :cvar Settings: Contains collection name and utility methods
         for the model.
     """
-    index: Optional[int] = Field(default_factory=int, unique=True)
+    index: Optional[int] = Field(default_factory=int)
     name: str
     description: Optional[str] = Field(default="No description provided...")
     ip_adress: str = "127.0.0.1"

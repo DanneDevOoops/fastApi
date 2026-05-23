@@ -20,11 +20,6 @@ services:
             - PG_DB_NAME=${PG_DB_NAME}
             - PG_DB_USERNAME=${PG_DB_USERNAME}
             - PG_DB_PASSWORD=${PG_DB_PASSWORD}
-#         healthcheck:
-#             test: [ "CMD-SHELL", "curl -f -H 'X-API-Key: '${APP_HEALTH_CHECK_API_KEY}' http://172.10.0.10:${APP_PORT}/api/utils/health_check || exit 1" ]
-#             interval: 3s
-#             timeout: 3s
-#             retries: 3
         ports:
             - "${APP_PORT}:${APP_PORT}"
         networks:
@@ -70,7 +65,7 @@ services:
             skynet:
                 ipv4_address: 172.10.0.20
         volumes:
-            - "${PG_DB_VOLUME_PATH}:${PG_DB_DOCKER_DATA_PATH}"
+            - "postgres_data:${PG_DB_DOCKER_DATA_PATH}"
         restart: always
 
     # --- MONGO DB -----------------------------------------------------------
@@ -97,7 +92,7 @@ services:
             skynet:
                 ipv4_address: 172.10.0.30
         volumes:
-            - "${MONGO_DB_DOCKER_HOST_VOLUME_PATH}:/data/db"
+            - "mongo_db_data:/data/db"
         command: ["mongod", "--bind_ip_all"]
         restart: always
 

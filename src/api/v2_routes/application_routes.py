@@ -11,14 +11,15 @@ import logging
 from datetime import datetime, timezone
 
 from fastapi import APIRouter, status
-from fastapi.responses import ORJSONResponse
-from starlette.responses import Response
+from fastapi.responses import ORJSONResponse, Response
 
 from src.core.auth import create_application_access_token, hash_key_v2
 from src.core.env_config import get_settings
-from src.db.models.v2_models.application_model import Application, \
-    NewApplication, CreateApplication, PatchUpdateApplication, \
-    PutApplicationData
+from src.db.models.v2_models.application_model_v2 import (Application,
+                                                          CreateApplication,
+                                                          NewApplication,
+                                                          PatchUpdateApplication,
+                                                          PutApplicationData)
 from src.db.serializers.v2_serializers.v2_model_serializers import \
     model_serialize
 

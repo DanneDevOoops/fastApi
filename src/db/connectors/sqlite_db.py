@@ -11,8 +11,8 @@ database connection using SQLAlchemy's asynchronous engine and session maker.
 
 import logging
 
-from sqlalchemy.ext.asyncio import async_sessionmaker, create_async_engine, \
-    AsyncSession
+from sqlalchemy.ext.asyncio import (AsyncSession, async_sessionmaker,
+                                    create_async_engine)
 
 from core.custom_exceptions import DatabaseException
 from src.core.env_config import get_settings
