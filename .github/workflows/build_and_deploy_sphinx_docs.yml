@@ -23,7 +23,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        python-version: ["3.11", "3.12", "3.13"]
+        python-version: ["3.11"]
 
     steps:
     - uses: actions/checkout@v6
@@ -41,8 +41,12 @@ jobs:
       with:
         python-version: "3.11.7"
 
-    - uses: abatilo/actions-poetry@v3
-    - name: Install dependencies
+    - name: Setup Poetry
+      uses: abatilo/actions-poetry@v3
+      with:
+        poetry-version: "1.7.1"
+
+    - name: Install dependencies with Poetry
       run: poetry install --with docs
 
     - name: Build docs with Sphinx
