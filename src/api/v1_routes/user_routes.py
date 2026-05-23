@@ -15,12 +15,12 @@ from typing import List
 
 from fastapi import APIRouter, Depends, HTTPException, status
 from fastapi.responses import ORJSONResponse
-from passlib.context import CryptContext
 from sqlalchemy import select
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.ext.asyncio import AsyncSession
 from starlette.responses import Response
 
+from src.core.auth import hash_key_v2
 from src.core.custom_exceptions import NotFoundException
 from src.core.env_config import get_settings
 from src.db.connectors.postgres_db import get_pg_db
@@ -34,10 +34,6 @@ router = APIRouter()
 # Initialize environment settings & logger
 settings = get_settings()
 logger = logging.getLogger(settings.app_logger_name or "application_logger")
-
-# --- Authentication --------
-bcrypt_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
-
 
 @router.options("", operation_id="options_v1_user_routes")
 def options_user_routes() -> Response:
@@ -381,7 +377,7 @@ async def create_user(
     logger.info("Creating a new user: %s", user.username)
     try:
         new_user = User(**user.model_dump())
-        new_user.password = bcrypt_context.hash(new_user.password)
+        new_user.password = hash_key_v2(new_user.password)
         db.add(new_user)
         await db.commit()
         await db.refresh(new_user)

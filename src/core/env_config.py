@@ -58,6 +58,9 @@ class Settings(BaseSettings):
     app_jwt_token_type: str = Field(
         default="bearer",
         json_schema_extra={"env_name": "APP_JWT_TOKEN_TYPE"})
+    app_health_check_api_key: str | None = Field(
+        default=None,
+        json_schema_extra={"env_name": "APP_HEALTH_CHECK_API_KEY"})
 
     # --- Docker settings ----------------------------------------------------
     compose_bake: bool = Field(

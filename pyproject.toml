@@ -20,7 +20,6 @@ uvicorn = "^0.30.6"
 websockets = "^14.1"
 python-jose = { extras = ["cryprography"], version = "^3.5.0" }
 python-multipart = "^0.0.20"
-passlib = {extras = ["bcrypt"], version = "^1.7.4"}
 bcrypt = "4.0.1"
 
 [tool.poetry.group.database_orm.dependencies]
@@ -61,6 +60,7 @@ toml = "^0.10.2"
 myst-parser = "^4.0.1"
 
 [tool.poetry.extras]
+
 
 [build-system]
 requires = ["poetry-core"]

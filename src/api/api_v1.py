@@ -11,10 +11,9 @@ is included in the main FastAPI application instance in the src/main.py
 module.
 """
 
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter
 
 from src.api.v1_routes import application_routes, user_routes
-from src.core.auth import get_api_key_v1
 
 api_v1_router = APIRouter(
     prefix="/api/v1",

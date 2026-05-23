@@ -8,12 +8,13 @@ This module contains the authentication logic for the FastAPI application.
 """
 
 import logging
+import os
 from datetime import datetime, timedelta, timezone
 
+import bcrypt
 from fastapi import Depends, HTTPException, Security, status
 from fastapi.security import APIKeyHeader, APIKeyQuery, OAuth2PasswordBearer
 from jose import JWTError, jwt
-from passlib.context import CryptContext
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
@@ -30,7 +31,6 @@ from src.db.models.v2_models.application_model_v2 import \
 
 settings = get_settings()
 logger = logging.getLogger(settings.app_logger_name or "application_logger")
-bcrypt_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
 oauth2_bearer = OAuth2PasswordBearer(tokenUrl="api/v2/auth/token")
 
@@ -71,7 +71,10 @@ def hash_key_v2(input_password: str) -> str:
     :return: The hashed password.
     :rtype: str
     """
-    return bcrypt_context.hash(input_password)
+    return bcrypt.hashpw(
+        input_password.encode("utf-8"),
+        bcrypt.gensalt(),
+    ).decode("utf-8")
 
 
 def verify_password_v2(plain_password: str,
@@ -85,7 +88,17 @@ def verify_password_v2(plain_password: str,
     :return: True if the passwords match, False otherwise.
     :rtype: bool
     """
-    return bcrypt_context.verify(plain_password, hashed_password)
+    if not hashed_password:
+        return False
+
+    try:
+        return bcrypt.checkpw(
+            plain_password.encode("utf-8"),
+            hashed_password.encode("utf-8"),
+        )
+    except ValueError:
+        logger.warning("Invalid bcrypt hash format received")
+        return False
 
 
 def create_user_access_token(
@@ -242,6 +255,34 @@ def _get_supplied_api_key(
     if api_key_query:
         return api_key_query
 
+    raise HTTPException(
+        status_code=status.HTTP_401_UNAUTHORIZED,
+        detail="Invalid or missing API Key",
+    )
+
+
+async def get_health_check_api_key(
+        api_key_query: str = Security(query_api_key),
+        api_key_header: str = Security(header_api_key),
+) -> str:
+    """
+    Validate the dedicated API key used by the health check endpoint.
+
+    The health check route is intentionally separate from the JWT-backed
+    service authentication used by the v1/v2 routes. This validator reads the
+    expected key from the current environment on every request so test fixtures
+    can inject a value without needing to restart the application.
+    """
+    raw_api_key = _get_supplied_api_key(api_key_header, api_key_query)
+    expected_api_key = (
+        os.getenv("APP_HEALTH_CHECK_API_KEY")
+        or settings.app_health_check_api_key
+    )
+
+    if expected_api_key and raw_api_key == expected_api_key:
+        return raw_api_key
+
+    logger.warning("Invalid health check API key supplied")
     raise HTTPException(
         status_code=status.HTTP_401_UNAUTHORIZED,
         detail="Invalid or missing API Key",

@@ -21,13 +21,17 @@ PROJECT_ROOT = Path(__file__).resolve().parents[2]
 if str(PROJECT_ROOT) not in sys.path:
     sys.path.insert(0, str(PROJECT_ROOT))
 
+# pylint: disable=wrong-import-position
 from src.core.auth import build_application_api_credentials
 
 
 def parse_args() -> argparse.Namespace:
     """Parse command-line arguments."""
     parser = argparse.ArgumentParser(
-        description="Generate v1 application JWT and DB hash for Postgres auth.")
+        description=(
+            "Generate v1 application JWT and DB hash for Postgres auth."
+        )
+    )
     parser.add_argument("--app-id", required=True,
                         help="Existing applications.id value in Postgres")
     parser.add_argument("--app-name", required=True,
@@ -69,8 +73,5 @@ def main() -> None:
         f"  -H \"x-api-key: {raw_jwt}\" \\\n"
         f"  {args.base_url}/api/v1/users"
     )
-
-
 if __name__ == "__main__":
     main()
-

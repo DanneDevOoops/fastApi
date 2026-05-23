@@ -229,7 +229,7 @@ class CreateUser(BaseModel):
     :cvar model_config: Allows arbitrary types and encodes ObjectId as string.
     :cvar Settings: Contains collection name and utility methods.
     """
-    index: Optional[int] = Field(default_factory=int, unique=True)
+    index: Optional[int] = Field(default_factory=int)
     username: str
     password: str
     firstname: str
