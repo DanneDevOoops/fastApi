@@ -16,11 +16,11 @@ inputs:
     default: "gh-pages"
 
 runs:
-  using: "composite"
+  using: composite
   steps:
     - name: Install docs dependencies
       shell: bash
-      run: poetry install ${{ inputs.install-args }}
+      run: python -m poetry install ${{ inputs.install-args }}
 
     - name: Ensure output directory exists
       shell: bash

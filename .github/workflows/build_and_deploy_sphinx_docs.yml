@@ -21,9 +21,11 @@ jobs:
   # This workflow contains a single job called "build"
   build-docs:
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        python-version: ["3.11"]
+    permissions:
+      contents: write
+    concurrency:
+      group: docs-${{ github.ref }}
+      cancel-in-progress: true
 
     steps:
       - name: Checkout repository
@@ -34,7 +36,7 @@ jobs:
       - name: Setup Python + Poetry
         uses: ./.github/actions/setup-python-poetry
         with:
-          python-version: ${{ matrix.python-version }}
+          python-version: "3.11"
           poetry-version: "1.8.3"
           cache-dependency-path: "**/poetry.lock"
 
@@ -43,8 +45,8 @@ jobs:
 
       - name: Deploy to GitHub Pages
         if: ${{ github.event_name == 'push' }}
-        uses: ./.github/actions/deploy-gh-pages
+        uses: peaceiris/actions-gh-pages@v4
         with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          publish-dir: ./gh-pages
-          publish-branch: gh-pages
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./gh-pages
+          publish_branch: gh-pages
