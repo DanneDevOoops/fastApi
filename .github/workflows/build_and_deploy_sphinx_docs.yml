@@ -45,6 +45,7 @@ jobs:
 
       - name: Deploy to GitHub Pages
         if: ${{ github.event_name == 'push' }}
+
         uses: ./.github/actions/deploy-gh-pages
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
