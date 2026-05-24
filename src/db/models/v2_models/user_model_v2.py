@@ -42,6 +42,7 @@ class UserRole(str, Enum):
         maintenance or higher level management tasks. This role is the only one
         that can create, update into, or delete admin users.
     """
+
     USER = "user"
     ADMIN = "admin"
     SUPERUSER = "superuser"
@@ -89,13 +90,13 @@ class User(Document):
     :cvar model_config: Allows arbitrary types and encodes ObjectId as string.
     :cvar Settings: Contains collection name and utility methods.
     """
+
     id: str = Field(alias="_id", default_factory=generate_nano_id)
     username: Indexed(str, pymongo.TEXT, unique=True, name="user-username")
     index: Indexed(int, pymongo.ASCENDING, unique=True, name="user-index")
 
     password: str
-    role: Indexed(str, unique=False, name="user-role") = Field(
-        default=UserRole.USER)
+    role: Indexed(str, unique=False, name="user-role") = Field(default=UserRole.USER)
 
     firstname: str
     lastname: str
@@ -108,16 +109,11 @@ class User(Document):
 
     tags: Optional[Dict] = Field(default_factory=dict)
 
-    created_at: datetime = Field(
-        default_factory=lambda: datetime.now(timezone.utc))
-    updated_at: datetime = Field(
-        default_factory=lambda: datetime.now(timezone.utc))
+    created_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
+    updated_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
     deleted_at: Optional[datetime] = None
 
-    model_config = {
-        "arbitrary_types_allowed": True,
-        "json_encoders": {ObjectId: str}
-    }
+    model_config = {"arbitrary_types_allowed": True, "json_encoders": {ObjectId: str}}
 
     class Settings:
         """
@@ -132,6 +128,7 @@ class User(Document):
         :return: List of attributes and methods of the Settings instance.
         :rtype: list
         """
+
         name = "users"
 
         def __str__(self) -> str:
@@ -159,6 +156,7 @@ class UsersBatch(BaseModel):
     :cvar Settings: Contains collectio name and utility methods for
         batch operations.
     """
+
     id: List[str]
 
     class Settings:
@@ -174,6 +172,7 @@ class UsersBatch(BaseModel):
         :return: List of attributes and methods of the Settings instance.
         :rtype: list
         """
+
         name = "users"
 
         def __str__(self) -> str:
@@ -229,6 +228,7 @@ class CreateUser(BaseModel):
     :cvar model_config: Allows arbitrary types and encodes ObjectId as string.
     :cvar Settings: Contains collection name and utility methods.
     """
+
     index: Optional[int] = Field(default_factory=int)
     username: str
     password: str
@@ -242,15 +242,14 @@ class CreateUser(BaseModel):
     phone: str
     tags: Optional[Dict] = Field(default_factory=dict)
     created_at: Optional[datetime] = Field(
-        default_factory=lambda: datetime.now(timezone.utc))
+        default_factory=lambda: datetime.now(timezone.utc)
+    )
     updated_at: Optional[datetime] = Field(
-        default_factory=lambda: datetime.now(timezone.utc))
+        default_factory=lambda: datetime.now(timezone.utc)
+    )
     deleted_at: Optional[None | datetime] = None
 
-    model_config = {
-        "arbitrary_types_allowed": True,
-        "json_encoders": {ObjectId: str}
-    }
+    model_config = {"arbitrary_types_allowed": True, "json_encoders": {ObjectId: str}}
 
     class Settings:
         """
@@ -265,6 +264,7 @@ class CreateUser(BaseModel):
         :return: List of attributes and methods of the Settings instance.
         :rtype: list
         """
+
         name = "users"
 
         def __str__(self) -> str:
@@ -313,6 +313,7 @@ class PatchUserData(CreateUser):
         can be omitted, or set to None).
     :type tags: Optional[Dict]
     """
+
     username: Optional[str] = None
     password: Optional[str] = None
     firstname: Optional[str] = None
@@ -353,6 +354,7 @@ class PutUserData(BaseModel):
     :param tags: Additional metadata as key-value pairs (optional).
     :type tags: Optional[Dict]
     """
+
     username: Optional[str] = None
     role: Optional[str] = None
     firstname: str
@@ -378,11 +380,12 @@ class PutUserData(BaseModel):
         :return: List of attributes and methods of the Settings instance.
         :rtype: list
         """
+
         name = "users"
 
         model_config = {
             "arbitrary_types_allowed": True,
-            "json_encoders": {ObjectId: str}
+            "json_encoders": {ObjectId: str},
         }
 
         def __str__(self) -> str:
@@ -409,6 +412,7 @@ class DeleteUser(BaseModel):
     :cvar model_config: Allows arbitrary types and encodes ObjectId as string.
     :cvar Settings: Contains collection name and utility methods.
     """
+
     id: str
 
     class Settings:
@@ -424,11 +428,12 @@ class DeleteUser(BaseModel):
         :return: List of attributes and methods of the Settings instance.
         :rtype: list
         """
+
         name = "users"
 
         model_config = {
             "arbitrary_types_allowed": True,
-            "json_encoders": {ObjectId: str}
+            "json_encoders": {ObjectId: str},
         }
 
         def __str__(self) -> str:

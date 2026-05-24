@@ -44,13 +44,13 @@ def generate_nano_id(size: int | None = None) -> str:
     :rtype: str
     """
     id_characters: str = os.getenv(
-        'NANO_ID_CHARACTERS',
-        '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz'
+        "NANO_ID_CHARACTERS",
+        "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz",
     )
 
     if not size:
         # Default size is 24 if not specified in the environment variable
-        id_size: int = int(os.getenv('NANO_ID_SIZE', '24'))
+        id_size: int = int(os.getenv("NANO_ID_SIZE", "24"))
     else:
         id_size: int = size
     new_nano_id: str = generate(id_characters, int(id_size))

@@ -14,17 +14,12 @@ from src.core.auth import get_health_check_api_key
 api_utility_router = APIRouter(
     prefix="/api/utils",
     dependencies=[Depends(get_health_check_api_key)],
-    responses={
-        404: {"description": "Not found"}
-    },
+    responses={404: {"description": "Not found"}},
 )
 
 api_utility_router.include_router(
     check_routes.health_check_router,
     prefix="/health_check",
     tags=["health"],
-    responses={
-        200: {"description": "Server is OK"},
-        404: {"description": "Not found"}
-    },
+    responses={200: {"description": "Server is OK"}, 404: {"description": "Not found"}},
 )

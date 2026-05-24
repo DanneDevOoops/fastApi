@@ -20,21 +20,20 @@ from fastapi import APIRouter, status
 from fastapi.responses import ORJSONResponse, Response
 
 from src.core.env_config import get_settings
-from src.db.models.v2_models.sensor_model_v2 import (CreateSensor,
-                                                     PatchSensorData,
-                                                     PutUpdateSensorData,
-                                                     Sensor)
-from src.db.serializers.v2_serializers.v2_model_serializers import \
-    model_serialize
+from src.db.models.v2_models.sensor_model_v2 import (
+    CreateSensor,
+    PatchSensorData,
+    PutUpdateSensorData,
+    Sensor,
+)
+from src.db.serializers.v2_serializers.v2_model_serializers import model_serialize
 
 router = APIRouter()
 settings = get_settings()
-logger = logging.getLogger(
-    settings.app_logger_name or "application_logger")
+logger = logging.getLogger(settings.app_logger_name or "application_logger")
 
 
-@router.options("",
-                operation_id="options_sensor_routes_v2")
+@router.options("", operation_id="options_sensor_routes_v2")
 def sensor_routes_options_v2() -> Response:
     """
     Handle OPTIONS requests for the sensor routes.
@@ -44,16 +43,18 @@ def sensor_routes_options_v2() -> Response:
     """
     return Response(
         content={"Allow": "GET, POST, PUT, PATCH, DELETE"},
-        status_code=status.HTTP_204_NO_CONTENT
+        status_code=status.HTTP_204_NO_CONTENT,
     )
 
 
-@router.get("",
-            name="get_all_sensors_route_v2",
-            description="Route to get all sensors.",
-            operation_id="get_all_sensors_route_v2",
-            response_model=list[Sensor],
-            status_code=status.HTTP_200_OK)
+@router.get(
+    "",
+    name="get_all_sensors_route_v2",
+    description="Route to get all sensors.",
+    operation_id="get_all_sensors_route_v2",
+    response_model=list[Sensor],
+    status_code=status.HTTP_200_OK,
+)
 async def get_sensors() -> ORJSONResponse:
     """
     Retrieve all sensors.
@@ -70,21 +71,22 @@ async def get_sensors() -> ORJSONResponse:
         logger.warning("No sensors found.")
         return ORJSONResponse(
             content={"detail": "No sensors found."},
-            status_code=status.HTTP_404_NOT_FOUND
+            status_code=status.HTTP_404_NOT_FOUND,
         )
 
     return ORJSONResponse(
-        content=list(map(model_serialize, all_sensors)),
-        status_code=status.HTTP_200_OK
+        content=list(map(model_serialize, all_sensors)), status_code=status.HTTP_200_OK
     )
 
 
-@router.get("/deleted",
-            name="get_soft_deleted_sensors_route_v2",
-            description="Route to get all soft deleted sensors.",
-            operation_id="get_soft_deleted_sensors_route_v2",
-            response_model=Sensor,
-            status_code=status.HTTP_200_OK)
+@router.get(
+    "/deleted",
+    name="get_soft_deleted_sensors_route_v2",
+    description="Route to get all soft deleted sensors.",
+    operation_id="get_soft_deleted_sensors_route_v2",
+    response_model=Sensor,
+    status_code=status.HTTP_200_OK,
+)
 async def get_all_soft_deleted_sensors() -> ORJSONResponse:
     """
     Retrieve all soft deleted sensors.
@@ -97,26 +99,27 @@ async def get_all_soft_deleted_sensors() -> ORJSONResponse:
         are found.
     :rtype: ORJSONResponse
     """
-    soft_deleted_sensors = await Sensor.find(
-        Sensor.deleted_at != None).to_list()
+    soft_deleted_sensors = await Sensor.find(Sensor.deleted_at != None).to_list()
     if not soft_deleted_sensors:
         return ORJSONResponse(
             content={"detail": "No soft deleted sensors found."},
-            status_code=status.HTTP_404_NOT_FOUND
+            status_code=status.HTTP_404_NOT_FOUND,
         )
 
     return ORJSONResponse(
         content=list(map(model_serialize, soft_deleted_sensors)),
-        status_code=status.HTTP_200_OK
+        status_code=status.HTTP_200_OK,
     )
 
 
-@router.get("/{sensor_id}",
-            name="get_sensor_by_id_route_v2",
-            description="Route to get a sensor by ID.",
-            operation_id="get_sensor_by_id_route_v2",
-            response_model=Sensor,
-            status_code=status.HTTP_200_OK)
+@router.get(
+    "/{sensor_id}",
+    name="get_sensor_by_id_route_v2",
+    description="Route to get a sensor by ID.",
+    operation_id="get_sensor_by_id_route_v2",
+    response_model=Sensor,
+    status_code=status.HTTP_200_OK,
+)
 async def get_sensor_by_id(sensor_id: str) -> ORJSONResponse:
     """
     Retrieve a sensor by its unique ID.
@@ -130,27 +133,29 @@ async def get_sensor_by_id(sensor_id: str) -> ORJSONResponse:
     :return: The sensor data if found, or a 404 error if not found.
     :rtype: ORJSONResponse
     """
-    sensor = await Sensor.find(Sensor.id == sensor_id,
-                               Sensor.deleted_at == None).first_or_none()
+    sensor = await Sensor.find(
+        Sensor.id == sensor_id, Sensor.deleted_at == None
+    ).first_or_none()
     if not sensor:
         logger.warning("Sensor with ID %s not found.", sensor_id)
         return ORJSONResponse(
             content={"detail": "Sensor not found."},
-            status_code=status.HTTP_404_NOT_FOUND
+            status_code=status.HTTP_404_NOT_FOUND,
         )
 
     return ORJSONResponse(
-        content=model_serialize(sensor),
-        status_code=status.HTTP_200_OK
+        content=model_serialize(sensor), status_code=status.HTTP_200_OK
     )
 
 
-@router.post("",
-             name="create_sensor_route_v2",
-             description="Route to create a new sensor.",
-             operation_id="create_sensor_route_v2",
-             response_model=Sensor,
-             status_code=status.HTTP_201_CREATED)
+@router.post(
+    "",
+    name="create_sensor_route_v2",
+    description="Route to create a new sensor.",
+    operation_id="create_sensor_route_v2",
+    response_model=Sensor,
+    status_code=status.HTTP_201_CREATED,
+)
 async def create_sensor(sensor_data: CreateSensor) -> ORJSONResponse:
     """
     Create a new sensor.
@@ -166,27 +171,27 @@ async def create_sensor(sensor_data: CreateSensor) -> ORJSONResponse:
     # Find the current max index
     last_sensor = await Sensor.find().sort("-index").first_or_none()
     next_index = (
-            last_sensor.index + 1
-    ) if last_sensor and last_sensor.index is not None else 1
+        (last_sensor.index + 1) if last_sensor and last_sensor.index is not None else 1
+    )
 
     # Create the Sensor with the required index
     new_sensor = Sensor(index=next_index, **sensor_data.model_dump())
     new_sensor = await new_sensor.create()
 
     return ORJSONResponse(
-        content=model_serialize(new_sensor),
-        status_code=status.HTTP_201_CREATED
+        content=model_serialize(new_sensor), status_code=status.HTTP_201_CREATED
     )
 
 
-@router.patch("/delete/{sensor_id}",
-              name="soft_delete_sensor_route_v2",
-              description="Route to soft delete a sensor by ID.",
-              operation_id="soft_delete_sensor_route_v2",
-              response_model=Sensor,
-              status_code=status.HTTP_200_OK)
-async def soft_delete_sensor_v2(
-        sensor_id: str) -> ORJSONResponse:
+@router.patch(
+    "/delete/{sensor_id}",
+    name="soft_delete_sensor_route_v2",
+    description="Route to soft delete a sensor by ID.",
+    operation_id="soft_delete_sensor_route_v2",
+    response_model=Sensor,
+    status_code=status.HTTP_200_OK,
+)
+async def soft_delete_sensor_v2(sensor_id: str) -> ORJSONResponse:
     """
     Soft delete a sensor by its unique ID.
 
@@ -200,15 +205,15 @@ async def soft_delete_sensor_v2(
         or a 404 error if not found.
     :rtype: ORJSONResponse
     """
-    sensor = await Sensor.find_one(Sensor.id == sensor_id,
-                                   Sensor.deleted_at == None)
+    sensor = await Sensor.find_one(Sensor.id == sensor_id, Sensor.deleted_at == None)
 
     if not sensor:
-        logger.warning("Sensor with ID %s not found or already "
-                       "marked as deleted.", sensor_id)
+        logger.warning(
+            "Sensor with ID %s not found or already marked as deleted.", sensor_id
+        )
         return ORJSONResponse(
             content={"detail": "Sensor not found."},
-            status_code=status.HTTP_404_NOT_FOUND
+            status_code=status.HTTP_404_NOT_FOUND,
         )
 
     # Set the deleted_at field to the current time
@@ -217,19 +222,21 @@ async def soft_delete_sensor_v2(
     sensor_updated = await sensor.save()
 
     return ORJSONResponse(
-        content=model_serialize(sensor_updated),
-        status_code=status.HTTP_200_OK
+        content=model_serialize(sensor_updated), status_code=status.HTTP_200_OK
     )
 
 
-@router.patch("/{sensor_id}",
-              name="update_sensor_route_v2",
-              description="Route to update a sensor by ID.",
-              operation_id="update_sensor_route_v2",
-              response_model=Sensor,
-              status_code=status.HTTP_200_OK)
+@router.patch(
+    "/{sensor_id}",
+    name="update_sensor_route_v2",
+    description="Route to update a sensor by ID.",
+    operation_id="update_sensor_route_v2",
+    response_model=Sensor,
+    status_code=status.HTTP_200_OK,
+)
 async def patch_update_sensor_v2(
-        sensor_id: str, sensor_data: PatchSensorData) -> ORJSONResponse:
+    sensor_id: str, sensor_data: PatchSensorData
+) -> ORJSONResponse:
     """
     Partially update a sensor by its unique ID.
 
@@ -245,13 +252,14 @@ async def patch_update_sensor_v2(
         not found.
     :rtype: ORJSONResponse
     """
-    sensor = await Sensor.find(Sensor.id == sensor_id,
-                               Sensor.deleted_at == None).first_or_none()
+    sensor = await Sensor.find(
+        Sensor.id == sensor_id, Sensor.deleted_at == None
+    ).first_or_none()
     if not sensor:
         logger.warning("Sensor with ID %s not found.", sensor_id)
         return ORJSONResponse(
             content={"detail": "Sensor not found."},
-            status_code=status.HTTP_404_NOT_FOUND
+            status_code=status.HTTP_404_NOT_FOUND,
         )
 
     # Update the sensor with the provided data
@@ -263,19 +271,21 @@ async def patch_update_sensor_v2(
     sensor_updated = await sensor.save()
 
     return ORJSONResponse(
-        content=model_serialize(sensor_updated),
-        status_code=status.HTTP_200_OK
+        content=model_serialize(sensor_updated), status_code=status.HTTP_200_OK
     )
 
 
-@router.put("/{sensor_id}",
-            name="update_sensor_full_route_v2",
-            description="Route to fully update a sensor by ID.",
-            operation_id="update_sensor_full_route_v2",
-            response_model=Sensor,
-            status_code=status.HTTP_200_OK)
+@router.put(
+    "/{sensor_id}",
+    name="update_sensor_full_route_v2",
+    description="Route to fully update a sensor by ID.",
+    operation_id="update_sensor_full_route_v2",
+    response_model=Sensor,
+    status_code=status.HTTP_200_OK,
+)
 async def update_sensor_full_route_v2(
-        sensor_id: str, sensor_data: PutUpdateSensorData) -> ORJSONResponse:
+    sensor_id: str, sensor_data: PutUpdateSensorData
+) -> ORJSONResponse:
     """
     Fully update a sensor by its unique ID.
 
@@ -291,14 +301,13 @@ async def update_sensor_full_route_v2(
         not found.
     :rtype: ORJSONResponse
     """
-    sensor = await Sensor.find_one(
-        Sensor.id == sensor_id, Sensor.deleted_at == None)
+    sensor = await Sensor.find_one(Sensor.id == sensor_id, Sensor.deleted_at == None)
 
     if not sensor:
         logger.warning("Sensor with ID %s not found.", sensor_id)
         return ORJSONResponse(
             content={"detail": "Sensor not found."},
-            status_code=status.HTTP_404_NOT_FOUND
+            status_code=status.HTTP_404_NOT_FOUND,
         )
 
     # Update the sensor with the provided data
@@ -310,16 +319,17 @@ async def update_sensor_full_route_v2(
     sensor_updated = await sensor.save()
 
     return ORJSONResponse(
-        content=model_serialize(sensor_updated),
-        status_code=status.HTTP_200_OK
+        content=model_serialize(sensor_updated), status_code=status.HTTP_200_OK
     )
 
 
-@router.delete("/delete/{sensor_id}",
-               name="delete_sensor_route_v2",
-               description="Route to delete a sensor by ID.",
-               operation_id="delete_sensor_route_v2",
-               status_code=status.HTTP_204_NO_CONTENT)
+@router.delete(
+    "/delete/{sensor_id}",
+    name="delete_sensor_route_v2",
+    description="Route to delete a sensor by ID.",
+    operation_id="delete_sensor_route_v2",
+    status_code=status.HTTP_204_NO_CONTENT,
+)
 async def delete_sensor(sensor_id: str) -> ORJSONResponse:
     """
     Delete a sensor by its unique ID.
@@ -338,12 +348,9 @@ async def delete_sensor(sensor_id: str) -> ORJSONResponse:
         logger.warning("Sensor with ID %s not found.", sensor_id)
         return ORJSONResponse(
             content={"detail": "Sensor not found."},
-            status_code=status.HTTP_404_NOT_FOUND
+            status_code=status.HTTP_404_NOT_FOUND,
         )
 
     await sensor.delete()
 
-    return ORJSONResponse(
-        content=None,
-        status_code=status.HTTP_204_NO_CONTENT
-    )
+    return ORJSONResponse(content=None, status_code=status.HTTP_204_NO_CONTENT)

@@ -13,8 +13,7 @@ ensuring type safety and consistent structure for authentication workflows.
 from pydantic import BaseModel, field_serializer
 
 from src.db.models.v2_models.user_model_v2 import User
-from src.db.serializers.v2_serializers.v2_model_serializers import \
-    model_serialize
+from src.db.serializers.v2_serializers.v2_model_serializers import model_serialize
 
 
 class AuthTokenResponse(BaseModel):
@@ -30,12 +29,13 @@ class AuthTokenResponse(BaseModel):
     :param expires_in: The number of seconds until the token expires.
     :type expires_in: int
     """
+
     token: str
     token_type: str
     user: User
     expires_in: int
 
-    @field_serializer('user')
+    @field_serializer("user")
     def remove_sensitive_user_data(self, user: User) -> User:
         """
         Serialize the user object and remove sensitive data before returning.
@@ -45,7 +45,7 @@ class AuthTokenResponse(BaseModel):
         :return: The User object with sensitive data removed.
         :rtype: User
         """
-        model_serialize(user).pop('password', None)
+        model_serialize(user).pop("password", None)
         return user
 
 
@@ -60,6 +60,7 @@ class UserPasswordSignin(BaseModel):
     :param password: The user's password.
     :type password: str
     """
+
     email: str
     username: str
     password: str
