@@ -23,6 +23,7 @@ class ApplicationCreate(BaseModel):
     The API key is generated server-side and should not be supplied by the
     client.
     """
+
     id: Optional[str] = Field(default_factory=generate_nano_id)
     name: str
     description: str
@@ -35,10 +36,11 @@ class ApplicationCreate(BaseModel):
 class ApplicationUpdate(BaseModel):
     """
     Schema for updating an existing Application instance.
-    
+
     Note: api_key and timestamps cannot be updated via PATCH.
     Timestamps are automatically managed by the application.
     """
+
     name: Optional[str] = None
     description: Optional[str] = None
     url: Optional[str] = None
@@ -51,6 +53,7 @@ class ApplicationOutput(BaseModel):
     """
     Schema for returning an Application instance.
     """
+
     id: str
     name: str
     description: str
@@ -63,9 +66,9 @@ class ApplicationOutput(BaseModel):
 
     model_config = ConfigDict(from_attributes=True)
 
-    @field_serializer('created_at', 'updated_at', 'deleted_at')
+    @field_serializer("created_at", "updated_at", "deleted_at")
     def serialize_datetime(self, value: Optional[datetime]) -> Optional[float]:
-        """ Serialize datetime to timestamp """
+        """Serialize datetime to timestamp"""
         return value.timestamp() if value else None
 
     def __str__(self) -> str:
@@ -108,7 +111,8 @@ class ApplicationOutput(BaseModel):
         if item in self.model_fields_set:
             return getattr(self, item)
         raise AttributeError(
-            f"'{type(self).__name__}' object has no attribute '{item}'")
+            f"'{type(self).__name__}' object has no attribute '{item}'"
+        )
 
     def as_named_tuple(self) -> tuple:
         """
@@ -117,6 +121,6 @@ class ApplicationOutput(BaseModel):
         :return: ApplicationOutput instance as a named tuple
         :rtype: tuple
         """
-        return namedtuple(
-            'Application',
-            self.model_dump().keys())(*self.model_dump().values())
+        return namedtuple("Application", self.model_dump().keys())(
+            *self.model_dump().values()
+        )

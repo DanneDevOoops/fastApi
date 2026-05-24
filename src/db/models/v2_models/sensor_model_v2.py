@@ -20,29 +20,29 @@ class Sensor(Document):
     """
     Sensor information data model for storing sensor details.
     """
-    id: str = Field(alias="_id", default_factory=generate_nano_id,
-                    description="unique sensor identifier")
+
+    id: str = Field(
+        alias="_id",
+        default_factory=generate_nano_id,
+        description="unique sensor identifier",
+    )
     index: Indexed(int, unique=True)
     name: str
     value_unit: str  # Unit to describe the sensor reading value
     location: Optional[str] = "Unknown location"
     device_id: str  # Reference to Device
 
-    created_at: datetime = Field(default_factory=lambda: datetime.now(
-        timezone.utc))
-    updated_at: datetime = Field(default_factory=lambda: datetime.now(
-        timezone.utc))
+    created_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
+    updated_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
     deleted_at: datetime | None = Field(default=None)
 
-    model_config = {
-        "arbitrary_types_allowed": True,
-        "json_encoders": {ObjectId: str}
-    }
+    model_config = {"arbitrary_types_allowed": True, "json_encoders": {ObjectId: str}}
 
     class Settings:
         """
         Settings for the SensorReading model.
         """
+
         name = "sensors"
 
         def __str__(self):
@@ -62,6 +62,7 @@ class CreateSensor(BaseModel):
     """
     Pydantic model for creating a new sensor.
     """
+
     name: str
     value_unit: str
     location: Optional[str] = "Unknown location"
@@ -72,6 +73,7 @@ class PatchSensorData(BaseModel):
     """
     Patch data model for updating sensor information.
     """
+
     name: Optional[str] = None
     value_unit: Optional[str] = None
     location: Optional[str] = None
@@ -81,6 +83,7 @@ class PatchSensorData(BaseModel):
         """
         Pydantic settings.
         """
+
         name = "sensors"
 
         def __str__(self):
@@ -100,6 +103,7 @@ class PutUpdateSensorData(BaseModel):
     """
     Full update data model for sensor information.
     """
+
     name: str
     value_unit: str
     location: str
@@ -109,6 +113,7 @@ class PutUpdateSensorData(BaseModel):
         """
         Pydantic settings.
         """
+
         name = "sensors"
 
         def __str__(self):

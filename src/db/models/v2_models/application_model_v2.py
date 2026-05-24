@@ -56,9 +56,11 @@ class Application(Document):
     :cvar Settings: Contains collection name and utility methods
         for the model.
     """
+
     id: str = Field(alias="_id", default_factory=generate_nano_id)
-    index: Indexed(int, pymongo.ASCENDING, unique=True,
-                   name="app-index") = Field(default_factory=int)
+    index: Indexed(int, pymongo.ASCENDING, unique=True, name="app-index") = Field(
+        default_factory=int
+    )
     name: Indexed(str, pymongo.DESCENDING, unique=True, name="app-name")
 
     description: str = Field(default="No description provided")
@@ -67,16 +69,11 @@ class Application(Document):
     port: int = 3000
     tags: Optional[Dict] = Field(default_factory=dict)
 
-    created_at: datetime = Field(
-        default_factory=lambda: datetime.now(timezone.utc))
-    updated_at: datetime = Field(
-        default_factory=lambda: datetime.now(timezone.utc))
+    created_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
+    updated_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
     deleted_at: Optional[datetime] = None
 
-    model_config = {
-        "arbitrary_types_allowed": True,
-        "json_encoders": {ObjectId: str}
-    }
+    model_config = {"arbitrary_types_allowed": True, "json_encoders": {ObjectId: str}}
 
     class Settings:
         """
@@ -92,6 +89,7 @@ class Application(Document):
             Application model.
         :rtype __dir__: list
         """
+
         name = "applications"
 
         def __str__(self) -> str:
@@ -110,9 +108,18 @@ class Application(Document):
             :return: List of attributes.
             :rtype: list
             """
-            return ["name", "index", "description", "api_key", "host_ip",
-                    "host_port", "tags", "created_at", "updated_at",
-                    "deleted_at"]
+            return [
+                "name",
+                "index",
+                "description",
+                "api_key",
+                "host_ip",
+                "host_port",
+                "tags",
+                "created_at",
+                "updated_at",
+                "deleted_at",
+            ]
 
 
 class NewApplication(BaseModel):
@@ -145,6 +152,7 @@ class NewApplication(BaseModel):
     :cvar Settings: Contains collection name and utility methods
         for the model.
     """
+
     id: str = Field(alias="_id")
     index: int
     name: str
@@ -156,10 +164,7 @@ class NewApplication(BaseModel):
     tags: Dict
     created_at: datetime
 
-    model_config = {
-        "arbitrary_types_allowed": True,
-        "json_encoders": {ObjectId: str}
-    }
+    model_config = {"arbitrary_types_allowed": True, "json_encoders": {ObjectId: str}}
 
     class Settings:
         """
@@ -175,6 +180,7 @@ class NewApplication(BaseModel):
             Application model.
         :rtype __dir__: list
         """
+
         name = "applications"
 
         def __str__(self) -> str:
@@ -193,9 +199,18 @@ class NewApplication(BaseModel):
             :return: List of attributes.
             :rtype: list
             """
-            return ["name", "index", "description", "api_key", "host_ip",
-                    "host_port", "tags", "created_at", "updated_at",
-                    "deleted_at"]
+            return [
+                "name",
+                "index",
+                "description",
+                "api_key",
+                "host_ip",
+                "host_port",
+                "tags",
+                "created_at",
+                "updated_at",
+                "deleted_at",
+            ]
 
 
 class CreateApplication(BaseModel):
@@ -229,6 +244,7 @@ class CreateApplication(BaseModel):
     :cvar Settings: Contains collection name and utility methods
         for the model.
     """
+
     index: Optional[int] = Field(default_factory=int)
     name: str
     description: Optional[str] = Field(default="No description provided...")
@@ -237,15 +253,14 @@ class CreateApplication(BaseModel):
     tags: Optional[Dict] = Field(default_factory=dict)
 
     created_at: Optional[datetime] = Field(
-        default_factory=lambda: datetime.now(timezone.utc))
+        default_factory=lambda: datetime.now(timezone.utc)
+    )
     updated_at: Optional[datetime] = Field(
-        default_factory=lambda: datetime.now(timezone.utc))
+        default_factory=lambda: datetime.now(timezone.utc)
+    )
     deleted_at: Optional[None | datetime] = None
 
-    model_config = {
-        "arbitrary_types_allowed": True,
-        "json_encoders": {ObjectId: str}
-    }
+    model_config = {"arbitrary_types_allowed": True, "json_encoders": {ObjectId: str}}
 
     class Settings:
         """
@@ -261,6 +276,7 @@ class CreateApplication(BaseModel):
             Application model.
         :rtype __dir__: list
         """
+
         name = "applications"
 
         def __str__(self) -> str:
@@ -280,9 +296,17 @@ class CreateApplication(BaseModel):
             :rtype: list
             """
             return [
-                "name", "index", "description", "api_key", "host_ip",
-                "host_port", "tags", "created_at", "updated_at",
-                "deleted_at"]
+                "name",
+                "index",
+                "description",
+                "api_key",
+                "host_ip",
+                "host_port",
+                "tags",
+                "created_at",
+                "updated_at",
+                "deleted_at",
+            ]
 
 
 class PatchUpdateApplication(BaseModel):
@@ -306,16 +330,14 @@ class PatchUpdateApplication(BaseModel):
     :cvar Settings: Contains collection name and utility methods for
         the model.
     """
+
     name: Optional[str] = None
     description: Optional[str] = None
     ip_adress: Optional[str] = None
     port: Optional[int] = None
     tags: Optional[Dict] = None
 
-    model_config = {
-        "arbitrary_types_allowed": True,
-        "json_encoders": {ObjectId: str}
-    }
+    model_config = {"arbitrary_types_allowed": True, "json_encoders": {ObjectId: str}}
 
     class Settings:
         """
@@ -330,6 +352,7 @@ class PatchUpdateApplication(BaseModel):
         :return: List of attributes for the PatchUpdateApplication model.
         :rtype: list
         """
+
         name = "applications"
 
         def __str__(self) -> str:
@@ -355,16 +378,14 @@ class PutApplicationData(BaseModel):
     """
     some...
     """
+
     name: str
     description: str
     ip_adress: str
     port: int
     tags: Optional[Dict] = None
 
-    model_config = {
-        "arbitrary_types_allowed": True,
-        "json_encoders": {ObjectId: str}
-    }
+    model_config = {"arbitrary_types_allowed": True, "json_encoders": {ObjectId: str}}
 
     class Settings:
         """
@@ -379,6 +400,7 @@ class PutApplicationData(BaseModel):
         :return: List of attributes for the PutApplicationData model.
         :rtype: list
         """
+
         name = "applications"
 
         def __str__(self) -> str:
@@ -400,12 +422,10 @@ class DeleteApplication(BaseModel):
     :cvar Settings: Contains collection name and utility methods for
         the model.
     """
+
     id: str = Field(alias="_id")
 
-    model_config = {
-        "arbitrary_types_allowed": True,
-        "json_encoders": {ObjectId: str}
-    }
+    model_config = {"arbitrary_types_allowed": True, "json_encoders": {ObjectId: str}}
 
     class Settings:
         """
@@ -420,6 +440,7 @@ class DeleteApplication(BaseModel):
         :return: List of attributes and methods of the Settings instance.
         :rtype: list
         """
+
         name = "applications"
 
         def __str__(self) -> str:

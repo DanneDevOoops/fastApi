@@ -35,10 +35,7 @@ async def info() -> ORJSONResponse:
 
     logger.info("Application info requested: %s", app_info)
 
-    return ORJSONResponse(
-        status_code=status.HTTP_200_OK,
-        content=app_info
-    )
+    return ORJSONResponse(status_code=status.HTTP_200_OK, content=app_info)
 
 
 @info_router.get("/pgsql_db_info")
@@ -53,15 +50,12 @@ async def pgsql_db_info() -> ORJSONResponse:
         "name": settings.pg_db_name,
         "python-version": settings.pyenv_version,
         "description": settings.pg_db_name + "some description here...",
-        "environment": settings.env_name
+        "environment": settings.env_name,
     }
 
     logger.info("Postgres database info requested: %s", pgsql_info)
 
-    return ORJSONResponse(
-        status_code=status.HTTP_200_OK,
-        content=pgsql_info
-    )
+    return ORJSONResponse(status_code=status.HTTP_200_OK, content=pgsql_info)
 
 
 @info_router.get("/mongo_db_info")
@@ -76,12 +70,9 @@ async def mongo_db_info() -> ORJSONResponse:
         "name": settings.mongo_db_name,
         "version": settings.mongo_db_name,
         "description": settings.mongo_db_name + "some description here...",
-        "environment": settings.pyenv_version
+        "environment": settings.pyenv_version,
     }
 
     logger.info("Mongo database info requested: %s", mongo_info)
 
-    return ORJSONResponse(
-        status_code=status.HTTP_200_OK,
-        content=mongo_info
-    )
+    return ORJSONResponse(status_code=status.HTTP_200_OK, content=mongo_info)

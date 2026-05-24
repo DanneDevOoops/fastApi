@@ -20,22 +20,24 @@ class SensorTelemetry(Document):
     """
     Sensor reading data model for time series data.
     """
-    id: str = Field(alias="_id", default_factory=generate_nano_id,
-                    description="unique sensor reading identifier")
+
+    id: str = Field(
+        alias="_id",
+        default_factory=generate_nano_id,
+        description="unique sensor reading identifier",
+    )
     time: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
     key: str  # Sensor name/type
     value: float = Field(default=0.0)
     sensor_id: str
 
-    model_config = {
-        "arbitrary_types_allowed": True,
-        "json_encoders": {ObjectId: str}
-    }
+    model_config = {"arbitrary_types_allowed": True, "json_encoders": {ObjectId: str}}
 
     class Settings:
         """
         Settings for the SensorReading model.
         """
+
         name = "sensor_telemetry"
         timeseries = TimeSeriesConfig(
             time_field="time",
@@ -60,19 +62,18 @@ class CreateSensorTelemetry(BaseModel):
     """
     CreateSensorTelemetry class.
     """
+
     key: str
     value: float = Field(default=0.0)
     sensor_id: str
 
-    model_config = {
-        "arbitrary_types_allowed": True,
-        "json_encoders": {ObjectId: str}
-    }
+    model_config = {"arbitrary_types_allowed": True, "json_encoders": {ObjectId: str}}
 
     class Settings:
         """
         Settings for the SensorReading model.
         """
+
         name = "sensor_telemetry"
         timeseries = TimeSeriesConfig(
             time_field="time",
@@ -97,18 +98,17 @@ class PathchUpdateTelemetryData(BaseModel):
     """
     Model for patching/updating telemetry data.
     """
+
     key: str | None = None
     value: float | None = None
 
-    model_config = {
-        "arbitrary_types_allowed": True,
-        "json_encoders": {ObjectId: str}
-    }
+    model_config = {"arbitrary_types_allowed": True, "json_encoders": {ObjectId: str}}
 
     class Settings:
         """
         Settings for the PatchUpdateTelemetryData model.
         """
+
         name = "patch_update_telemetry_data"
 
         def __str__(self):
@@ -129,21 +129,20 @@ class FilteredSearchTelemetry(BaseModel):
     """
     Model for patching/updating telemetry data.
     """
+
     sensor_id: Optional[str] = None
     key: Optional[str] = None
     value: Optional[float] = None
     time_span_start: Optional[str] = None
     time_span_end: Optional[str] = None
 
-    model_config = {
-        "arbitrary_types_allowed": True,
-        "json_encoders": {ObjectId: str}
-    }
+    model_config = {"arbitrary_types_allowed": True, "json_encoders": {ObjectId: str}}
 
     class Settings:
         """
         Settings for the PatchUpdateTelemetryData model.
         """
+
         name = "patch_update_telemetry_data"
 
         def __str__(self):

@@ -18,7 +18,8 @@ class User(Base):
     """
     User model for the database
     """
-    __tablename__ = 'users'
+
+    __tablename__ = "users"
 
     id: Mapped[str] = Column(String, primary_key=True, index=True)
     username: Mapped[str] = Column(String, unique=True, index=True)
@@ -60,8 +61,9 @@ class User(Base):
         :return: The string representation of the model
         :rtype: str
         """
-        return (f"UserModel(id={self.id}, username={self.username}, email"
-                f"={self.email})")
+        return (
+            f"UserModel(id={self.id}, username={self.username}, email" f"={self.email})"
+        )
 
     def __eq__(self, other) -> bool:
         """
