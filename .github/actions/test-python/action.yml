@@ -1,0 +1,15 @@
+name: Test Python Application
+description: Run pytest for the project.
+
+inputs:
+  pytest-args:
+    description: Extra pytest arguments
+    required: false
+    default: "--verbose"
+
+runs:
+  using: composite
+  steps:
+    - name: Run pytest
+      shell: bash
+      run: python -m poetry run pytest ${{ inputs.pytest-args }}

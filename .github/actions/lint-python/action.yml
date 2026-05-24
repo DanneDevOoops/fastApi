@@ -1,0 +1,20 @@
+name: Lint Python Source
+description: Run pylint checks against a target path.
+
+inputs:
+  target-path:
+    description: Directory or file path to lint
+    required: false
+    default: "src"
+  pylint-args:
+    description: Extra pylint arguments
+    required: false
+    default: "--verbose"
+
+runs:
+  using: composite
+  steps:
+    - name: Run pylint
+      shell: bash
+      run: python -m poetry run pylint ${{ inputs.pylint-args }} ${{ inputs.target-path }}
+

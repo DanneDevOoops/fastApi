@@ -1,0 +1,16 @@
+name: Install Poetry Dependencies
+description: Install project dependencies with Poetry.
+
+inputs:
+  install-args:
+    description: Arguments passed to poetry install
+    required: false
+    default: "--with dev,test --no-interaction"
+
+runs:
+  using: composite
+  steps:
+    - name: Install dependencies
+      shell: bash
+      run: python -m poetry install ${{ inputs.install-args }}
+
