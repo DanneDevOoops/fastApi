@@ -113,3 +113,87 @@ jobs:
             - name: Run tests
               shell: bash
               run: .venv/bin/python -m pytest --verbose
+
+    format_pr_code:
+        name: Auto-format PR code (isort + black)
+        needs: [lint_application, test_application]
+        if: github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == github.repository
+        runs-on: ubuntu-latest
+        permissions:
+            contents: write
+
+        steps:
+            - name: Checkout PR branch
+              uses: actions/checkout@v4
+              with:
+                ref: ${{ github.head_ref }}
+                fetch-depth: 0
+
+            - name: Setup Python
+              uses: actions/setup-python@v6
+              with:
+                python-version: "3.11.14"
+
+            - name: Download virtual environment
+              uses: actions/download-artifact@v4
+              with:
+                name: python-venv
+                path: .venv
+
+            - name: Restore virtualenv execute permissions
+              shell: bash
+              run: chmod -R u+x .venv/bin
+
+            - name: Run isort and black
+              shell: bash
+              run: |
+                .venv/bin/python -m isort src
+                .venv/bin/python -m black src
+
+            - name: Commit and push formatting changes
+              shell: bash
+              run: |
+                if git diff --quiet; then
+                  echo "No formatting changes to commit."
+                  exit 0
+                fi
+
+                git config user.name "github-actions[bot]"
+                git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+                git add -A
+                git commit -m "style: auto-format Python imports and style"
+                git push
+
+    check_format_for_forks:
+        name: Check formatting for fork PRs (isort + black)
+        needs: [lint_application, test_application]
+        if: github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name != github.repository
+        runs-on: ubuntu-latest
+        permissions:
+            contents: read
+
+        steps:
+            - name: Checkout repository
+              uses: actions/checkout@v4
+
+            - name: Setup Python
+              uses: actions/setup-python@v6
+              with:
+                python-version: "3.11.14"
+
+            - name: Download virtual environment
+              uses: actions/download-artifact@v4
+              with:
+                name: python-venv
+                path: .venv
+
+            - name: Restore virtualenv execute permissions
+              shell: bash
+              run: chmod -R u+x .venv/bin
+
+            - name: Check isort and black formatting
+              shell: bash
+              run: |
+                .venv/bin/python -m isort src --check-only --diff
+                .venv/bin/python -m black src --check
+
