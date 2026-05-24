@@ -1,0 +1,25 @@
+name: Deploy to GH Pages
+description: Deploy static docs to the gh-pages branch.
+
+inputs:
+  github-token:
+    description: GitHub token used for pushing to gh-pages
+    required: true
+  publish-dir:
+    description: Directory to publish
+    required: false
+    default: "./gh-pages"
+  publish-branch:
+    description: Branch to publish to
+    required: false
+    default: "gh-pages"
+
+runs:
+  using: "composite"
+  steps:
+    - name: Deploy site
+      uses: peaceiris/actions-gh-pages@v4
+      with:
+        github_token: ${{ inputs.github-token }}
+        publish_dir: ${{ inputs.publish-dir }}
+        publish_branch: ${{ inputs.publish-branch }}
