@@ -15,6 +15,7 @@ from dotenv import load_dotenv
 from sqlalchemy import engine_from_config, pool
 
 from src.db.config.base import Base  # Import your Base
+
 # IMPORTANT: YOU MUST IMPORT all db models here...
 from src.db.models.v1_models.applications_model_v1 import Application
 from src.db.models.v1_models.users_model_v1 import User
@@ -74,9 +75,7 @@ def run_migrations_online() -> None:
     )
 
     with connectable.connect() as connection:
-        context.configure(
-            connection=connection, target_metadata=target_metadata
-        )
+        context.configure(connection=connection, target_metadata=target_metadata)
 
         with context.begin_transaction():
             context.run_migrations()

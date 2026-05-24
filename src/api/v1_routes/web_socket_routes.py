@@ -16,8 +16,7 @@ from src.utils.web_socket_connection_manager import WebSocketConnectionManager
 
 # Initialize environment settings & logger
 settings = get_settings()
-logger = logging.getLogger(
-    settings.app_logger_name or "application_logger")
+logger = logging.getLogger(settings.app_logger_name or "application_logger")
 
 ws_router = APIRouter()
 socket_manager = WebSocketConnectionManager()
@@ -61,7 +60,7 @@ HTML = """
 """
 
 
-@ws_router.get('/')
+@ws_router.get("/")
 async def get() -> HTMLResponse:
     """
     Handles the GET request for the WebSocket endpoint.
@@ -91,10 +90,8 @@ async def websocket_endpoint(websocket: WebSocket, client_id: int) -> None:
     try:
         while True:
             data = await websocket.receive_text()
-            await socket_manager.send_personal_message(
-                f"You wrote: {data}", websocket)
-            await socket_manager.broadcast(
-                f"Client #{client_id} says: {data}")
+            await socket_manager.send_personal_message(f"You wrote: {data}", websocket)
+            await socket_manager.broadcast(f"Client #{client_id} says: {data}")
     except WebSocketDisconnect:
         socket_manager.disconnect(websocket)
         await socket_manager.broadcast(f"Client #{client_id} left the chat")

@@ -16,8 +16,7 @@ from src.core.env_config import get_settings
 
 # Initialize environment settings & logger
 settings = get_settings()
-logger = logging.getLogger(
-    settings.app_logger_name or "application_logger")
+logger = logging.getLogger(settings.app_logger_name or "application_logger")
 
 
 class WebSocketConnectionManager:
@@ -53,8 +52,7 @@ class WebSocketConnectionManager:
         logger.info("WebSocket connection closed...")
         self.active_connections.remove(websocket)
 
-    async def send_personal_message(
-            self, message: str, websocket: WebSocket) -> None:
+    async def send_personal_message(self, message: str, websocket: WebSocket) -> None:
         """
         Sends a personal message to a specific WebSocket connection.
 

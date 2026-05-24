@@ -21,6 +21,7 @@ from src.utils.nano_id import generate_nano_id
 
 class Base(DeclarativeBase):  # pylint: disable=too-few-public-methods
     """Base database model."""
+
     id: Mapped[str] = mapped_column(
         primary_key=True,
         default=generate_nano_id,

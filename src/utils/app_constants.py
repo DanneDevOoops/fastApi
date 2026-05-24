@@ -48,7 +48,7 @@ REQUEST_HEADERS = [
     # "ETag",
     # "If-Modified-Since",
     "X-Requested-With",
-    "X-API-Key"
+    "X-API-Key",
 ]
 
 REQUEST_METHODS = ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"]
