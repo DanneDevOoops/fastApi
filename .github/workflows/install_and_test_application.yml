@@ -3,9 +3,9 @@ name: Install and test application
 
 on:
     push:
-        branches: [ main, master, stage, test ]
+        branches: [ main, master, stage, test, dev ]
     pull_request:
-        branches: [ main, master, stage, test ]
+        branches: [ main, master, stage, test, dev ]
 
     workflow_dispatch:
 
@@ -13,11 +13,12 @@ env:
     FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
 
 jobs:
-    lint_application:
-        name: Lint application codebase
+    prepare_env:
+        name: Prepare Python environment
         runs-on: ubuntu-latest
         permissions:
             contents: read
+
         steps:
             - name: Checkout repository
               uses: actions/checkout@v4
@@ -32,27 +33,83 @@ jobs:
             - name: Install dependencies
               uses: ./.github/actions/install-poetry-deps
 
-            - name: Run linting
-              uses: ./.github/actions/lint-python
+            - name: Debug virtual environment before upload
+              shell: bash
+              run: |
+                if [[ -d ".venv" ]]; then
+                  echo "✅ .venv exists"
+                  du -sh .venv
+                  find .venv -maxdepth 2 -type f | head -n 10
+                else
+                  echo "❌ .venv directory does not exist"
+                  exit 1
+                fi
 
-    test_application:
-        name: Run pytest suite
+            - name: Upload virtual environment
+              uses: actions/upload-artifact@v4
+              with:
+                name: python-venv
+                path: .venv
+                include-hidden-files: true
+                if-no-files-found: error
+                retention-days: 1
+
+    lint_application:
+        name: Lint application codebase
+        needs: prepare_env
         runs-on: ubuntu-latest
         permissions:
             contents: read
+
         steps:
             - name: Checkout repository
               uses: actions/checkout@v4
 
-            - name: Setup Python + Poetry
-              uses: ./.github/actions/setup-python-poetry
+            - name: Setup Python
+              uses: actions/setup-python@v6
               with:
-                python-version: "3.11"
-                poetry-version: "1.8.3"
-                cache-dependency-path: "**/poetry.lock"
+                python-version: "3.11.14"
 
-            - name: Install dependencies
-              uses: ./.github/actions/install-poetry-deps
+            - name: Download virtual environment
+              uses: actions/download-artifact@v4
+              with:
+                name: python-venv
+                path: .venv
+
+            - name: Restore virtualenv execute permissions
+              shell: bash
+              run: chmod -R u+x .venv/bin
+
+            - name: Run linting
+              shell: bash
+              run: .venv/bin/python -m pylint --verbose src
+
+    test_application:
+        name: Run pytest suite
+        needs: prepare_env
+        runs-on: ubuntu-latest
+        permissions:
+            contents: read
+
+        steps:
+            - name: Checkout repository
+              uses: actions/checkout@v4
+
+            - name: Setup Python
+              uses: actions/setup-python@v6
+              with:
+                python-version: "3.11.14"
+
+            - name: Download virtual environment
+              uses: actions/download-artifact@v4
+              with:
+                name: python-venv
+                path: .venv
+
+            - name: Restore virtualenv execute permissions
+              shell: bash
+              run: chmod -R u+x .venv/bin
 
             - name: Run tests
-              uses: ./.github/actions/test-python
+              shell: bash
+              run: .venv/bin/python -m pytest --verbose
