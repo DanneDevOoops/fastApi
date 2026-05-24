@@ -12,5 +12,5 @@ runs:
   steps:
     - name: Install dependencies
       shell: bash
-      run: poetry install ${{ inputs.install-args }}
+      run: python -m poetry install ${{ inputs.install-args }}
 

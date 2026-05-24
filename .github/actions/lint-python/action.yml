@@ -16,5 +16,5 @@ runs:
   steps:
     - name: Run pylint
       shell: bash
-      run: poetry run pylint ${{ inputs.pylint-args }} ${{ inputs.target-path }}
+      run: python -m poetry run pylint ${{ inputs.pylint-args }} ${{ inputs.target-path }}
 

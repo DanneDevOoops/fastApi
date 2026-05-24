@@ -12,4 +12,4 @@ runs:
   steps:
     - name: Run pytest
       shell: bash
-      run: poetry run pytest ${{ inputs.pytest-args }}
+      run: python -m poetry run pytest ${{ inputs.pytest-args }}
