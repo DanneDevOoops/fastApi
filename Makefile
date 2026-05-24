@@ -20,7 +20,7 @@ poetry-lock-update poetry-pip-freeze poetry-pip-freeze-to-txt-file \
 poetry-remove-group poetry-remove-lock-file poetry-remove-package \
 poetry-shell poetry-show-latest-top-level poetry-update \
 poetry-update-dry-run poetry-version \
-pylint-app pylint-path \
+isort-src black-src pylint-app pylint-path \
 pytest \
 sphinx-apidoc sphinx-build-html sphinx-build-html-for-gh-pages \
 sphinx-clean-up sphinx-coverage-report sphinx-gen-docs \
@@ -113,6 +113,8 @@ help:  # Show the available commands
 	@echo "  poetry-version"
 
 	@echo "\nPylint commands:"
+	@echo "  isort-src"
+	@echo "  black-src"
 	@echo "  pylint-app"
 	@echo "  pylint-path"
 
@@ -272,6 +274,12 @@ poetry-add-requirements-txt:  # Add the requirements file
 # --- Testing & Linting Commands ---------------------------------------------
 pytest:  # Run the pytest
 	poetry run pytest --verbose
+
+isort-src:  # Run isort on src directory
+	poetry run isort src/
+
+black-src:  # Run black on src directory
+	poetry run black src/
 
 pylint-app:  # Run the pylint on the src directory
 	poetry run pylint --verbose src

@@ -65,3 +65,16 @@ myst-parser = "^4.0.1"
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
+
+
+[tool.black]
+line-length = 88
+target-version = ["py311"]
+include = '\.pyi?$'
+
+[tool.isort]
+profile = "black"
+line_length = 88
+py_version = 311
+src_paths = ["src", "tests"]
+skip_gitignore = true

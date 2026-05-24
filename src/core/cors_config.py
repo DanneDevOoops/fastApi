@@ -16,17 +16,6 @@ cors_config = {
         # "http://localhost:5175"
     ],
     "allowed_credentials": True,
-    "allowed_methods": [
-        "POST",
-        "GET",
-        "PUT",
-        "PATCH",
-        "DELETE",
-        "OPTIONS"
-    ],
-    "allowed_headers": [
-        "accept",
-        "content-type",
-        "x-api-key"
-    ],
+    "allowed_methods": ["POST", "GET", "PUT", "PATCH", "DELETE", "OPTIONS"],
+    "allowed_headers": ["accept", "content-type", "x-api-key"],
 }

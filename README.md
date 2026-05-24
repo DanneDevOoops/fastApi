@@ -554,6 +554,23 @@ development workflow, you can catch bugs early, ensure adherence to best
 practices, and improve the overall readability and maintainability of your
 codebase.
 
+### Automated formatting in pull requests
+
+The CI workflow includes `isort` and `black` formatting behavior for pull
+requests:
+
+* For PRs opened from branches in this repository, CI can auto-format `src/`
+  and push a commit back to the PR branch.
+* For PRs opened from forks, CI runs check-only validation (`isort --check-only`
+  and `black --check`) and reports formatting issues without pushing changes.
+
+To match CI locally before pushing, run:
+
+```shell
+make isort-src
+make black-src
+```
+
 <details><summary style="font-size: 14px; font-weight: bold; 
 color: lightgoldenrodyellow;">Using Pylint</summary>
 
