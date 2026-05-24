@@ -33,11 +33,25 @@ jobs:
             - name: Install dependencies
               uses: ./.github/actions/install-poetry-deps
 
+            - name: Debug virtual environment before upload
+              shell: bash
+              run: |
+                if [[ -d ".venv" ]]; then
+                  echo "✅ .venv exists"
+                  du -sh .venv
+                  find .venv -maxdepth 2 -type f | head -n 10
+                else
+                  echo "❌ .venv directory does not exist"
+                  exit 1
+                fi
+
             - name: Upload virtual environment
               uses: actions/upload-artifact@v4
               with:
                 name: python-venv
                 path: .venv
+                include-hidden-files: true
+                if-no-files-found: error
                 retention-days: 1
 
     lint_application:
