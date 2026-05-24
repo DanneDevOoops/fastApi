@@ -76,9 +76,13 @@ jobs:
                 name: python-venv
                 path: .venv
 
+            - name: Restore virtualenv execute permissions
+              shell: bash
+              run: chmod -R u+x .venv/bin
+
             - name: Run linting
               shell: bash
-              run: .venv/bin/pylint --verbose src
+              run: .venv/bin/python -m pylint --verbose src
 
     test_application:
         name: Run pytest suite
@@ -102,6 +106,10 @@ jobs:
                 name: python-venv
                 path: .venv
 
+            - name: Restore virtualenv execute permissions
+              shell: bash
+              run: chmod -R u+x .venv/bin
+
             - name: Run tests
               shell: bash
-              run: .venv/bin/pytest --verbose
+              run: .venv/bin/python -m pytest --verbose
