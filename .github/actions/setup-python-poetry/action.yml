@@ -1,0 +1,37 @@
+name: Setup Python and Poetry
+description: Setup Python, enable Poetry cache, and install Poetry.
+
+inputs:
+  python-version:
+    description: Python version to use
+    required: false
+    default: "3.11"
+  poetry-version:
+    description: Poetry version to install
+    required: false
+    default: "1.8.3"
+  cache-dependency-path:
+    description: Path/pattern to dependency lock file(s)
+    required: false
+    default: "poetry.lock"
+
+runs:
+  using: "composite"
+  steps:
+    - name: Setup Python + Poetry cache
+      uses: actions/setup-python@v5
+      with:
+        python-version: ${{ inputs.python-version }}
+        cache: poetry
+        cache-dependency-path: ${{ inputs.cache-dependency-path }}
+
+    - name: Setup Poetry
+      uses: abatilo/actions-poetry@v3
+      with:
+        poetry-version: ${{ inputs.poetry-version }}
+
+    - name: Show versions
+      shell: bash
+      run: |
+        python -V
+        poetry --version
