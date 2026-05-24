@@ -10,35 +10,46 @@ on:
     workflow_dispatch:
 
 jobs:
-    run_tests:
-        strategy:
-            fail-fast: false
-            matrix:
-                python-version: [ "3.11.4" ]
-                poetry-version: [ "1.8.3" ]
-                os: [ ubuntu-latest ]
-        runs-on: ${{ matrix.os }}
+    lint_application:
+        name: Lint application codebase
+        runs-on: ubuntu-latest
+        permissions:
+            contents: read
         steps:
-            - uses: actions/checkout@v4
-            - uses: actions/setup-python@v5
+            - name: Checkout repository
+              uses: actions/checkout@v4
+
+            - name: Setup Python + Poetry
+              uses: ./.github/actions/setup-python-poetry
               with:
-                python-version: ${{ matrix.python-version }}
+                python-version: "3.11.14"
+                poetry-version: "1.8.3"
+                cache-dependency-path: "**/poetry.lock"
 
-            - name: Setup Python ${{ matrix.python-version }}
-              uses: actions/setup-python@v5
+            - name: Install dependencies
+              uses: ./.github/actions/install-poetry-deps
+
+            - name: Run linting
+              uses: ./.github/actions/lint-python
+
+    test_application:
+        name: Run pytest suite
+        runs-on: ubuntu-latest
+        permissions:
+            contents: read
+        steps:
+            - name: Checkout repository
+              uses: actions/checkout@v5
+
+            - name: Setup Python + Poetry
+              uses: ./.github/actions/setup-python-poetry
               with:
-                python-version: ${{ matrix.python-version }}
+                python-version: "3.11"
+                poetry-version: "1.8.3"
+                cache-dependency-path: "**/poetry.lock"
 
-            - name: Run image
-              uses: abatilo/actions-poetry@v2
-              with:
-                poetry-version: ${{ matrix.poetry-version }}
+            - name: Install dependencies
+              uses: ./.github/actions/install-poetry-deps
 
-            - name: Install python dependencies with poetry
-              run: poetry install
-
-            - name: Lint application codebase with pylint
-              run: poetry run pylint --verbose src
-
-            - name: Test application with pytest
-              run: poetry run pytest --verbose
+            - name: Run tests
+              uses: ./.github/actions/test-python

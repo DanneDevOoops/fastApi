@@ -1,0 +1,31 @@
+name: Build Sphinx Docs
+description: Install docs dependencies and build Sphinx HTML output.
+
+inputs:
+  install-args:
+    description: Arguments for poetry install
+    required: false
+    default: "--with docs --no-interaction"
+  make-target:
+    description: Make target that builds docs
+    required: false
+    default: "sphinx-build-html-for-gh-pages"
+  output-dir:
+    description: Output folder expected after build
+    required: false
+    default: "gh-pages"
+
+runs:
+  using: composite
+  steps:
+    - name: Install docs dependencies
+      shell: bash
+      run: python -m poetry install ${{ inputs.install-args }}
+
+    - name: Ensure output directory exists
+      shell: bash
+      run: mkdir -p "${{ inputs.output-dir }}"
+
+    - name: Build docs
+      shell: bash
+      run: make "${{ inputs.make-target }}"
