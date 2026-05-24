@@ -19,17 +19,19 @@ runs:
   using: composite
   steps:
     - name: Setup Python + Poetry cache
-      uses: actions/setup-python@v5
+      uses: actions/setup-python@v6
       with:
         python-version: ${{ inputs.python-version }}
         cache: poetry
         cache-dependency-path: ${{ inputs.cache-dependency-path }}
 
-    - name: Setup Poetry
-      uses: snok/install-poetry@v1
-      with:
-        version: ${{ inputs.poetry-version }}
-        virtualenvs-in-project: true
+    - name: Install Poetry
+      shell: bash
+      run: pip install poetry==${{ inputs.poetry-version }}
+
+    - name: Configure Poetry
+      shell: bash
+      run: poetry config virtualenvs.in-project true
 
     - name: Show versions
       shell: bash
