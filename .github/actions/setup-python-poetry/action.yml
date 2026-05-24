@@ -16,7 +16,7 @@ inputs:
     default: "poetry.lock"
 
 runs:
-  using: "composite"
+  using: composite
   steps:
     - name: Setup Python + Poetry cache
       uses: actions/setup-python@v5
@@ -26,9 +26,10 @@ runs:
         cache-dependency-path: ${{ inputs.cache-dependency-path }}
 
     - name: Setup Poetry
-      uses: abatilo/actions-poetry@v3
+      uses: snok/install-poetry@v1
       with:
-        poetry-version: ${{ inputs.poetry-version }}
+        version: ${{ inputs.poetry-version }}
+        virtualenvs-in-project: true
 
     - name: Show versions
       shell: bash
