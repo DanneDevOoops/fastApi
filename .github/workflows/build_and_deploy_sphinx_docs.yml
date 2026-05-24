@@ -36,7 +36,7 @@ jobs:
       - name: Setup Python + Poetry
         uses: ./.github/actions/setup-python-poetry
         with:
-          python-version: "3.11"
+          python-version: "3.11.14"
           poetry-version: "1.8.3"
           cache-dependency-path: "**/poetry.lock"
 
