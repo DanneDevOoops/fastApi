@@ -9,6 +9,9 @@ on:
 
     workflow_dispatch:
 
+env:
+    FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
 jobs:
     lint_application:
         name: Lint application codebase
@@ -39,7 +42,7 @@ jobs:
             contents: read
         steps:
             - name: Checkout repository
-              uses: actions/checkout@v5
+              uses: actions/checkout@v4
 
             - name: Setup Python + Poetry
               uses: ./.github/actions/setup-python-poetry
