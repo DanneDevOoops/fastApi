@@ -18,13 +18,13 @@ on:
 # A workflow run is made up of one or more jobs that can run sequentially or
 # in parallel
 jobs:
-  # This workflow contains a single job called "build"
   build-docs:
+    name: Build Sphinx documentation
     runs-on: ubuntu-latest
     permissions:
-      contents: write
+      contents: read
     concurrency:
-      group: docs-${{ github.ref }}
+      group: docs-build-${{ github.ref }}
       cancel-in-progress: true
 
     steps:
@@ -43,8 +43,32 @@ jobs:
       - name: Build docs with Sphinx
         uses: ./.github/actions/build-sphinx
 
+      - name: Upload docs artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: sphinx-docs
+          path: ./gh-pages
+          retention-days: 1
+
+  deploy-docs:
+    name: Deploy to GitHub Pages
+    needs: build-docs
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    concurrency:
+      group: docs-deploy-${{ github.ref }}
+      cancel-in-progress: true
+    if: github.event_name == 'push'
+
+    steps:
+      - name: Download docs artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: sphinx-docs
+          path: ./gh-pages
+
       - name: Deploy to GitHub Pages
-        if: ${{ github.event_name == 'push' }}
         uses: ./.github/actions/deploy-gh-pages
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
