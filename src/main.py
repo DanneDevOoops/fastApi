@@ -24,6 +24,7 @@ from src.api.api_utilities import api_utility_router
 from src.api.api_v1 import api_v1_router
 from src.api.api_v1_ws_router import api_ws_router
 from src.api.api_v2 import api_v2_router
+from src.core.app_lifespan import app_lifespan
 from src.core.custom_exceptions import (
     AuthException,
     BadRequestException,
@@ -34,7 +35,6 @@ from src.core.custom_exceptions import (
     NotFoundException,
     ValidationException,
 )
-from src.core.app_lifespan import app_lifespan
 from src.core.env_config import get_settings
 from src.core.exception_handlers import (
     auth_exception_handler,

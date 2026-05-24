@@ -208,7 +208,9 @@ async def soft_delete_sensor_v2(sensor_id: str) -> ORJSONResponse:
     sensor = await Sensor.find_one(Sensor.id == sensor_id, Sensor.deleted_at == None)
 
     if not sensor:
-        logger.warning("Sensor with ID %s not found or already marked as deleted.", sensor_id)
+        logger.warning(
+            "Sensor with ID %s not found or already marked as deleted.", sensor_id
+        )
         return ORJSONResponse(
             content={"detail": "Sensor not found."},
             status_code=status.HTTP_404_NOT_FOUND,
