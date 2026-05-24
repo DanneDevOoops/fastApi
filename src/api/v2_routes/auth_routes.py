@@ -36,7 +36,7 @@ async def signin_user(signin_data: UserPasswordSignin) -> ORJSONResponse:
 
     if not user_data:
         logger.warning(
-            "User not found with credentials username: %s and " "email: %s",
+            "User not found with credentials username: %s and email: %s",
             signin_data.username,
             signin_data.email,
         )

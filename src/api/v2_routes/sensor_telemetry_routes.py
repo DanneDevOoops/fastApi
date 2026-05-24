@@ -199,7 +199,7 @@ async def fake_some_sensor_telemetry_v2(
     Create fake sensor telemetry data for testing purposes.
     """
     logger.info(
-        "Creating %s fake sensor telemetry items with an " "interval of %s seconds...",
+        "Creating %s fake sensor telemetry items with an interval of %s seconds...",
         number_of_items,
         interval,
     )

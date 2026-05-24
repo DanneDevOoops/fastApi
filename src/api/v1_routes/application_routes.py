@@ -284,9 +284,7 @@ async def put_update_application(
     :return: ORJSONResponse containing the updated application data.
     """
     try:
-        logger.info(
-            "Fully updating application/service with ID %s " "using PUT", app_id
-        )
+        logger.info("Fully updating application/service with ID %s using PUT", app_id)
         stmt = select(Application).where(
             Application.id == app_id, Application.deleted_at.is_(None)
         )
