@@ -26,8 +26,9 @@ from src.core.custom_exceptions import (ConflictException,
 from src.core.env_config import get_settings
 from src.db.connectors.postgres_db import get_pg_db
 from src.db.models.v1_models.applications_model_v1 import Application
-from src.db.schemas.v1_schemas.application_schemas import (
-    ApplicationCreate, ApplicationOutput, ApplicationUpdate)
+from src.db.schemas.v1_schemas.application_schemas import (ApplicationCreate,
+                                                           ApplicationOutput,
+                                                           ApplicationUpdate)
 
 # Initialize the API router
 router = APIRouter()

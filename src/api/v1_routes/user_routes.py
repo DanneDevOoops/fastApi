@@ -25,8 +25,8 @@ from src.core.custom_exceptions import NotFoundException
 from src.core.env_config import get_settings
 from src.db.connectors.postgres_db import get_pg_db
 from src.db.models.v1_models.users_model_v1 import User
-from src.db.schemas.v1_schemas.user_schemas import UserCreate, UserOutput, \
-    UserUpdate
+from src.db.schemas.v1_schemas.user_schemas import (UserCreate, UserOutput,
+                                                    UserUpdate)
 
 # Initialize the API router
 router = APIRouter()
