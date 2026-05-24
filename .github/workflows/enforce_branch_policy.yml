@@ -1,0 +1,79 @@
+# Enforces merge flow and source branch naming conventions.
+# Blocks PRs that don't follow the allowed source -> target branch policy.
+name: Enforce branch merge policy
+
+on:
+  pull_request:
+    branches: [ dev, test, stage, main ]
+
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
+jobs:
+  check_branch_policy:
+    name: Validate source → target branch policy
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - name: Check allowed merge paths
+        shell: bash
+        run: |
+          SOURCE="${{ github.head_ref }}"
+          TARGET="${{ github.base_ref }}"
+
+          echo "PR: '$SOURCE' -> '$TARGET'"
+
+          # dev: accepts only approved branch types and naming format.
+          # Also allows dependency bot branches.
+          # Allowed: <type>/<ticket-optional><kebab-description>
+          # Ticket format (optional): ABC-123-
+          # Examples: feature/PROJ-123-add-login, fix/handle-null-email
+          # Bot examples: dependabot/pip/requests-2.32.3, renovate/pydantic-2.x
+          if [[ "$TARGET" == "dev" ]]; then
+            if [[ ! "$SOURCE" =~ ^(feature|fix|chore|refactor|docs|test|ci)/(([A-Z][A-Z0-9]*-[0-9]+-)?[a-z0-9]+(-[a-z0-9]+)*)$ && ! "$SOURCE" =~ ^(dependabot|renovate)/.+$ ]]; then
+              echo "❌ Invalid source branch '$SOURCE' for target 'dev'."
+              echo "   Allowed prefixes: feature, fix, chore, refactor, docs, test, ci"
+              echo "   Note: use 'fix/*' instead of 'bugfix/*'."
+              echo "   Allowed bot branches: dependabot/*, renovate/*"
+              echo "   Format: <prefix>/<ticket-optional><kebab-description>"
+              echo "   Examples: feature/PROJ-123-add-login, docs/update-readme"
+              exit 1
+            fi
+            echo "✅ '$SOURCE' -> 'dev' is allowed."
+            exit 0
+          fi
+
+          # test: only accepts merges from dev
+          if [[ "$TARGET" == "test" ]]; then
+            if [[ "$SOURCE" != "dev" ]]; then
+              echo "❌ Only 'dev' can be merged into 'test'. Got: '$SOURCE'."
+              exit 1
+            fi
+            echo "✅ 'dev' -> 'test' is allowed."
+            exit 0
+          fi
+
+          # stage: only accepts merges from dev or test
+          if [[ "$TARGET" == "stage" ]]; then
+            if [[ "$SOURCE" != "dev" && "$SOURCE" != "test" ]]; then
+              echo "❌ Only 'dev' or 'test' can be merged into 'stage'. Got: '$SOURCE'."
+              exit 1
+            fi
+            echo "✅ '$SOURCE' -> 'stage' is allowed."
+            exit 0
+          fi
+
+          # main: only accepts merges from stage
+          if [[ "$TARGET" == "main" ]]; then
+            if [[ "$SOURCE" != "stage" ]]; then
+              echo "❌ Only 'stage' can be merged into 'main'. Got: '$SOURCE'."
+              exit 1
+            fi
+            echo "✅ 'stage' -> 'main' is allowed."
+            exit 0
+          fi
+
+          echo "❌ Unsupported target branch '$TARGET'. Policy is only defined for: dev, test, stage, main."
+          exit 1
+
