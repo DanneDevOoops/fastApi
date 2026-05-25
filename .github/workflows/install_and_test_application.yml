@@ -2,8 +2,6 @@
 name: Install and test application
 
 on:
-    push:
-        branches: [ main, master, stage, test, dev ]
     pull_request:
         branches: [ main, master, stage, test, dev ]
 
