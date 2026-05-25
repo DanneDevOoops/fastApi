@@ -95,6 +95,48 @@ async def get_all_applications(db: AsyncSession = Depends(get_pg_db)) -> ORJSONR
 
 
 @router.get(
+    "/deleted",
+    name="get_all_soft_deleted_applications_route_v1",
+    description="Route to request all soft-deleted applications/"
+    "services from the PostgreSQL database.",
+    operation_id="get_all_deleted_applications_route_v1",
+    response_class=ORJSONResponse,
+    status_code=status.HTTP_200_OK,
+)
+async def get_all_soft_deleted_applications(
+    db: AsyncSession = Depends(get_pg_db),
+) -> ORJSONResponse:
+    """
+    Get all soft-deleted applications/services.
+    """
+    try:
+        logger.info("Getting all soft-deleted applications/services...")
+        stmt = select(Application).where(Application.deleted_at.is_not(None))
+        result = await db.execute(stmt)
+        applications = result.scalars().all()
+
+        if not applications:
+            raise NotFoundException(message="No deleted applications found")
+
+        return ORJSONResponse(
+            content=[
+                ApplicationOutput.model_validate(app).model_dump()
+                for app in applications
+            ],
+            status_code=status.HTTP_200_OK,
+        )
+    except NotFoundException as e:
+        logger.error(e)
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=str(e)) from e
+    except Exception as e:
+        logger.error("Unexpected error occurred: %s", e, exc_info=True)
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail="Internal Server Error",
+        ) from e
+
+
+@router.get(
     "/{app_id}",
     name="get_application_by_id_route_v1",
     description="Route to request a specific application/service by "
