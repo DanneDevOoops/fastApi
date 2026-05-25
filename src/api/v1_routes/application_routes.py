@@ -319,6 +319,7 @@ async def patch_update_application(
     """
     try:
         logger.info("Updating application/service with ID %s", app_id)
+
         stmt = select(Application).where(
             Application.id == app_id, Application.deleted_at.is_(None)
         )
