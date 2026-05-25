@@ -247,6 +247,57 @@ async def create_application(
 
 
 @router.patch(
+    "/delete/{app_id}",
+    name="soft_delete_application_route_v1",
+    description="Route to soft delete an existing application/"
+    "service from the PostgreSQL database.",
+    operation_id="soft_delete_application_route_v1",
+    response_class=ORJSONResponse,
+    status_code=status.HTTP_200_OK,
+)
+async def soft_delete_application(
+    app_id: str, db: AsyncSession = Depends(get_pg_db)
+) -> ORJSONResponse:
+    """
+    Soft delete an existing application/service by its ID.
+
+    :param app_id: The ID of the application to delete.
+    :param db: The database session.
+    :return: ORJSONResponse with deletion confirmation.
+    """
+    try:
+        logger.info("Soft deleting application/service with ID %s", app_id)
+        stmt = select(Application).where(
+            Application.id == app_id, Application.deleted_at.is_(None)
+        )
+        result = await db.execute(stmt)
+        app = result.scalar_one_or_none()
+
+        if not app:
+            logger.warning("Application with ID %s not found.", app_id)
+            raise NotFoundException(message=f"Application ({app_id}) not found")
+
+        # Soft delete by setting deleted_at timestamp
+        app.deleted_at = datetime.now(timezone.utc)
+        await db.commit()
+
+        return ORJSONResponse(
+            content={"detail": f"Application {app_id} " "soft deleted successfully"},
+            status_code=status.HTTP_200_OK,
+        )
+    except NotFoundException as e:
+        logger.error(e)
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=str(e)) from e
+    except Exception as e:
+        await db.rollback()
+        logger.error("Unexpected error occurred: %s", e, exc_info=True)
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail="Internal Server Error",
+        ) from e
+
+
+@router.patch(
     "/{app_id}",
     name="update_application_route_v1",
     description="Route to update an existing application/service in "
@@ -349,57 +400,6 @@ async def put_update_application(
 
         return ORJSONResponse(
             content=ApplicationOutput.model_validate(app).model_dump(),
-            status_code=status.HTTP_200_OK,
-        )
-    except NotFoundException as e:
-        logger.error(e)
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=str(e)) from e
-    except Exception as e:
-        await db.rollback()
-        logger.error("Unexpected error occurred: %s", e, exc_info=True)
-        raise HTTPException(
-            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail="Internal Server Error",
-        ) from e
-
-
-@router.patch(
-    "/delete/{app_id}",
-    name="soft_delete_application_route_v1",
-    description="Route to soft delete an existing application/"
-    "service from the PostgreSQL database.",
-    operation_id="soft_delete_application_route_v1",
-    response_class=ORJSONResponse,
-    status_code=status.HTTP_200_OK,
-)
-async def soft_delete_application(
-    app_id: str, db: AsyncSession = Depends(get_pg_db)
-) -> ORJSONResponse:
-    """
-    Soft delete an existing application/service by its ID.
-
-    :param app_id: The ID of the application to delete.
-    :param db: The database session.
-    :return: ORJSONResponse with deletion confirmation.
-    """
-    try:
-        logger.info("Soft deleting application/service with ID %s", app_id)
-        stmt = select(Application).where(
-            Application.id == app_id, Application.deleted_at.is_(None)
-        )
-        result = await db.execute(stmt)
-        app = result.scalar_one_or_none()
-
-        if not app:
-            logger.warning("Application with ID %s not found.", app_id)
-            raise NotFoundException(message=f"Application ({app_id}) not found")
-
-        # Soft delete by setting deleted_at timestamp
-        app.deleted_at = datetime.now(timezone.utc)
-        await db.commit()
-
-        return ORJSONResponse(
-            content={"detail": f"Application {app_id} " "soft deleted successfully"},
             status_code=status.HTTP_200_OK,
         )
     except NotFoundException as e:
