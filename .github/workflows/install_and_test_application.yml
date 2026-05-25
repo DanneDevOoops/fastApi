@@ -85,7 +85,7 @@ jobs:
               run: .venv/bin/python -m pylint --verbose src
 
     test_application:
-        name: Run pytest suite
+        name: Run PyTest
         needs: prepare_env
         runs-on: ubuntu-latest
         permissions:
