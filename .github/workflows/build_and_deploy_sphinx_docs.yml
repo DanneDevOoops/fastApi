@@ -6,9 +6,19 @@ name: Build and deploy documentation to GH-pages
 
 # Controls when the workflow will run
 on:
-  # Triggers the workflow on push or pull request events but only for the main branch
+  # Triggers on pushes to main when docs/build-related files change
   push:
-    branches: [ main, master ]
+    branches:
+      - main
+    paths:
+      - "docs/**"
+      - "src/**"
+      - ".github/actions/build-sphinx/**"
+      - ".github/actions/deploy-gh-pages/**"
+      - ".github/actions/setup-python-poetry/**"
+      - ".github/workflows/build_and_deploy_sphinx_docs.yml"
+      - "pyproject.toml"
+      - "poetry.lock"
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
@@ -60,7 +70,7 @@ jobs:
     concurrency:
       group: docs-deploy-${{ github.ref }}
       cancel-in-progress: true
-    if: github.event_name == 'push'
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
 
     steps:
       - name: Download docs artifact
