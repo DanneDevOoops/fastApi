@@ -128,7 +128,6 @@ async def get_all_soft_deleted_applications(
     except NotFoundException as e:
         logger.error(e)
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=str(e)) from e
-
     except Exception as e:
         logger.error("Unexpected error occurred: %s", e, exc_info=True)
         raise HTTPException(
