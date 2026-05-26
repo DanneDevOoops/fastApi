@@ -194,4 +194,3 @@ jobs:
               run: |
                 .venv/bin/python -m isort src --check-only --diff
                 .venv/bin/python -m black src --check
-
