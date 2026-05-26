@@ -1,0 +1,29 @@
+name: Build and deploy documentation to GH-pages
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - "docs/**"
+      - "src/**"
+      - ".github/actions/build-sphinx/**"
+      - ".github/actions/deploy-gh-pages/**"
+      - ".github/actions/setup-python-poetry/**"
+      - ".github/workflows/ci-docs.yml"
+      - ".github/workflows/docs-pipeline.yml"
+      - "pyproject.toml"
+      - "poetry.lock"
+  workflow_dispatch:
+
+jobs:
+  docs:
+    uses: ./.github/workflows/docs-pipeline.yml
+    secrets: inherit
+    with:
+      python-version: "3.11.14"
+      poetry-version: "1.8.3"
+      cache-dependency-path: "**/poetry.lock"
+      docs-artifact-name: sphinx-docs
+      publish-dir: ./gh-pages
+      publish-branch: gh-pages

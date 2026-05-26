@@ -1,0 +1,45 @@
+name: Install, lint, test & format application codebase
+
+on:
+  pull_request:
+    branches: [main, stage, test, dev]
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
+jobs:
+  python-ci:
+    uses: ./.github/workflows/python-ci-pipeline.yml
+    secrets: inherit
+    with:
+      python-version: "3.11.14"
+      poetry-version: "1.8.3"
+      cache-dependency-path: "**/poetry.lock"
+      venv-artifact-name: python-venv
+      lint-target-path: src
+      pylint-args: "--verbose"
+      pytest-args: "--verbose"
+
+  format_on_merge:
+    needs: python-ci
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    uses: ./.github/workflows/python-format-pipeline.yml
+    secrets: inherit
+    with:
+      venv-artifact-name: python-venv
+      python-paths: src
+      run-mode: format
+      commit-message: "ci: auto-format Python code (isort + black)"
+
+  check_format_for_forks:
+    needs: python-ci
+    if: github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name != github.repository
+    uses: ./.github/workflows/python-format-pipeline.yml
+    secrets: inherit
+    with:
+      venv-artifact-name: python-venv
+      python-paths: src
+      run-mode: check
