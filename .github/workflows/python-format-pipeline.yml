@@ -28,17 +28,18 @@ env:
   FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
 
 jobs:
-  format_or_check:
-    name: ${{ inputs.run-mode == 'format' && 'Format Python Code' || 'Check Python Formatting' }}
+  format_and_commit:
+    name: Format Python Code
+    if: inputs.run-mode == 'format'
     runs-on: ubuntu-latest
     permissions:
-      contents: ${{ inputs.run-mode == 'format' && 'write' || 'read' }}
+      contents: write
 
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
         with:
-          fetch-depth: ${{ inputs.run-mode == 'format' && '0' || '1' }}
+          fetch-depth: 0
 
       - name: Download virtual environment artifact
         uses: actions/download-artifact@v4
@@ -58,7 +59,36 @@ jobs:
           run-mode: ${{ inputs.run-mode }}
 
       - name: Commit and push formatting changes
-        if: inputs.run-mode == 'format'
         uses: ./.github/actions/git-commit-and-push
         with:
           commit-message: ${{ inputs.commit-message }}
+
+  check_format:
+    name: Check Python Formatting
+    if: inputs.run-mode == 'check'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+
+      - name: Download virtual environment artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: ${{ inputs.venv-artifact-name }}
+          path: .venv
+
+      - name: Restore virtualenv execute permissions
+        shell: bash
+        run: chmod -R u+x .venv/bin
+
+      - name: Format or check Python code
+        uses: ./.github/actions/format-python
+        with:
+          python-bin: .venv/bin/python
+          python-paths: ${{ inputs.python-paths }}
+          run-mode: ${{ inputs.run-mode }}
