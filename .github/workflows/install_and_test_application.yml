@@ -53,7 +53,7 @@ jobs:
                 retention-days: 1
 
     lint_application:
-        name: Lint application codebase
+        name: PyLint application codebase
         needs: prepare_env
         runs-on: ubuntu-latest
         permissions:
