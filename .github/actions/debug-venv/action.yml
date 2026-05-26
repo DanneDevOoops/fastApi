@@ -1,0 +1,28 @@
+name: Debug Virtual Environment
+description: Verify and display information about the Python virtual environment.
+
+inputs:
+  venv-path:
+    description: Path to the virtual environment directory
+    required: false
+    default: ".venv"
+
+runs:
+  using: composite
+  steps:
+    - name: Debug virtual environment
+      shell: bash
+      run: |
+        VENV_PATH="${{ inputs.venv-path }}"
+        if [[ -d "$VENV_PATH" ]]; then
+          echo "✅ Virtual environment exists at: $VENV_PATH"
+          echo ""
+          echo "📊 Size:"
+          du -sh "$VENV_PATH"
+          echo ""
+          echo "📁 Sample files (first 10):"
+          find "$VENV_PATH" -maxdepth 2 -type f | head -n 10
+        else
+          echo "❌ Virtual environment directory does not exist at: $VENV_PATH"
+          exit 1
+        fi

@@ -1,0 +1,42 @@
+name: Git Commit and Push
+description: Commit staged changes and push to repository with configurable identity.
+
+inputs:
+  commit-message:
+    description: Git commit message
+    required: true
+  git-author-name:
+    description: Git author name for commits
+    required: false
+    default: "github-actions[bot]"
+  git-author-email:
+    description: Git author email for commits
+    required: false
+    default: "41898282+github-actions[bot]@users.noreply.github.com"
+
+runs:
+  using: composite
+  steps:
+    - name: Check for changes
+      shell: bash
+      run: |
+        if git diff --quiet; then
+          echo "ℹ️  No changes to commit."
+          exit 0
+        fi
+        echo "changes_exist=true" >> "$GITHUB_ENV"
+
+    - name: Configure Git identity
+      if: env.changes_exist == 'true'
+      shell: bash
+      run: |
+        git config user.name "${{ inputs.git-author-name }}"
+        git config user.email "${{ inputs.git-author-email }}"
+
+    - name: Commit and push changes
+      if: env.changes_exist == 'true'
+      shell: bash
+      run: |
+        git add -A
+        git commit -m "${{ inputs.commit-message }}"
+        git push
