@@ -8,7 +8,7 @@ packages = [{ include = "*", from = "src" }]
 
 [tool.poetry.dependencies]
 bpython = "^0.24"
-fastapi = { extras = ["all"], version = "^0.115.0" }
+fastapi = "^0.120.1"
 fastapi-cli = "^0.0.5"
 nanoid = "^2.0.0"
 python = "^3.11"
@@ -18,9 +18,17 @@ python-dotenv = "^1.0.1"
 requests = "^2.32.3"
 uvicorn = "^0.30.6"
 websockets = "^14.1"
-python-jose = { extras = ["cryprography"], version = "^3.5.0" }
-python-multipart = "^0.0.20"
+python-multipart = "^0.0.27"
 bcrypt = "4.0.1"
+pyjwt = "^2.13.0"
+python-jose = "^3.5.0"
+starlette = "^0.49.1"
+httptools = "^0.8.0"
+typer = "^0.26.0"
+jinxed = "^2.0.4"
+snowballstemmer = "^3.1.0"
+blessed = "^1.44.0"
+sqlalchemy = "^2.0.50"
 
 [tool.poetry.group.database_orm.dependencies]
 sqlalchemy = "^2.0.35"
@@ -44,7 +52,7 @@ faker = "^28.4.1"
 pytest = "^8.3.3"
 
 [tool.poetry.group.dev.dependencies]
-black = "^24.8.0"
+black = "^26.3.1"
 flake8 = "^7.1.1"
 isort = "^5.13.2"
 mypy = "^1.11.2"
