@@ -1,4 +1,10 @@
-name: Install, lint, test & format application codebase
+name: Validate branch policy and run Python CI pipeline
+run-name: >-
+  ${{ github.event_name == 'pull_request'
+      && format('PR #{0} • {1} → {2}', github.event.pull_request.number, github.head_ref, github.base_ref)
+      || github.event_name == 'push'
+      && format('Push • {0} • {1}', github.ref_name, github.sha)
+      || format('Manual run • {0}', github.ref_name) }}
 
 on:
   pull_request:
@@ -11,14 +17,14 @@ env:
   FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
 
 jobs:
-  branch_policy_gate:
+  validate_branch_policy:
     if: github.event_name == 'pull_request'
     uses: ./.github/workflows/branch-merge-policy.yml
     secrets: inherit
 
   python-ci:
-    needs: branch_policy_gate
-    if: ${{ always() && (github.event_name != 'pull_request' || needs.branch_policy_gate.result == 'success') }}
+    needs: [validate_branch_policy]
+    if: ${{ always() && (github.event_name != 'pull_request' || needs.validate_branch_policy.result == 'success') }}
     uses: ./.github/workflows/python-ci-pipeline.yml
     secrets: inherit
     with:
@@ -33,7 +39,7 @@ jobs:
       run-tests: ${{ github.event_name == 'pull_request' }}
 
   format_on_merge:
-    needs: python-ci
+    needs: [python-ci]
     if: github.event_name == 'push' && github.ref == 'refs/heads/main'
     uses: ./.github/workflows/python-format-pipeline.yml
     secrets: inherit
@@ -44,7 +50,7 @@ jobs:
       commit-message: "ci: auto-format Python code (isort + black)"
 
   check_format_for_forks:
-    needs: python-ci
+    needs: [python-ci]
     if: github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name != github.repository
     uses: ./.github/workflows/python-format-pipeline.yml
     secrets: inherit
