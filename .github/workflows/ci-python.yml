@@ -11,7 +11,14 @@ env:
   FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
 
 jobs:
+  branch_policy_gate:
+    if: github.event_name == 'pull_request'
+    uses: ./.github/workflows/branch-merge-policy.yml
+    secrets: inherit
+
   python-ci:
+    needs: branch_policy_gate
+    if: ${{ always() && (github.event_name != 'pull_request' || needs.branch_policy_gate.result == 'success') }}
     uses: ./.github/workflows/python-ci-pipeline.yml
     secrets: inherit
     with:
@@ -22,6 +29,8 @@ jobs:
       lint-target-path: src
       pylint-args: "--verbose"
       pytest-args: "--verbose"
+      run-lint: ${{ github.event_name == 'pull_request' }}
+      run-tests: ${{ github.event_name == 'pull_request' }}
 
   format_on_merge:
     needs: python-ci
