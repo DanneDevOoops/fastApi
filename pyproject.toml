@@ -50,7 +50,7 @@ psycopg = { extras = ["binary", "pool"], version = "^3.2.2" }
 aiosqlite = "^0.20.0"
 
 [tool.poetry.group.test.dependencies]
-faker = "^28.4.1"
+faker = ">=28.4.1,<41.0.0"
 pytest = "^8.3.3"
 
 [tool.poetry.group.dev.dependencies]
