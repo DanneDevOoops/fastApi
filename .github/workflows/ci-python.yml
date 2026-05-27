@@ -22,6 +22,8 @@ jobs:
       lint-target-path: src
       pylint-args: "--verbose"
       pytest-args: "--verbose"
+      run-lint: ${{ github.event_name == 'pull_request' }}
+      run-tests: ${{ github.event_name == 'pull_request' }}
 
   format_on_merge:
     needs: python-ci
