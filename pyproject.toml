@@ -29,8 +29,16 @@ jinxed = "^2.0.4"
 snowballstemmer = "^3.1.0"
 blessed = "^1.44.0"
 sqlalchemy = "^2.0.50"
+<<<<<<< HEAD
+<<<<<<< HEAD
 httpx = "^0.28.1"
 orjson = "^3.11.9"
+=======
+>>>>>>> 6a48167 (update deps again?)
+=======
+httpx = "^0.28.1"
+orjson = "^3.11.9"
+>>>>>>> cfe1696 (update dependencies and .lock file poetry)
 
 [tool.poetry.group.database_orm.dependencies]
 sqlalchemy = "^2.0.35"
