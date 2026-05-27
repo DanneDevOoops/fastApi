@@ -47,7 +47,7 @@ psycopg2-binary = "^2.9.9"
 psycopg = { extras = ["binary", "pool"], version = "^3.2.2" }
 
 [tool.poetry.group.sqlite.dependencies]
-aiosqlite = "^0.20.0"
+aiosqlite = ">=0.20,<0.23"
 
 [tool.poetry.group.test.dependencies]
 faker = "^28.4.1"
