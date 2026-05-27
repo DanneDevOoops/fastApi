@@ -3,15 +3,14 @@
 name: Enforce branch merge policy
 
 on:
-  pull_request:
-    branches: [ dev, test, stage, main ]
+  workflow_call:
 
 env:
   FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
 
 jobs:
   check_branch_policy:
-    name: Validate source → target branch policy
+    name: Validate source → target (branch policy)
     runs-on: ubuntu-latest
     permissions:
       contents: read
