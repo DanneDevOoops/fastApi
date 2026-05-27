@@ -82,7 +82,8 @@ async def get_all_users(
 
         return ORJSONResponse(
             status_code=status.HTTP_200_OK,
-            content=[UserOutput.model_validate(u).model_dump() for u in users],
+            content=[UserOutput.model_validate(u).model_dump(
+                exclude_none=True) for u in users],
         )
     except NotFoundException as e:
         logger.error(e)
@@ -128,7 +129,8 @@ async def get_all_soft_deleted_users(
 
         return ORJSONResponse(
             status_code=status.HTTP_200_OK,
-            content=[UserOutput.model_validate(u).model_dump() for u in users],
+            content=[UserOutput.model_validate(u).model_dump(
+                exclude_none=True) for u in users],
         )
     except NotFoundException as e:
         logger.error(e)
@@ -174,7 +176,8 @@ async def get_all_activated_users(
 
         return ORJSONResponse(
             status_code=status.HTTP_200_OK,
-            content=[UserOutput.model_validate(u).model_dump() for u in users],
+            content=[UserOutput.model_validate(u).model_dump(
+                exclude_none=True) for u in users],
         )
     except NotFoundException as e:
         logger.error(e)
@@ -222,7 +225,8 @@ async def get_all_deactivated_users(
 
         return ORJSONResponse(
             status_code=status.HTTP_200_OK,
-            content=[UserOutput.model_validate(u).model_dump() for u in users],
+            content=[UserOutput.model_validate(u).model_dump(
+                exclude_none=True) for u in users],
         )
     except NotFoundException as e:
         logger.error(e)
@@ -270,7 +274,8 @@ async def get_all_superusers(
 
         return ORJSONResponse(
             status_code=status.HTTP_200_OK,
-            content=[UserOutput.model_validate(u).model_dump() for u in users],
+            content=[UserOutput.model_validate(u).model_dump(
+                exclude_none=True) for u in users],
         )
     except NotFoundException as e:
         logger.error(e)
@@ -319,7 +324,8 @@ async def get_user_by_id(
 
         return ORJSONResponse(
             status_code=status.HTTP_200_OK,
-            content=UserOutput.model_validate(user).model_dump(),
+            content=UserOutput.model_validate(user).model_dump(
+                exclude_none=True),
         )
     except NotFoundException as e:
         logger.error(e)
@@ -363,7 +369,8 @@ async def create_user(
         await db.commit()
         await db.refresh(new_user)
 
-        serialized = UserOutput.model_validate(new_user).model_dump()
+        serialized = UserOutput.model_validate(new_user).model_dump(
+            exclude_none=True)
         for key in ["password", "is_superuser", "updated_at", "deleted_at"]:
             serialized.pop(key, None)
 
@@ -419,7 +426,8 @@ async def get_users_batch_by_ids(
 
         return ORJSONResponse(
             status_code=status.HTTP_200_OK,
-            content=[UserOutput.model_validate(u).model_dump() for u in users],
+            content=[UserOutput.model_validate(u).model_dump(
+                exclude_none=True) for u in users],
         )
     except Exception as e:
         logger.error(e)
@@ -473,7 +481,8 @@ async def soft_delete_user_by_id(
 
         return ORJSONResponse(
             status_code=status.HTTP_200_OK,
-            content=UserOutput.model_validate(user).model_dump(),
+            content=UserOutput.model_validate(user).model_dump(
+                exclude_none=True),
         )
     except NotFoundException as e:
         logger.error(e)
@@ -531,7 +540,8 @@ async def patch_update_user_by_id(
 
         return ORJSONResponse(
             status_code=status.HTTP_200_OK,
-            content=UserOutput.model_validate(user).model_dump(),
+            content=UserOutput.model_validate(user).model_dump(
+                exclude_none=True),
         )
     except NotFoundException as e:
         logger.error(e)
@@ -589,7 +599,8 @@ async def put_update_user_by_id(
 
         return ORJSONResponse(
             status_code=status.HTTP_200_OK,
-            content=UserOutput.model_validate(user).model_dump(),
+            content=UserOutput.model_validate(user).model_dump(
+                exclude_none=True),
         )
     except NotFoundException as e:
         logger.error(e)

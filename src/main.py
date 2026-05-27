@@ -47,6 +47,7 @@ from src.core.exception_handlers import (
     validation_exception_handler,
 )
 from src.core.logger_config import init_logger
+from src.middlewares.gzip import GzipResponseMiddleware
 from src.middlewares.logger import LoggerMiddleware
 from src.utils.app_constants import REQUEST_HEADERS, REQUEST_METHODS, REQUEST_ORIGINS
 
@@ -75,6 +76,12 @@ app.add_exception_handler(HTTPException, http_exception_handler)
 
 # Middleware
 app.add_middleware(LoggerMiddleware)
+if settings.app_gzip_enabled:
+    app.add_middleware(
+        GzipResponseMiddleware,
+        minimum_size=settings.app_gzip_minimum_size,
+        compresslevel=settings.app_gzip_compress_level,
+    )
 app.add_middleware(
     CORSMiddleware,
     allow_credentials=True,
