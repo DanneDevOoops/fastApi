@@ -58,12 +58,13 @@ def application_routes_options() -> Response:
     "",
     name="get_all_applications_route_v1",
     description="Route to request all registered applications/"
-    "services from the PostgreSQL database.",
+                "services from the PostgreSQL database.",
     operation_id="get_all_applications_route_v1",
     response_class=ORJSONResponse,
     status_code=status.HTTP_200_OK,
 )
-async def get_all_applications(db: AsyncSession = Depends(get_pg_db)) -> ORJSONResponse:
+async def get_all_applications(
+        db: AsyncSession = Depends(get_pg_db)) -> ORJSONResponse:
     """
     Get all registered applications/services that are not soft-deleted.
     """
@@ -78,14 +79,16 @@ async def get_all_applications(db: AsyncSession = Depends(get_pg_db)) -> ORJSONR
 
         return ORJSONResponse(
             content=[
-                ApplicationOutput.model_validate(app).model_dump()
+                ApplicationOutput.model_validate(app).model_dump(
+                    exclude_none=True)
                 for app in applications
             ],
             status_code=status.HTTP_200_OK,
         )
     except NotFoundException as e:
         logger.error(e)
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=str(e)) from e
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
+                            detail=str(e)) from e
     except Exception as e:
         logger.error("Unexpected error occurred: %s", e, exc_info=True)
         raise HTTPException(
@@ -98,13 +101,13 @@ async def get_all_applications(db: AsyncSession = Depends(get_pg_db)) -> ORJSONR
     "/deleted",
     name="get_all_soft_deleted_applications_route_v1",
     description="Route to request all soft-deleted applications/"
-    "services from the PostgreSQL database.",
+                "services from the PostgreSQL database.",
     operation_id="get_all_deleted_applications_route_v1",
     response_class=ORJSONResponse,
     status_code=status.HTTP_200_OK,
 )
 async def get_all_soft_deleted_applications(
-    db: AsyncSession = Depends(get_pg_db),
+        db: AsyncSession = Depends(get_pg_db),
 ) -> ORJSONResponse:
     """
     Get all soft-deleted applications/services.
@@ -120,14 +123,16 @@ async def get_all_soft_deleted_applications(
 
         return ORJSONResponse(
             content=[
-                ApplicationOutput.model_validate(app).model_dump()
+                ApplicationOutput.model_validate(app).model_dump(
+                    exclude_none=True)
                 for app in applications
             ],
             status_code=status.HTTP_200_OK,
         )
     except NotFoundException as e:
         logger.error(e)
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=str(e)) from e
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
+                            detail=str(e)) from e
     except Exception as e:
         logger.error("Unexpected error occurred: %s", e, exc_info=True)
         raise HTTPException(
@@ -140,13 +145,13 @@ async def get_all_soft_deleted_applications(
     "/{app_id}",
     name="get_application_by_id_route_v1",
     description="Route to request a specific application/service by "
-    "its ID from the PostgreSQL database.",
+                "its ID from the PostgreSQL database.",
     operation_id="get_application_by_id_route_v1",
     response_class=ORJSONResponse,
     status_code=status.HTTP_200_OK,
 )
 async def get_application_by_id(
-    app_id: str, db: AsyncSession = Depends(get_pg_db)
+        app_id: str, db: AsyncSession = Depends(get_pg_db)
 ) -> ORJSONResponse:
     """
     Get a specific application/service by its ID.
@@ -165,15 +170,18 @@ async def get_application_by_id(
 
         if not app:
             logger.warning("Application with ID %s not found.", app_id)
-            raise NotFoundException(message=f"Application ({app_id}) not found")
+            raise NotFoundException(
+                message=f"Application ({app_id}) not found")
 
         return ORJSONResponse(
-            content=ApplicationOutput.model_validate(app).model_dump(),
+            content=ApplicationOutput.model_validate(app).model_dump(
+                exclude_none=True),
             status_code=status.HTTP_200_OK,
         )
     except NotFoundException as e:
         logger.error(e)
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=str(e)) from e
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
+                            detail=str(e)) from e
     except Exception as e:
         logger.error("Unexpected error occurred: %s", e, exc_info=True)
         raise HTTPException(
@@ -186,13 +194,13 @@ async def get_application_by_id(
     "",
     name="create_application_route_v1",
     description="Route to create a new application/service in the "
-    "PostgreSQL database.",
+                "PostgreSQL database.",
     operation_id="create_application_route_v1",
     response_class=ORJSONResponse,
     status_code=status.HTTP_201_CREATED,
 )
 async def create_application(
-    app_data: ApplicationCreate, db: AsyncSession = Depends(get_pg_db)
+        app_data: ApplicationCreate, db: AsyncSession = Depends(get_pg_db)
 ) -> ORJSONResponse:
     """
     Create a new application/service in PostgreSQL.
@@ -228,7 +236,9 @@ async def create_application(
         await db.refresh(new_app)
 
         # Prepare response with JWT token (only displayed once)
-        response_data = ApplicationOutput.model_validate(new_app).model_dump()
+        response_data = ApplicationOutput.model_validate(new_app).model_dump(
+            exclude_none=True
+        )
         response_data["jwt_token"] = jwt_token
 
         return ORJSONResponse(
@@ -250,13 +260,13 @@ async def create_application(
     "/delete/{app_id}",
     name="soft_delete_application_route_v1",
     description="Route to soft delete an existing application/"
-    "service from the PostgreSQL database.",
+                "service from the PostgreSQL database.",
     operation_id="soft_delete_application_route_v1",
     response_class=ORJSONResponse,
     status_code=status.HTTP_200_OK,
 )
 async def soft_delete_application(
-    app_id: str, db: AsyncSession = Depends(get_pg_db)
+        app_id: str, db: AsyncSession = Depends(get_pg_db)
 ) -> ORJSONResponse:
     """
     Soft delete an existing application/service by its ID.
@@ -275,19 +285,22 @@ async def soft_delete_application(
 
         if not app:
             logger.warning("Application with ID %s not found.", app_id)
-            raise NotFoundException(message=f"Application ({app_id}) not found")
+            raise NotFoundException(
+                message=f"Application ({app_id}) not found")
 
         # Soft delete by setting deleted_at timestamp
         app.deleted_at = datetime.now(timezone.utc)
         await db.commit()
 
         return ORJSONResponse(
-            content={"detail": f"Application {app_id} " "soft deleted successfully"},
+            content={
+                "detail": f"Application {app_id} " "soft deleted successfully"},
             status_code=status.HTTP_200_OK,
         )
     except NotFoundException as e:
         logger.error(e)
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=str(e)) from e
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
+                            detail=str(e)) from e
     except Exception as e:
         await db.rollback()
         logger.error("Unexpected error occurred: %s", e, exc_info=True)
@@ -301,13 +314,14 @@ async def soft_delete_application(
     "/{app_id}",
     name="update_application_route_v1",
     description="Route to update an existing application/service in "
-    "the PostgreSQL database.",
+                "the PostgreSQL database.",
     operation_id="update_application_route_v1",
     response_class=ORJSONResponse,
     status_code=status.HTTP_200_OK,
 )
 async def patch_update_application(
-    app_id: str, app_data: ApplicationUpdate, db: AsyncSession = Depends(get_pg_db)
+        app_id: str, app_data: ApplicationUpdate,
+        db: AsyncSession = Depends(get_pg_db)
 ) -> ORJSONResponse:
     """
     Partially update an existing application/service.
@@ -328,7 +342,8 @@ async def patch_update_application(
 
         if not app:
             logger.warning("Application with ID %s not found.", app_id)
-            raise NotFoundException(message=f"Application ({app_id}) not found")
+            raise NotFoundException(
+                message=f"Application ({app_id}) not found")
 
         # Update only provided fields
         update_data = app_data.model_dump(exclude_unset=True)
@@ -341,12 +356,14 @@ async def patch_update_application(
         await db.refresh(app)
 
         return ORJSONResponse(
-            content=ApplicationOutput.model_validate(app).model_dump(),
+            content=ApplicationOutput.model_validate(app).model_dump(
+                exclude_none=True),
             status_code=status.HTTP_200_OK,
         )
     except NotFoundException as e:
         logger.error(e)
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=str(e)) from e
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
+                            detail=str(e)) from e
     except Exception as e:
         await db.rollback()
         logger.error("Unexpected error occurred: %s", e, exc_info=True)
@@ -360,14 +377,15 @@ async def patch_update_application(
     "/{app_id}",
     name="full_update_application_route_v1",
     description="Route to fully update an existing application/"
-    "service in the PostgreSQL database using PUT "
-    "method.",
+                "service in the PostgreSQL database using PUT "
+                "method.",
     operation_id="full_update_application_route_v1",
     response_class=ORJSONResponse,
     status_code=status.HTTP_200_OK,
 )
 async def put_update_application(
-    app_id: str, app_data: ApplicationCreate, db: AsyncSession = Depends(get_pg_db)
+        app_id: str, app_data: ApplicationCreate,
+        db: AsyncSession = Depends(get_pg_db)
 ) -> ORJSONResponse:
     """
     Fully update an existing application/service using PUT method.
@@ -378,7 +396,8 @@ async def put_update_application(
     :return: ORJSONResponse containing the updated application data.
     """
     try:
-        logger.info("Fully updating application/service with ID %s using PUT", app_id)
+        logger.info("Fully updating application/service with ID %s using PUT",
+                    app_id)
         stmt = select(Application).where(
             Application.id == app_id, Application.deleted_at.is_(None)
         )
@@ -387,7 +406,8 @@ async def put_update_application(
 
         if not app:
             logger.warning("Application with ID %s not found.", app_id)
-            raise NotFoundException(message=f"Application ({app_id}) not found")
+            raise NotFoundException(
+                message=f"Application ({app_id}) not found")
 
         # Update all fields from request
         app.name = app_data.name
@@ -400,12 +420,14 @@ async def put_update_application(
         await db.refresh(app)
 
         return ORJSONResponse(
-            content=ApplicationOutput.model_validate(app).model_dump(),
+            content=ApplicationOutput.model_validate(app).model_dump(
+                exclude_none=True),
             status_code=status.HTTP_200_OK,
         )
     except NotFoundException as e:
         logger.error(e)
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=str(e)) from e
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
+                            detail=str(e)) from e
     except Exception as e:
         await db.rollback()
         logger.error("Unexpected error occurred: %s", e, exc_info=True)
@@ -419,13 +441,13 @@ async def put_update_application(
     "/delete/{app_id}",
     name="hard_delete_application_route_v1",
     description="Route to hard delete an existing application/"
-    "service from the PostgreSQL database.",
+                "service from the PostgreSQL database.",
     operation_id="hard_delete_application_route_v1",
     response_class=ORJSONResponse,
     status_code=status.HTTP_200_OK,
 )
 async def hard_delete_application(
-    app_id: str, db: AsyncSession = Depends(get_pg_db)
+        app_id: str, db: AsyncSession = Depends(get_pg_db)
 ) -> ORJSONResponse:
     """
     Hard delete an existing application/service by its ID.
@@ -442,19 +464,22 @@ async def hard_delete_application(
 
         if not app:
             logger.warning("Application with ID %s not found.", app_id)
-            raise NotFoundException(message=f"Application ({app_id}) not found")
+            raise NotFoundException(
+                message=f"Application ({app_id}) not found")
 
         # Hard delete from database
         await db.delete(app)
         await db.commit()
 
         return ORJSONResponse(
-            content={"detail": f"Application {app_id} " "deleted successfully"},
+            content={
+                "detail": f"Application {app_id} " "deleted successfully"},
             status_code=status.HTTP_200_OK,
         )
     except NotFoundException as e:
         logger.error(e)
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=str(e)) from e
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
+                            detail=str(e)) from e
     except Exception as e:
         await db.rollback()
         logger.error("Unexpected error occurred: %s", e, exc_info=True)
