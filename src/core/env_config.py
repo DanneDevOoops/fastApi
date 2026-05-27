@@ -38,6 +38,15 @@ class Settings(BaseSettings):
     app_logger_name: str = Field(
         default="application_logger", json_schema_extra={"env_name": "APP_LOGGER_NAME"}
     )
+    app_gzip_enabled: bool = Field(
+        default=True, json_schema_extra={"env_name": "APP_GZIP_ENABLED"}
+    )
+    app_gzip_minimum_size: int = Field(
+        default=500, json_schema_extra={"env_name": "APP_GZIP_MINIMUM_SIZE"}
+    )
+    app_gzip_compress_level: int = Field(
+        default=9, json_schema_extra={"env_name": "APP_GZIP_COMPRESS_LEVEL"}
+    )
 
     # --- JWT Token settings -------------------------------------------------
     app_jwt_algorithm: str = Field(
