@@ -25,8 +25,7 @@ from src.core.custom_exceptions import NotFoundException
 from src.core.env_config import get_settings
 from src.db.connectors.postgres_db import get_pg_db
 from src.db.models.v1_models.users_model_v1 import User
-from src.db.schemas.v1_schemas.user_schemas import UserCreate, UserOutput, \
-    UserUpdate
+from src.db.schemas.v1_schemas.user_schemas import UserCreate, UserOutput, UserUpdate
 
 # Initialize the API router
 router = APIRouter()
@@ -34,6 +33,7 @@ router = APIRouter()
 # Initialize environment settings & logger
 settings = get_settings()
 logger = logging.getLogger(settings.app_logger_name or "application_logger")
+
 
 @router.options("", operation_id="options_v1_user_routes")
 def options_user_routes() -> Response:
@@ -61,7 +61,7 @@ def options_user_routes() -> Response:
     status_code=status.HTTP_200_OK,
 )
 async def get_all_users(
-        db: AsyncSession = Depends(get_pg_db),
+    db: AsyncSession = Depends(get_pg_db),
 ) -> ORJSONResponse:
     """
     Retrieve all Users that are not soft-deleted.
@@ -82,13 +82,12 @@ async def get_all_users(
 
         return ORJSONResponse(
             status_code=status.HTTP_200_OK,
-            content=[UserOutput.model_validate(u).model_dump() for u in users],
+            content=[UserOutput.model_validate(u).model_dump(
+                exclude_none=True) for u in users],
         )
     except NotFoundException as e:
         logger.error(e)
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND, detail=str(e)
-        ) from e
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=str(e)) from e
     except Exception as e:
         logger.error(e)
         raise HTTPException(
@@ -109,7 +108,7 @@ async def get_all_users(
     status_code=status.HTTP_200_OK,
 )
 async def get_all_soft_deleted_users(
-        db: AsyncSession = Depends(get_pg_db),
+    db: AsyncSession = Depends(get_pg_db),
 ) -> ORJSONResponse:
     """
     Retrieve all Users that have been soft-deleted.
@@ -130,13 +129,12 @@ async def get_all_soft_deleted_users(
 
         return ORJSONResponse(
             status_code=status.HTTP_200_OK,
-            content=[UserOutput.model_validate(u).model_dump() for u in users],
+            content=[UserOutput.model_validate(u).model_dump(
+                exclude_none=True) for u in users],
         )
     except NotFoundException as e:
         logger.error(e)
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND, detail=str(e)
-        ) from e
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=str(e)) from e
     except Exception as e:
         logger.error(e)
         raise HTTPException(
@@ -157,7 +155,7 @@ async def get_all_soft_deleted_users(
     status_code=status.HTTP_200_OK,
 )
 async def get_all_activated_users(
-        db: AsyncSession = Depends(get_pg_db),
+    db: AsyncSession = Depends(get_pg_db),
 ) -> ORJSONResponse:
     """
     Retrieve all users where `is_active` is True and not soft-deleted.
@@ -169,10 +167,7 @@ async def get_all_activated_users(
     try:
         async with db as session:
             result = await session.execute(
-                select(User).filter(
-                    User.is_active.is_(True),
-                    User.deleted_at.is_(None)
-                )
+                select(User).filter(User.is_active.is_(True), User.deleted_at.is_(None))
             )
             users = result.unique().scalars().all()
 
@@ -181,13 +176,12 @@ async def get_all_activated_users(
 
         return ORJSONResponse(
             status_code=status.HTTP_200_OK,
-            content=[UserOutput.model_validate(u).model_dump() for u in users],
+            content=[UserOutput.model_validate(u).model_dump(
+                exclude_none=True) for u in users],
         )
     except NotFoundException as e:
         logger.error(e)
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND, detail=str(e)
-        ) from e
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=str(e)) from e
     except Exception as e:
         logger.error(e)
         raise HTTPException(
@@ -208,7 +202,7 @@ async def get_all_activated_users(
     status_code=status.HTTP_200_OK,
 )
 async def get_all_deactivated_users(
-        db: AsyncSession = Depends(get_pg_db),
+    db: AsyncSession = Depends(get_pg_db),
 ) -> ORJSONResponse:
     """
     Retrieve all users where `is_active` is False and not soft-deleted.
@@ -221,8 +215,7 @@ async def get_all_deactivated_users(
         async with db as session:
             result = await session.execute(
                 select(User).filter(
-                    User.is_active.is_(False),
-                    User.deleted_at.is_(None)
+                    User.is_active.is_(False), User.deleted_at.is_(None)
                 )
             )
             users = result.unique().scalars().all()
@@ -232,13 +225,12 @@ async def get_all_deactivated_users(
 
         return ORJSONResponse(
             status_code=status.HTTP_200_OK,
-            content=[UserOutput.model_validate(u).model_dump() for u in users],
+            content=[UserOutput.model_validate(u).model_dump(
+                exclude_none=True) for u in users],
         )
     except NotFoundException as e:
         logger.error(e)
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND, detail=str(e)
-        ) from e
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=str(e)) from e
     except Exception as e:
         logger.error(e)
         raise HTTPException(
@@ -259,7 +251,7 @@ async def get_all_deactivated_users(
     status_code=status.HTTP_200_OK,
 )
 async def get_all_superusers(
-        db: AsyncSession = Depends(get_pg_db),
+    db: AsyncSession = Depends(get_pg_db),
 ) -> ORJSONResponse:
     """
     Retrieve all users where `is_superuser` is True and not soft-deleted.
@@ -272,8 +264,7 @@ async def get_all_superusers(
         async with db as session:
             result = await session.execute(
                 select(User).filter(
-                    User.is_superuser.is_(True),
-                    User.deleted_at.is_(None)
+                    User.is_superuser.is_(True), User.deleted_at.is_(None)
                 )
             )
             users = result.unique().scalars().all()
@@ -283,13 +274,12 @@ async def get_all_superusers(
 
         return ORJSONResponse(
             status_code=status.HTTP_200_OK,
-            content=[UserOutput.model_validate(u).model_dump() for u in users],
+            content=[UserOutput.model_validate(u).model_dump(
+                exclude_none=True) for u in users],
         )
     except NotFoundException as e:
         logger.error(e)
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND, detail=str(e)
-        ) from e
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=str(e)) from e
     except Exception as e:
         logger.error(e)
         raise HTTPException(
@@ -310,8 +300,8 @@ async def get_all_superusers(
     status_code=status.HTTP_200_OK,
 )
 async def get_user_by_id(
-        user_id: str,
-        db: AsyncSession = Depends(get_pg_db),
+    user_id: str,
+    db: AsyncSession = Depends(get_pg_db),
 ) -> ORJSONResponse:
     """
     Retrieve a single active User by ID.
@@ -325,9 +315,7 @@ async def get_user_by_id(
     try:
         async with db as session:
             result = await session.execute(
-                select(User).filter(
-                    User.id == user_id, User.deleted_at.is_(None)
-                )
+                select(User).filter(User.id == user_id, User.deleted_at.is_(None))
             )
             user = result.unique().scalar_one_or_none()
 
@@ -336,13 +324,12 @@ async def get_user_by_id(
 
         return ORJSONResponse(
             status_code=status.HTTP_200_OK,
-            content=UserOutput.model_validate(user).model_dump(),
+            content=UserOutput.model_validate(user).model_dump(
+                exclude_none=True),
         )
     except NotFoundException as e:
         logger.error(e)
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND, detail=str(e)
-        ) from e
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=str(e)) from e
     except Exception as e:
         logger.error(e)
         raise HTTPException(
@@ -363,8 +350,8 @@ async def get_user_by_id(
     status_code=status.HTTP_201_CREATED,
 )
 async def create_user(
-        user: UserCreate,
-        db: AsyncSession = Depends(get_pg_db),
+    user: UserCreate,
+    db: AsyncSession = Depends(get_pg_db),
 ) -> ORJSONResponse:
     """
     Create a new User with a hashed password.
@@ -382,7 +369,8 @@ async def create_user(
         await db.commit()
         await db.refresh(new_user)
 
-        serialized = UserOutput.model_validate(new_user).model_dump()
+        serialized = UserOutput.model_validate(new_user).model_dump(
+            exclude_none=True)
         for key in ["password", "is_superuser", "updated_at", "deleted_at"]:
             serialized.pop(key, None)
 
@@ -417,8 +405,8 @@ async def create_user(
     status_code=status.HTTP_200_OK,
 )
 async def get_users_batch_by_ids(
-        user_ids: List[str],
-        db: AsyncSession = Depends(get_pg_db),
+    user_ids: List[str],
+    db: AsyncSession = Depends(get_pg_db),
 ) -> ORJSONResponse:
     """
     Retrieve a batch of active Users by a list of IDs.
@@ -432,15 +420,14 @@ async def get_users_batch_by_ids(
     try:
         async with db as session:
             result = await session.execute(
-                select(User).filter(
-                    User.id.in_(user_ids), User.deleted_at.is_(None)
-                )
+                select(User).filter(User.id.in_(user_ids), User.deleted_at.is_(None))
             )
             users = result.unique().scalars().all()
 
         return ORJSONResponse(
             status_code=status.HTTP_200_OK,
-            content=[UserOutput.model_validate(u).model_dump() for u in users],
+            content=[UserOutput.model_validate(u).model_dump(
+                exclude_none=True) for u in users],
         )
     except Exception as e:
         logger.error(e)
@@ -463,8 +450,8 @@ async def get_users_batch_by_ids(
     status_code=status.HTTP_200_OK,
 )
 async def soft_delete_user_by_id(
-        user_id: str,
-        db: AsyncSession = Depends(get_pg_db),
+    user_id: str,
+    db: AsyncSession = Depends(get_pg_db),
 ) -> ORJSONResponse:
     """
     Soft-delete an active User by setting the `deleted_at` timestamp.
@@ -478,9 +465,7 @@ async def soft_delete_user_by_id(
     try:
         async with db as session:
             result = await session.execute(
-                select(User).filter(
-                    User.id == user_id, User.deleted_at.is_(None)
-                )
+                select(User).filter(User.id == user_id, User.deleted_at.is_(None))
             )
             user = result.unique().scalar_one_or_none()
 
@@ -496,13 +481,12 @@ async def soft_delete_user_by_id(
 
         return ORJSONResponse(
             status_code=status.HTTP_200_OK,
-            content=UserOutput.model_validate(user).model_dump(),
+            content=UserOutput.model_validate(user).model_dump(
+                exclude_none=True),
         )
     except NotFoundException as e:
         logger.error(e)
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND, detail=str(e)
-        ) from e
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=str(e)) from e
     except Exception as e:
         logger.error(e)
         raise HTTPException(
@@ -523,9 +507,9 @@ async def soft_delete_user_by_id(
     status_code=status.HTTP_200_OK,
 )
 async def patch_update_user_by_id(
-        user_id: str,
-        user_data: UserUpdate,
-        db: AsyncSession = Depends(get_pg_db),
+    user_id: str,
+    user_data: UserUpdate,
+    db: AsyncSession = Depends(get_pg_db),
 ) -> ORJSONResponse:
     """
     Partially update an active User's data by ID (only provided fields are changed).
@@ -541,17 +525,14 @@ async def patch_update_user_by_id(
     try:
         async with db as session:
             result = await session.execute(
-                select(User).filter(
-                    User.id == user_id, User.deleted_at.is_(None)
-                )
+                select(User).filter(User.id == user_id, User.deleted_at.is_(None))
             )
             user = result.unique().scalar_one_or_none()
 
             if not user:
                 raise NotFoundException(message="User not found")
 
-            for field, value in user_data.model_dump(
-                    exclude_unset=True).items():
+            for field, value in user_data.model_dump(exclude_unset=True).items():
                 setattr(user, field, value)
             user.updated_at = datetime.utcnow()
             await session.commit()
@@ -559,13 +540,12 @@ async def patch_update_user_by_id(
 
         return ORJSONResponse(
             status_code=status.HTTP_200_OK,
-            content=UserOutput.model_validate(user).model_dump(),
+            content=UserOutput.model_validate(user).model_dump(
+                exclude_none=True),
         )
     except NotFoundException as e:
         logger.error(e)
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND, detail=str(e)
-        ) from e
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=str(e)) from e
     except Exception as e:
         logger.error(e)
         raise HTTPException(
@@ -586,9 +566,9 @@ async def patch_update_user_by_id(
     status_code=status.HTTP_200_OK,
 )
 async def put_update_user_by_id(
-        user_id: str,
-        user_data: UserUpdate,
-        db: AsyncSession = Depends(get_pg_db),
+    user_id: str,
+    user_data: UserUpdate,
+    db: AsyncSession = Depends(get_pg_db),
 ) -> ORJSONResponse:
     """
     Fully replace an active User's data by ID.
@@ -604,17 +584,14 @@ async def put_update_user_by_id(
     try:
         async with db as session:
             result = await session.execute(
-                select(User).filter(
-                    User.id == user_id, User.deleted_at.is_(None)
-                )
+                select(User).filter(User.id == user_id, User.deleted_at.is_(None))
             )
             user = result.unique().scalar_one_or_none()
 
             if not user:
                 raise NotFoundException(message="User not found")
 
-            for field, value in user_data.model_dump(
-                    exclude_unset=True).items():
+            for field, value in user_data.model_dump(exclude_unset=True).items():
                 setattr(user, field, value)
             user.updated_at = datetime.utcnow()
             await session.commit()
@@ -622,13 +599,12 @@ async def put_update_user_by_id(
 
         return ORJSONResponse(
             status_code=status.HTTP_200_OK,
-            content=UserOutput.model_validate(user).model_dump(),
+            content=UserOutput.model_validate(user).model_dump(
+                exclude_none=True),
         )
     except NotFoundException as e:
         logger.error(e)
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND, detail=str(e)
-        ) from e
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=str(e)) from e
     except Exception as e:
         logger.error(e)
         raise HTTPException(
@@ -649,8 +625,8 @@ async def put_update_user_by_id(
     response_model=None,
 )
 async def delete_user_by_id(
-        user_id: str,
-        db: AsyncSession = Depends(get_pg_db),
+    user_id: str,
+    db: AsyncSession = Depends(get_pg_db),
 ) -> Response:
     """
     Permanently delete a User by ID.
@@ -663,9 +639,7 @@ async def delete_user_by_id(
     logger.info("Permanently deleting user with ID: %s", user_id)
     try:
         async with db as session:
-            result = await session.execute(
-                select(User).filter(User.id == user_id)
-            )
+            result = await session.execute(select(User).filter(User.id == user_id))
             user = result.unique().scalar_one_or_none()
 
             if not user:
@@ -678,9 +652,7 @@ async def delete_user_by_id(
         return Response(status_code=status.HTTP_204_NO_CONTENT)
     except NotFoundException as e:
         logger.error(e)
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND, detail=str(e)
-        ) from e
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=str(e)) from e
     except Exception as e:
         logger.error(e)
         raise HTTPException(

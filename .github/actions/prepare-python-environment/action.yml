@@ -1,0 +1,32 @@
+name: Prepare Python Environment
+description: Checkout, setup Poetry, install dependencies, and inspect the virtualenv.
+
+inputs:
+  python-version:
+    description: Python version to use
+    required: false
+    default: "3.11.14"
+  poetry-version:
+    description: Poetry version to install
+    required: false
+    default: "1.8.3"
+  cache-dependency-path:
+    description: Path/pattern to dependency lock file(s)
+    required: false
+    default: "poetry.lock"
+
+runs:
+  using: composite
+  steps:
+    - name: Setup Python + Poetry
+      uses: ./.github/actions/setup-python-poetry
+      with:
+        python-version: ${{ inputs.python-version }}
+        poetry-version: ${{ inputs.poetry-version }}
+        cache-dependency-path: ${{ inputs.cache-dependency-path }}
+
+    - name: Install dependencies
+      uses: ./.github/actions/install-poetry-deps
+
+    - name: Debug virtual environment before upload
+      uses: ./.github/actions/debug-venv

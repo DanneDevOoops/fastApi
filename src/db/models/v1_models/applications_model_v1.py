@@ -18,7 +18,8 @@ class Application(Base):
     """
     Application model for the database
     """
-    __tablename__ = 'applications'
+
+    __tablename__ = "applications"
 
     id: Mapped[str] = Column(String, primary_key=True, index=True)
     name: Mapped[str] = Column(String, unique=True, index=True)
@@ -28,14 +29,15 @@ class Application(Base):
     api_key: Mapped[str] = Column(String)
 
     # Timestamps
-    created_at: Mapped[datetime] = Column(DateTime(timezone=True),
-                                          default=lambda: datetime.now(
-                                              timezone.utc))
-    updated_at: Mapped[datetime] = Column(DateTime(timezone=True),
-                                          default=lambda: datetime.now(
-                                              timezone.utc))
-    deleted_at: Mapped[datetime] = Column(DateTime(timezone=True),
-                                          default=None, nullable=True)
+    created_at: Mapped[datetime] = Column(
+        DateTime(timezone=True), default=lambda: datetime.now(timezone.utc)
+    )
+    updated_at: Mapped[datetime] = Column(
+        DateTime(timezone=True), default=lambda: datetime.now(timezone.utc)
+    )
+    deleted_at: Mapped[datetime] = Column(
+        DateTime(timezone=True), default=None, nullable=True
+    )
 
     def __dir__(self) -> list:
         """
@@ -53,8 +55,10 @@ class Application(Base):
         :return: The string representation of the model
         :rtype: str
         """
-        return (f"ApplicationModel(id={self.id}, name={self.name}, "
-                f"description={self.description}, url={self.url})")
+        return (
+            f"ApplicationModel(id={self.id}, name={self.name}, "
+            f"description={self.description}, url={self.url})"
+        )
 
     def __eq__(self, other) -> bool:
         """

@@ -1,0 +1,101 @@
+name: Docs build and deploy pipeline
+
+on:
+  workflow_call:
+    inputs:
+      python-version:
+        description: Python version to use
+        type: string
+        required: false
+        default: "3.11.14"
+      poetry-version:
+        description: Poetry version to install
+        type: string
+        required: false
+        default: "1.8.3"
+      cache-dependency-path:
+        description: Path or glob for dependency lock files
+        type: string
+        required: false
+        default: "**/poetry.lock"
+      docs-artifact-name:
+        description: Name of the docs artifact
+        type: string
+        required: false
+        default: "sphinx-docs"
+      publish-dir:
+        description: Directory to publish
+        type: string
+        required: false
+        default: "./gh-pages"
+      publish-branch:
+        description: Branch to publish to
+        type: string
+        required: false
+        default: "gh-pages"
+
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
+jobs:
+  build-docs:
+    name: Build Sphinx documentation
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    concurrency:
+      group: docs-build-${{ github.ref }}
+      cancel-in-progress: true
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Python + Poetry
+        uses: ./.github/actions/setup-python-poetry
+        with:
+          python-version: ${{ inputs.python-version }}
+          poetry-version: ${{ inputs.poetry-version }}
+          cache-dependency-path: ${{ inputs.cache-dependency-path }}
+
+      - name: Build docs with Sphinx
+        uses: ./.github/actions/build-sphinx
+        with:
+          output-dir: ${{ inputs.publish-dir }}
+
+      - name: Upload docs artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ inputs.docs-artifact-name }}
+          path: ${{ inputs.publish-dir }}
+          retention-days: 1
+
+  deploy-docs:
+    name: Deploy to GitHub Pages
+    needs: build-docs
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    concurrency:
+      group: docs-deploy-${{ github.ref }}
+      cancel-in-progress: true
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Download docs artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: ${{ inputs.docs-artifact-name }}
+          path: ${{ inputs.publish-dir }}
+
+      - name: Deploy to GitHub Pages
+        uses: ./.github/actions/deploy-gh-pages
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          publish-dir: ${{ inputs.publish-dir }}
+          publish-branch: ${{ inputs.publish-branch }}

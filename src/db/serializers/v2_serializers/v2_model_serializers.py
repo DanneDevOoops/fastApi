@@ -66,11 +66,11 @@ def model_serialize(input_data_model) -> dict:
     :return: A dictionary representation of the User.
     :rtype: dict
     """
-    data = input_data_model.model_dump() if hasattr(input_data_model,
-                                                    "model_dump") \
-        else (
-        dict(
-            input_data_model))
+    data = (
+        input_data_model.model_dump()
+        if hasattr(input_data_model, "model_dump")
+        else (dict(input_data_model))
+    )
     if "_id" in data and data["_id"] is not None:
         data["id"] = str(data["_id"])
         del data["_id"]

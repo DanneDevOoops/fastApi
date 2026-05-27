@@ -14,8 +14,12 @@ import logging
 from asyncio import current_task
 from collections.abc import AsyncIterator
 
-from sqlalchemy.ext.asyncio import (AsyncSession, async_scoped_session,
-                                    async_sessionmaker, create_async_engine)
+from sqlalchemy.ext.asyncio import (
+    AsyncSession,
+    async_scoped_session,
+    async_sessionmaker,
+    create_async_engine,
+)
 
 from src.core.custom_exceptions import DatabaseException
 from src.core.env_config import get_settings
@@ -48,13 +52,14 @@ class PgsqlDbSessionManager:
         # settings or a provided case specific connector string...
         if db_connection_str is None:
             logger.info("Using the default database connection string...")
-            self._postgres_database_url = (
-                str(settings.pg_db_url).replace(
-                    "postgresql://", "postgresql+asyncpg://"))
+            self._postgres_database_url = str(settings.pg_db_url).replace(
+                "postgresql://", "postgresql+asyncpg://"
+            )
         else:
             logger.info("Using the provided database connection string...")
             self._postgres_database_url = db_connection_str.replace(
-                "postgresql://", "postgresql+asyncpg://")
+                "postgresql://", "postgresql+asyncpg://"
+            )
 
         # Create the async database engine...
         logger.info("Creating the async database engine...")
@@ -138,8 +143,7 @@ async def get_pg_db() -> AsyncIterator[AsyncSession]:
     """
     session = session_manager.get_session()
     if session is None:
-        raise DatabaseException(
-            "PgsqlDbSessionManager is not initialized correctly...")
+        raise DatabaseException("PgsqlDbSessionManager is not initialized correctly...")
     try:
         yield session
     except Exception:

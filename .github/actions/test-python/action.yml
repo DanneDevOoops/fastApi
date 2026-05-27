@@ -2,6 +2,10 @@ name: Test Python Application
 description: Run pytest for the project.
 
 inputs:
+  python-bin:
+    description: Python executable used to run pytest
+    required: false
+    default: "python"
   pytest-args:
     description: Extra pytest arguments
     required: false
@@ -12,4 +16,4 @@ runs:
   steps:
     - name: Run pytest
       shell: bash
-      run: python -m poetry run pytest ${{ inputs.pytest-args }}
+      run: ${{ inputs.python-bin }} -m pytest ${{ inputs.pytest-args }}

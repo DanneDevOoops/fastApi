@@ -1,7 +1,7 @@
 [![Static Badge](https://img.shields.io/badge/Python-v3.11.7-blue)](https://devguide.python.org/versions/)
 [![Poetry](https://img.shields.io/endpoint?url=https://python-poetry.org/badge/v0.json)](https://python-poetry.org/)  
-![Workflow Status](https://github.com/DMoest/fastApi/actions/workflows/install_and_test_application.yml/badge.svg)  
-[![Build & deploy documentation to GH-pages](https://github.com/DanneDevOoops/fastApi/actions/workflows/build_and_deploy_sphinx_docs.yml/badge.svg)](https://github.com/DanneDevOoops/fastApi/actions/workflows/build_and_deploy_sphinx_docs.yml)
+![Workflow Status](https://github.com/DMoest/fastApi/actions/workflows/ci-python.yml/badge.svg)
+[![Build & deploy documentation to GH-pages](https://github.com/DanneDevOoops/fastApi/actions/workflows/ci-docs.yml/badge.svg)](https://github.com/DanneDevOoops/fastApi/actions/workflows/ci-docs.yml)
 
 # Python FastAPI Application
 
@@ -553,6 +553,23 @@ code smells, and stylistic inconsistencies. By integrating PyLint into your
 development workflow, you can catch bugs early, ensure adherence to best
 practices, and improve the overall readability and maintainability of your
 codebase.
+
+### Automated formatting in pull requests
+
+The CI workflow includes `isort` and `black` formatting behavior for pull
+requests:
+
+* For PRs opened from branches in this repository, CI can auto-format `src/`
+  and push a commit back to the PR branch.
+* For PRs opened from forks, CI runs check-only validation (`isort --check-only`
+  and `black --check`) and reports formatting issues without pushing changes.
+
+To match CI locally before pushing, run:
+
+```shell
+make isort-src
+make black-src
+```
 
 <details><summary style="font-size: 14px; font-weight: bold; 
 color: lightgoldenrodyellow;">Using Pylint</summary>

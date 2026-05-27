@@ -23,3 +23,4 @@ runs:
         github_token: ${{ inputs.github-token }}
         publish_dir: ${{ inputs.publish-dir }}
         publish_branch: ${{ inputs.publish-branch }}
+        force_orphan: true

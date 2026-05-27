@@ -28,14 +28,14 @@ from src.core.auth import build_application_api_credentials
 def parse_args() -> argparse.Namespace:
     """Parse command-line arguments."""
     parser = argparse.ArgumentParser(
-        description=(
-            "Generate v1 application JWT and DB hash for Postgres auth."
-        )
+        description=("Generate v1 application JWT and DB hash for Postgres auth.")
     )
-    parser.add_argument("--app-id", required=True,
-                        help="Existing applications.id value in Postgres")
-    parser.add_argument("--app-name", required=True,
-                        help="Existing applications.name value in Postgres")
+    parser.add_argument(
+        "--app-id", required=True, help="Existing applications.id value in Postgres"
+    )
+    parser.add_argument(
+        "--app-name", required=True, help="Existing applications.name value in Postgres"
+    )
     parser.add_argument(
         "--base-url",
         default="http://127.0.0.1:8000",
@@ -70,8 +70,10 @@ def main() -> None:
     print("TEST_COMMAND=")
     print(
         f"curl -i \\\n"
-        f"  -H \"x-api-key: {raw_jwt}\" \\\n"
+        f'  -H "x-api-key: {raw_jwt}" \\\n'
         f"  {args.base_url}/api/v1/users"
     )
+
+
 if __name__ == "__main__":
     main()

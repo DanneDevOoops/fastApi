@@ -21,6 +21,7 @@ class UserCreate(BaseModel):
     """
     Schema for creating a new User instance.
     """
+
     id: Optional[str] = Field(default_factory=generate_nano_id)
     username: str
     email: str
@@ -43,10 +44,9 @@ class UserCreate(BaseModel):
     updated_at: Optional[datetime] = datetime.utcnow()
     deleted_at: Optional[datetime] = None
 
-    @field_serializer('created_at', 'updated_at', 'deleted_at')
-    def serialize_datetime(self, value: Optional[datetime]) -> \
-            Optional[datetime]:
-        """ Serialize datetime to UTC datetime """
+    @field_serializer("created_at", "updated_at", "deleted_at")
+    def serialize_datetime(self, value: Optional[datetime]) -> Optional[datetime]:
+        """Serialize datetime to UTC datetime"""
         return value if value else None
 
     model_config = standard_model_config
@@ -56,6 +56,7 @@ class UserUpdate(BaseModel):
     """
     Schema for updating an existing User instance.
     """
+
     username: Optional[str] = None
     email: Optional[str] = None
     password: Optional[str] = None
@@ -76,10 +77,9 @@ class UserUpdate(BaseModel):
     updated_at: Optional[datetime] = None
     deleted_at: Optional[datetime] = None
 
-    @field_serializer('updated_at', 'deleted_at')
-    def serialize_datetime(self, value: Optional[datetime]) -> \
-            Optional[datetime]:
-        """ Serialize datetime to UTC datetime """
+    @field_serializer("updated_at", "deleted_at")
+    def serialize_datetime(self, value: Optional[datetime]) -> Optional[datetime]:
+        """Serialize datetime to UTC datetime"""
         return value if value else None
 
 
@@ -87,6 +87,7 @@ class UserSimple(BaseModel):
     """
     Schema for retrieving a simple representation of a User instance.
     """
+
     id: str
     username: str
     email: str
@@ -100,6 +101,7 @@ class UserOutput(UserCreate):
     """
     Schema for retrieving a User instance.
     """
+
     id: str
     username: str
     email: Optional[str]
@@ -147,11 +149,12 @@ class UserOutput(UserCreate):
         if item in self.model_fields_set:
             return getattr(self, item)
         raise AttributeError(
-            f"'{type(self).__name__}' object has no attribute '{item}'")
+            f"'{type(self).__name__}' object has no attribute '{item}'"
+        )
 
     def as_named_tuple(self) -> namedtuple:
         """
         Returns a namedtuple representation of the UserOutput instance.
         """
-        user_named_tuple = namedtuple('User', self.model_fields.keys())
+        user_named_tuple = namedtuple("User", self.model_fields.keys())
         return user_named_tuple(**self.model_dump())

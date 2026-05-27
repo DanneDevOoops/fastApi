@@ -11,8 +11,7 @@ database connection using SQLAlchemy's asynchronous engine and session maker.
 
 import logging
 
-from sqlalchemy.ext.asyncio import (AsyncSession, async_sessionmaker,
-                                    create_async_engine)
+from sqlalchemy.ext.asyncio import AsyncSession, async_sessionmaker, create_async_engine
 
 from core.custom_exceptions import DatabaseException
 from src.core.env_config import get_settings
@@ -51,16 +50,15 @@ class SQLiteConnector:
         logger.info("Initializing SQLite connector...")
         if db_path is None:
             self._database_url = str(settings.sqlite_db_url).replace(
-                "sqlite:///",
-                "sqlite+aiosqlite:///", 1)
+                "sqlite:///", "sqlite+aiosqlite:///", 1
+            )
 
         else:
             self._database_url = db_path.replace(
-                "sqlite:///",
-                "sqlite+aiosqlite:///", 1)
+                "sqlite:///", "sqlite+aiosqlite:///", 1
+            )
 
-        logger.info(
-            "Using SQLite database file: %s", self._database_url)
+        logger.info("Using SQLite database file: %s", self._database_url)
 
         self.sqlite_engine = create_async_engine(self._database_url)
         self.async_session_local = async_sessionmaker(
@@ -68,7 +66,7 @@ class SQLiteConnector:
             autoflush=False,
             bind=self.sqlite_engine,
             class_=AsyncSession,
-            expire_on_commit=False
+            expire_on_commit=False,
         )
 
     async def get_sqlite_db(self) -> AsyncSession:

@@ -29,13 +29,7 @@ settings = get_settings()
 logger = init_logger(settings.app_logger_name)
 
 # Here is where you initialization mongo db models
-BEANIE_DOCUMENT_MODELS = [
-    Application,
-    Device,
-    Sensor,
-    SensorTelemetry,
-    User
-]
+BEANIE_DOCUMENT_MODELS = [Application, Device, Sensor, SensorTelemetry, User]
 
 
 @asynccontextmanager
@@ -53,8 +47,7 @@ async def app_lifespan(app_instance: FastAPI):
     logger.info("Initializing the database connectors...")
     postgres_connector = PgsqlDbSessionManager()
     mongo_connector = MongoDBConnector(
-        uri=settings.mongo_db_url,
-        db_name=settings.mongo_db_name
+        uri=settings.mongo_db_url, db_name=settings.mongo_db_name
     )
     app_instance.mongo_connector = mongo_connector
 
@@ -64,8 +57,7 @@ async def app_lifespan(app_instance: FastAPI):
         logger.info("Init model %s...", document_model.Settings.name)
 
     await init_beanie(
-        database=mongo_connector.db,
-        document_models=BEANIE_DOCUMENT_MODELS
+        database=mongo_connector.db, document_models=BEANIE_DOCUMENT_MODELS
     )
 
     # Initialize the database connection pool --------------------------------

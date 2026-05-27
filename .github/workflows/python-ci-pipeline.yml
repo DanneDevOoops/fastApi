@@ -1,0 +1,147 @@
+name: Python CI pipeline
+
+on:
+  workflow_call:
+    inputs:
+      python-version:
+        description: Python version to use
+        type: string
+        required: false
+        default: "3.11.14"
+      poetry-version:
+        description: Poetry version to install
+        type: string
+        required: false
+        default: "1.8.3"
+      cache-dependency-path:
+        description: Path or glob for dependency lock files
+        type: string
+        required: false
+        default: "**/poetry.lock"
+      venv-artifact-name:
+        description: Name of the virtualenv artifact
+        type: string
+        required: false
+        default: "python-venv"
+      lint-target-path:
+        description: Path to lint
+        type: string
+        required: false
+        default: "src"
+      pylint-args:
+        description: Extra pylint arguments
+        type: string
+        required: false
+        default: "--verbose"
+      pytest-args:
+        description: Extra pytest arguments
+        type: string
+        required: false
+        default: "--verbose"
+      run-lint:
+        description: Whether to run lint job
+        type: boolean
+        required: false
+        default: true
+      run-tests:
+        description: Whether to run test job
+        type: boolean
+        required: false
+        default: true
+
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
+jobs:
+  prepare_env:
+    name: Prepare Python environment
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Prepare Python environment
+        uses: ./.github/actions/prepare-python-environment
+        with:
+          python-version: ${{ inputs.python-version }}
+          poetry-version: ${{ inputs.poetry-version }}
+          cache-dependency-path: ${{ inputs.cache-dependency-path }}
+
+      - name: Upload virtual environment artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ inputs.venv-artifact-name }}
+          path: .venv
+          include-hidden-files: true
+          if-no-files-found: error
+          retention-days: 1
+
+  lint_application:
+    name: Run PyLint for application codebase
+    needs: prepare_env
+    if: ${{ inputs.run-lint }}
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: ${{ inputs.python-version }}
+
+      - name: Download virtual environment artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: ${{ inputs.venv-artifact-name }}
+          path: .venv
+
+      - name: Restore virtualenv execute permissions
+        shell: bash
+        run: chmod -R u+x .venv/bin
+
+      - name: Run linting
+        uses: ./.github/actions/lint-python
+        with:
+          python-bin: .venv/bin/python
+          target-path: ${{ inputs.lint-target-path }}
+          pylint-args: ${{ inputs.pylint-args }}
+
+  test_application:
+    name: Run PyTest on codebase
+    needs: prepare_env
+    if: ${{ inputs.run-tests }}
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: ${{ inputs.python-version }}
+
+      - name: Download virtual environment artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: ${{ inputs.venv-artifact-name }}
+          path: .venv
+
+      - name: Restore virtualenv execute permissions
+        shell: bash
+        run: chmod -R u+x .venv/bin
+
+      - name: Run tests
+        uses: ./.github/actions/test-python
+        with:
+          python-bin: .venv/bin/python
+          pytest-args: ${{ inputs.pytest-args }}
