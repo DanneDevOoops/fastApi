@@ -1,0 +1,33 @@
+name: Format Python Source
+description: Run isort and black in either format or check mode.
+
+inputs:
+  python-bin:
+    description: Python executable used to run formatting tools
+    required: false
+    default: ".venv/bin/python"
+  python-paths:
+    description: Paths to format or check
+    required: false
+    default: "src"
+  run-mode:
+    description: Mode to run - 'format' or 'check'
+    required: false
+    default: "format"
+
+runs:
+  using: composite
+  steps:
+    - name: Format Python code
+      if: inputs.run-mode == 'format'
+      shell: bash
+      run: |
+        "${{ inputs.python-bin }}" -m isort ${{ inputs.python-paths }}
+        "${{ inputs.python-bin }}" -m black ${{ inputs.python-paths }}
+
+    - name: Check Python formatting
+      if: inputs.run-mode == 'check'
+      shell: bash
+      run: |
+        "${{ inputs.python-bin }}" -m isort ${{ inputs.python-paths }} --check-only --diff
+        "${{ inputs.python-bin }}" -m black ${{ inputs.python-paths }} --check

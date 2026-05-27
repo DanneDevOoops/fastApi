@@ -2,6 +2,10 @@ name: Lint Python Source
 description: Run pylint checks against a target path.
 
 inputs:
+  python-bin:
+    description: Python executable used to run pylint
+    required: false
+    default: "python"
   target-path:
     description: Directory or file path to lint
     required: false
@@ -16,5 +20,4 @@ runs:
   steps:
     - name: Run pylint
       shell: bash
-      run: python -m poetry run pylint ${{ inputs.pylint-args }} ${{ inputs.target-path }}
-
+      run: ${{ inputs.python-bin }} -m pylint ${{ inputs.pylint-args }} ${{ inputs.target-path }}

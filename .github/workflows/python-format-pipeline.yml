@@ -1,0 +1,109 @@
+name: Python formatting pipeline
+
+on:
+  workflow_call:
+    inputs:
+      python-version:
+        description: Python version to use
+        type: string
+        required: false
+        default: "3.11.14"
+      venv-artifact-name:
+        description: Name of the virtualenv artifact
+        type: string
+        required: false
+        default: "python-venv"
+      python-paths:
+        description: Paths to format or check
+        type: string
+        required: false
+        default: "src"
+      run-mode:
+        description: Mode to run - format or check
+        type: string
+        required: false
+        default: "format"
+      commit-message:
+        description: Commit message used in format mode
+        type: string
+        required: false
+        default: "ci: auto-format Python code (isort + black)"
+
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
+jobs:
+  format_and_commit:
+    name: Format Python Code
+    if: inputs.run-mode == 'format'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: ${{ inputs.python-version }}
+
+      - name: Download virtual environment artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: ${{ inputs.venv-artifact-name }}
+          path: .venv
+
+      - name: Restore virtualenv execute permissions
+        shell: bash
+        run: chmod -R u+x .venv/bin
+
+      - name: Format or check Python code
+        uses: ./.github/actions/format-python
+        with:
+          python-bin: .venv/bin/python
+          python-paths: ${{ inputs.python-paths }}
+          run-mode: ${{ inputs.run-mode }}
+
+      - name: Commit and push formatting changes
+        uses: ./.github/actions/git-commit-and-push
+        with:
+          commit-message: ${{ inputs.commit-message }}
+
+  check_format:
+    name: Check Python Formatting
+    if: inputs.run-mode == 'check'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+
+      - name: Setup Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: ${{ inputs.python-version }}
+
+      - name: Download virtual environment artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: ${{ inputs.venv-artifact-name }}
+          path: .venv
+
+      - name: Restore virtualenv execute permissions
+        shell: bash
+        run: chmod -R u+x .venv/bin
+
+      - name: Format or check Python code
+        uses: ./.github/actions/format-python
+        with:
+          python-bin: .venv/bin/python
+          python-paths: ${{ inputs.python-paths }}
+          run-mode: ${{ inputs.run-mode }}

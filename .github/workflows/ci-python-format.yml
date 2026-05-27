@@ -1,0 +1,50 @@
+name: Check and Format Python Code
+
+on:
+  workflow_call:
+    inputs:
+      python-version:
+        description: Python version to use
+        type: string
+        required: false
+        default: "3.11.14"
+      poetry-version:
+        description: Poetry version to install
+        type: string
+        required: false
+        default: "1.8.3"
+      cache-dependency-path:
+        description: Path or glob for dependency lock files
+        type: string
+        required: false
+        default: "**/poetry.lock"
+      venv-artifact-name:
+        description: Name of the virtualenv artifact
+        type: string
+        required: false
+        default: "python-venv"
+      python-paths:
+        description: Paths to format or check
+        type: string
+        required: false
+        default: "src"
+      run-mode:
+        description: Mode to run - format or check
+        type: string
+        required: false
+        default: "format"
+      commit-message:
+        description: Commit message used in format mode
+        type: string
+        required: false
+        default: "ci: auto-format Python code (isort + black)"
+
+jobs:
+  format_or_check:
+    uses: ./.github/workflows/python-format-pipeline.yml
+    secrets: inherit
+    with:
+      venv-artifact-name: ${{ inputs.venv-artifact-name }}
+      python-paths: ${{ inputs.python-paths }}
+      run-mode: ${{ inputs.run-mode }}
+      commit-message: ${{ inputs.commit-message }}
