@@ -6,4 +6,3 @@ updates:
       interval: "weekly"
     ignore:
       - dependency-name: "python-ecdsa"
-        reason: "Minerva timing attack (GHSA-7f5h-v6xp-fcq8) does not affect HMAC-based JWT signing (HS256/HS512). Transitive dependency via python-jose for OAuth2PasswordBearer."
