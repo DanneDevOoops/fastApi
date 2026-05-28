@@ -10,7 +10,7 @@ env:
 
 jobs:
   check_branch_policy:
-    name: Validate source → target (branch policy)
+    name: Validate branch policy (source → target)
     runs-on: ubuntu-latest
     permissions:
       contents: read
