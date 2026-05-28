@@ -17,9 +17,10 @@ program.
 
 import os
 
-from fastapi import FastAPI
+from fastapi import FastAPI, Depends
 from starlette.middleware.cors import CORSMiddleware
 
+from core.auth import get_api_key_v2, get_api_key_v1
 from src.api.api_utilities import api_utility_router
 from src.api.api_v1 import api_v1_router
 from src.api.api_v1_ws_router import api_ws_router
@@ -49,11 +50,11 @@ from src.core.exception_handlers import (
 from src.core.logger_config import init_logger
 from src.middlewares.gzip import GzipResponseMiddleware
 from src.middlewares.logger import LoggerMiddleware
-from src.utils.app_constants import REQUEST_HEADERS, REQUEST_METHODS, REQUEST_ORIGINS
+from src.utils.app_constants import REQUEST_HEADERS, REQUEST_METHODS, \
+    REQUEST_ORIGINS
 
 settings = get_settings()
 logger = init_logger(settings.app_logger_name)
-
 
 app = FastAPI(
     title="FastAPI application",
@@ -69,7 +70,8 @@ app.add_exception_handler(AuthException, auth_exception_handler)
 app.add_exception_handler(BadRequestException, bad_request_exception_handler)
 app.add_exception_handler(ConflictException, conflict_exception_handler)
 app.add_exception_handler(DatabaseException, database_exception_handler)
-app.add_exception_handler(InternalServerException, internal_server_exception_handler)
+app.add_exception_handler(InternalServerException,
+                          internal_server_exception_handler)
 app.add_exception_handler(NotFoundException, not_found_exception_handler)
 app.add_exception_handler(ValidationException, validation_exception_handler)
 app.add_exception_handler(HTTPException, http_exception_handler)
@@ -95,17 +97,17 @@ app.include_router(api_utility_router)
 
 app.include_router(
     api_v1_router,
-    # dependencies=[Depends(get_api_key_v1)],
+    dependencies=[Depends(get_api_key_v1)],
 )
 
 app.include_router(
     api_v2_router,
-    # dependencies=[Depends(get_api_key_v2)]
+    dependencies=[Depends(get_api_key_v2)]
 )
 
 app.include_router(
     api_ws_router,
-    # dependencies=[Depends(get_api_key_v2)]
+    dependencies=[Depends(get_api_key_v1)]
 )
 
 if __name__ == "__main__":
