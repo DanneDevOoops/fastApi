@@ -11,8 +11,6 @@ users, and permanently deleting users from the PostgreSQL database.
 
 import logging
 from datetime import datetime
-from typing import List
-
 from fastapi import APIRouter, Depends, HTTPException, status
 from fastapi.responses import ORJSONResponse
 from sqlalchemy import select
@@ -25,7 +23,12 @@ from src.core.custom_exceptions import NotFoundException
 from src.core.env_config import get_settings
 from src.db.connectors.postgres_db import get_pg_db
 from src.db.models.v1_models.users_model_v1 import User
-from src.db.schemas.v1_schemas.user_schemas import UserCreate, UserOutput, UserUpdate
+from src.db.schemas.v1_schemas.user_schemas import (
+    UserCreate,
+    UserOutput,
+    UserUpdate,
+    UsersBatch,
+)
 
 # Initialize the API router
 router = APIRouter()
@@ -405,22 +408,22 @@ async def create_user(
     status_code=status.HTTP_200_OK,
 )
 async def get_users_batch_by_ids(
-    user_ids: List[str],
+    user_ids: UsersBatch,
     db: AsyncSession = Depends(get_pg_db),
 ) -> ORJSONResponse:
     """
     Retrieve a batch of active Users by a list of IDs.
 
-    :param user_ids: A list of user IDs to retrieve.
-    :type user_ids: List[str]
+    :param user_ids: A payload containing the list of user IDs to retrieve.
+    :type user_ids: UsersBatch
     :return: A list of user data matching the given IDs.
     :rtype: ORJSONResponse
     """
-    logger.info("Requesting users from IDs: %s", user_ids)
+    logger.info("Requesting users from IDs: %s", user_ids.id)
     try:
         async with db as session:
             result = await session.execute(
-                select(User).filter(User.id.in_(user_ids), User.deleted_at.is_(None))
+                select(User).filter(User.id.in_(user_ids.id), User.deleted_at.is_(None))
             )
             users = result.unique().scalars().all()
 
