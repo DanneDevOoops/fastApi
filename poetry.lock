@@ -3184,16 +3184,4 @@ files = [
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.11"
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
 content-hash = "2c98fee126709acb684a92a2ca2d23b5603f66d1f378d470e5feb98cd0be725b"
-=======
-content-hash = "21fd6fe86b1a4a110e8d2cae0eb599227f50381a0f7100c530a2937e8db9717d"
->>>>>>> 6a48167 (update deps again?)
-=======
-content-hash = "2a33895bec8855b21eeb6e185c150f663dfdf22eac81167f68c10504feda04ac"
->>>>>>> cfe1696 (update dependencies and .lock file poetry)
-=======
-content-hash = "2c98fee126709acb684a92a2ca2d23b5603f66d1f378d470e5feb98cd0be725b"
->>>>>>> 6c74efe (chore: refresh poetry lockfile)
