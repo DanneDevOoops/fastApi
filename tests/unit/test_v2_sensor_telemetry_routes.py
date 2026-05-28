@@ -2,12 +2,13 @@
 # -*- coding: utf-8 -*-
 # pylint: skip-file
 
-from unittest.mock import AsyncMock
-
 import pytest
+from unittest.mock import AsyncMock
 
 from src.api.v2_routes import sensor_telemetry_routes as v2_sensor_telemetry_routes
 from tests.conftest import _serialize_object, build_fake_document_class
+
+pytestmark = pytest.mark.unit
 
 
 def test_v2_sensor_telemetry_routes(client, monkeypatch):

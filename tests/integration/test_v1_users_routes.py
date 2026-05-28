@@ -2,10 +2,13 @@
 # -*- coding: utf-8 -*-
 # pylint: skip-file
 
+import pytest
 import asyncio
 from datetime import datetime, timezone
 
 from tests.conftest import _insert_v1_user
+
+pytestmark = pytest.mark.integration
 
 
 def test_v1_user_options_route(client, health_headers):

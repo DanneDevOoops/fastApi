@@ -2,8 +2,12 @@
 # -*- coding: utf-8 -*-
 # pylint: skip-file
 
+import pytest
+
 from src.api.v2_routes import auth_routes as v2_auth_routes
 from tests.conftest import _serialize_object, build_fake_document_class
+
+pytestmark = pytest.mark.unit
 
 
 def test_v2_auth_signin_route(client, monkeypatch):

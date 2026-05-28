@@ -2,10 +2,13 @@
 # -*- coding: utf-8 -*-
 # pylint: skip-file
 
+import pytest
 from datetime import datetime, timezone
 
 from src.api.v2_routes import application_routes as v2_application_routes
 from tests.conftest import _serialize_object, build_fake_document_class
+
+pytestmark = pytest.mark.unit
 
 
 def test_v2_application_routes(client, monkeypatch):
