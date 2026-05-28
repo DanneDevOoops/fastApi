@@ -11,6 +11,7 @@ users, and permanently deleting users from the PostgreSQL database.
 
 import logging
 from datetime import datetime
+
 from fastapi import APIRouter, Depends, HTTPException, status
 from fastapi.responses import ORJSONResponse
 from sqlalchemy import select
@@ -26,8 +27,8 @@ from src.db.models.v1_models.users_model_v1 import User
 from src.db.schemas.v1_schemas.user_schemas import (
     UserCreate,
     UserOutput,
-    UserUpdate,
     UsersBatch,
+    UserUpdate,
 )
 
 # Initialize the API router
