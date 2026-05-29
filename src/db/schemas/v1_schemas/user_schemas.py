@@ -83,6 +83,14 @@ class UserUpdate(BaseModel):
         return value if value else None
 
 
+class UsersBatch(BaseModel):
+    """
+    Schema for batch user lookups by IDs.
+    """
+
+    id: list[str]
+
+
 class UserSimple(BaseModel):
     """
     Schema for retrieving a simple representation of a User instance.
