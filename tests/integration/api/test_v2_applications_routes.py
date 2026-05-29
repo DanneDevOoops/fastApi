@@ -109,3 +109,25 @@ def test_v2_application_routes(client, monkeypatch):
     response = client.delete(f"/api/v2/applications/delete/{deleted_app.id}")
     assert response.status_code == 200
     assert "deleted successfully" in response.json()["detail"]
+
+def test_v2_application_options_route(client):
+    response = client.options("/api/v2/applications")
+    assert response.status_code == 204
+    assert response.headers["allow"] == "GET, POST, PUT, PATCH, DELETE"
+
+
+def test_v2_application_not_found(client, monkeypatch):
+    from src.api.v2_routes import application_routes as v2_app_routes
+    from tests.conftest import build_fake_document_class
+
+    fake_app_cls = build_fake_document_class("id", "name", "deleted_at")
+    fake_app_cls._find_one_result = None
+    monkeypatch.setattr(v2_app_routes, "Application", fake_app_cls)
+
+    response = client.get("/api/v2/applications/does-not-exist")
+    assert response.status_code == 404
+
+
+def test_v2_application_create_invalid_body(client):
+    response = client.post("/api/v2/applications", json={})
+    assert response.status_code == 422

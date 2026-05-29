@@ -6,10 +6,9 @@ import asyncio
 from types import SimpleNamespace
 from unittest.mock import AsyncMock, MagicMock
 
-from fastapi import Request
-
 import pytest
-from fastapi import HTTPException
+from fastapi import HTTPException, Request
+
 from jose import JWTError
 
 from src.core import auth
@@ -99,7 +98,11 @@ def test_get_api_key_v1(monkeypatch):
     mock_request.method = "GET"
 
     assert (
-        asyncio.run(auth.get_api_key_v1(request=mock_request, api_key_header=raw_token, db=FakeDb()))
+        asyncio.run(
+            auth.get_api_key_v1(
+                request=mock_request, api_key_header=raw_token, db=FakeDb()
+            )
+        )
         == raw_token
     )
 
@@ -199,4 +202,7 @@ def test_get_api_key_v2(monkeypatch):
     mock_request = MagicMock(spec=Request)
     mock_request.method = "GET"
 
-    assert asyncio.run(auth.get_api_key_v2(request=mock_request, api_key_header=raw_token)) == raw_token
+    assert (
+        asyncio.run(auth.get_api_key_v2(request=mock_request, api_key_header=raw_token))
+        == raw_token
+    )

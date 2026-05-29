@@ -142,3 +142,13 @@ def test_v1_user_routes(client):
 
     response = client.delete(f"/api/v1/users/delete/{inactive_user.id}")
     assert response.status_code == 204
+
+
+def test_v1_user_not_found(client):
+    response = client.get("/api/v1/users/does-not-exist")
+    assert response.status_code == 404
+
+
+def test_v1_user_create_invalid_body(client):
+    response = client.post("/api/v1/users", json={})
+    assert response.status_code == 422
