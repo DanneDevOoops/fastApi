@@ -10,10 +10,14 @@ inputs:
     description: Extra pytest arguments
     required: false
     default: "--verbose"
+  test-path:
+    description: Path to the test directory or file
+    required: false
+    default: ""
 
 runs:
   using: composite
   steps:
     - name: Run pytest
       shell: bash
-      run: ${{ inputs.python-bin }} -m pytest ${{ inputs.pytest-args }}
+      run: ${{ inputs.python-bin }} -m pytest ${{ inputs.pytest-args }} ${{ inputs.test-path }}
