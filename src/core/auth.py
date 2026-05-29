@@ -12,7 +12,7 @@ import os
 from datetime import datetime, timedelta, timezone
 
 import bcrypt
-from fastapi import Depends, HTTPException, Security, status
+from fastapi import Depends, HTTPException, Request, Security, status
 from fastapi.security import APIKeyHeader, APIKeyQuery, OAuth2PasswordBearer
 from jose import JWTError, jwt
 from sqlalchemy import select
@@ -285,6 +285,7 @@ async def get_health_check_api_key(
 
 
 async def get_api_key_v1(
+    request: Request,
     api_key_query: str = Security(query_api_key),
     api_key_header: str = Security(header_api_key),
     db: AsyncSession = Depends(get_pg_db),
@@ -309,6 +310,9 @@ async def get_api_key_v1(
     :rtype: str
     :raises HTTPException: If the API key is invalid or missing.
     """
+    if request.method == "OPTIONS":
+        return ""
+
     raw_api_key = _get_supplied_api_key(api_key_header, api_key_query)
     token_payload = decode_application_access_token(raw_api_key)
 
@@ -337,6 +341,7 @@ async def get_api_key_v1(
 
 
 async def get_api_key_v2(
+    request: Request,
     api_key_query: str = Security(query_api_key),
     api_key_header: str = Security(header_api_key),
 ) -> str:
@@ -358,6 +363,9 @@ async def get_api_key_v2(
     :rtype: str
     :raises HTTPException: If the API key is invalid or missing.
     """
+    if request.method == "OPTIONS":
+        return ""
+
     raw_api_key = _get_supplied_api_key(api_key_header, api_key_query)
     token_payload = decode_application_access_token(raw_api_key)
 
