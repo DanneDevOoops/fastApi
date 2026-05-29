@@ -99,7 +99,7 @@ def test_v1_user_routes(client):
     assert "password" not in response.json()
 
     response = client.post(
-        "/api/v1/users/batch", json=[active_user.id, inactive_user.id]
+        "/api/v1/users/batch", json={"id": [active_user.id, inactive_user.id]}
     )
     assert response.status_code == 200
     assert {item["id"] for item in response.json()} == {
