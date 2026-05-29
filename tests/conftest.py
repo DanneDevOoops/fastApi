@@ -9,7 +9,7 @@ from unittest.mock import AsyncMock
 import pytest
 from fastapi.testclient import TestClient
 
-from src.core.auth import get_api_key_v2, hash_key_v2
+from src.core.auth import get_api_key_v1, get_api_key_v2, hash_key_v2
 from src.db.connectors.postgres_db import get_pg_db
 from src.db.connectors.sqlite_db import SQLiteConnector
 from src.db.models.v1_models.applications_model_v1 import Application as V1Application
@@ -19,6 +19,7 @@ from src.main import app
 TEST_DB_URL = "sqlite:///src/db/test_data_storage.db"
 sqlite_connector = SQLiteConnector(TEST_DB_URL)
 app.dependency_overrides[get_pg_db] = sqlite_connector.get_sqlite_db
+app.dependency_overrides[get_api_key_v1] = lambda: "test-api-key"
 app.dependency_overrides[get_api_key_v2] = lambda: "test-api-key"
 
 

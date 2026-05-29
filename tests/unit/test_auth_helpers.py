@@ -4,7 +4,9 @@
 
 import asyncio
 from types import SimpleNamespace
-from unittest.mock import AsyncMock
+from unittest.mock import AsyncMock, MagicMock
+
+from fastapi import Request
 
 import pytest
 from fastapi import HTTPException
@@ -93,8 +95,11 @@ def test_get_api_key_v1(monkeypatch):
         async def execute(self, _stmt):
             return FakeResult()
 
+    mock_request = MagicMock(spec=Request)
+    mock_request.method = "GET"
+
     assert (
-        asyncio.run(auth.get_api_key_v1(api_key_header=raw_token, db=FakeDb()))
+        asyncio.run(auth.get_api_key_v1(request=mock_request, api_key_header=raw_token, db=FakeDb()))
         == raw_token
     )
 
@@ -191,4 +196,7 @@ def test_get_api_key_v2(monkeypatch):
 
     monkeypatch.setattr(auth, "ApplicationV2", MockApplicationV2)
 
-    assert asyncio.run(auth.get_api_key_v2(api_key_header=raw_token)) == raw_token
+    mock_request = MagicMock(spec=Request)
+    mock_request.method = "GET"
+
+    assert asyncio.run(auth.get_api_key_v2(request=mock_request, api_key_header=raw_token)) == raw_token
