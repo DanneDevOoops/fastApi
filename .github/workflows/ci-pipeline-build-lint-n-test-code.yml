@@ -120,7 +120,7 @@ jobs:
 
   test_unit:
     name: Run unit tests
-    needs: [prepare_env, lint_application]
+    needs: [prepare_env]
     if: ${{ inputs.run-unit-tests }}
     runs-on: ubuntu-latest
     permissions:
@@ -154,7 +154,7 @@ jobs:
 
   test_integration:
     name: Run integration tests
-    needs: [prepare_env, lint_application, test_unit]
+    needs: [prepare_env]
     if: ${{ inputs.run-integration-tests }}
     runs-on: ubuntu-latest
     permissions:
