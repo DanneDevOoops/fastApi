@@ -85,8 +85,8 @@ jobs:
           retention-days: 1
 
   lint_application:
-    name: Run PyLint for application codebase
-    needs: prepare_env
+    name: Lint application codebase
+    needs: [prepare_env]
     if: ${{ inputs.run-lint }}
     runs-on: ubuntu-latest
     permissions:
@@ -120,7 +120,7 @@ jobs:
 
   test_unit:
     name: Run unit tests
-    needs: prepare_env
+    needs: [prepare_env, lint_application]
     if: ${{ inputs.run-unit-tests }}
     runs-on: ubuntu-latest
     permissions:
@@ -154,7 +154,7 @@ jobs:
 
   test_integration:
     name: Run integration tests
-    needs: prepare_env
+    needs: [prepare_env, lint_application, test_unit]
     if: ${{ inputs.run-integration-tests }}
     runs-on: ubuntu-latest
     permissions:
