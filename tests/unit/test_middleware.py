@@ -6,10 +6,13 @@
 Tests for gzip response middleware.
 """
 
+import pytest
 from fastapi import FastAPI
 from fastapi.testclient import TestClient
 
 from src.middlewares.gzip import GzipResponseMiddleware
+
+pytestmark = pytest.mark.unit
 
 
 def create_test_app() -> FastAPI:

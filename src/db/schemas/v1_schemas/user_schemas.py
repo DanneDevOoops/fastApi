@@ -83,6 +83,14 @@ class UserUpdate(BaseModel):
         return value if value else None
 
 
+class UsersBatch(BaseModel):
+    """
+    Schema for batch user lookups by IDs.
+    """
+
+    id: list[str]
+
+
 class UserSimple(BaseModel):
     """
     Schema for retrieving a simple representation of a User instance.
@@ -128,19 +136,19 @@ class UserOutput(UserCreate):
         """
         Returns a string representation of the UserOutput instance.
         """
-        return json.dumps(self.dict(), indent=2)
+        return json.dumps(self.model_dump(mode="json"), indent=2)
 
     def __eq__(self, other) -> bool:
         """
         Compares two UserOutput instances for equality.
         """
-        return self.dict() == other.dict()
+        return self.model_dump() == other.model_dump()
 
     def __ne__(self, other) -> bool:
         """
         Compares two UserOutput instances for inequality.
         """
-        return self.dict() != other.dict()
+        return self.model_dump() != other.model_dump()
 
     def __getattr__(self, item):
         """
@@ -156,5 +164,5 @@ class UserOutput(UserCreate):
         """
         Returns a namedtuple representation of the UserOutput instance.
         """
-        user_named_tuple = namedtuple("User", self.model_fields.keys())
+        user_named_tuple = namedtuple("User", self.__class__.model_fields.keys())
         return user_named_tuple(**self.model_dump())
