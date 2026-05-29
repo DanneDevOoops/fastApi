@@ -25,7 +25,7 @@ jobs:
   python-ci:
     needs: [validate_branch_policy]
     if: ${{ always() && (github.event_name != 'pull_request' || needs.validate_branch_policy.result == 'success') }}
-    uses: ./.github/workflows/python-ci-pipeline.yml
+    uses: ./.github/workflows/ci-pipeline-build-lint-n-test-code.yml
     secrets: inherit
     with:
       python-version: "3.11.14"
