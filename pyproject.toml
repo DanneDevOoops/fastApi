@@ -88,3 +88,9 @@ line_length = 88
 py_version = 311
 src_paths = ["src", "tests"]
 skip_gitignore = true
+
+[tool.pytest.ini_options]
+markers = [
+    "unit: fast, isolated tests that mock external dependencies",
+    "integration: route and app tests that exercise the FastAPI stack",
+]
