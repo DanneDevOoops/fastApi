@@ -83,7 +83,9 @@ def test_v2_auth_wrong_password(client, monkeypatch):
     )
     fake_user_cls._find_one_result = user
     monkeypatch.setattr(v2_auth_routes, "User", fake_user_cls)
-    monkeypatch.setattr(v2_auth_routes, "verify_password_v2", lambda plain, hashed: False)
+    monkeypatch.setattr(
+        v2_auth_routes, "verify_password_v2", lambda plain, hashed: False
+    )
 
     response = client.post(
         "/api/v2/auth/signin",

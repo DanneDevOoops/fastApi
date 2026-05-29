@@ -1,4 +1,4 @@
-name: Validate branch policy & Python CI pipeline
+name: Python CI pipeline
 run-name: >-
   ${{ github.event_name == 'pull_request'
       && format('PR #{0} • {1} → {2}', github.event.pull_request.number, github.head_ref, github.base_ref)

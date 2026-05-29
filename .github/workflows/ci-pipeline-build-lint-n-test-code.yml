@@ -1,4 +1,4 @@
-name: Python CI pipeline
+name: CI Workflow - build, lint and test Python codebase
 
 on:
   workflow_call:
