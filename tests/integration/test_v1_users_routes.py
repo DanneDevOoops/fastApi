@@ -2,9 +2,10 @@
 # -*- coding: utf-8 -*-
 # pylint: skip-file
 
-import pytest
 import asyncio
 from datetime import datetime, timezone
+
+import pytest
 
 from tests.conftest import _insert_v1_user
 
@@ -97,9 +98,14 @@ def test_v1_user_routes(client):
     assert response.json()["id"] == "user-5"
     assert "password" not in response.json()
 
-    response = client.post("/api/v1/users/batch", json=[active_user.id, inactive_user.id])
+    response = client.post(
+        "/api/v1/users/batch", json=[active_user.id, inactive_user.id]
+    )
     assert response.status_code == 200
-    assert {item["id"] for item in response.json()} == {active_user.id, inactive_user.id}
+    assert {item["id"] for item in response.json()} == {
+        active_user.id,
+        inactive_user.id,
+    }
 
     response = client.patch(
         f"/api/v1/users/{active_user.id}",

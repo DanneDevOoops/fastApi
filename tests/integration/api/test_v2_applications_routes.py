@@ -2,13 +2,14 @@
 # -*- coding: utf-8 -*-
 # pylint: skip-file
 
-import pytest
 from datetime import datetime, timezone
+
+import pytest
 
 from src.api.v2_routes import application_routes as v2_application_routes
 from tests.conftest import _serialize_object, build_fake_document_class
 
-pytestmark = pytest.mark.unit
+pytestmark = pytest.mark.integration
 
 
 def test_v2_application_routes(client, monkeypatch):
@@ -46,14 +47,20 @@ def test_v2_application_routes(client, monkeypatch):
     assert response.status_code == 200
     assert response.json()["id"] == active_app.id
 
-    fake_app_cls._find_result = fake_app_cls(id="app-v2-last", index=7, name="app-v2-last")
-    fake_app_cls._create_result = fake_app_cls(id="app-v2-created", index=8, name="app-v2-created")
+    fake_app_cls._find_result = fake_app_cls(
+        id="app-v2-last", index=7, name="app-v2-last"
+    )
+    fake_app_cls._create_result = fake_app_cls(
+        id="app-v2-created", index=8, name="app-v2-created"
+    )
     monkeypatch.setattr(
         v2_application_routes,
         "create_application_access_token",
         lambda name, app_id: "jwt-token",
     )
-    monkeypatch.setattr(v2_application_routes, "hash_key_v2", lambda token: "hashed-token")
+    monkeypatch.setattr(
+        v2_application_routes, "hash_key_v2", lambda token: "hashed-token"
+    )
 
     response = client.post(
         "/api/v2/applications",

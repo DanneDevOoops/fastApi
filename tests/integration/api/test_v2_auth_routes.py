@@ -7,7 +7,7 @@ import pytest
 from src.api.v2_routes import auth_routes as v2_auth_routes
 from tests.conftest import _serialize_object, build_fake_document_class
 
-pytestmark = pytest.mark.unit
+pytestmark = pytest.mark.integration
 
 
 def test_v2_auth_signin_route(client, monkeypatch):
@@ -38,7 +38,9 @@ def test_v2_auth_signin_route(client, monkeypatch):
     )
     fake_user_cls._find_one_result = user
     monkeypatch.setattr(v2_auth_routes, "User", fake_user_cls)
-    monkeypatch.setattr(v2_auth_routes, "verify_password_v2", lambda plain, hashed: True)
+    monkeypatch.setattr(
+        v2_auth_routes, "verify_password_v2", lambda plain, hashed: True
+    )
     monkeypatch.setattr(
         v2_auth_routes,
         "create_user_access_token",
@@ -47,7 +49,11 @@ def test_v2_auth_signin_route(client, monkeypatch):
 
     response = client.post(
         "/api/v2/auth/signin",
-        json={"username": "user-v2-auth", "email": "auth@example.com", "password": "password"},
+        json={
+            "username": "user-v2-auth",
+            "email": "auth@example.com",
+            "password": "password",
+        },
     )
     assert response.status_code == 200
     assert response.json()["token"] == "jwt-token"
@@ -56,6 +62,10 @@ def test_v2_auth_signin_route(client, monkeypatch):
     fake_user_cls._find_one_result = None
     response = client.post(
         "/api/v2/auth/signin",
-        json={"username": "missing", "email": "missing@example.com", "password": "password"},
+        json={
+            "username": "missing",
+            "email": "missing@example.com",
+            "password": "password",
+        },
     )
     assert response.status_code == 401

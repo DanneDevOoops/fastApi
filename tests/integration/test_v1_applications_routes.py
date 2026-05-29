@@ -2,9 +2,10 @@
 # -*- coding: utf-8 -*-
 # pylint: skip-file
 
-import pytest
 import asyncio
 from datetime import datetime, timezone
+
+import pytest
 
 from tests.conftest import _insert_v1_application
 
@@ -82,7 +83,10 @@ def test_v1_application_routes(client):
 
     response = client.patch(f"/api/v1/applications/delete/{active_app.id}")
     assert response.status_code == 200
-    assert response.json()["detail"] == f"Application {active_app.id} soft deleted successfully"
+    assert (
+        response.json()["detail"]
+        == f"Application {active_app.id} soft deleted successfully"
+    )
 
     response = client.delete(f"/api/v1/applications/delete/{deleted_app.id}")
     assert response.status_code == 200

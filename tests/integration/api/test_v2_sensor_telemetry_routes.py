@@ -2,19 +2,26 @@
 # -*- coding: utf-8 -*-
 # pylint: skip-file
 
-import pytest
 from unittest.mock import AsyncMock
+
+import pytest
 
 from src.api.v2_routes import sensor_telemetry_routes as v2_sensor_telemetry_routes
 from tests.conftest import _serialize_object, build_fake_document_class
 
-pytestmark = pytest.mark.unit
+pytestmark = pytest.mark.integration
 
 
 def test_v2_sensor_telemetry_routes(client, monkeypatch):
-    monkeypatch.setattr(v2_sensor_telemetry_routes, "model_serialize", _serialize_object)
-    fake_telemetry_cls = build_fake_document_class("id", "time", "key", "value", "sensor_id")
-    monkeypatch.setattr(v2_sensor_telemetry_routes, "SensorTelemetry", fake_telemetry_cls)
+    monkeypatch.setattr(
+        v2_sensor_telemetry_routes, "model_serialize", _serialize_object
+    )
+    fake_telemetry_cls = build_fake_document_class(
+        "id", "time", "key", "value", "sensor_id"
+    )
+    monkeypatch.setattr(
+        v2_sensor_telemetry_routes, "SensorTelemetry", fake_telemetry_cls
+    )
 
     telemetry = fake_telemetry_cls(id="telemetry-v2-1", key="temperature", value=21.5)
     fake_telemetry_cls._find_result = [telemetry]
@@ -34,9 +41,13 @@ def test_v2_sensor_telemetry_routes(client, monkeypatch):
     assert response.status_code == 201
     assert response.json()["id"] == "telemetry-v2-created"
 
-    monkeypatch.setattr(v2_sensor_telemetry_routes.asyncio, "sleep", AsyncMock(return_value=None))
+    monkeypatch.setattr(
+        v2_sensor_telemetry_routes.asyncio, "sleep", AsyncMock(return_value=None)
+    )
     fake_telemetry_cls._create_result = fake_telemetry_cls(id="telemetry-v2-batch")
-    response = client.post("/api/v2/sensor_telemetry/fake_some?number_of_items=2&interval=0")
+    response = client.post(
+        "/api/v2/sensor_telemetry/fake_some?number_of_items=2&interval=0"
+    )
     assert response.status_code == 201
     assert len(response.json()) == 2
 

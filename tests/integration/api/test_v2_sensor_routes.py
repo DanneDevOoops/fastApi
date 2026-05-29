@@ -2,13 +2,14 @@
 # -*- coding: utf-8 -*-
 # pylint: skip-file
 
-import pytest
 from datetime import datetime, timezone
+
+import pytest
 
 from src.api.v2_routes import sensor_routes as v2_sensor_routes
 from tests.conftest import _serialize_object, build_fake_document_class
 
-pytestmark = pytest.mark.unit
+pytestmark = pytest.mark.integration
 
 
 def test_v2_sensor_routes(client, monkeypatch):
@@ -49,8 +50,12 @@ def test_v2_sensor_routes(client, monkeypatch):
     assert response.status_code == 200
     assert response.json()["id"] == active_sensor.id
 
-    fake_sensor_cls._find_result = fake_sensor_cls(id="sensor-v2-last", index=8, name="sensor-v2-last")
-    fake_sensor_cls._create_result = fake_sensor_cls(id="sensor-v2-created", index=9, name="sensor-v2-created")
+    fake_sensor_cls._find_result = fake_sensor_cls(
+        id="sensor-v2-last", index=8, name="sensor-v2-last"
+    )
+    fake_sensor_cls._create_result = fake_sensor_cls(
+        id="sensor-v2-created", index=9, name="sensor-v2-created"
+    )
     response = client.post(
         "/api/v2/sensors",
         json={

@@ -2,7 +2,6 @@
 # -*- coding: utf-8 -*-
 # pylint: skip-file
 
-import asyncio
 import os
 from datetime import datetime, timezone
 from unittest.mock import AsyncMock
@@ -11,7 +10,6 @@ import pytest
 from fastapi.testclient import TestClient
 
 from src.core.auth import get_api_key_v2, hash_key_v2
-from src.db.config.base import Base
 from src.db.connectors.postgres_db import get_pg_db
 from src.db.connectors.sqlite_db import SQLiteConnector
 from src.db.models.v1_models.applications_model_v1 import Application as V1Application
@@ -87,33 +85,16 @@ def build_fake_document_class(*field_names):
     return FakeDocument
 
 
-async def _create_tables():
-    async with sqlite_connector.sqlite_engine.begin() as conn:
-        await conn.run_sync(Base.metadata.create_all)
-
-
-async def _drop_tables():
-    async with sqlite_connector.sqlite_engine.begin() as conn:
-        await conn.run_sync(Base.metadata.drop_all)
-
-
 @pytest.fixture(scope="function")
 def client():
     return TestClient(app)
 
 
-@pytest.fixture(scope="function", autouse=True)
-def sqlite_schema():
-    asyncio.run(_create_tables())
-    yield
-    asyncio.run(_drop_tables())
-
-
 @pytest.fixture(scope="function")
 def health_headers():
-    os.environ["APP_HEALTH_CHECK_API_KEY"] = os.getenv(
-        "APP_HEALTH_CHECK_API_KEY"
-    ) or "your-secret-test-api-key"
+    os.environ["APP_HEALTH_CHECK_API_KEY"] = (
+        os.getenv("APP_HEALTH_CHECK_API_KEY") or "your-secret-test-api-key"
+    )
     headers = {
         "Accept": "application/json",
         "Content-Type": "application/json",
@@ -148,7 +129,9 @@ async def _insert_v1_user(**overrides):
         user_obj = V1User(
             id=overrides.get("id", "user-1"),
             username=overrides.get("username", "user-1"),
-            email=overrides.get("email", f"{overrides.get('id', 'user-1')}@example.com"),
+            email=overrides.get(
+                "email", f"{overrides.get('id', 'user-1')}@example.com"
+            ),
             password=overrides.get("password", hash_key_v2("password")),
             first_name=overrides.get("first_name", "User"),
             last_name=overrides.get("last_name", "One"),

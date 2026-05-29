@@ -2,14 +2,15 @@
 # -*- coding: utf-8 -*-
 # pylint: skip-file
 
-import pytest
 from datetime import datetime, timezone
 from types import SimpleNamespace
+
+import pytest
 
 from src.api.v2_routes import user_routes as v2_user_routes
 from tests.conftest import _serialize_object, build_fake_document_class
 
-pytestmark = pytest.mark.unit
+pytestmark = pytest.mark.integration
 
 
 def test_v2_user_routes(client, monkeypatch):
@@ -59,8 +60,12 @@ def test_v2_user_routes(client, monkeypatch):
     assert response.json()["id"] == active_user.id
 
     fake_user_cls._find_result = SimpleNamespace(index=9)
-    fake_user_cls._create_result = fake_user_cls(id="user-v2-created", index=10, username="user-v2-created")
-    monkeypatch.setattr(v2_user_routes, "hash_key_v2", lambda password: "hashed-password")
+    fake_user_cls._create_result = fake_user_cls(
+        id="user-v2-created", index=10, username="user-v2-created"
+    )
+    monkeypatch.setattr(
+        v2_user_routes, "hash_key_v2", lambda password: "hashed-password"
+    )
 
     response = client.post(
         "/api/v2/users",
@@ -84,7 +89,9 @@ def test_v2_user_routes(client, monkeypatch):
     assert "password" not in response.json()
 
     fake_user_cls._find_result = [active_user]
-    response = client.post("/api/v2/users/batch", json={"id": [active_user.id, deleted_user.id]})
+    response = client.post(
+        "/api/v2/users/batch", json={"id": [active_user.id, deleted_user.id]}
+    )
     assert response.status_code == 200
     assert [item["id"] for item in response.json()] == [active_user.id]
 
