@@ -42,7 +42,7 @@ def sensor_routes_options_v2() -> Response:
     information about the allowed HTTP methods for the sensor routes.
     """
     return Response(
-        content={"Allow": "GET, POST, PUT, PATCH, DELETE"},
+        headers={"Allow": "GET, POST, PUT, PATCH, DELETE"},
         status_code=status.HTTP_204_NO_CONTENT,
     )
 

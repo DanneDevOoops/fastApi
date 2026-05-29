@@ -90,3 +90,13 @@ def test_v1_application_routes(client):
 
     response = client.delete(f"/api/v1/applications/delete/{deleted_app.id}")
     assert response.status_code == 200
+
+
+def test_v1_application_not_found(client):
+    response = client.get("/api/v1/applications/does-not-exist")
+    assert response.status_code == 404
+
+
+def test_v1_application_create_invalid_body(client):
+    response = client.post("/api/v1/applications", json={})
+    assert response.status_code == 422
