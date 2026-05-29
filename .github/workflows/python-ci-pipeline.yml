@@ -43,8 +43,13 @@ on:
         type: boolean
         required: false
         default: true
-      run-tests:
-        description: Whether to run test job
+      run-unit-tests:
+        description: Whether to run unit test job
+        type: boolean
+        required: false
+        default: true
+      run-integration-tests:
+        description: Whether to run integration test job
         type: boolean
         required: false
         default: true
@@ -113,10 +118,10 @@ jobs:
           target-path: ${{ inputs.lint-target-path }}
           pylint-args: ${{ inputs.pylint-args }}
 
-  test_application:
-    name: Run PyTest on codebase
+  test_unit:
+    name: Run unit tests
     needs: prepare_env
-    if: ${{ inputs.run-tests }}
+    if: ${{ inputs.run-unit-tests }}
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -140,8 +145,43 @@ jobs:
         shell: bash
         run: chmod -R u+x .venv/bin
 
-      - name: Run tests
+      - name: Run unit tests
         uses: ./.github/actions/test-python
         with:
           python-bin: .venv/bin/python
           pytest-args: ${{ inputs.pytest-args }}
+          test-path: tests/unit
+
+  test_integration:
+    name: Run integration tests
+    needs: prepare_env
+    if: ${{ inputs.run-integration-tests }}
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: ${{ inputs.python-version }}
+
+      - name: Download virtual environment artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: ${{ inputs.venv-artifact-name }}
+          path: .venv
+
+      - name: Restore virtualenv execute permissions
+        shell: bash
+        run: chmod -R u+x .venv/bin
+
+      - name: Run integration tests
+        uses: ./.github/actions/test-python
+        with:
+          python-bin: .venv/bin/python
+          pytest-args: ${{ inputs.pytest-args }}
+          test-path: tests/integration
