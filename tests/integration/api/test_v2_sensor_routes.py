@@ -96,3 +96,26 @@ def test_v2_sensor_routes(client, monkeypatch):
     fake_sensor_cls._find_one_result = deleted_sensor
     response = client.delete(f"/api/v2/sensors/delete/{deleted_sensor.id}")
     assert response.status_code == 204
+
+
+def test_v2_sensor_options_route(client):
+    response = client.options("/api/v2/sensors")
+    assert response.status_code == 204
+    assert response.headers["allow"] == "GET, POST, PUT, PATCH, DELETE"
+
+
+def test_v2_sensor_not_found(client, monkeypatch):
+    from src.api.v2_routes import sensor_routes as v2_sensor_routes
+    from tests.conftest import build_fake_document_class
+
+    fake_sensor_cls = build_fake_document_class("id", "name", "deleted_at")
+    fake_sensor_cls._find_result = None
+    monkeypatch.setattr(v2_sensor_routes, "Sensor", fake_sensor_cls)
+
+    response = client.get("/api/v2/sensors/does-not-exist")
+    assert response.status_code == 404
+
+
+def test_v2_sensor_create_invalid_body(client):
+    response = client.post("/api/v2/sensors", json={})
+    assert response.status_code == 422

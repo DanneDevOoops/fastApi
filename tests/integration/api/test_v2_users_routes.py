@@ -126,3 +126,26 @@ def test_v2_user_routes(client, monkeypatch):
 
     response = client.delete(f"/api/v2/users/delete/{deleted_user.id}")
     assert response.status_code == 204
+
+
+def test_v2_user_options_route(client):
+    response = client.options("/api/v2/users")
+    assert response.status_code == 204
+    assert response.headers["allow"] == "GET, POST, PUT, PATCH, DELETE"
+
+
+def test_v2_user_not_found(client, monkeypatch):
+    from src.api.v2_routes import user_routes as v2_user_routes
+    from tests.conftest import build_fake_document_class
+
+    fake_user_cls = build_fake_document_class("id", "username", "deleted_at")
+    fake_user_cls._find_one_result = None
+    monkeypatch.setattr(v2_user_routes, "User", fake_user_cls)
+
+    response = client.get("/api/v2/users/does-not-exist")
+    assert response.status_code == 404
+
+
+def test_v2_user_create_invalid_body(client):
+    response = client.post("/api/v2/users", json={})
+    assert response.status_code == 422
