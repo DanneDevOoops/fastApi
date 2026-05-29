@@ -30,9 +30,9 @@ jobs:
           # Examples: feature/PROJ-123-add-login, feature/cicd_piplines
           # Bot examples: dependabot/pip/requests-2.32.3, renovate/pydantic-2.x
           if [[ "$TARGET" == "dev" ]]; then
-            if [[ ! "$SOURCE" =~ ^(feature|fix|chore|refactor|docs|test|ci)/(([A-Z][A-Z0-9]*-[0-9]+-)?[a-z0-9]+([_-][a-z0-9]+)*)$ && ! "$SOURCE" =~ ^(dependabot|renovate)/.+$ ]]; then
+            if [[ ! "$SOURCE" =~ ^(feature|fix|chore|refactor|docs|tests?|ci)/(([A-Z][A-Z0-9]*-[0-9]+-)?[a-z0-9]+([_-][a-z0-9]+)*)$ && ! "$SOURCE" =~ ^(dependabot|renovate)/.+$ ]]; then
               echo "❌ Invalid source branch '$SOURCE' for target 'dev'."
-              echo "   Allowed prefixes: feature, fix, chore, refactor, docs, test, ci"
+              echo "   Allowed prefixes: feature, fix, chore, refactor, docs, test, tests, ci"
               echo "   Note: use 'fix/*' instead of 'bugfix/*'."
               echo "   Allowed bot branches: dependabot/*, renovate/*"
               echo "   Format: <prefix>/<ticket-optional><lowercase-description>"

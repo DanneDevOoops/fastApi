@@ -69,3 +69,31 @@ def test_v2_auth_signin_route(client, monkeypatch):
         },
     )
     assert response.status_code == 401
+
+
+def test_v2_auth_wrong_password(client, monkeypatch):
+    from src.api.v2_routes import auth_routes as v2_auth_routes
+    from tests.conftest import build_fake_document_class
+
+    fake_user_cls = build_fake_document_class(
+        "id", "username", "email", "password", "deleted_at"
+    )
+    user = fake_user_cls(
+        id="u1", username="u1", email="u1@example.com", password="hashed"
+    )
+    fake_user_cls._find_one_result = user
+    monkeypatch.setattr(v2_auth_routes, "User", fake_user_cls)
+    monkeypatch.setattr(
+        v2_auth_routes, "verify_password_v2", lambda plain, hashed: False
+    )
+
+    response = client.post(
+        "/api/v2/auth/signin",
+        json={"username": "u1", "email": "u1@example.com", "password": "wrong"},
+    )
+    assert response.status_code == 401
+
+
+def test_v2_auth_signin_invalid_body(client):
+    response = client.post("/api/v2/auth/signin", json={})
+    assert response.status_code == 422

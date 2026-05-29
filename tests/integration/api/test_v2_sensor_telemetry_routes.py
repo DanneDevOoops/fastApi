@@ -65,3 +65,14 @@ def test_v2_sensor_telemetry_filtered_route_is_broken(client):
 def test_v2_sensor_telemetry_update_route_is_broken(client):
     response = client.patch("/api/v2/sensor_telemetry/sensor-v2-1")
     assert response.status_code == 200
+
+
+def test_v2_sensor_telemetry_options_route(client):
+    response = client.options("/api/v2/sensor_telemetry")
+    assert response.status_code == 204
+    assert response.headers["allow"] == "GET, POST, PUT, PATCH, DELETE"
+
+
+def test_v2_sensor_telemetry_create_invalid_body(client):
+    response = client.post("/api/v2/sensor_telemetry", json={})
+    assert response.status_code == 422
