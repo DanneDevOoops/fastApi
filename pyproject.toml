@@ -10,7 +10,7 @@ packages = [{ include = "*", from = "src" }]
 python = "^3.11"
 bcrypt = "4.0.1"
 blessed = "^1.44.0"
-bpython = "^0.24"
+bpython = ">=0.24,<0.27"
 fastapi = "^0.120.1"
 fastapi-cli = "^0.0.5"
 httptools = "^0.8.0"
