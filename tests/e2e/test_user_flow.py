@@ -1,4 +1,5 @@
 import os
+
 import pytest
 
 pytestmark = pytest.mark.e2e
@@ -20,7 +21,9 @@ _USER_DEFAULTS = {
 }
 
 
-def _user_payload(user_id: str, username: str = None, email: str = None, **overrides) -> dict:
+def _user_payload(
+    user_id: str, username: str = None, email: str = None, **overrides
+) -> dict:
     return {
         "id": user_id,
         "username": username or user_id,
@@ -122,7 +125,9 @@ async def test_patch_update_user(e2e_client):
     assert response.status_code == 201
     original = response.json()
 
-    response = await e2e_client.patch(f"{_BASE}/{user_id}", json={"city": "Patchedtown"})
+    response = await e2e_client.patch(
+        f"{_BASE}/{user_id}", json={"city": "Patchedtown"}
+    )
     assert response.status_code == 200
     updated = response.json()
 
@@ -295,7 +300,9 @@ async def test_password_not_in_list_responses(e2e_client):
         assert "password" not in user, "password exposed in POST /batch"
 
     # PATCH response
-    response = await e2e_client.patch(f"{_BASE}/{uid_inactive}", json={"city": "PatchCity"})
+    response = await e2e_client.patch(
+        f"{_BASE}/{uid_inactive}", json={"city": "PatchCity"}
+    )
     assert response.status_code == 200
     assert "password" not in response.json(), "password exposed in PATCH response"
 
@@ -375,7 +382,9 @@ async def test_hard_delete_nonexistent_user_returns_404(e2e_client):
 @pytest.mark.asyncio
 async def test_create_response_excludes_sensitive_fields(e2e_client):
     user_id = "e2e-user-fields"
-    response = await e2e_client.post(_BASE, json=_user_payload(user_id, is_superuser=True))
+    response = await e2e_client.post(
+        _BASE, json=_user_payload(user_id, is_superuser=True)
+    )
     assert response.status_code == 201
     data = response.json()
 
@@ -416,7 +425,9 @@ async def test_updated_at_changes_after_patch(e2e_client):
 
     await asyncio.sleep(0.05)  # ensure clock advances
 
-    response = await e2e_client.patch(f"{_BASE}/{user_id}", json={"city": "TimestampTown"})
+    response = await e2e_client.patch(
+        f"{_BASE}/{user_id}", json={"city": "TimestampTown"}
+    )
     assert response.status_code == 200
     assert response.json()["updated_at"] != original_updated_at
 

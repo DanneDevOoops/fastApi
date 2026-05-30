@@ -164,9 +164,7 @@ async def test_get_deleted_applications_empty_returns_404(e2e_client):
 # ---------------------------------------------------------------------------
 @pytest.mark.asyncio
 async def test_patch_nonexistent_application_returns_404(e2e_client):
-    response = await e2e_client.patch(
-        f"{_BASE}/no-such-app", json={"description": "x"}
-    )
+    response = await e2e_client.patch(f"{_BASE}/no-such-app", json={"description": "x"})
     assert response.status_code == 404
 
 
@@ -174,7 +172,12 @@ async def test_patch_nonexistent_application_returns_404(e2e_client):
 async def test_put_nonexistent_application_returns_404(e2e_client):
     response = await e2e_client.put(
         f"{_BASE}/no-such-app",
-        json={"name": "x", "description": "x", "url": "http://x.test", "is_active": True},
+        json={
+            "name": "x",
+            "description": "x",
+            "url": "http://x.test",
+            "is_active": True,
+        },
     )
     assert response.status_code == 404
 
@@ -221,7 +224,12 @@ async def test_updated_at_changes_after_put(e2e_client):
 
     response = await e2e_client.put(
         f"{_BASE}/{app_id}",
-        json={"name": app_id, "description": "replaced", "url": "http://new.test", "is_active": False},
+        json={
+            "name": app_id,
+            "description": "replaced",
+            "url": "http://new.test",
+            "is_active": False,
+        },
     )
     assert response.status_code == 200
     assert response.json()["updated_at"] != original_updated_at

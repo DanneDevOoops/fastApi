@@ -9,6 +9,7 @@ This module defines custom exception classes used throughout the application.
 Each exception class inherits from the base `Exception` class and includes
 additional attributes and methods to provide more context and functionality.
 """
+
 import logging
 
 from src.core.env_config import get_settings

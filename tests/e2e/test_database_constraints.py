@@ -4,6 +4,7 @@ ignores or handles differently (unique indexes, referential integrity, etc.).
 """
 
 import os
+
 import pytest
 
 pytestmark = pytest.mark.e2e
