@@ -39,6 +39,13 @@ settings = get_settings()
 logger = logging.getLogger(settings.app_logger_name or "application_logger")
 
 
+def _user_out(user) -> dict:
+    """Serialize a User model, stripping fields that must never be in responses."""
+    data = UserOutput.model_validate(user).model_dump(exclude_none=True)
+    data.pop("password", None)
+    return data
+
+
 @router.options("", operation_id="options_v1_user_routes")
 def options_user_routes() -> Response:
     """
@@ -86,10 +93,7 @@ async def get_all_users(
 
         return ORJSONResponse(
             status_code=status.HTTP_200_OK,
-            content=[
-                UserOutput.model_validate(u).model_dump(exclude_none=True)
-                for u in users
-            ],
+            content=[_user_out(u) for u in users],
         )
     except NotFoundException as e:
         logger.error(e)
@@ -135,10 +139,7 @@ async def get_all_soft_deleted_users(
 
         return ORJSONResponse(
             status_code=status.HTTP_200_OK,
-            content=[
-                UserOutput.model_validate(u).model_dump(exclude_none=True)
-                for u in users
-            ],
+            content=[_user_out(u) for u in users],
         )
     except NotFoundException as e:
         logger.error(e)
@@ -184,10 +185,7 @@ async def get_all_activated_users(
 
         return ORJSONResponse(
             status_code=status.HTTP_200_OK,
-            content=[
-                UserOutput.model_validate(u).model_dump(exclude_none=True)
-                for u in users
-            ],
+            content=[_user_out(u) for u in users],
         )
     except NotFoundException as e:
         logger.error(e)
@@ -235,10 +233,7 @@ async def get_all_deactivated_users(
 
         return ORJSONResponse(
             status_code=status.HTTP_200_OK,
-            content=[
-                UserOutput.model_validate(u).model_dump(exclude_none=True)
-                for u in users
-            ],
+            content=[_user_out(u) for u in users],
         )
     except NotFoundException as e:
         logger.error(e)
@@ -286,10 +281,7 @@ async def get_all_superusers(
 
         return ORJSONResponse(
             status_code=status.HTTP_200_OK,
-            content=[
-                UserOutput.model_validate(u).model_dump(exclude_none=True)
-                for u in users
-            ],
+            content=[_user_out(u) for u in users],
         )
     except NotFoundException as e:
         logger.error(e)
@@ -336,9 +328,11 @@ async def get_user_by_id(
         if not user:
             raise NotFoundException(message="User not found")
 
+        serialized = UserOutput.model_validate(user).model_dump(exclude_none=True)
+        serialized.pop("password", None)
         return ORJSONResponse(
             status_code=status.HTTP_200_OK,
-            content=UserOutput.model_validate(user).model_dump(exclude_none=True),
+            content=serialized,
         )
     except NotFoundException as e:
         logger.error(e)
@@ -438,10 +432,7 @@ async def get_users_batch_by_ids(
 
         return ORJSONResponse(
             status_code=status.HTTP_200_OK,
-            content=[
-                UserOutput.model_validate(u).model_dump(exclude_none=True)
-                for u in users
-            ],
+            content=[_user_out(u) for u in users],
         )
     except Exception as e:
         logger.error(e)
@@ -553,7 +544,7 @@ async def patch_update_user_by_id(
 
         return ORJSONResponse(
             status_code=status.HTTP_200_OK,
-            content=UserOutput.model_validate(user).model_dump(exclude_none=True),
+            content=_user_out(user),
         )
     except NotFoundException as e:
         logger.error(e)
@@ -611,7 +602,7 @@ async def put_update_user_by_id(
 
         return ORJSONResponse(
             status_code=status.HTTP_200_OK,
-            content=UserOutput.model_validate(user).model_dump(exclude_none=True),
+            content=_user_out(user),
         )
     except NotFoundException as e:
         logger.error(e)

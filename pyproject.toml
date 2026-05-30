@@ -52,6 +52,8 @@ aiosqlite = "^0.20.0"
 [tool.poetry.group.test.dependencies]
 faker = "^28.4.1"
 pytest = "^9.0.3"
+pytest-asyncio = "^1.4.0"
+testcontainers = "^4.14.2"
 
 [tool.poetry.group.dev.dependencies]
 black = "^26.3.1"
@@ -90,7 +92,10 @@ src_paths = ["src", "tests"]
 skip_gitignore = true
 
 [tool.pytest.ini_options]
+asyncio_default_fixture_loop_scope = "session"
+asyncio_default_test_loop_scope = "session"
 markers = [
     "unit: fast, isolated tests that mock external dependencies",
     "integration: route and app tests that exercise the FastAPI stack",
+    "e2e: full stack tests using a real PostgreSQL container",
 ]
