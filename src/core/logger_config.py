@@ -43,7 +43,7 @@ def init_logger(input_logger_name: str = None) -> logging.Logger:
 
     # Define the logging configuration dictionary
     log_dir = settings.file_logger_dir or "logs"
-    startup_time = datetime.datetime.utcnow().strftime("%Y-%m-%d")
+    startup_time = datetime.datetime.now(datetime.UTC).strftime("%Y-%m-%d")
     file_name = str(
         startup_time + "_" + settings.file_logger_file_name or "application.log"
     )

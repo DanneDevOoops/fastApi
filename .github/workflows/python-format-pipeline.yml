@@ -7,7 +7,7 @@ on:
         description: Python version to use
         type: string
         required: false
-        default: "3.11.14"
+        default: "3.13.12"
       venv-artifact-name:
         description: Name of the virtualenv artifact
         type: string

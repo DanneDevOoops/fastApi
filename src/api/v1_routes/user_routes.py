@@ -10,10 +10,9 @@ users, and permanently deleting users from the PostgreSQL database.
 """
 
 import logging
-from datetime import datetime
+from datetime import datetime, timezone
 
 from fastapi import APIRouter, Depends, HTTPException, status
-from fastapi.responses import ORJSONResponse
 from sqlalchemy import select
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -22,6 +21,7 @@ from starlette.responses import Response
 from src.core.auth import hash_key_v2
 from src.core.custom_exceptions import NotFoundException
 from src.core.env_config import get_settings
+from src.core.responses import AppJSONResponse
 from src.db.connectors.postgres_db import get_pg_db
 from src.db.models.v1_models.users_model_v1 import User
 from src.db.schemas.v1_schemas.user_schemas import (
@@ -68,17 +68,17 @@ def options_user_routes() -> Response:
     name="get_all_users_v1",
     description="Get all active Users from the PostgreSQL database",
     operation_id="get_all_users_v1_in_pg_db",
-    response_class=ORJSONResponse,
+    response_class=AppJSONResponse,
     status_code=status.HTTP_200_OK,
 )
 async def get_all_users(
     db: AsyncSession = Depends(get_pg_db),
-) -> ORJSONResponse:
+) -> AppJSONResponse:
     """
     Retrieve all Users that are not soft-deleted.
 
     :return: A list of active user data.
-    :rtype: ORJSONResponse
+    :rtype: AppJSONResponse
     """
     logger.info("Fetching all active users from the PostgreSQL database")
     try:
@@ -91,7 +91,7 @@ async def get_all_users(
         if not users:
             raise NotFoundException(message="No users found")
 
-        return ORJSONResponse(
+        return AppJSONResponse(
             status_code=status.HTTP_200_OK,
             content=[_user_out(u) for u in users],
         )
@@ -114,17 +114,17 @@ async def get_all_users(
     name="get_all_soft_deleted_users_v1",
     description="Get all soft-deleted Users from the PostgreSQL database",
     operation_id="get_all_soft_deleted_users_v1_in_pg_db",
-    response_class=ORJSONResponse,
+    response_class=AppJSONResponse,
     status_code=status.HTTP_200_OK,
 )
 async def get_all_soft_deleted_users(
     db: AsyncSession = Depends(get_pg_db),
-) -> ORJSONResponse:
+) -> AppJSONResponse:
     """
     Retrieve all Users that have been soft-deleted.
 
     :return: A list of soft-deleted user data.
-    :rtype: ORJSONResponse
+    :rtype: AppJSONResponse
     """
     logger.info("Fetching all soft-deleted users from the PostgreSQL database")
     try:
@@ -137,7 +137,7 @@ async def get_all_soft_deleted_users(
         if not users:
             raise NotFoundException(message="No soft-deleted users found")
 
-        return ORJSONResponse(
+        return AppJSONResponse(
             status_code=status.HTTP_200_OK,
             content=[_user_out(u) for u in users],
         )
@@ -160,17 +160,17 @@ async def get_all_soft_deleted_users(
     name="get_all_activated_users_v1",
     description="Get all activated Users from the PostgreSQL database",
     operation_id="get_all_activated_users_v1_in_pg_db",
-    response_class=ORJSONResponse,
+    response_class=AppJSONResponse,
     status_code=status.HTTP_200_OK,
 )
 async def get_all_activated_users(
     db: AsyncSession = Depends(get_pg_db),
-) -> ORJSONResponse:
+) -> AppJSONResponse:
     """
     Retrieve all users where `is_active` is True and not soft-deleted.
 
     :return: A list of activated user data.
-    :rtype: ORJSONResponse
+    :rtype: AppJSONResponse
     """
     logger.info("Fetching all activated users from the PostgreSQL database")
     try:
@@ -183,7 +183,7 @@ async def get_all_activated_users(
         if not users:
             raise NotFoundException(message="No activated users found")
 
-        return ORJSONResponse(
+        return AppJSONResponse(
             status_code=status.HTTP_200_OK,
             content=[_user_out(u) for u in users],
         )
@@ -206,17 +206,17 @@ async def get_all_activated_users(
     name="get_all_deactivated_users_v1",
     description="Get all deactivated Users from the PostgreSQL database",
     operation_id="get_all_deactivated_users_v1_in_pg_db",
-    response_class=ORJSONResponse,
+    response_class=AppJSONResponse,
     status_code=status.HTTP_200_OK,
 )
 async def get_all_deactivated_users(
     db: AsyncSession = Depends(get_pg_db),
-) -> ORJSONResponse:
+) -> AppJSONResponse:
     """
     Retrieve all users where `is_active` is False and not soft-deleted.
 
     :return: A list of deactivated user data.
-    :rtype: ORJSONResponse
+    :rtype: AppJSONResponse
     """
     logger.info("Fetching all deactivated users from the PostgreSQL database")
     try:
@@ -231,7 +231,7 @@ async def get_all_deactivated_users(
         if not users:
             raise NotFoundException(message="No deactivated users found")
 
-        return ORJSONResponse(
+        return AppJSONResponse(
             status_code=status.HTTP_200_OK,
             content=[_user_out(u) for u in users],
         )
@@ -254,17 +254,17 @@ async def get_all_deactivated_users(
     name="get_all_superusers_v1",
     description="Get all superusers from the PostgreSQL database",
     operation_id="get_all_superusers_v1_in_pg_db",
-    response_class=ORJSONResponse,
+    response_class=AppJSONResponse,
     status_code=status.HTTP_200_OK,
 )
 async def get_all_superusers(
     db: AsyncSession = Depends(get_pg_db),
-) -> ORJSONResponse:
+) -> AppJSONResponse:
     """
     Retrieve all users where `is_superuser` is True and not soft-deleted.
 
     :return: A list of superuser data.
-    :rtype: ORJSONResponse
+    :rtype: AppJSONResponse
     """
     logger.info("Fetching all superusers from the PostgreSQL database")
     try:
@@ -279,7 +279,7 @@ async def get_all_superusers(
         if not users:
             raise NotFoundException(message="No superusers found")
 
-        return ORJSONResponse(
+        return AppJSONResponse(
             status_code=status.HTTP_200_OK,
             content=[_user_out(u) for u in users],
         )
@@ -302,20 +302,20 @@ async def get_all_superusers(
     name="get_user_by_id_v1",
     description="Get a User by ID from the PostgreSQL database",
     operation_id="get_user_by_id_v1_in_pg_db",
-    response_class=ORJSONResponse,
+    response_class=AppJSONResponse,
     status_code=status.HTTP_200_OK,
 )
 async def get_user_by_id(
     user_id: str,
     db: AsyncSession = Depends(get_pg_db),
-) -> ORJSONResponse:
+) -> AppJSONResponse:
     """
     Retrieve a single active User by ID.
 
     :param user_id: The unique identifier of the user.
     :type user_id: str
     :return: The user data if found, or 404 if not found.
-    :rtype: ORJSONResponse
+    :rtype: AppJSONResponse
     """
     logger.info("Fetching user with ID: %s", user_id)
     try:
@@ -330,7 +330,7 @@ async def get_user_by_id(
 
         serialized = UserOutput.model_validate(user).model_dump(exclude_none=True)
         serialized.pop("password", None)
-        return ORJSONResponse(
+        return AppJSONResponse(
             status_code=status.HTTP_200_OK,
             content=serialized,
         )
@@ -353,20 +353,20 @@ async def get_user_by_id(
     name="create_user_v1_in_pg_db",
     description="Create a new User in the PostgreSQL database",
     operation_id="create_user_v1_in_pg_db",
-    response_class=ORJSONResponse,
+    response_class=AppJSONResponse,
     status_code=status.HTTP_201_CREATED,
 )
 async def create_user(
     user: UserCreate,
     db: AsyncSession = Depends(get_pg_db),
-) -> ORJSONResponse:
+) -> AppJSONResponse:
     """
     Create a new User with a hashed password.
 
     :param user: The data required to create a new user.
     :type user: UserCreate
     :return: The created user data (excluding sensitive fields), or an error response.
-    :rtype: ORJSONResponse
+    :rtype: AppJSONResponse
     """
     logger.info("Creating a new user: %s", user.username)
     try:
@@ -380,7 +380,7 @@ async def create_user(
         for key in ["password", "is_superuser", "updated_at", "deleted_at"]:
             serialized.pop(key, None)
 
-        return ORJSONResponse(
+        return AppJSONResponse(
             status_code=status.HTTP_201_CREATED,
             content=serialized,
         )
@@ -407,20 +407,20 @@ async def create_user(
     name="get_a_batch_of_users_by_ids_v1",
     description="Get a batch of Users by a list of IDs from the PostgreSQL database",
     operation_id="get_a_batch_of_users_by_ids_v1_in_pg_db",
-    response_class=ORJSONResponse,
+    response_class=AppJSONResponse,
     status_code=status.HTTP_200_OK,
 )
 async def get_users_batch_by_ids(
     user_ids: UsersBatch,
     db: AsyncSession = Depends(get_pg_db),
-) -> ORJSONResponse:
+) -> AppJSONResponse:
     """
     Retrieve a batch of active Users by a list of IDs.
 
     :param user_ids: A payload containing the list of user IDs to retrieve.
     :type user_ids: UsersBatch
     :return: A list of user data matching the given IDs.
-    :rtype: ORJSONResponse
+    :rtype: AppJSONResponse
     """
     logger.info("Requesting users from IDs: %s", user_ids.id)
     try:
@@ -430,7 +430,7 @@ async def get_users_batch_by_ids(
             )
             users = result.unique().scalars().all()
 
-        return ORJSONResponse(
+        return AppJSONResponse(
             status_code=status.HTTP_200_OK,
             content=[_user_out(u) for u in users],
         )
@@ -451,20 +451,20 @@ async def get_users_batch_by_ids(
     name="soft_delete_user_by_id_v1",
     description="Soft-delete a User by ID in the PostgreSQL database",
     operation_id="soft_delete_user_by_id_v1_in_pg_db",
-    response_class=ORJSONResponse,
+    response_class=AppJSONResponse,
     status_code=status.HTTP_200_OK,
 )
 async def soft_delete_user_by_id(
     user_id: str,
     db: AsyncSession = Depends(get_pg_db),
-) -> ORJSONResponse:
+) -> AppJSONResponse:
     """
     Soft-delete an active User by setting the `deleted_at` timestamp.
 
     :param user_id: The unique identifier of the user to soft-delete.
     :type user_id: str
     :return: The updated user data, or 404 if not found / already deleted.
-    :rtype: ORJSONResponse
+    :rtype: AppJSONResponse
     """
     logger.info("Soft-deleting user with ID: %s", user_id)
     try:
@@ -479,12 +479,12 @@ async def soft_delete_user_by_id(
                     message="User not found or already marked as deleted"
                 )
 
-            user.updated_at = datetime.utcnow()
-            user.deleted_at = datetime.utcnow()
+            user.updated_at = datetime.now(timezone.utc)
+            user.deleted_at = datetime.now(timezone.utc)
             await session.commit()
             await session.refresh(user)
 
-        return ORJSONResponse(
+        return AppJSONResponse(
             status_code=status.HTTP_200_OK,
             content=UserOutput.model_validate(user).model_dump(exclude_none=True),
         )
@@ -507,14 +507,14 @@ async def soft_delete_user_by_id(
     name="patch_update_user_by_id_v1",
     description="Partially update a User's data in the PostgreSQL database",
     operation_id="patch_update_user_by_id_v1_in_pg_db",
-    response_class=ORJSONResponse,
+    response_class=AppJSONResponse,
     status_code=status.HTTP_200_OK,
 )
 async def patch_update_user_by_id(
     user_id: str,
     user_data: UserUpdate,
     db: AsyncSession = Depends(get_pg_db),
-) -> ORJSONResponse:
+) -> AppJSONResponse:
     """
     Partially update an active User's data by ID (only provided fields are changed).
 
@@ -523,7 +523,7 @@ async def patch_update_user_by_id(
     :param user_data: The fields and values to update.
     :type user_data: UserUpdate
     :return: The updated user data, or 404 if not found.
-    :rtype: ORJSONResponse
+    :rtype: AppJSONResponse
     """
     logger.info("PATCH updating user with ID: %s", user_id)
     try:
@@ -538,11 +538,11 @@ async def patch_update_user_by_id(
 
             for field, value in user_data.model_dump(exclude_unset=True).items():
                 setattr(user, field, value)
-            user.updated_at = datetime.utcnow()
+            user.updated_at = datetime.now(timezone.utc)
             await session.commit()
             await session.refresh(user)
 
-        return ORJSONResponse(
+        return AppJSONResponse(
             status_code=status.HTTP_200_OK,
             content=_user_out(user),
         )
@@ -565,14 +565,14 @@ async def patch_update_user_by_id(
     name="put_update_user_by_id_v1",
     description="Fully update a User's data in the PostgreSQL database",
     operation_id="put_update_user_by_id_v1_in_pg_db",
-    response_class=ORJSONResponse,
+    response_class=AppJSONResponse,
     status_code=status.HTTP_200_OK,
 )
 async def put_update_user_by_id(
     user_id: str,
     user_data: UserUpdate,
     db: AsyncSession = Depends(get_pg_db),
-) -> ORJSONResponse:
+) -> AppJSONResponse:
     """
     Fully replace an active User's data by ID.
 
@@ -581,7 +581,7 @@ async def put_update_user_by_id(
     :param user_data: The new user data.
     :type user_data: UserUpdate
     :return: The updated user data, or 404 if not found.
-    :rtype: ORJSONResponse
+    :rtype: AppJSONResponse
     """
     logger.info("PUT updating user with ID: %s", user_id)
     try:
@@ -596,11 +596,11 @@ async def put_update_user_by_id(
 
             for field, value in user_data.model_dump(exclude_unset=True).items():
                 setattr(user, field, value)
-            user.updated_at = datetime.utcnow()
+            user.updated_at = datetime.now(timezone.utc)
             await session.commit()
             await session.refresh(user)
 
-        return ORJSONResponse(
+        return AppJSONResponse(
             status_code=status.HTTP_200_OK,
             content=_user_out(user),
         )

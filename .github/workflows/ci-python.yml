@@ -28,7 +28,7 @@ jobs:
     uses: ./.github/workflows/ci-pipeline-build-lint-n-test-code.yml
     secrets: inherit
     with:
-      python-version: "3.11.14"
+      python-version: "3.13.12"
       poetry-version: "1.8.3"
       cache-dependency-path: "**/poetry.lock"
       venv-artifact-name: python-venv

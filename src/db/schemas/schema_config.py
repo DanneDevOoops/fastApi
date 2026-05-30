@@ -8,7 +8,7 @@ This module contains the schema configurations for database models.
 
 from pydantic import ConfigDict
 
-standard_model_config = ConfigDict(
+standard_model_config = ConfigDict(  # pylint: disable=invalid-name
     from_attributes=True,
     str_strip_whitespace=True,
     arbitrary_types_allowed=True,

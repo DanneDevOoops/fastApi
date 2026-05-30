@@ -10,10 +10,10 @@ Auth routes description here...
 import logging
 
 from fastapi import APIRouter, status
-from fastapi.responses import ORJSONResponse
 
 from src.core.auth import create_user_access_token, verify_password_v2
 from src.core.env_config import get_settings
+from src.core.responses import AppJSONResponse
 from src.db.models.v2_models.auth_model_v2 import UserPasswordSignin
 from src.db.models.v2_models.user_model_v2 import User
 from src.db.serializers.v2_serializers.v2_model_serializers import model_serialize
@@ -24,7 +24,7 @@ logger = logging.getLogger(settings.app_logger_name or "application_logger")
 
 
 @router.post("/signin", status_code=status.HTTP_200_OK or status.HTTP_401_UNAUTHORIZED)
-async def signin_user(signin_data: UserPasswordSignin) -> ORJSONResponse:
+async def signin_user(signin_data: UserPasswordSignin) -> AppJSONResponse:
     """
     Sign in a user and return the user data.
     """
@@ -40,7 +40,7 @@ async def signin_user(signin_data: UserPasswordSignin) -> ORJSONResponse:
             signin_data.username,
             signin_data.email,
         )
-        return ORJSONResponse(
+        return AppJSONResponse(
             content={"detail": "Unauthorized, invalid user credentials"},
             status_code=status.HTTP_401_UNAUTHORIZED,
         )
@@ -50,7 +50,7 @@ async def signin_user(signin_data: UserPasswordSignin) -> ORJSONResponse:
         signin_data.password, user_data.password
     ):
         logger.warning("Unauthorized, invalid user credentials")
-        return ORJSONResponse(
+        return AppJSONResponse(
             content={"detail": "Unauthorized, invalid user credentials"},
             status_code=status.HTTP_401_UNAUTHORIZED,
         )
@@ -74,7 +74,7 @@ async def signin_user(signin_data: UserPasswordSignin) -> ORJSONResponse:
 
     logging.info("User %s signed in successfully", serialized_user_data["id"])
 
-    return ORJSONResponse(
+    return AppJSONResponse(
         content={
             "user": serialized_user_data,
             "token": user_access_token,
