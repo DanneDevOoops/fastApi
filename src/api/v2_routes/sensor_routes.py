@@ -17,9 +17,10 @@ import logging
 from datetime import datetime, timezone
 
 from fastapi import APIRouter, status
-from fastapi.responses import ORJSONResponse, Response
+from fastapi.responses import Response
 
 from src.core.env_config import get_settings
+from src.core.responses import AppJSONResponse
 from src.db.models.v2_models.sensor_model_v2 import (
     CreateSensor,
     PatchSensorData,
@@ -55,7 +56,7 @@ def sensor_routes_options_v2() -> Response:
     response_model=list[Sensor],
     status_code=status.HTTP_200_OK,
 )
-async def get_sensors() -> ORJSONResponse:
+async def get_sensors() -> AppJSONResponse:
     """
     Retrieve all sensors.
 
@@ -64,17 +65,17 @@ async def get_sensors() -> ORJSONResponse:
     error response.
 
     :return: A list of sensor data, or a 404 error if none are found.
-    :rtype: ORJSONResponse
+    :rtype: AppJSONResponse
     """
     all_sensors = await Sensor.find(Sensor.deleted_at == None).to_list()
     if not all_sensors:
         logger.warning("No sensors found.")
-        return ORJSONResponse(
+        return AppJSONResponse(
             content={"detail": "No sensors found."},
             status_code=status.HTTP_404_NOT_FOUND,
         )
 
-    return ORJSONResponse(
+    return AppJSONResponse(
         content=list(map(model_serialize, all_sensors)), status_code=status.HTTP_200_OK
     )
 
@@ -87,7 +88,7 @@ async def get_sensors() -> ORJSONResponse:
     response_model=Sensor,
     status_code=status.HTTP_200_OK,
 )
-async def get_all_soft_deleted_sensors() -> ORJSONResponse:
+async def get_all_soft_deleted_sensors() -> AppJSONResponse:
     """
     Retrieve all soft deleted sensors.
 
@@ -97,16 +98,16 @@ async def get_all_soft_deleted_sensors() -> ORJSONResponse:
 
     :return: A list of soft deleted sensor data, or a 404 error if none
         are found.
-    :rtype: ORJSONResponse
+    :rtype: AppJSONResponse
     """
     soft_deleted_sensors = await Sensor.find(Sensor.deleted_at != None).to_list()
     if not soft_deleted_sensors:
-        return ORJSONResponse(
+        return AppJSONResponse(
             content={"detail": "No soft deleted sensors found."},
             status_code=status.HTTP_404_NOT_FOUND,
         )
 
-    return ORJSONResponse(
+    return AppJSONResponse(
         content=list(map(model_serialize, soft_deleted_sensors)),
         status_code=status.HTTP_200_OK,
     )
@@ -120,7 +121,7 @@ async def get_all_soft_deleted_sensors() -> ORJSONResponse:
     response_model=Sensor,
     status_code=status.HTTP_200_OK,
 )
-async def get_sensor_by_id(sensor_id: str) -> ORJSONResponse:
+async def get_sensor_by_id(sensor_id: str) -> AppJSONResponse:
     """
     Retrieve a sensor by its unique ID.
 
@@ -131,19 +132,19 @@ async def get_sensor_by_id(sensor_id: str) -> ORJSONResponse:
     :param sensor_id: The unique identifier of the sensor to retrieve.
     :type sensor_id: str
     :return: The sensor data if found, or a 404 error if not found.
-    :rtype: ORJSONResponse
+    :rtype: AppJSONResponse
     """
     sensor = await Sensor.find(
         Sensor.id == sensor_id, Sensor.deleted_at == None
     ).first_or_none()
     if not sensor:
         logger.warning("Sensor with ID %s not found.", sensor_id)
-        return ORJSONResponse(
+        return AppJSONResponse(
             content={"detail": "Sensor not found."},
             status_code=status.HTTP_404_NOT_FOUND,
         )
 
-    return ORJSONResponse(
+    return AppJSONResponse(
         content=model_serialize(sensor), status_code=status.HTTP_200_OK
     )
 
@@ -156,7 +157,7 @@ async def get_sensor_by_id(sensor_id: str) -> ORJSONResponse:
     response_model=Sensor,
     status_code=status.HTTP_201_CREATED,
 )
-async def create_sensor(sensor_data: CreateSensor) -> ORJSONResponse:
+async def create_sensor(sensor_data: CreateSensor) -> AppJSONResponse:
     """
     Create a new sensor.
 
@@ -166,7 +167,7 @@ async def create_sensor(sensor_data: CreateSensor) -> ORJSONResponse:
     :param sensor_data: The data required to create the new sensor.
     :type sensor_data: CreateSensor
     :return: The newly created sensor data.
-    :rtype: ORJSONResponse
+    :rtype: AppJSONResponse
     """
     # Find the current max index
     last_sensor = await Sensor.find().sort("-index").first_or_none()
@@ -178,7 +179,7 @@ async def create_sensor(sensor_data: CreateSensor) -> ORJSONResponse:
     new_sensor = Sensor(index=next_index, **sensor_data.model_dump())
     new_sensor = await new_sensor.create()
 
-    return ORJSONResponse(
+    return AppJSONResponse(
         content=model_serialize(new_sensor), status_code=status.HTTP_201_CREATED
     )
 
@@ -191,7 +192,7 @@ async def create_sensor(sensor_data: CreateSensor) -> ORJSONResponse:
     response_model=Sensor,
     status_code=status.HTTP_200_OK,
 )
-async def soft_delete_sensor_v2(sensor_id: str) -> ORJSONResponse:
+async def soft_delete_sensor_v2(sensor_id: str) -> AppJSONResponse:
     """
     Soft delete a sensor by its unique ID.
 
@@ -203,7 +204,7 @@ async def soft_delete_sensor_v2(sensor_id: str) -> ORJSONResponse:
     :type sensor_id: str
     :return: The updated sensor data with the `deleted_at` field set,
         or a 404 error if not found.
-    :rtype: ORJSONResponse
+    :rtype: AppJSONResponse
     """
     sensor = await Sensor.find_one(Sensor.id == sensor_id, Sensor.deleted_at == None)
 
@@ -211,7 +212,7 @@ async def soft_delete_sensor_v2(sensor_id: str) -> ORJSONResponse:
         logger.warning(
             "Sensor with ID %s not found or already marked as deleted.", sensor_id
         )
-        return ORJSONResponse(
+        return AppJSONResponse(
             content={"detail": "Sensor not found."},
             status_code=status.HTTP_404_NOT_FOUND,
         )
@@ -221,7 +222,7 @@ async def soft_delete_sensor_v2(sensor_id: str) -> ORJSONResponse:
     sensor.deleted_at = datetime.now(timezone.utc)
     sensor_updated = await sensor.save()
 
-    return ORJSONResponse(
+    return AppJSONResponse(
         content=model_serialize(sensor_updated), status_code=status.HTTP_200_OK
     )
 
@@ -236,7 +237,7 @@ async def soft_delete_sensor_v2(sensor_id: str) -> ORJSONResponse:
 )
 async def patch_update_sensor_v2(
     sensor_id: str, sensor_data: PatchSensorData
-) -> ORJSONResponse:
+) -> AppJSONResponse:
     """
     Partially update a sensor by its unique ID.
 
@@ -250,14 +251,14 @@ async def patch_update_sensor_v2(
     :type sensor_data: PatchSensorData
     :return: The updated sensor data if successful, or a 404 error if
         not found.
-    :rtype: ORJSONResponse
+    :rtype: AppJSONResponse
     """
     sensor = await Sensor.find(
         Sensor.id == sensor_id, Sensor.deleted_at == None
     ).first_or_none()
     if not sensor:
         logger.warning("Sensor with ID %s not found.", sensor_id)
-        return ORJSONResponse(
+        return AppJSONResponse(
             content={"detail": "Sensor not found."},
             status_code=status.HTTP_404_NOT_FOUND,
         )
@@ -270,7 +271,7 @@ async def patch_update_sensor_v2(
     sensor.updated_at = datetime.now(timezone.utc)
     sensor_updated = await sensor.save()
 
-    return ORJSONResponse(
+    return AppJSONResponse(
         content=model_serialize(sensor_updated), status_code=status.HTTP_200_OK
     )
 
@@ -285,7 +286,7 @@ async def patch_update_sensor_v2(
 )
 async def update_sensor_full_route_v2(
     sensor_id: str, sensor_data: PutUpdateSensorData
-) -> ORJSONResponse:
+) -> AppJSONResponse:
     """
     Fully update a sensor by its unique ID.
 
@@ -299,13 +300,13 @@ async def update_sensor_full_route_v2(
     :type sensor_data: PutUpdateSensorData
     :return: The updated sensor data if successful, or a 404 error if
         not found.
-    :rtype: ORJSONResponse
+    :rtype: AppJSONResponse
     """
     sensor = await Sensor.find_one(Sensor.id == sensor_id, Sensor.deleted_at == None)
 
     if not sensor:
         logger.warning("Sensor with ID %s not found.", sensor_id)
-        return ORJSONResponse(
+        return AppJSONResponse(
             content={"detail": "Sensor not found."},
             status_code=status.HTTP_404_NOT_FOUND,
         )
@@ -318,7 +319,7 @@ async def update_sensor_full_route_v2(
     sensor.updated_at = datetime.now(timezone.utc)
     sensor_updated = await sensor.save()
 
-    return ORJSONResponse(
+    return AppJSONResponse(
         content=model_serialize(sensor_updated), status_code=status.HTTP_200_OK
     )
 
@@ -330,7 +331,7 @@ async def update_sensor_full_route_v2(
     operation_id="delete_sensor_route_v2",
     status_code=status.HTTP_204_NO_CONTENT,
 )
-async def delete_sensor(sensor_id: str) -> ORJSONResponse:
+async def delete_sensor(sensor_id: str) -> AppJSONResponse:
     """
     Delete a sensor by its unique ID.
 
@@ -341,16 +342,16 @@ async def delete_sensor(sensor_id: str) -> ORJSONResponse:
     :type sensor_id: str
     :return: An empty response with HTTP 204 status if successful, or a 404
         error if not found.
-    :rtype: ORJSONResponse
+    :rtype: AppJSONResponse
     """
     sensor = await Sensor.find_one(Sensor.id == sensor_id)
     if not sensor:
         logger.warning("Sensor with ID %s not found.", sensor_id)
-        return ORJSONResponse(
+        return AppJSONResponse(
             content={"detail": "Sensor not found."},
             status_code=status.HTTP_404_NOT_FOUND,
         )
 
     await sensor.delete()
 
-    return ORJSONResponse(content=None, status_code=status.HTTP_204_NO_CONTENT)
+    return AppJSONResponse(content=None, status_code=status.HTTP_204_NO_CONTENT)

@@ -8,7 +8,7 @@ User schema for the database
 
 import json
 from collections import namedtuple
-from datetime import datetime
+from datetime import datetime, timezone
 from typing import Optional
 
 from pydantic import BaseModel, Field, field_serializer
@@ -40,8 +40,12 @@ class UserCreate(BaseModel):
     is_superuser: bool = False
 
     # Timestamps
-    created_at: Optional[datetime] = datetime.utcnow()
-    updated_at: Optional[datetime] = datetime.utcnow()
+    created_at: Optional[datetime] = Field(
+        default_factory=lambda: datetime.now(timezone.utc)
+    )
+    updated_at: Optional[datetime] = Field(
+        default_factory=lambda: datetime.now(timezone.utc)
+    )
     deleted_at: Optional[datetime] = None
 
     @field_serializer("created_at", "updated_at", "deleted_at")

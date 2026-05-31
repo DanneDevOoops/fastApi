@@ -8,7 +8,7 @@ PostgreSQL container required.
 
 import pytest
 import pytest_asyncio
-from httpx import ASGITransport, AsyncClient
+from httpx2 import ASGITransport, AsyncClient
 
 from src.core.auth import get_health_check_api_key
 from src.main import app

@@ -7,7 +7,7 @@ on:
         description: Python version to use
         type: string
         required: false
-        default: "3.11.14"
+        default: "3.13.12"
       poetry-version:
         description: Poetry version to install
         type: string
