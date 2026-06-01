@@ -7,6 +7,7 @@
 This module contains the authentication logic for the FastAPI application.
 """
 
+import hashlib
 import logging
 import os
 from datetime import datetime, timedelta, timezone
@@ -65,14 +66,15 @@ def hash_key_v2(input_password: str) -> str:
     """
     Encrypt the input password using bcrypt hashing.
 
+    SHA-256 pre-hashing is applied first to ensure the input stays within
+    bcrypt's 72-byte limit (JWT tokens and long API keys exceed this).
+
     :param input_password: The plain text password to encrypt.
     :return: The hashed password.
     :rtype: str
     """
-    return bcrypt.hashpw(
-        input_password.encode("utf-8"),
-        bcrypt.gensalt(),
-    ).decode("utf-8")
+    digest = hashlib.sha256(input_password.encode("utf-8")).digest()
+    return bcrypt.hashpw(digest, bcrypt.gensalt()).decode("utf-8")
 
 
 def verify_password_v2(plain_password: str, hashed_password: str) -> bool:
@@ -89,10 +91,8 @@ def verify_password_v2(plain_password: str, hashed_password: str) -> bool:
         return False
 
     try:
-        return bcrypt.checkpw(
-            plain_password.encode("utf-8"),
-            hashed_password.encode("utf-8"),
-        )
+        digest = hashlib.sha256(plain_password.encode("utf-8")).digest()
+        return bcrypt.checkpw(digest, hashed_password.encode("utf-8"))
     except ValueError:
         logger.warning("Invalid bcrypt hash format received")
         return False

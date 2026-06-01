@@ -14,7 +14,7 @@ import logging
 from datetime import datetime, timezone
 
 from fastapi import APIRouter, Depends, HTTPException, status
-from fastapi.responses import ORJSONResponse, Response
+from fastapi.responses import Response
 from sqlalchemy import select
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -26,6 +26,7 @@ from src.core.custom_exceptions import (
     NotFoundException,
 )
 from src.core.env_config import get_settings
+from src.core.responses import AppJSONResponse
 from src.db.connectors.postgres_db import get_pg_db
 from src.db.models.v1_models.applications_model_v1 import Application
 from src.db.schemas.v1_schemas.application_schemas import (
@@ -60,10 +61,12 @@ def application_routes_options() -> Response:
     description="Route to request all registered applications/"
     "services from the PostgreSQL database.",
     operation_id="get_all_applications_route_v1",
-    response_class=ORJSONResponse,
+    response_class=AppJSONResponse,
     status_code=status.HTTP_200_OK,
 )
-async def get_all_applications(db: AsyncSession = Depends(get_pg_db)) -> ORJSONResponse:
+async def get_all_applications(
+    db: AsyncSession = Depends(get_pg_db),
+) -> AppJSONResponse:
     """
     Get all registered applications/services that are not soft-deleted.
     """
@@ -76,7 +79,7 @@ async def get_all_applications(db: AsyncSession = Depends(get_pg_db)) -> ORJSONR
         if not applications:
             raise NotFoundException(message="No applications found")
 
-        return ORJSONResponse(
+        return AppJSONResponse(
             content=[
                 ApplicationOutput.model_validate(app).model_dump(exclude_none=True)
                 for app in applications
@@ -100,12 +103,12 @@ async def get_all_applications(db: AsyncSession = Depends(get_pg_db)) -> ORJSONR
     description="Route to request all soft-deleted applications/"
     "services from the PostgreSQL database.",
     operation_id="get_all_deleted_applications_route_v1",
-    response_class=ORJSONResponse,
+    response_class=AppJSONResponse,
     status_code=status.HTTP_200_OK,
 )
 async def get_all_soft_deleted_applications(
     db: AsyncSession = Depends(get_pg_db),
-) -> ORJSONResponse:
+) -> AppJSONResponse:
     """
     Get all soft-deleted applications/services.
     """
@@ -118,7 +121,7 @@ async def get_all_soft_deleted_applications(
         if not applications:
             raise NotFoundException(message="No deleted applications found")
 
-        return ORJSONResponse(
+        return AppJSONResponse(
             content=[
                 ApplicationOutput.model_validate(app).model_dump(exclude_none=True)
                 for app in applications
@@ -142,18 +145,18 @@ async def get_all_soft_deleted_applications(
     description="Route to request a specific application/service by "
     "its ID from the PostgreSQL database.",
     operation_id="get_application_by_id_route_v1",
-    response_class=ORJSONResponse,
+    response_class=AppJSONResponse,
     status_code=status.HTTP_200_OK,
 )
 async def get_application_by_id(
     app_id: str, db: AsyncSession = Depends(get_pg_db)
-) -> ORJSONResponse:
+) -> AppJSONResponse:
     """
     Get a specific application/service by its ID.
 
     :param app_id: The ID of the application/service to retrieve.
     :param db: The database session.
-    :return: ORJSONResponse containing the application/service data.
+    :return: AppJSONResponse containing the application/service data.
     """
     try:
         logger.info("Getting application/service with ID %s", app_id)
@@ -167,7 +170,7 @@ async def get_application_by_id(
             logger.warning("Application with ID %s not found.", app_id)
             raise NotFoundException(message=f"Application ({app_id}) not found")
 
-        return ORJSONResponse(
+        return AppJSONResponse(
             content=ApplicationOutput.model_validate(app).model_dump(exclude_none=True),
             status_code=status.HTTP_200_OK,
         )
@@ -188,18 +191,18 @@ async def get_application_by_id(
     description="Route to create a new application/service in the "
     "PostgreSQL database.",
     operation_id="create_application_route_v1",
-    response_class=ORJSONResponse,
+    response_class=AppJSONResponse,
     status_code=status.HTTP_201_CREATED,
 )
 async def create_application(
     app_data: ApplicationCreate, db: AsyncSession = Depends(get_pg_db)
-) -> ORJSONResponse:
+) -> AppJSONResponse:
     """
     Create a new application/service in PostgreSQL.
 
     :param app_data: The application/service data to create.
     :param db: The database session.
-    :return: ORJSONResponse containing the created application/service data.
+    :return: AppJSONResponse containing the created application/service data.
     """
     try:
         logger.info("Creating a new application/service...")
@@ -233,7 +236,7 @@ async def create_application(
         )
         response_data["jwt_token"] = jwt_token
 
-        return ORJSONResponse(
+        return AppJSONResponse(
             content=response_data, status_code=status.HTTP_201_CREATED
         )
     except IntegrityError as e:
@@ -254,18 +257,18 @@ async def create_application(
     description="Route to soft delete an existing application/"
     "service from the PostgreSQL database.",
     operation_id="soft_delete_application_route_v1",
-    response_class=ORJSONResponse,
+    response_class=AppJSONResponse,
     status_code=status.HTTP_200_OK,
 )
 async def soft_delete_application(
     app_id: str, db: AsyncSession = Depends(get_pg_db)
-) -> ORJSONResponse:
+) -> AppJSONResponse:
     """
     Soft delete an existing application/service by its ID.
 
     :param app_id: The ID of the application to delete.
     :param db: The database session.
-    :return: ORJSONResponse with deletion confirmation.
+    :return: AppJSONResponse with deletion confirmation.
     """
     try:
         logger.info("Soft deleting application/service with ID %s", app_id)
@@ -283,7 +286,7 @@ async def soft_delete_application(
         app.deleted_at = datetime.now(timezone.utc)
         await db.commit()
 
-        return ORJSONResponse(
+        return AppJSONResponse(
             content={"detail": f"Application {app_id} " "soft deleted successfully"},
             status_code=status.HTTP_200_OK,
         )
@@ -305,19 +308,19 @@ async def soft_delete_application(
     description="Route to update an existing application/service in "
     "the PostgreSQL database.",
     operation_id="update_application_route_v1",
-    response_class=ORJSONResponse,
+    response_class=AppJSONResponse,
     status_code=status.HTTP_200_OK,
 )
 async def patch_update_application(
     app_id: str, app_data: ApplicationUpdate, db: AsyncSession = Depends(get_pg_db)
-) -> ORJSONResponse:
+) -> AppJSONResponse:
     """
     Partially update an existing application/service.
 
     :param app_id: The ID of the application to update.
     :param app_data: The fields to update.
     :param db: The database session.
-    :return: ORJSONResponse containing the updated application data.
+    :return: AppJSONResponse containing the updated application data.
     """
     try:
         logger.info("Updating application/service with ID %s", app_id)
@@ -342,7 +345,7 @@ async def patch_update_application(
         await db.commit()
         await db.refresh(app)
 
-        return ORJSONResponse(
+        return AppJSONResponse(
             content=ApplicationOutput.model_validate(app).model_dump(exclude_none=True),
             status_code=status.HTTP_200_OK,
         )
@@ -365,19 +368,19 @@ async def patch_update_application(
     "service in the PostgreSQL database using PUT "
     "method.",
     operation_id="full_update_application_route_v1",
-    response_class=ORJSONResponse,
+    response_class=AppJSONResponse,
     status_code=status.HTTP_200_OK,
 )
 async def put_update_application(
     app_id: str, app_data: ApplicationCreate, db: AsyncSession = Depends(get_pg_db)
-) -> ORJSONResponse:
+) -> AppJSONResponse:
     """
     Fully update an existing application/service using PUT method.
 
     :param app_id: The ID of the application to update.
     :param app_data: The complete application data.
     :param db: The database session.
-    :return: ORJSONResponse containing the updated application data.
+    :return: AppJSONResponse containing the updated application data.
     """
     try:
         logger.info("Fully updating application/service with ID %s using PUT", app_id)
@@ -401,7 +404,7 @@ async def put_update_application(
         await db.commit()
         await db.refresh(app)
 
-        return ORJSONResponse(
+        return AppJSONResponse(
             content=ApplicationOutput.model_validate(app).model_dump(exclude_none=True),
             status_code=status.HTTP_200_OK,
         )
@@ -423,18 +426,18 @@ async def put_update_application(
     description="Route to hard delete an existing application/"
     "service from the PostgreSQL database.",
     operation_id="hard_delete_application_route_v1",
-    response_class=ORJSONResponse,
+    response_class=AppJSONResponse,
     status_code=status.HTTP_200_OK,
 )
 async def hard_delete_application(
     app_id: str, db: AsyncSession = Depends(get_pg_db)
-) -> ORJSONResponse:
+) -> AppJSONResponse:
     """
     Hard delete an existing application/service by its ID.
 
     :param app_id: The ID of the application to delete.
     :param db: The database session.
-    :return: ORJSONResponse with deletion confirmation.
+    :return: AppJSONResponse with deletion confirmation.
     """
     try:
         logger.info("Hard deleting application/service with ID %s", app_id)
@@ -450,7 +453,7 @@ async def hard_delete_application(
         await db.delete(app)
         await db.commit()
 
-        return ORJSONResponse(
+        return AppJSONResponse(
             content={"detail": f"Application {app_id} " "deleted successfully"},
             status_code=status.HTTP_200_OK,
         )

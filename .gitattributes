@@ -1,0 +1,4 @@
+# Treat poetry.lock as a union merge — Git combines both sides line by line,
+# which handles most lock file conflicts automatically without manual resolution.
+# When this still conflicts, resolve with: git checkout dev -- poetry.lock pyproject.toml
+poetry.lock merge=union
