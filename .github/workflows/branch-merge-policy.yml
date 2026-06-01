@@ -54,13 +54,14 @@ jobs:
             exit 0
           fi
 
-          # stage: only accepts merges from dev or test
+          # stage: only accepts merges from test
           if [[ "$TARGET" == "stage" ]]; then
-            if [[ "$SOURCE" != "dev" && "$SOURCE" != "test" ]]; then
-              echo "❌ Only 'dev' or 'test' can be merged into 'stage'. Got: '$SOURCE'."
+            if [[ "$SOURCE" != "test" ]]; then
+              echo "❌ Only 'test' can be merged into 'stage'. Got: '$SOURCE'."
+              echo "   Linear flow: dev → test → stage → main"
               exit 1
             fi
-            echo "✅ '$SOURCE' -> 'stage' is allowed."
+            echo "✅ 'test' -> 'stage' is allowed."
             exit 0
           fi
 
@@ -68,6 +69,7 @@ jobs:
           if [[ "$TARGET" == "main" ]]; then
             if [[ "$SOURCE" != "stage" ]]; then
               echo "❌ Only 'stage' can be merged into 'main'. Got: '$SOURCE'."
+              echo "   Linear flow: dev → test → stage → main"
               exit 1
             fi
             echo "✅ 'stage' -> 'main' is allowed."
@@ -75,4 +77,5 @@ jobs:
           fi
 
           echo "❌ Unsupported target branch '$TARGET'. Policy is only defined for: dev, test, stage, main."
+          echo "   Linear flow: dev → test → stage → main"
           exit 1
