@@ -3461,10 +3461,5 @@ dev = ["pytest", "setuptools"]
 
 [metadata]
 lock-version = "2.0"
-<<<<<<< HEAD
-python-versions = "^3.11"
-content-hash = "4ea11129d57caa37c1f14778d25d678922ebc2d55ca29a4c362e20d61375999e"
-=======
 python-versions = "^3.13"
 content-hash = "5b4be54d0f39e7737ef51bcd117c919c44c71733e62522265868b1070a7a4d7f"
->>>>>>> 008de616d7975b74dc8720784c0a230c6464bf78
