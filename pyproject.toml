@@ -7,14 +7,14 @@ readme = "README.md"
 packages = [{ include = "*", from = "src" }]
 
 [tool.poetry.dependencies]
-python = "^3.11"
-bcrypt = "4.0.1"
+python = "^3.13"
+
+bcrypt = "^5.0.0"
 blessed = "^1.44.0"
-bpython = "^0.24"
-fastapi = "^0.120.1"
-fastapi-cli = "^0.0.5"
+fastapi = "^0.136.3"
+fastapi-cli = "^0.0.24"
 httptools = "^0.8.0"
-httpx = "^0.28.1"
+httpx2 = "^2.0.0"
 jinxed = "^2.0.4"
 nanoid = "^2.0.0"
 orjson = "^3.11.9"
@@ -23,59 +23,67 @@ pydantic-settings = "^2.5.2"
 pyjwt = "^2.13.0"
 python-dotenv = "^1.0.1"
 python-jose = "^3.5.0"
-python-multipart = "^0.0.27"
+python-multipart = "^0.0.29"
 requests = "^2.32.3"
 snowballstemmer = "^3.1.0"
 sqlalchemy = "^2.0.50"
-starlette = "^0.49.1"
+starlette = "^1.0.0"
 typer = "^0.26.0"
-uvicorn = "^0.30.6"
-websockets = "^14.1"
+uvicorn = "^0.48.0"
+websockets = "^16.0"
 
 [tool.poetry.group.database_orm.dependencies]
 alembic = "^1.13.3"
 sqlalchemy = "^2.0.35"
 
 [tool.poetry.group.mongidb.dependencies]
-beanie = "^1.26.0"
+beanie = { version = "^2.1.0", python = ">=3.11,<3.14" }
 motor = "^3.6.1"
 pymongo = "^4.0.0"
 
 [tool.poetry.group.postgres.dependencies]
-asyncpg = "^0.29.0"
+asyncpg = "^0.31.0"
 psycopg = { extras = ["binary", "pool"], version = "^3.2.2" }
 psycopg2-binary = "^2.9.9"
 
 [tool.poetry.group.sqlite.dependencies]
-aiosqlite = "^0.20.0"
+aiosqlite = "^0.22.0"
 
 [tool.poetry.group.test.dependencies]
-faker = "^28.4.1"
+faker = "^40.0.0"
 pytest = "^9.0.3"
+pytest-asyncio = "^1.4.0"
+testcontainers = "^4.14.2"
 
 [tool.poetry.group.dev.dependencies]
 black = "^26.3.1"
 flake8 = "^7.1.1"
-isort = "^5.13.2"
-mypy = "^1.11.2"
-pylint = "^3.2.7"
+isort = "^8.0.1"
+mypy = "^2.1.0"
+pylint = "^4.0.5"
+bpython = "^0.26"
 
 [tool.poetry.group.docs.dependencies]
+imagesize = { version = "^2.0.0", python = ">=3.11,<3.15" }
 myst-parser = ">=4.0.1,<6.0.0"
-sphinx = "^8.2.3"
-sphinx-autodoc-typehints = "^3.2.0"
+sphinx = [
+    { version = "^9.1.0", python = ">=3.12" },
+    { version = "^9.0.4", python = ">=3.11,<3.12" }
+]
+sphinx-autodoc-typehints = [
+    { version = "^3.10.0", python = ">=3.12" },
+    { version = "^3.2.0", python = ">=3.11,<3.12" }
+]
 sphinx-favicon = "^1.0.1"
 sphinx-rtd-theme = "^3.0.2"
-sphinxcontrib-httpdomain = "^1.8.1"
+sphinxcontrib-httpdomain = "^2.0.0"
 toml = "^0.10.2"
 
 [tool.poetry.extras]
 
-
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
-
 
 [tool.black]
 line-length = 88
@@ -90,7 +98,10 @@ src_paths = ["src", "tests"]
 skip_gitignore = true
 
 [tool.pytest.ini_options]
+asyncio_default_fixture_loop_scope = "session"
+asyncio_default_test_loop_scope = "session"
 markers = [
     "unit: fast, isolated tests that mock external dependencies",
     "integration: route and app tests that exercise the FastAPI stack",
+    "e2e: full stack tests using a real PostgreSQL container",
 ]

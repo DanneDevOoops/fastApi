@@ -6,7 +6,7 @@
 User model for the database
 """
 
-from datetime import datetime
+from datetime import datetime, timezone
 
 from sqlalchemy import Boolean, Column, DateTime, String
 from sqlalchemy.orm import Mapped
@@ -41,9 +41,13 @@ class User(Base):
     is_superuser: Mapped[bool] = Column(Boolean, default=False)
 
     # Timestamps
-    created_at: Mapped[datetime] = Column(DateTime, default=datetime.utcnow)
-    updated_at: Mapped[datetime] = Column(DateTime, default=datetime.utcnow)
-    deleted_at: Mapped[datetime] = Column(DateTime, default=None)
+    created_at: Mapped[datetime] = Column(
+        DateTime(timezone=True), default=lambda: datetime.now(timezone.utc)
+    )
+    updated_at: Mapped[datetime] = Column(
+        DateTime(timezone=True), default=lambda: datetime.now(timezone.utc)
+    )
+    deleted_at: Mapped[datetime] = Column(DateTime(timezone=True), default=None)
 
     def __dir__(self) -> list:
         """

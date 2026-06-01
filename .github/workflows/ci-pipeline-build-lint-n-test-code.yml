@@ -7,7 +7,7 @@ on:
         description: Python version to use
         type: string
         required: false
-        default: "3.11.14"
+        default: "3.13.12"
       poetry-version:
         description: Poetry version to install
         type: string
@@ -53,6 +53,15 @@ on:
         type: boolean
         required: false
         default: true
+      run-e2e-tests:
+        description: Whether to run e2e test job
+        type: boolean
+        required: false
+        default: true
+    secrets:
+      E2E_TEST_PASSWORD:
+        description: Password used in e2e test fixtures
+        required: false
 
 env:
   FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
@@ -185,3 +194,39 @@ jobs:
           python-bin: .venv/bin/python
           pytest-args: ${{ inputs.pytest-args }}
           test-path: tests/integration
+
+  test_e2e:
+    name: Run E2E tests
+    needs: [prepare_env]
+    if: ${{ inputs.run-e2e-tests }}
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: ${{ inputs.python-version }}
+
+      - name: Download virtual environment artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: ${{ inputs.venv-artifact-name }}
+          path: .venv
+
+      - name: Restore virtualenv execute permissions
+        shell: bash
+        run: chmod -R u+x .venv/bin
+
+      - name: Run E2E tests
+        uses: ./.github/actions/test-python
+        env:
+          E2E_TEST_PASSWORD: ${{ secrets.E2E_TEST_PASSWORD }}
+        with:
+          python-bin: .venv/bin/python
+          pytest-args: ${{ inputs.pytest-args }} -m e2e
+          test-path: tests/e2e

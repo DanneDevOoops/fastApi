@@ -11,10 +11,11 @@ import logging
 from datetime import datetime, timezone
 
 from fastapi import APIRouter, status
-from fastapi.responses import ORJSONResponse, Response
+from fastapi.responses import Response
 
 from src.core.auth import create_application_access_token, hash_key_v2
 from src.core.env_config import get_settings
+from src.core.responses import AppJSONResponse
 from src.db.models.v2_models.application_model_v2 import (
     Application,
     CreateApplication,
@@ -50,14 +51,14 @@ def application_routes_options() -> Response:
     response_model=Application,
     status_code=status.HTTP_200_OK,
 )
-async def get_all_applications() -> ORJSONResponse:
+async def get_all_applications() -> AppJSONResponse:
     """
     Get all registered applications/services.
     """
     logger.info("Getting all registered applications/services...")
     all_applications = await Application.find(Application.deleted_at == None).to_list()
 
-    return ORJSONResponse(
+    return AppJSONResponse(
         content=list(map(model_serialize, all_applications)),
         status_code=status.HTTP_200_OK,
     )
@@ -72,12 +73,12 @@ async def get_all_applications() -> ORJSONResponse:
     response_model=Application,
     status_code=status.HTTP_200_OK,
 )
-async def get_application_by_id(app_id: str) -> ORJSONResponse:
+async def get_application_by_id(app_id: str) -> AppJSONResponse:
     """
     Get a specific application/service by its ID.
 
     :param app_id: The ID of the application/service to retrieve.
-    :return: ORJSONResponse containing the application/service data.
+    :return: AppJSONResponse containing the application/service data.
     """
     logger.info("Getting application/service with ID %s", app_id)
     app = await Application.find_one(
@@ -86,12 +87,12 @@ async def get_application_by_id(app_id: str) -> ORJSONResponse:
 
     if not app:
         logger.warning("Application with ID %s not found.", app_id)
-        return ORJSONResponse(
+        return AppJSONResponse(
             content={"detail": "Application not found"},
             status_code=status.HTTP_404_NOT_FOUND,
         )
 
-    return ORJSONResponse(content=model_serialize(app), status_code=status.HTTP_200_OK)
+    return AppJSONResponse(content=model_serialize(app), status_code=status.HTTP_200_OK)
 
 
 @router.post(
@@ -102,12 +103,12 @@ async def get_application_by_id(app_id: str) -> ORJSONResponse:
     response_model=NewApplication,
     status_code=status.HTTP_201_CREATED,
 )
-async def create_application(app_data: CreateApplication) -> ORJSONResponse:
+async def create_application(app_data: CreateApplication) -> AppJSONResponse:
     """
     Create a new application/service.
 
     :param application: The application/service data to create.
-    :return: ORJSONResponse containing the created application/service data.
+    :return: AppJSONResponse containing the created application/service data.
     """
     logger.info("Creating a new application/service...")
     new_app = Application(**app_data.model_dump(exclude_unset=True))
@@ -131,7 +132,7 @@ async def create_application(app_data: CreateApplication) -> ORJSONResponse:
     # Add the JWT token to the response for this first time only display
     new_app["jwt_token"] = jwt_token
 
-    return ORJSONResponse(content={**new_app}, status_code=status.HTTP_201_CREATED)
+    return AppJSONResponse(content={**new_app}, status_code=status.HTTP_201_CREATED)
 
 
 @router.patch(
@@ -143,7 +144,7 @@ async def create_application(app_data: CreateApplication) -> ORJSONResponse:
     response_model=Application,
     status_code=status.HTTP_200_OK,
 )
-async def soft_delete_application(app_id: str) -> ORJSONResponse:
+async def soft_delete_application(app_id: str) -> AppJSONResponse:
     """
     Delete an existing application/service by its ID.
     """
@@ -154,7 +155,7 @@ async def soft_delete_application(app_id: str) -> ORJSONResponse:
 
     if not app:
         logger.warning("Application with ID %s not found.", app_id)
-        return ORJSONResponse(
+        return AppJSONResponse(
             content={"detail": f"Application ({app_id}) not found"},
             status_code=status.HTTP_404_NOT_FOUND,
         )
@@ -163,7 +164,7 @@ async def soft_delete_application(app_id: str) -> ORJSONResponse:
     app.deleted_at = datetime.now(timezone.utc)
     await app.save()
 
-    return ORJSONResponse(
+    return AppJSONResponse(
         content={"detail": f"Application {app_id} soft deleted successfully"},
         status_code=status.HTTP_200_OK,
     )
@@ -180,7 +181,7 @@ async def soft_delete_application(app_id: str) -> ORJSONResponse:
 )
 async def patch_update_application(
     app_id: str, app_data: PatchUpdateApplication
-) -> ORJSONResponse:
+) -> AppJSONResponse:
     """
     Update an existing application/service.
     """
@@ -191,7 +192,7 @@ async def patch_update_application(
 
     if not app:
         logger.warning("Application with ID %s not found.", app_id)
-        return ORJSONResponse(
+        return AppJSONResponse(
             content={"detail": f"Application ({app_id}) not found"},
             status_code=status.HTTP_404_NOT_FOUND,
         )
@@ -205,7 +206,7 @@ async def patch_update_application(
     app.updated_at = datetime.now(timezone.utc)
     app = await app.save()
 
-    return ORJSONResponse(content=model_serialize(app), status_code=status.HTTP_200_OK)
+    return AppJSONResponse(content=model_serialize(app), status_code=status.HTTP_200_OK)
 
 
 @router.put(
@@ -219,7 +220,7 @@ async def patch_update_application(
 )
 async def put_update_application(
     app_id: str, app_data: PutApplicationData
-) -> ORJSONResponse:
+) -> AppJSONResponse:
     """
     Update an existing application/service using PUT method.
     This method is used to update the application/service data.
@@ -231,7 +232,7 @@ async def put_update_application(
 
     if not app:
         logger.warning("Application with ID %s not found.", app_id)
-        return ORJSONResponse(
+        return AppJSONResponse(
             content={"detail": f"Application ({app_id}) not found"},
             status_code=status.HTTP_404_NOT_FOUND,
         )
@@ -245,7 +246,7 @@ async def put_update_application(
     app.updated_at = datetime.now(timezone.utc)
     app = await app.save()
 
-    return ORJSONResponse(content=model_serialize(app), status_code=status.HTTP_200_OK)
+    return AppJSONResponse(content=model_serialize(app), status_code=status.HTTP_200_OK)
 
 
 @router.delete(
@@ -257,7 +258,7 @@ async def put_update_application(
     response_model=Application,
     status_code=status.HTTP_200_OK,
 )
-async def hard_delete_application(app_id: str) -> ORJSONResponse:
+async def hard_delete_application(app_id: str) -> AppJSONResponse:
     """
     Hard delete an existing application/service by its ID.
     """
@@ -266,7 +267,7 @@ async def hard_delete_application(app_id: str) -> ORJSONResponse:
 
     if not app:
         logger.warning("Application with ID %s not found.", app_id)
-        return ORJSONResponse(
+        return AppJSONResponse(
             content={"detail": f"Application ({app_id}) not found"},
             status_code=status.HTTP_404_NOT_FOUND,
         )
@@ -274,7 +275,7 @@ async def hard_delete_application(app_id: str) -> ORJSONResponse:
     # Hard delete the application from the database
     await app.delete()
 
-    return ORJSONResponse(
+    return AppJSONResponse(
         content={"detail": f"Application {app_id} deleted successfully"},
         status_code=status.HTTP_200_OK,
     )

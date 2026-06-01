@@ -20,12 +20,12 @@ import os
 from fastapi import Depends, FastAPI
 from starlette.middleware.cors import CORSMiddleware
 
-from src.core.auth import get_api_key_v1, get_api_key_v2
 from src.api.api_utilities import api_utility_router
 from src.api.api_v1 import api_v1_router
 from src.api.api_v1_ws_router import api_ws_router
 from src.api.api_v2 import api_v2_router
 from src.core.app_lifespan import app_lifespan
+from src.core.auth import get_api_key_v1, get_api_key_v2
 from src.core.custom_exceptions import (
     AuthException,
     BadRequestException,

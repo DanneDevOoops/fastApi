@@ -5,13 +5,15 @@
 """
 Write a good module docstring here...
 """
+
 import asyncio
 import logging
 
 from fastapi import APIRouter, status
-from fastapi.responses import ORJSONResponse, Response
+from fastapi.responses import Response
 
 from src.core.env_config import get_settings
+from src.core.responses import AppJSONResponse
 from src.db.models.v2_models.sensor_telemetry_model_v2 import (  # PatchUpdateTelemetryData
     CreateSensorTelemetry,
     FilteredSearchTelemetry,
@@ -49,7 +51,7 @@ async def sensor_telemetry_options_v2() -> Response:
     operation_id="get_all_sensor_telemetry_v2",
     status_code=status.HTTP_200_OK,
 )
-async def get_all_sensor_telemetry_v2() -> ORJSONResponse:
+async def get_all_sensor_telemetry_v2() -> AppJSONResponse:
     """
     Get all sensor telemetry data.
     This is a placeholder function and should be implemented.
@@ -57,7 +59,7 @@ async def get_all_sensor_telemetry_v2() -> ORJSONResponse:
     logger.info("Getting all sensor telemetry data...")
     all_sensor_telemetry = await SensorTelemetry.all().to_list()
 
-    return ORJSONResponse(
+    return AppJSONResponse(
         content=list(map(model_serialize, all_sensor_telemetry)),
         status_code=status.HTTP_200_OK,
     )
@@ -77,7 +79,7 @@ async def get_sensor_telemetry_by_id_v2(sensor_id: str) -> Response:
     """
     logger.debug("Getting telemetry data for sensor ID: %s", sensor_id)
     # Placeholder for actual implementation
-    return ORJSONResponse(
+    return AppJSONResponse(
         content=f"Telemetry data for sensor ID: {sensor_id}",
         status_code=status.HTTP_200_OK,
     )
@@ -92,7 +94,7 @@ async def get_sensor_telemetry_by_id_v2(sensor_id: str) -> Response:
 )
 async def create_sensor_telemetry_v2(
     input_telemetry_data: CreateSensorTelemetry,
-) -> ORJSONResponse:
+) -> AppJSONResponse:
     """
     Create new sensor telemetry data.
     This is a placeholder function and should be implemented.
@@ -104,7 +106,7 @@ async def create_sensor_telemetry_v2(
 
     new_telemetry_item = await new_telemetry.create()
 
-    return ORJSONResponse(
+    return AppJSONResponse(
         content=model_serialize(new_telemetry_item), status_code=status.HTTP_201_CREATED
     )
 
@@ -118,7 +120,7 @@ async def create_sensor_telemetry_v2(
 )
 async def get_filtered_sensor_telemetry_v2(
     filter_params: FilteredSearchTelemetry,
-) -> ORJSONResponse:
+) -> AppJSONResponse:
     """
     Create new sensor telemetry data.
     This is a placeholder function and should be implemented.
@@ -138,7 +140,7 @@ async def get_filtered_sensor_telemetry_v2(
     #
     # if not filter_params:
     #     logger.warning("No filter parameters provided.")
-    #     return ORJSONResponse(
+    #     return AppJSONResponse(
     #         content={"detail": "No filter parameters provided"},
     #         status_code=status.HTTP_400_BAD_REQUEST
     #     )
@@ -153,7 +155,7 @@ async def get_filtered_sensor_telemetry_v2(
     #
     # new_telemetry_item = await new_telemetry.create()
 
-    return ORJSONResponse(
+    return AppJSONResponse(
         content=f"Händer det något...? {filter_params}", status_code=status.HTTP_200_OK
     )
 
@@ -168,7 +170,7 @@ async def get_filtered_sensor_telemetry_v2(
 async def update_sensor_telemetry_v2(
     telemetry_data_id: str,
     # telemetry_data: PathchUpdateTelemetryData
-) -> ORJSONResponse:
+) -> AppJSONResponse:
     """
     Update sensor telemetry data by sensor ID.
     """
@@ -179,7 +181,7 @@ async def update_sensor_telemetry_v2(
 
     if not telemetry_data_in_db:
         logger.warning("Telemetry data with ID %s not found.", telemetry_data_id)
-        return ORJSONResponse(
+        return AppJSONResponse(
             content={"detail": "Telemetry data not found"},
             status_code=status.HTTP_404_NOT_FOUND,
         )
@@ -194,7 +196,7 @@ async def update_sensor_telemetry_v2(
 )
 async def fake_some_sensor_telemetry_v2(
     number_of_items: int = 10, interval: int = 1
-) -> ORJSONResponse:
+) -> AppJSONResponse:
     """
     Create fake sensor telemetry data for testing purposes.
     """
@@ -218,4 +220,4 @@ async def fake_some_sensor_telemetry_v2(
         if i < number_of_items - 1:
             await asyncio.sleep(interval)
 
-    return ORJSONResponse(content=created_items, status_code=status.HTTP_201_CREATED)
+    return AppJSONResponse(content=created_items, status_code=status.HTTP_201_CREATED)

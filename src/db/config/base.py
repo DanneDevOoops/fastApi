@@ -14,6 +14,7 @@ The following class is defined:
 Each class includes a detailed docstring with information about its purpose.
 
 """
+
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column
 
 from src.utils.nano_id import generate_nano_id

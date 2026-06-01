@@ -16,12 +16,12 @@ from datetime import datetime, timezone
 from typing import List
 
 from fastapi import APIRouter, status
-from fastapi.responses import ORJSONResponse
 from starlette.responses import Response
 
 from src.core.auth import hash_key_v2
 from src.core.custom_exceptions import HTTPException
 from src.core.env_config import get_settings
+from src.core.responses import AppJSONResponse
 from src.db.models.v2_models.user_model_v2 import (
     CreateUser,
     PatchUserData,
@@ -61,7 +61,7 @@ def options_user_route_v2() -> Response:
     response_model=User,
     status_code=status.HTTP_200_OK,
 )
-async def get_all_users_v2() -> ORJSONResponse:
+async def get_all_users_v2() -> AppJSONResponse:
     """
     Retrieve all Users in version 2 of the API.
 
@@ -69,11 +69,11 @@ async def get_all_users_v2() -> ORJSONResponse:
     `deleted_at` is None).
 
     :return: A list of active user data.
-    :rtype: ORJSONResponse
+    :rtype: AppJSONResponse
     """
     logger.info("Fetching all users from the database")
     all_users = await User.find({"deleted_at": None}).to_list()
-    return ORJSONResponse(
+    return AppJSONResponse(
         content=list(map(model_serialize, all_users)), status_code=status.HTTP_200_OK
     )
 
@@ -86,7 +86,7 @@ async def get_all_users_v2() -> ORJSONResponse:
     response_model=User,
     status_code=status.HTTP_200_OK,
 )
-async def get_all_soft_deleted_users_v2() -> ORJSONResponse:
+async def get_all_soft_deleted_users_v2() -> AppJSONResponse:
     """
     Retrieve all soft deleted Users in version 2 of the API.
 
@@ -94,11 +94,11 @@ async def get_all_soft_deleted_users_v2() -> ORJSONResponse:
     `deleted_at` is not None).
 
     :return: A list of soft deleted user data.
-    :rtype: ORJSONResponse
+    :rtype: AppJSONResponse
     """
     logger.info("Fetching all soft deleted users from the MongoDB database")
     all_soft_deleted_users = await User.find(User.deleted_at != None).to_list()
-    return ORJSONResponse(
+    return AppJSONResponse(
         content=list(map(model_serialize, all_soft_deleted_users)),
         status_code=status.HTTP_200_OK,
     )
@@ -112,7 +112,7 @@ async def get_all_soft_deleted_users_v2() -> ORJSONResponse:
     response_model=User,
     status_code=status.HTTP_200_OK,
 )
-async def get_user_by_id_v2(user_id: str) -> ORJSONResponse:
+async def get_user_by_id_v2(user_id: str) -> AppJSONResponse:
     """
     Retrieve a User by ID in version 2 of the API.
 
@@ -122,17 +122,19 @@ async def get_user_by_id_v2(user_id: str) -> ORJSONResponse:
     :type user_id: str
     :return: The user data if found, or a 404 error if the user does
         not exist.
-    :rtype: ORJSONResponse
+    :rtype: AppJSONResponse
     """
     logger.info("Fetching user with ID: %s", user_id)
     user = await User.find_one(User.id == user_id, User.deleted_at == None)
 
     if not user:
-        return ORJSONResponse(
+        return AppJSONResponse(
             content={"detail": "User not found"}, status_code=status.HTTP_404_NOT_FOUND
         )
 
-    return ORJSONResponse(content=model_serialize(user), status_code=status.HTTP_200_OK)
+    return AppJSONResponse(
+        content=model_serialize(user), status_code=status.HTTP_200_OK
+    )
 
 
 @router.post(
@@ -143,7 +145,7 @@ async def get_user_by_id_v2(user_id: str) -> ORJSONResponse:
     status_code=status.HTTP_201_CREATED,
     response_model=User,
 )
-async def create_new_user_v2(user_data: CreateUser) -> ORJSONResponse:
+async def create_new_user_v2(user_data: CreateUser) -> AppJSONResponse:
     """
     Create a new User in version 2 of the API.
 
@@ -156,7 +158,7 @@ async def create_new_user_v2(user_data: CreateUser) -> ORJSONResponse:
     :type user_data: CreateUser
     :return: The created user data (excluding sensitive fields),
         or an error message if creation fails.
-    :rtype: ORJSONResponse
+    :rtype: AppJSONResponse
     """
     logger.info("Creating a new user with data: %s", user_data)
     try:
@@ -179,13 +181,13 @@ async def create_new_user_v2(user_data: CreateUser) -> ORJSONResponse:
         for key in ["password", "role", "updated_at", "deleted_at"]:
             serialized_user_data.pop(key, None)
 
-        return ORJSONResponse(
+        return AppJSONResponse(
             content=serialized_user_data, status_code=status.HTTP_201_CREATED
         )
 
     except HTTPException as e:
         logger.error("Authentication error: %s", str(e))
-        return ORJSONResponse(
+        return AppJSONResponse(
             content={"detail": "Cant create user due to an unexpected error."},
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
         )
@@ -199,7 +201,7 @@ async def create_new_user_v2(user_data: CreateUser) -> ORJSONResponse:
     status_code=status.HTTP_201_CREATED,
     response_model=List[User],
 )
-async def get_users_batch_by_ids_v2(list_of_user_ids: UsersBatch) -> ORJSONResponse:
+async def get_users_batch_by_ids_v2(list_of_user_ids: UsersBatch) -> AppJSONResponse:
     """
     Retrieve a batch of Users by a list of IDs in version 2 of the API.
 
@@ -210,7 +212,7 @@ async def get_users_batch_by_ids_v2(list_of_user_ids: UsersBatch) -> ORJSONRespo
     :type list_of_user_ids: UsersBatch
     :return: A list of user data matching the given IDs, or an empty list
         if none found.
-    :rtype: ORJSONResponse
+    :rtype: AppJSONResponse
     """
     logger.info("Requesting users from IDs: %s", list_of_user_ids.id)
     # list_of_users = await User.find_many(list_of_user_ids).to_list()
@@ -218,7 +220,7 @@ async def get_users_batch_by_ids_v2(list_of_user_ids: UsersBatch) -> ORJSONRespo
         {User.id: {"$in": list_of_user_ids.id}, User.deleted_at: None}
     ).to_list()
 
-    return ORJSONResponse(
+    return AppJSONResponse(
         content=list(map(model_serialize, list_of_users)),
         status_code=status.HTTP_200_OK,
     )
@@ -232,7 +234,7 @@ async def get_users_batch_by_ids_v2(list_of_user_ids: UsersBatch) -> ORJSONRespo
     status_code=status.HTTP_200_OK,
     response_model=None,
 )
-async def soft_delete_user_by_id_v2(user_id: str) -> ORJSONResponse:
+async def soft_delete_user_by_id_v2(user_id: str) -> AppJSONResponse:
     """
     Soft delete a User by ID in version 2 of the API.
 
@@ -243,12 +245,12 @@ async def soft_delete_user_by_id_v2(user_id: str) -> ORJSONResponse:
     :type user_id: str
     :return: The user data after being marked as deleted, or a 404 error if
         the user is not found or already deleted.
-    :rtype: ORJSONResponse
+    :rtype: AppJSONResponse
     """
     logger.info("Soft deleting user with ID: %s", user_id)
     user = await User.find_one(User.id == user_id, User.deleted_at == None)
     if not user:
-        return ORJSONResponse(
+        return AppJSONResponse(
             content={"detail": "User not found or already marked as deleted"},
             status_code=status.HTTP_404_NOT_FOUND,
         )
@@ -257,7 +259,9 @@ async def soft_delete_user_by_id_v2(user_id: str) -> ORJSONResponse:
     user.updated_at = datetime.now(timezone.utc)
     user.deleted_at = datetime.now(timezone.utc)
     await user.save()
-    return ORJSONResponse(content=model_serialize(user), status_code=status.HTTP_200_OK)
+    return AppJSONResponse(
+        content=model_serialize(user), status_code=status.HTTP_200_OK
+    )
 
 
 @router.patch(
@@ -270,7 +274,7 @@ async def soft_delete_user_by_id_v2(user_id: str) -> ORJSONResponse:
 )
 async def patch_update_user_by_id_v2(
     user_id: str, request_model: PatchUserData
-) -> ORJSONResponse:
+) -> AppJSONResponse:
     """
     Patch update a User's data by ID in version 2 of the API.
 
@@ -283,13 +287,13 @@ async def patch_update_user_by_id_v2(
     :type request_model: PatchUserData
     :return: The updated user data if successful, or a 404 error if the
         user is not found.
-    :rtype: ORJSONResponse
+    :rtype: AppJSONResponse
     """
     logger.info("Updating user with ID: %s", user_id)
     user = await User.find_one(User.id == user_id, User.deleted_at == None)
 
     if not user:
-        return ORJSONResponse(
+        return AppJSONResponse(
             content={"detail": "User not found"}, status_code=status.HTTP_404_NOT_FOUND
         )
 
@@ -299,7 +303,7 @@ async def patch_update_user_by_id_v2(
     user.updated_at = datetime.now(timezone.utc)
     updated_user = await user.save()
 
-    return ORJSONResponse(
+    return AppJSONResponse(
         content=model_serialize(updated_user), status_code=status.HTTP_200_OK
     )
 
@@ -314,7 +318,7 @@ async def patch_update_user_by_id_v2(
 )
 async def put_update_user_by_id_v2(
     user_id: str, user_data: PutUserData
-) -> ORJSONResponse:
+) -> AppJSONResponse:
     """
     Update a User's data by ID in version 2 of the API.
     """
@@ -322,7 +326,7 @@ async def put_update_user_by_id_v2(
     user = await User.find_one(User.id == user_id, User.deleted_at == None)
 
     if not user:
-        return ORJSONResponse(
+        return AppJSONResponse(
             content={"detail": "User not found"}, status_code=status.HTTP_404_NOT_FOUND
         )
 
@@ -334,7 +338,7 @@ async def put_update_user_by_id_v2(
     # Save to update the user in the database
     user_updated = await user.save()
 
-    return ORJSONResponse(
+    return AppJSONResponse(
         content=model_serialize(user_updated), status_code=status.HTTP_200_OK
     )
 
@@ -361,7 +365,7 @@ async def delete_user_by_id_v2(user_id: str) -> Response:
     user = await User.find_one(User.id == user_id)
 
     if not user:
-        return ORJSONResponse(
+        return AppJSONResponse(
             content={"detail": "User not found"}, status_code=status.HTTP_404_NOT_FOUND
         )
 
