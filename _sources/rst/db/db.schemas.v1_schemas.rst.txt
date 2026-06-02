@@ -1,0 +1,29 @@
+db.schemas.v1\_schemas package
+==============================
+
+Submodules
+----------
+
+db.schemas.v1\_schemas.application\_schemas module
+--------------------------------------------------
+
+.. automodule:: db.schemas.v1_schemas.application_schemas
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
+db.schemas.v1\_schemas.user\_schemas module
+-------------------------------------------
+
+.. automodule:: db.schemas.v1_schemas.user_schemas
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
+Module contents
+---------------
+
+.. automodule:: db.schemas.v1_schemas
+   :members:
+   :show-inheritance:
+   :undoc-members:

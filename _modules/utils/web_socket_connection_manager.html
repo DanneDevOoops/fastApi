@@ -1,0 +1,208 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>utils.web_socket_connection_manager &mdash; FastAPI Application 0.0.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=9edc463e" />
+      <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=4ae1632d" />
+
+  
+    <link rel="canonical" href="https://github.com/DanneDevOoops/fastApi/_modules/utils/web_socket_connection_manager.html" />
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=7026087e"></script>
+      <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            FastAPI Application
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../rst/api/modules.html">api</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../rst/core/modules.html">core</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../rst/db/modules.html">db</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../rst/middlewares/modules.html">middlewares</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../rst/utils/modules.html">utils</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Documents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../coverage.html">docs coverage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../readme.html">project readme</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../docstrings.html">write docstrings</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">FastAPI Application</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content style-external-links">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">utils.web_socket_connection_manager</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for utils.web_socket_connection_manager</h1><div class="highlight"><pre>
+<span></span><span class="ch">#!/usr/bin/env python3</span>
+<span class="c1"># -*- coding: utf-8 -*-</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Module containing a WebSocket connection manager class. This class is</span>
+<span class="sd">initialized in the router module and used in routes where WebSocket</span>
+<span class="sd">are needed to manage the connections for broadcasting messages to all</span>
+<span class="sd">active clients.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">logging</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">fastapi</span><span class="w"> </span><span class="kn">import</span> <span class="n">WebSocket</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">src.core.env_config</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_settings</span>
+
+<span class="c1"># Initialize environment settings &amp; logger</span>
+<span class="n">settings</span> <span class="o">=</span> <span class="n">get_settings</span><span class="p">()</span>
+<span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="n">settings</span><span class="o">.</span><span class="n">app_logger_name</span> <span class="ow">or</span> <span class="s2">&quot;application_logger&quot;</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="WebSocketConnectionManager">
+<a class="viewcode-back" href="../../rst/utils/utils.html#utils.web_socket_connection_manager.WebSocketConnectionManager">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">WebSocketConnectionManager</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Manages the WebSocket connections</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Initializes the WebSocket connection manager class.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Initializing the WebSocket connection manager...&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">active_connections</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">WebSocket</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+
+<div class="viewcode-block" id="WebSocketConnectionManager.connect">
+<a class="viewcode-back" href="../../rst/utils/utils.html#utils.web_socket_connection_manager.WebSocketConnectionManager.connect">[docs]</a>
+    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">connect</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">websocket</span><span class="p">:</span> <span class="n">WebSocket</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Connects a WebSocket connection.</span>
+
+<span class="sd">        :param websocket: The WebSocket connection to be connected.</span>
+<span class="sd">        :type websocket: WebSocket</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;WebSocket connection requested...&quot;</span><span class="p">)</span>
+        <span class="k">await</span> <span class="n">websocket</span><span class="o">.</span><span class="n">accept</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">active_connections</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">websocket</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="WebSocketConnectionManager.disconnect">
+<a class="viewcode-back" href="../../rst/utils/utils.html#utils.web_socket_connection_manager.WebSocketConnectionManager.disconnect">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">disconnect</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">websocket</span><span class="p">:</span> <span class="n">WebSocket</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Disconnects a WebSocket connection.</span>
+
+<span class="sd">        :param websocket: The WebSocket connection to be disconnected.</span>
+<span class="sd">        :type websocket: WebSocket</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;WebSocket connection closed...&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">active_connections</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">websocket</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="WebSocketConnectionManager.send_personal_message">
+<a class="viewcode-back" href="../../rst/utils/utils.html#utils.web_socket_connection_manager.WebSocketConnectionManager.send_personal_message">[docs]</a>
+    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">send_personal_message</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">message</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">websocket</span><span class="p">:</span> <span class="n">WebSocket</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Sends a personal message to a specific WebSocket connection.</span>
+
+<span class="sd">        :param message: The message to be sent.</span>
+<span class="sd">        :type message: str</span>
+<span class="sd">        :param websocket: The WebSocket connection to send the message to.</span>
+<span class="sd">        :type websocket: WebSocket</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Sending personal message over web socket...&quot;</span><span class="p">)</span>
+        <span class="k">await</span> <span class="n">websocket</span><span class="o">.</span><span class="n">send_text</span><span class="p">(</span><span class="n">message</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="WebSocketConnectionManager.broadcast">
+<a class="viewcode-back" href="../../rst/utils/utils.html#utils.web_socket_connection_manager.WebSocketConnectionManager.broadcast">[docs]</a>
+    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">broadcast</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">message</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Broadcasts a message to all active WebSocket connections.</span>
+
+<span class="sd">        :param message: The message to be broadcasted.</span>
+<span class="sd">        :type message: str</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Broadcasting message...&quot;</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">connection</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">active_connections</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Sending message to connection...&quot;</span><span class="p">)</span>
+            <span class="k">await</span> <span class="n">connection</span><span class="o">.</span><span class="n">send_text</span><span class="p">(</span><span class="n">message</span><span class="p">)</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Broadcast completed.&quot;</span><span class="p">)</span></div>
+</div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, Daniel Andersson &lt;d.andersson86@icloud.com&gt;.
+      <span class="lastupdated">Last updated on 2026-06-02.
+      </span></p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

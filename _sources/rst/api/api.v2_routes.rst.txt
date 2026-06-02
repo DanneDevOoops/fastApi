@@ -1,0 +1,53 @@
+api.v2\_routes package
+======================
+
+Submodules
+----------
+
+api.v2\_routes.application\_routes module
+-----------------------------------------
+
+.. automodule:: api.v2_routes.application_routes
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
+api.v2\_routes.auth\_routes module
+----------------------------------
+
+.. automodule:: api.v2_routes.auth_routes
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
+api.v2\_routes.sensor\_routes module
+------------------------------------
+
+.. automodule:: api.v2_routes.sensor_routes
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
+api.v2\_routes.sensor\_telemetry\_routes module
+-----------------------------------------------
+
+.. automodule:: api.v2_routes.sensor_telemetry_routes
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
+api.v2\_routes.user\_routes module
+----------------------------------
+
+.. automodule:: api.v2_routes.user_routes
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
+Module contents
+---------------
+
+.. automodule:: api.v2_routes
+   :members:
+   :show-inheritance:
+   :undoc-members:

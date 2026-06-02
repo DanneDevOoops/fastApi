@@ -1,0 +1,19 @@
+db.models package
+=================
+
+Subpackages
+-----------
+
+.. toctree::
+   :maxdepth: 3
+
+   db.models.v1_models
+   db.models.v2_models
+
+Module contents
+---------------
+
+.. automodule:: db.models
+   :members:
+   :show-inheritance:
+   :undoc-members:

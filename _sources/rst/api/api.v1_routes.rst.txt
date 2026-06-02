@@ -1,0 +1,37 @@
+api.v1\_routes package
+======================
+
+Submodules
+----------
+
+api.v1\_routes.application\_routes module
+-----------------------------------------
+
+.. automodule:: api.v1_routes.application_routes
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
+api.v1\_routes.user\_routes module
+----------------------------------
+
+.. automodule:: api.v1_routes.user_routes
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
+api.v1\_routes.web\_socket\_routes module
+-----------------------------------------
+
+.. automodule:: api.v1_routes.web_socket_routes
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
+Module contents
+---------------
+
+.. automodule:: api.v1_routes
+   :members:
+   :show-inheritance:
+   :undoc-members:

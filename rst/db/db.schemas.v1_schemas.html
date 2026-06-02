@@ -1,0 +1,1077 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>db.schemas.v1_schemas package &mdash; FastAPI Application 0.0.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=9edc463e" />
+      <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=4ae1632d" />
+
+  
+    <link rel="canonical" href="https://github.com/DanneDevOoops/fastApi/rst/db/db.schemas.v1_schemas.html" />
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=7026087e"></script>
+      <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="db.serializers package" href="db.serializers.html" />
+    <link rel="prev" title="db.schemas package" href="db.schemas.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            FastAPI Application
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../api/modules.html">api</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../core/modules.html">core</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="modules.html">db</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="db.html">db package</a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="db.html#subpackages">Subpackages</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="db.config.html">db.config package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="db.connectors.html">db.connectors package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="db.models.html">db.models package</a></li>
+<li class="toctree-l4 current"><a class="reference internal" href="db.schemas.html">db.schemas package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="db.serializers.html">db.serializers package</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="db.html#module-db">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../middlewares/modules.html">middlewares</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../utils/modules.html">utils</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Documents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../coverage.html">docs coverage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../readme.html">project readme</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../docstrings.html">write docstrings</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">FastAPI Application</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content style-external-links">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="modules.html">db</a></li>
+          <li class="breadcrumb-item"><a href="db.html">db package</a></li>
+          <li class="breadcrumb-item"><a href="db.schemas.html">db.schemas package</a></li>
+      <li class="breadcrumb-item active">db.schemas.v1_schemas package</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../_sources/rst/db/db.schemas.v1_schemas.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="db-schemas-v1-schemas-package">
+<h1>db.schemas.v1_schemas package<a class="headerlink" href="#db-schemas-v1-schemas-package" title="Link to this heading"></a></h1>
+<section id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Link to this heading"></a></h2>
+</section>
+<section id="module-db.schemas.v1_schemas.application_schemas">
+<span id="db-schemas-v1-schemas-application-schemas-module"></span><h2>db.schemas.v1_schemas.application_schemas module<a class="headerlink" href="#module-db.schemas.v1_schemas.application_schemas" title="Link to this heading"></a></h2>
+<p>Application schema for the database</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="db.schemas.v1_schemas.application_schemas.ApplicationCreate">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">db.schemas.v1_schemas.application_schemas.</span></span><span class="sig-name descname"><span class="pre">ApplicationCreate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">data</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/DanneDevOoops/fastApi/blob/main/src/db/schemas/v1_schemas/application_schemas.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="reference internal" href="../../_modules/db/schemas/v1_schemas/application_schemas.html#ApplicationCreate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#db.schemas.v1_schemas.application_schemas.ApplicationCreate" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference external" href="https://pydantic.dev/docs/validation/latest/api/pydantic/base_model/#pydantic.BaseModel" title="(in Pydantic v0.0.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">pydantic.main.BaseModel</span></code></a></p>
+<p>Schema for creating a new Application instance.</p>
+<p>The API key is generated server-side and should not be supplied by the
+client.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>data</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.14)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Any</span></code></a></span>)</p></li>
+<li><p><strong>id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a><em> | </em><em>None</em>)</p></li>
+<li><p><strong>name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a>)</p></li>
+<li><p><strong>description</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a>)</p></li>
+<li><p><strong>url</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a>)</p></li>
+<li><p><strong>is_active</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><em>bool</em></a>)</p></li>
+</ul>
+</dd>
+</dl>
+<p>Create a new model by parsing and validating input data from keyword arguments.</p>
+<p>Raises [<cite>ValidationError</cite>][pydantic_core.ValidationError] if the input data cannot be
+validated to form a valid model.</p>
+<p><cite>self</cite> is explicitly positional-only to allow <cite>self</cite> as a field name.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>data</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.14)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Any</span></code></a></span>)</p></li>
+<li><p><strong>id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a><em> | </em><em>None</em>)</p></li>
+<li><p><strong>name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a>)</p></li>
+<li><p><strong>description</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a>)</p></li>
+<li><p><strong>url</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a>)</p></li>
+<li><p><strong>is_active</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><em>bool</em></a>)</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="db.schemas.v1_schemas.application_schemas.ApplicationCreate.id">
+<span class="sig-name descname"><span class="pre">id</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></span><a class="reference external" href="https://github.com/DanneDevOoops/fastApi/blob/main/src/db/schemas/v1_schemas/application_schemas.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#db.schemas.v1_schemas.application_schemas.ApplicationCreate.id" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="db.schemas.v1_schemas.application_schemas.ApplicationCreate.name">
+<span class="sig-name descname"><span class="pre">name</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></span><a class="reference external" href="https://github.com/DanneDevOoops/fastApi/blob/main/src/db/schemas/v1_schemas/application_schemas.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#db.schemas.v1_schemas.application_schemas.ApplicationCreate.name" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="db.schemas.v1_schemas.application_schemas.ApplicationCreate.description">
+<span class="sig-name descname"><span class="pre">description</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></span><a class="reference external" href="https://github.com/DanneDevOoops/fastApi/blob/main/src/db/schemas/v1_schemas/application_schemas.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#db.schemas.v1_schemas.application_schemas.ApplicationCreate.description" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="db.schemas.v1_schemas.application_schemas.ApplicationCreate.url">
+<span class="sig-name descname"><span class="pre">url</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></span><a class="reference external" href="https://github.com/DanneDevOoops/fastApi/blob/main/src/db/schemas/v1_schemas/application_schemas.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#db.schemas.v1_schemas.application_schemas.ApplicationCreate.url" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="db.schemas.v1_schemas.application_schemas.ApplicationCreate.is_active">
+<span class="sig-name descname"><span class="pre">is_active</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><span class="pre">bool</span></a></span><a class="reference external" href="https://github.com/DanneDevOoops/fastApi/blob/main/src/db/schemas/v1_schemas/application_schemas.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#db.schemas.v1_schemas.application_schemas.ApplicationCreate.is_active" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="db.schemas.v1_schemas.application_schemas.ApplicationCreate.model_config">
+<span class="sig-name descname"><span class="pre">model_config</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClassVar</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://pydantic.dev/docs/validation/latest/api/pydantic/config/#pydantic.config.ConfigDict" title="(in Pydantic v0.0.0)"><span class="pre">pydantic.config.ConfigDict</span></a><span class="p"><span class="pre">]</span></span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{'arbitrary_types_allowed':</span> <span class="pre">True,</span> <span class="pre">'from_attributes':</span> <span class="pre">True,</span> <span class="pre">'str_max_length':</span> <span class="pre">255,</span> <span class="pre">'str_min_length':</span> <span class="pre">1,</span> <span class="pre">'str_strip_whitespace':</span> <span class="pre">True}</span></span><a class="reference external" href="https://github.com/DanneDevOoops/fastApi/blob/main/src/db/schemas/v1_schemas/application_schemas.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#db.schemas.v1_schemas.application_schemas.ApplicationCreate.model_config" title="Link to this definition"></a></dt>
+<dd><p>Configuration for the model, should be a dictionary conforming to [<cite>ConfigDict</cite>][pydantic.config.ConfigDict].</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="db.schemas.v1_schemas.application_schemas.ApplicationUpdate">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">db.schemas.v1_schemas.application_schemas.</span></span><span class="sig-name descname"><span class="pre">ApplicationUpdate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">data</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/DanneDevOoops/fastApi/blob/main/src/db/schemas/v1_schemas/application_schemas.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="reference internal" href="../../_modules/db/schemas/v1_schemas/application_schemas.html#ApplicationUpdate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#db.schemas.v1_schemas.application_schemas.ApplicationUpdate" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference external" href="https://pydantic.dev/docs/validation/latest/api/pydantic/base_model/#pydantic.BaseModel" title="(in Pydantic v0.0.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">pydantic.main.BaseModel</span></code></a></p>
+<p>Schema for updating an existing Application instance.</p>
+<p>Note: api_key and timestamps cannot be updated via PATCH.
+Timestamps are automatically managed by the application.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>data</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.14)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Any</span></code></a></span>)</p></li>
+<li><p><strong>name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a><em> | </em><em>None</em>)</p></li>
+<li><p><strong>description</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a><em> | </em><em>None</em>)</p></li>
+<li><p><strong>url</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a><em> | </em><em>None</em>)</p></li>
+<li><p><strong>is_active</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><em>bool</em></a><em> | </em><em>None</em>)</p></li>
+</ul>
+</dd>
+</dl>
+<p>Create a new model by parsing and validating input data from keyword arguments.</p>
+<p>Raises [<cite>ValidationError</cite>][pydantic_core.ValidationError] if the input data cannot be
+validated to form a valid model.</p>
+<p><cite>self</cite> is explicitly positional-only to allow <cite>self</cite> as a field name.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>data</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.14)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Any</span></code></a></span>)</p></li>
+<li><p><strong>name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a><em> | </em><em>None</em>)</p></li>
+<li><p><strong>description</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a><em> | </em><em>None</em>)</p></li>
+<li><p><strong>url</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a><em> | </em><em>None</em>)</p></li>
+<li><p><strong>is_active</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><em>bool</em></a><em> | </em><em>None</em>)</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="db.schemas.v1_schemas.application_schemas.ApplicationUpdate.name">
+<span class="sig-name descname"><span class="pre">name</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></span><a class="reference external" href="https://github.com/DanneDevOoops/fastApi/blob/main/src/db/schemas/v1_schemas/application_schemas.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#db.schemas.v1_schemas.application_schemas.ApplicationUpdate.name" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="db.schemas.v1_schemas.application_schemas.ApplicationUpdate.description">
+<span class="sig-name descname"><span class="pre">description</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></span><a class="reference external" href="https://github.com/DanneDevOoops/fastApi/blob/main/src/db/schemas/v1_schemas/application_schemas.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#db.schemas.v1_schemas.application_schemas.ApplicationUpdate.description" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="db.schemas.v1_schemas.application_schemas.ApplicationUpdate.url">
+<span class="sig-name descname"><span class="pre">url</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></span><a class="reference external" href="https://github.com/DanneDevOoops/fastApi/blob/main/src/db/schemas/v1_schemas/application_schemas.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#db.schemas.v1_schemas.application_schemas.ApplicationUpdate.url" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="db.schemas.v1_schemas.application_schemas.ApplicationUpdate.is_active">
+<span class="sig-name descname"><span class="pre">is_active</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><span class="pre">bool</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></span><a class="reference external" href="https://github.com/DanneDevOoops/fastApi/blob/main/src/db/schemas/v1_schemas/application_schemas.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#db.schemas.v1_schemas.application_schemas.ApplicationUpdate.is_active" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="db.schemas.v1_schemas.application_schemas.ApplicationUpdate.model_config">
+<span class="sig-name descname"><span class="pre">model_config</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClassVar</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://pydantic.dev/docs/validation/latest/api/pydantic/config/#pydantic.config.ConfigDict" title="(in Pydantic v0.0.0)"><span class="pre">pydantic.config.ConfigDict</span></a><span class="p"><span class="pre">]</span></span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{'arbitrary_types_allowed':</span> <span class="pre">True,</span> <span class="pre">'from_attributes':</span> <span class="pre">True,</span> <span class="pre">'str_max_length':</span> <span class="pre">255,</span> <span class="pre">'str_min_length':</span> <span class="pre">1,</span> <span class="pre">'str_strip_whitespace':</span> <span class="pre">True}</span></span><a class="reference external" href="https://github.com/DanneDevOoops/fastApi/blob/main/src/db/schemas/v1_schemas/application_schemas.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#db.schemas.v1_schemas.application_schemas.ApplicationUpdate.model_config" title="Link to this definition"></a></dt>
+<dd><p>Configuration for the model, should be a dictionary conforming to [<cite>ConfigDict</cite>][pydantic.config.ConfigDict].</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="db.schemas.v1_schemas.application_schemas.ApplicationOutput">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">db.schemas.v1_schemas.application_schemas.</span></span><span class="sig-name descname"><span class="pre">ApplicationOutput</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">data</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/DanneDevOoops/fastApi/blob/main/src/db/schemas/v1_schemas/application_schemas.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="reference internal" href="../../_modules/db/schemas/v1_schemas/application_schemas.html#ApplicationOutput"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#db.schemas.v1_schemas.application_schemas.ApplicationOutput" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference external" href="https://pydantic.dev/docs/validation/latest/api/pydantic/base_model/#pydantic.BaseModel" title="(in Pydantic v0.0.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">pydantic.main.BaseModel</span></code></a></p>
+<p>Schema for returning an Application instance.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>data</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.14)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Any</span></code></a></span>)</p></li>
+<li><p><strong>id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a>)</p></li>
+<li><p><strong>name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a>)</p></li>
+<li><p><strong>description</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a>)</p></li>
+<li><p><strong>url</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a>)</p></li>
+<li><p><strong>is_active</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><em>bool</em></a>)</p></li>
+<li><p><strong>created_at</strong> (<a class="reference external" href="https://docs.python.org/3/library/datetime.html#datetime.datetime" title="(in Python v3.14)"><em>datetime.datetime</em></a>)</p></li>
+<li><p><strong>updated_at</strong> (<a class="reference external" href="https://docs.python.org/3/library/datetime.html#datetime.datetime" title="(in Python v3.14)"><em>datetime.datetime</em></a>)</p></li>
+<li><p><strong>deleted_at</strong> (<a class="reference external" href="https://docs.python.org/3/library/datetime.html#datetime.datetime" title="(in Python v3.14)"><em>datetime.datetime</em></a><em> | </em><em>None</em>)</p></li>
+<li><p><strong>jwt_token</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a><em> | </em><em>None</em>)</p></li>
+</ul>
+</dd>
+</dl>
+<p>Create a new model by parsing and validating input data from keyword arguments.</p>
+<p>Raises [<cite>ValidationError</cite>][pydantic_core.ValidationError] if the input data cannot be
+validated to form a valid model.</p>
+<p><cite>self</cite> is explicitly positional-only to allow <cite>self</cite> as a field name.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>data</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.14)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Any</span></code></a></span>)</p></li>
+<li><p><strong>id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a>)</p></li>
+<li><p><strong>name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a>)</p></li>
+<li><p><strong>description</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a>)</p></li>
+<li><p><strong>url</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a>)</p></li>
+<li><p><strong>is_active</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><em>bool</em></a>)</p></li>
+<li><p><strong>created_at</strong> (<a class="reference external" href="https://docs.python.org/3/library/datetime.html#datetime.datetime" title="(in Python v3.14)"><em>datetime.datetime</em></a>)</p></li>
+<li><p><strong>updated_at</strong> (<a class="reference external" href="https://docs.python.org/3/library/datetime.html#datetime.datetime" title="(in Python v3.14)"><em>datetime.datetime</em></a>)</p></li>
+<li><p><strong>deleted_at</strong> (<a class="reference external" href="https://docs.python.org/3/library/datetime.html#datetime.datetime" title="(in Python v3.14)"><em>datetime.datetime</em></a><em> | </em><em>None</em>)</p></li>
+<li><p><strong>jwt_token</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a><em> | </em><em>None</em>)</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="db.schemas.v1_schemas.application_schemas.ApplicationOutput.id">
+<span class="sig-name descname"><span class="pre">id</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></span><a class="reference external" href="https://github.com/DanneDevOoops/fastApi/blob/main/src/db/schemas/v1_schemas/application_schemas.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#db.schemas.v1_schemas.application_schemas.ApplicationOutput.id" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="db.schemas.v1_schemas.application_schemas.ApplicationOutput.name">
+<span class="sig-name descname"><span class="pre">name</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></span><a class="reference external" href="https://github.com/DanneDevOoops/fastApi/blob/main/src/db/schemas/v1_schemas/application_schemas.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#db.schemas.v1_schemas.application_schemas.ApplicationOutput.name" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="db.schemas.v1_schemas.application_schemas.ApplicationOutput.description">
+<span class="sig-name descname"><span class="pre">description</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></span><a class="reference external" href="https://github.com/DanneDevOoops/fastApi/blob/main/src/db/schemas/v1_schemas/application_schemas.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#db.schemas.v1_schemas.application_schemas.ApplicationOutput.description" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="db.schemas.v1_schemas.application_schemas.ApplicationOutput.url">
+<span class="sig-name descname"><span class="pre">url</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></span><a class="reference external" href="https://github.com/DanneDevOoops/fastApi/blob/main/src/db/schemas/v1_schemas/application_schemas.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#db.schemas.v1_schemas.application_schemas.ApplicationOutput.url" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="db.schemas.v1_schemas.application_schemas.ApplicationOutput.is_active">
+<span class="sig-name descname"><span class="pre">is_active</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><span class="pre">bool</span></a></span><a class="reference external" href="https://github.com/DanneDevOoops/fastApi/blob/main/src/db/schemas/v1_schemas/application_schemas.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#db.schemas.v1_schemas.application_schemas.ApplicationOutput.is_active" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="db.schemas.v1_schemas.application_schemas.ApplicationOutput.created_at">
+<span class="sig-name descname"><span class="pre">created_at</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/datetime.html#datetime.datetime" title="(in Python v3.14)"><span class="pre">datetime.datetime</span></a></span><a class="reference external" href="https://github.com/DanneDevOoops/fastApi/blob/main/src/db/schemas/v1_schemas/application_schemas.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#db.schemas.v1_schemas.application_schemas.ApplicationOutput.created_at" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="db.schemas.v1_schemas.application_schemas.ApplicationOutput.updated_at">
+<span class="sig-name descname"><span class="pre">updated_at</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/datetime.html#datetime.datetime" title="(in Python v3.14)"><span class="pre">datetime.datetime</span></a></span><a class="reference external" href="https://github.com/DanneDevOoops/fastApi/blob/main/src/db/schemas/v1_schemas/application_schemas.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#db.schemas.v1_schemas.application_schemas.ApplicationOutput.updated_at" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="db.schemas.v1_schemas.application_schemas.ApplicationOutput.deleted_at">
+<span class="sig-name descname"><span class="pre">deleted_at</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/datetime.html#datetime.datetime" title="(in Python v3.14)"><span class="pre">datetime.datetime</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></span><a class="reference external" href="https://github.com/DanneDevOoops/fastApi/blob/main/src/db/schemas/v1_schemas/application_schemas.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#db.schemas.v1_schemas.application_schemas.ApplicationOutput.deleted_at" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="db.schemas.v1_schemas.application_schemas.ApplicationOutput.jwt_token">
+<span class="sig-name descname"><span class="pre">jwt_token</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></span><a class="reference external" href="https://github.com/DanneDevOoops/fastApi/blob/main/src/db/schemas/v1_schemas/application_schemas.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#db.schemas.v1_schemas.application_schemas.ApplicationOutput.jwt_token" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="db.schemas.v1_schemas.application_schemas.ApplicationOutput.model_config">
+<span class="sig-name descname"><span class="pre">model_config</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClassVar</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://pydantic.dev/docs/validation/latest/api/pydantic/config/#pydantic.config.ConfigDict" title="(in Pydantic v0.0.0)"><span class="pre">pydantic.config.ConfigDict</span></a><span class="p"><span class="pre">]</span></span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{'from_attributes':</span> <span class="pre">True}</span></span><a class="reference external" href="https://github.com/DanneDevOoops/fastApi/blob/main/src/db/schemas/v1_schemas/application_schemas.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#db.schemas.v1_schemas.application_schemas.ApplicationOutput.model_config" title="Link to this definition"></a></dt>
+<dd><p>Configuration for the model, should be a dictionary conforming to [<cite>ConfigDict</cite>][pydantic.config.ConfigDict].</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="db.schemas.v1_schemas.application_schemas.ApplicationOutput.serialize_datetime">
+<span class="sig-name descname"><span class="pre">serialize_datetime</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/DanneDevOoops/fastApi/blob/main/src/db/schemas/v1_schemas/application_schemas.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="reference internal" href="../../_modules/db/schemas/v1_schemas/application_schemas.html#ApplicationOutput.serialize_datetime"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#db.schemas.v1_schemas.application_schemas.ApplicationOutput.serialize_datetime" title="Link to this definition"></a></dt>
+<dd><p>Serialize datetime to timestamp</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>value</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.14)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/datetime.html#datetime.datetime" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">datetime</span></code></a>]</span>)</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.14)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></a>]</span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="db.schemas.v1_schemas.application_schemas.ApplicationOutput.__str__">
+<span class="sig-name descname"><span class="pre">__str__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference external" href="https://github.com/DanneDevOoops/fastApi/blob/main/src/db/schemas/v1_schemas/application_schemas.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="reference internal" href="../../_modules/db/schemas/v1_schemas/application_schemas.html#ApplicationOutput.__str__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#db.schemas.v1_schemas.application_schemas.ApplicationOutput.__str__" title="Link to this definition"></a></dt>
+<dd><p>String representation of the ApplicationOutput instance.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Object representation as a string</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="db.schemas.v1_schemas.application_schemas.ApplicationOutput.__eq__">
+<span class="sig-name descname"><span class="pre">__eq__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">other</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/DanneDevOoops/fastApi/blob/main/src/db/schemas/v1_schemas/application_schemas.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="reference internal" href="../../_modules/db/schemas/v1_schemas/application_schemas.html#ApplicationOutput.__eq__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#db.schemas.v1_schemas.application_schemas.ApplicationOutput.__eq__" title="Link to this definition"></a></dt>
+<dd><p>Equality comparison between two ApplicationOutput instances.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>other</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></span>) – ApplicationOutput instance</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Boolean value indicating equality</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></a></span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="db.schemas.v1_schemas.application_schemas.ApplicationOutput.__ne__">
+<span class="sig-name descname"><span class="pre">__ne__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">other</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/DanneDevOoops/fastApi/blob/main/src/db/schemas/v1_schemas/application_schemas.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="reference internal" href="../../_modules/db/schemas/v1_schemas/application_schemas.html#ApplicationOutput.__ne__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#db.schemas.v1_schemas.application_schemas.ApplicationOutput.__ne__" title="Link to this definition"></a></dt>
+<dd><p>Inequality comparison between two ApplicationOutput instances.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>other</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></span>) – ApplicationOutput instance</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Boolean value indicating inequality</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></a></span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="db.schemas.v1_schemas.application_schemas.ApplicationOutput.__getattr__">
+<span class="sig-name descname"><span class="pre">__getattr__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">item</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/DanneDevOoops/fastApi/blob/main/src/db/schemas/v1_schemas/application_schemas.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="reference internal" href="../../_modules/db/schemas/v1_schemas/application_schemas.html#ApplicationOutput.__getattr__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#db.schemas.v1_schemas.application_schemas.ApplicationOutput.__getattr__" title="Link to this definition"></a></dt>
+<dd><p>Returns the value of the attribute with the given name.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="db.schemas.v1_schemas.application_schemas.ApplicationOutput.as_named_tuple">
+<span class="sig-name descname"><span class="pre">as_named_tuple</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference external" href="https://github.com/DanneDevOoops/fastApi/blob/main/src/db/schemas/v1_schemas/application_schemas.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="reference internal" href="../../_modules/db/schemas/v1_schemas/application_schemas.html#ApplicationOutput.as_named_tuple"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#db.schemas.v1_schemas.application_schemas.ApplicationOutput.as_named_tuple" title="Link to this definition"></a></dt>
+<dd><p>Returns the ApplicationOutput instance as a named tuple.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>ApplicationOutput instance as a named tuple</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">tuple</span></code></a></span></p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-db.schemas.v1_schemas.user_schemas">
+<span id="db-schemas-v1-schemas-user-schemas-module"></span><h2>db.schemas.v1_schemas.user_schemas module<a class="headerlink" href="#module-db.schemas.v1_schemas.user_schemas" title="Link to this heading"></a></h2>
+<p>User schema for the database</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="db.schemas.v1_schemas.user_schemas.UserCreate">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">db.schemas.v1_schemas.user_schemas.</span></span><span class="sig-name descname"><span class="pre">UserCreate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">data</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/DanneDevOoops/fastApi/blob/main/src/db/schemas/v1_schemas/user_schemas.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="reference internal" href="../../_modules/db/schemas/v1_schemas/user_schemas.html#UserCreate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#db.schemas.v1_schemas.user_schemas.UserCreate" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference external" href="https://pydantic.dev/docs/validation/latest/api/pydantic/base_model/#pydantic.BaseModel" title="(in Pydantic v0.0.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">pydantic.main.BaseModel</span></code></a></p>
+<p>Schema for creating a new User instance.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>data</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.14)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Any</span></code></a></span>)</p></li>
+<li><p><strong>id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a><em> | </em><em>None</em>)</p></li>
+<li><p><strong>username</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a>)</p></li>
+<li><p><strong>email</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a>)</p></li>
+<li><p><strong>password</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a>)</p></li>
+<li><p><strong>first_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a>)</p></li>
+<li><p><strong>last_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a>)</p></li>
+<li><p><strong>phone_number</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a>)</p></li>
+<li><p><strong>address</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a>)</p></li>
+<li><p><strong>city</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a>)</p></li>
+<li><p><strong>state</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a>)</p></li>
+<li><p><strong>country</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a>)</p></li>
+<li><p><strong>zip_code</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a>)</p></li>
+<li><p><strong>is_active</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><em>bool</em></a>)</p></li>
+<li><p><strong>is_superuser</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><em>bool</em></a>)</p></li>
+<li><p><strong>created_at</strong> (<a class="reference external" href="https://docs.python.org/3/library/datetime.html#datetime.datetime" title="(in Python v3.14)"><em>datetime.datetime</em></a><em> | </em><em>None</em>)</p></li>
+<li><p><strong>updated_at</strong> (<a class="reference external" href="https://docs.python.org/3/library/datetime.html#datetime.datetime" title="(in Python v3.14)"><em>datetime.datetime</em></a><em> | </em><em>None</em>)</p></li>
+<li><p><strong>deleted_at</strong> (<a class="reference external" href="https://docs.python.org/3/library/datetime.html#datetime.datetime" title="(in Python v3.14)"><em>datetime.datetime</em></a><em> | </em><em>None</em>)</p></li>
+</ul>
+</dd>
+</dl>
+<p>Create a new model by parsing and validating input data from keyword arguments.</p>
+<p>Raises [<cite>ValidationError</cite>][pydantic_core.ValidationError] if the input data cannot be
+validated to form a valid model.</p>
+<p><cite>self</cite> is explicitly positional-only to allow <cite>self</cite> as a field name.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>data</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.14)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Any</span></code></a></span>)</p></li>
+<li><p><strong>id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a><em> | </em><em>None</em>)</p></li>
+<li><p><strong>username</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a>)</p></li>
+<li><p><strong>email</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a>)</p></li>
+<li><p><strong>password</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a>)</p></li>
+<li><p><strong>first_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a>)</p></li>
+<li><p><strong>last_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a>)</p></li>
+<li><p><strong>phone_number</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a>)</p></li>
+<li><p><strong>address</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a>)</p></li>
+<li><p><strong>city</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a>)</p></li>
+<li><p><strong>state</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a>)</p></li>
+<li><p><strong>country</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a>)</p></li>
+<li><p><strong>zip_code</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a>)</p></li>
+<li><p><strong>is_active</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><em>bool</em></a>)</p></li>
+<li><p><strong>is_superuser</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><em>bool</em></a>)</p></li>
+<li><p><strong>created_at</strong> (<a class="reference external" href="https://docs.python.org/3/library/datetime.html#datetime.datetime" title="(in Python v3.14)"><em>datetime.datetime</em></a><em> | </em><em>None</em>)</p></li>
+<li><p><strong>updated_at</strong> (<a class="reference external" href="https://docs.python.org/3/library/datetime.html#datetime.datetime" title="(in Python v3.14)"><em>datetime.datetime</em></a><em> | </em><em>None</em>)</p></li>
+<li><p><strong>deleted_at</strong> (<a class="reference external" href="https://docs.python.org/3/library/datetime.html#datetime.datetime" title="(in Python v3.14)"><em>datetime.datetime</em></a><em> | </em><em>None</em>)</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="db.schemas.v1_schemas.user_schemas.UserCreate.id">
+<span class="sig-name descname"><span class="pre">id</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></span><a class="reference external" href="https://github.com/DanneDevOoops/fastApi/blob/main/src/db/schemas/v1_schemas/user_schemas.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#db.schemas.v1_schemas.user_schemas.UserCreate.id" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="db.schemas.v1_schemas.user_schemas.UserCreate.username">
+<span class="sig-name descname"><span class="pre">username</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></span><a class="reference external" href="https://github.com/DanneDevOoops/fastApi/blob/main/src/db/schemas/v1_schemas/user_schemas.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#db.schemas.v1_schemas.user_schemas.UserCreate.username" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="db.schemas.v1_schemas.user_schemas.UserCreate.email">
+<span class="sig-name descname"><span class="pre">email</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></span><a class="reference external" href="https://github.com/DanneDevOoops/fastApi/blob/main/src/db/schemas/v1_schemas/user_schemas.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#db.schemas.v1_schemas.user_schemas.UserCreate.email" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="db.schemas.v1_schemas.user_schemas.UserCreate.password">
+<span class="sig-name descname"><span class="pre">password</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></span><a class="reference external" href="https://github.com/DanneDevOoops/fastApi/blob/main/src/db/schemas/v1_schemas/user_schemas.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#db.schemas.v1_schemas.user_schemas.UserCreate.password" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="db.schemas.v1_schemas.user_schemas.UserCreate.first_name">
+<span class="sig-name descname"><span class="pre">first_name</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></span><a class="reference external" href="https://github.com/DanneDevOoops/fastApi/blob/main/src/db/schemas/v1_schemas/user_schemas.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#db.schemas.v1_schemas.user_schemas.UserCreate.first_name" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="db.schemas.v1_schemas.user_schemas.UserCreate.last_name">
+<span class="sig-name descname"><span class="pre">last_name</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></span><a class="reference external" href="https://github.com/DanneDevOoops/fastApi/blob/main/src/db/schemas/v1_schemas/user_schemas.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#db.schemas.v1_schemas.user_schemas.UserCreate.last_name" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="db.schemas.v1_schemas.user_schemas.UserCreate.phone_number">
+<span class="sig-name descname"><span class="pre">phone_number</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></span><a class="reference external" href="https://github.com/DanneDevOoops/fastApi/blob/main/src/db/schemas/v1_schemas/user_schemas.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#db.schemas.v1_schemas.user_schemas.UserCreate.phone_number" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="db.schemas.v1_schemas.user_schemas.UserCreate.address">
+<span class="sig-name descname"><span class="pre">address</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></span><a class="reference external" href="https://github.com/DanneDevOoops/fastApi/blob/main/src/db/schemas/v1_schemas/user_schemas.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#db.schemas.v1_schemas.user_schemas.UserCreate.address" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="db.schemas.v1_schemas.user_schemas.UserCreate.city">
+<span class="sig-name descname"><span class="pre">city</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></span><a class="reference external" href="https://github.com/DanneDevOoops/fastApi/blob/main/src/db/schemas/v1_schemas/user_schemas.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#db.schemas.v1_schemas.user_schemas.UserCreate.city" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="db.schemas.v1_schemas.user_schemas.UserCreate.state">
+<span class="sig-name descname"><span class="pre">state</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></span><a class="reference external" href="https://github.com/DanneDevOoops/fastApi/blob/main/src/db/schemas/v1_schemas/user_schemas.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#db.schemas.v1_schemas.user_schemas.UserCreate.state" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="db.schemas.v1_schemas.user_schemas.UserCreate.country">
+<span class="sig-name descname"><span class="pre">country</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></span><a class="reference external" href="https://github.com/DanneDevOoops/fastApi/blob/main/src/db/schemas/v1_schemas/user_schemas.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#db.schemas.v1_schemas.user_schemas.UserCreate.country" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="db.schemas.v1_schemas.user_schemas.UserCreate.zip_code">
+<span class="sig-name descname"><span class="pre">zip_code</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></span><a class="reference external" href="https://github.com/DanneDevOoops/fastApi/blob/main/src/db/schemas/v1_schemas/user_schemas.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#db.schemas.v1_schemas.user_schemas.UserCreate.zip_code" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="db.schemas.v1_schemas.user_schemas.UserCreate.is_active">
+<span class="sig-name descname"><span class="pre">is_active</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><span class="pre">bool</span></a></span><a class="reference external" href="https://github.com/DanneDevOoops/fastApi/blob/main/src/db/schemas/v1_schemas/user_schemas.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#db.schemas.v1_schemas.user_schemas.UserCreate.is_active" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="db.schemas.v1_schemas.user_schemas.UserCreate.is_superuser">
+<span class="sig-name descname"><span class="pre">is_superuser</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><span class="pre">bool</span></a></span><a class="reference external" href="https://github.com/DanneDevOoops/fastApi/blob/main/src/db/schemas/v1_schemas/user_schemas.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#db.schemas.v1_schemas.user_schemas.UserCreate.is_superuser" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="db.schemas.v1_schemas.user_schemas.UserCreate.created_at">
+<span class="sig-name descname"><span class="pre">created_at</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/datetime.html#datetime.datetime" title="(in Python v3.14)"><span class="pre">datetime.datetime</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></span><a class="reference external" href="https://github.com/DanneDevOoops/fastApi/blob/main/src/db/schemas/v1_schemas/user_schemas.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#db.schemas.v1_schemas.user_schemas.UserCreate.created_at" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="db.schemas.v1_schemas.user_schemas.UserCreate.updated_at">
+<span class="sig-name descname"><span class="pre">updated_at</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/datetime.html#datetime.datetime" title="(in Python v3.14)"><span class="pre">datetime.datetime</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></span><a class="reference external" href="https://github.com/DanneDevOoops/fastApi/blob/main/src/db/schemas/v1_schemas/user_schemas.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#db.schemas.v1_schemas.user_schemas.UserCreate.updated_at" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="db.schemas.v1_schemas.user_schemas.UserCreate.deleted_at">
+<span class="sig-name descname"><span class="pre">deleted_at</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/datetime.html#datetime.datetime" title="(in Python v3.14)"><span class="pre">datetime.datetime</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></span><a class="reference external" href="https://github.com/DanneDevOoops/fastApi/blob/main/src/db/schemas/v1_schemas/user_schemas.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#db.schemas.v1_schemas.user_schemas.UserCreate.deleted_at" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="db.schemas.v1_schemas.user_schemas.UserCreate.serialize_datetime">
+<span class="sig-name descname"><span class="pre">serialize_datetime</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/DanneDevOoops/fastApi/blob/main/src/db/schemas/v1_schemas/user_schemas.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="reference internal" href="../../_modules/db/schemas/v1_schemas/user_schemas.html#UserCreate.serialize_datetime"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#db.schemas.v1_schemas.user_schemas.UserCreate.serialize_datetime" title="Link to this definition"></a></dt>
+<dd><p>Serialize datetime to UTC datetime</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>value</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.14)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/datetime.html#datetime.datetime" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">datetime</span></code></a>]</span>)</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.14)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/datetime.html#datetime.datetime" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">datetime</span></code></a>]</span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="db.schemas.v1_schemas.user_schemas.UserCreate.model_config">
+<span class="sig-name descname"><span class="pre">model_config</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClassVar</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://pydantic.dev/docs/validation/latest/api/pydantic/config/#pydantic.config.ConfigDict" title="(in Pydantic v0.0.0)"><span class="pre">pydantic.config.ConfigDict</span></a><span class="p"><span class="pre">]</span></span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{'arbitrary_types_allowed':</span> <span class="pre">True,</span> <span class="pre">'from_attributes':</span> <span class="pre">True,</span> <span class="pre">'str_max_length':</span> <span class="pre">255,</span> <span class="pre">'str_min_length':</span> <span class="pre">1,</span> <span class="pre">'str_strip_whitespace':</span> <span class="pre">True}</span></span><a class="reference external" href="https://github.com/DanneDevOoops/fastApi/blob/main/src/db/schemas/v1_schemas/user_schemas.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#db.schemas.v1_schemas.user_schemas.UserCreate.model_config" title="Link to this definition"></a></dt>
+<dd><p>Configuration for the model, should be a dictionary conforming to [<cite>ConfigDict</cite>][pydantic.config.ConfigDict].</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="db.schemas.v1_schemas.user_schemas.UserUpdate">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">db.schemas.v1_schemas.user_schemas.</span></span><span class="sig-name descname"><span class="pre">UserUpdate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">data</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/DanneDevOoops/fastApi/blob/main/src/db/schemas/v1_schemas/user_schemas.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="reference internal" href="../../_modules/db/schemas/v1_schemas/user_schemas.html#UserUpdate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#db.schemas.v1_schemas.user_schemas.UserUpdate" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference external" href="https://pydantic.dev/docs/validation/latest/api/pydantic/base_model/#pydantic.BaseModel" title="(in Pydantic v0.0.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">pydantic.main.BaseModel</span></code></a></p>
+<p>Schema for updating an existing User instance.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>data</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.14)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Any</span></code></a></span>)</p></li>
+<li><p><strong>username</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a><em> | </em><em>None</em>)</p></li>
+<li><p><strong>email</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a><em> | </em><em>None</em>)</p></li>
+<li><p><strong>password</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a><em> | </em><em>None</em>)</p></li>
+<li><p><strong>first_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a><em> | </em><em>None</em>)</p></li>
+<li><p><strong>last_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a><em> | </em><em>None</em>)</p></li>
+<li><p><strong>phone_number</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a><em> | </em><em>None</em>)</p></li>
+<li><p><strong>address</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a><em> | </em><em>None</em>)</p></li>
+<li><p><strong>city</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a><em> | </em><em>None</em>)</p></li>
+<li><p><strong>state</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a><em> | </em><em>None</em>)</p></li>
+<li><p><strong>country</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a><em> | </em><em>None</em>)</p></li>
+<li><p><strong>zip_code</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a><em> | </em><em>None</em>)</p></li>
+<li><p><strong>is_active</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><em>bool</em></a><em> | </em><em>None</em>)</p></li>
+<li><p><strong>is_superuser</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><em>bool</em></a><em> | </em><em>None</em>)</p></li>
+<li><p><strong>updated_at</strong> (<a class="reference external" href="https://docs.python.org/3/library/datetime.html#datetime.datetime" title="(in Python v3.14)"><em>datetime.datetime</em></a><em> | </em><em>None</em>)</p></li>
+<li><p><strong>deleted_at</strong> (<a class="reference external" href="https://docs.python.org/3/library/datetime.html#datetime.datetime" title="(in Python v3.14)"><em>datetime.datetime</em></a><em> | </em><em>None</em>)</p></li>
+</ul>
+</dd>
+</dl>
+<p>Create a new model by parsing and validating input data from keyword arguments.</p>
+<p>Raises [<cite>ValidationError</cite>][pydantic_core.ValidationError] if the input data cannot be
+validated to form a valid model.</p>
+<p><cite>self</cite> is explicitly positional-only to allow <cite>self</cite> as a field name.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>data</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.14)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Any</span></code></a></span>)</p></li>
+<li><p><strong>username</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a><em> | </em><em>None</em>)</p></li>
+<li><p><strong>email</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a><em> | </em><em>None</em>)</p></li>
+<li><p><strong>password</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a><em> | </em><em>None</em>)</p></li>
+<li><p><strong>first_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a><em> | </em><em>None</em>)</p></li>
+<li><p><strong>last_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a><em> | </em><em>None</em>)</p></li>
+<li><p><strong>phone_number</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a><em> | </em><em>None</em>)</p></li>
+<li><p><strong>address</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a><em> | </em><em>None</em>)</p></li>
+<li><p><strong>city</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a><em> | </em><em>None</em>)</p></li>
+<li><p><strong>state</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a><em> | </em><em>None</em>)</p></li>
+<li><p><strong>country</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a><em> | </em><em>None</em>)</p></li>
+<li><p><strong>zip_code</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a><em> | </em><em>None</em>)</p></li>
+<li><p><strong>is_active</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><em>bool</em></a><em> | </em><em>None</em>)</p></li>
+<li><p><strong>is_superuser</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><em>bool</em></a><em> | </em><em>None</em>)</p></li>
+<li><p><strong>updated_at</strong> (<a class="reference external" href="https://docs.python.org/3/library/datetime.html#datetime.datetime" title="(in Python v3.14)"><em>datetime.datetime</em></a><em> | </em><em>None</em>)</p></li>
+<li><p><strong>deleted_at</strong> (<a class="reference external" href="https://docs.python.org/3/library/datetime.html#datetime.datetime" title="(in Python v3.14)"><em>datetime.datetime</em></a><em> | </em><em>None</em>)</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="db.schemas.v1_schemas.user_schemas.UserUpdate.username">
+<span class="sig-name descname"><span class="pre">username</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></span><a class="reference external" href="https://github.com/DanneDevOoops/fastApi/blob/main/src/db/schemas/v1_schemas/user_schemas.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#db.schemas.v1_schemas.user_schemas.UserUpdate.username" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="db.schemas.v1_schemas.user_schemas.UserUpdate.email">
+<span class="sig-name descname"><span class="pre">email</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></span><a class="reference external" href="https://github.com/DanneDevOoops/fastApi/blob/main/src/db/schemas/v1_schemas/user_schemas.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#db.schemas.v1_schemas.user_schemas.UserUpdate.email" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="db.schemas.v1_schemas.user_schemas.UserUpdate.password">
+<span class="sig-name descname"><span class="pre">password</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></span><a class="reference external" href="https://github.com/DanneDevOoops/fastApi/blob/main/src/db/schemas/v1_schemas/user_schemas.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#db.schemas.v1_schemas.user_schemas.UserUpdate.password" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="db.schemas.v1_schemas.user_schemas.UserUpdate.first_name">
+<span class="sig-name descname"><span class="pre">first_name</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></span><a class="reference external" href="https://github.com/DanneDevOoops/fastApi/blob/main/src/db/schemas/v1_schemas/user_schemas.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#db.schemas.v1_schemas.user_schemas.UserUpdate.first_name" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="db.schemas.v1_schemas.user_schemas.UserUpdate.last_name">
+<span class="sig-name descname"><span class="pre">last_name</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></span><a class="reference external" href="https://github.com/DanneDevOoops/fastApi/blob/main/src/db/schemas/v1_schemas/user_schemas.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#db.schemas.v1_schemas.user_schemas.UserUpdate.last_name" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="db.schemas.v1_schemas.user_schemas.UserUpdate.phone_number">
+<span class="sig-name descname"><span class="pre">phone_number</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></span><a class="reference external" href="https://github.com/DanneDevOoops/fastApi/blob/main/src/db/schemas/v1_schemas/user_schemas.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#db.schemas.v1_schemas.user_schemas.UserUpdate.phone_number" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="db.schemas.v1_schemas.user_schemas.UserUpdate.address">
+<span class="sig-name descname"><span class="pre">address</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></span><a class="reference external" href="https://github.com/DanneDevOoops/fastApi/blob/main/src/db/schemas/v1_schemas/user_schemas.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#db.schemas.v1_schemas.user_schemas.UserUpdate.address" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="db.schemas.v1_schemas.user_schemas.UserUpdate.city">
+<span class="sig-name descname"><span class="pre">city</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></span><a class="reference external" href="https://github.com/DanneDevOoops/fastApi/blob/main/src/db/schemas/v1_schemas/user_schemas.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#db.schemas.v1_schemas.user_schemas.UserUpdate.city" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="db.schemas.v1_schemas.user_schemas.UserUpdate.state">
+<span class="sig-name descname"><span class="pre">state</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></span><a class="reference external" href="https://github.com/DanneDevOoops/fastApi/blob/main/src/db/schemas/v1_schemas/user_schemas.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#db.schemas.v1_schemas.user_schemas.UserUpdate.state" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="db.schemas.v1_schemas.user_schemas.UserUpdate.country">
+<span class="sig-name descname"><span class="pre">country</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></span><a class="reference external" href="https://github.com/DanneDevOoops/fastApi/blob/main/src/db/schemas/v1_schemas/user_schemas.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#db.schemas.v1_schemas.user_schemas.UserUpdate.country" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="db.schemas.v1_schemas.user_schemas.UserUpdate.zip_code">
+<span class="sig-name descname"><span class="pre">zip_code</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></span><a class="reference external" href="https://github.com/DanneDevOoops/fastApi/blob/main/src/db/schemas/v1_schemas/user_schemas.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#db.schemas.v1_schemas.user_schemas.UserUpdate.zip_code" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="db.schemas.v1_schemas.user_schemas.UserUpdate.is_active">
+<span class="sig-name descname"><span class="pre">is_active</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><span class="pre">bool</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></span><a class="reference external" href="https://github.com/DanneDevOoops/fastApi/blob/main/src/db/schemas/v1_schemas/user_schemas.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#db.schemas.v1_schemas.user_schemas.UserUpdate.is_active" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="db.schemas.v1_schemas.user_schemas.UserUpdate.is_superuser">
+<span class="sig-name descname"><span class="pre">is_superuser</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><span class="pre">bool</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></span><a class="reference external" href="https://github.com/DanneDevOoops/fastApi/blob/main/src/db/schemas/v1_schemas/user_schemas.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#db.schemas.v1_schemas.user_schemas.UserUpdate.is_superuser" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="db.schemas.v1_schemas.user_schemas.UserUpdate.updated_at">
+<span class="sig-name descname"><span class="pre">updated_at</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/datetime.html#datetime.datetime" title="(in Python v3.14)"><span class="pre">datetime.datetime</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></span><a class="reference external" href="https://github.com/DanneDevOoops/fastApi/blob/main/src/db/schemas/v1_schemas/user_schemas.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#db.schemas.v1_schemas.user_schemas.UserUpdate.updated_at" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="db.schemas.v1_schemas.user_schemas.UserUpdate.deleted_at">
+<span class="sig-name descname"><span class="pre">deleted_at</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/datetime.html#datetime.datetime" title="(in Python v3.14)"><span class="pre">datetime.datetime</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></span><a class="reference external" href="https://github.com/DanneDevOoops/fastApi/blob/main/src/db/schemas/v1_schemas/user_schemas.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#db.schemas.v1_schemas.user_schemas.UserUpdate.deleted_at" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="db.schemas.v1_schemas.user_schemas.UserUpdate.serialize_datetime">
+<span class="sig-name descname"><span class="pre">serialize_datetime</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/DanneDevOoops/fastApi/blob/main/src/db/schemas/v1_schemas/user_schemas.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="reference internal" href="../../_modules/db/schemas/v1_schemas/user_schemas.html#UserUpdate.serialize_datetime"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#db.schemas.v1_schemas.user_schemas.UserUpdate.serialize_datetime" title="Link to this definition"></a></dt>
+<dd><p>Serialize datetime to UTC datetime</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>value</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.14)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/datetime.html#datetime.datetime" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">datetime</span></code></a>]</span>)</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.14)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/datetime.html#datetime.datetime" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">datetime</span></code></a>]</span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="db.schemas.v1_schemas.user_schemas.UserUpdate.model_config">
+<span class="sig-name descname"><span class="pre">model_config</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClassVar</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://pydantic.dev/docs/validation/latest/api/pydantic/config/#pydantic.config.ConfigDict" title="(in Pydantic v0.0.0)"><span class="pre">pydantic.config.ConfigDict</span></a><span class="p"><span class="pre">]</span></span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{}</span></span><a class="reference external" href="https://github.com/DanneDevOoops/fastApi/blob/main/src/db/schemas/v1_schemas/user_schemas.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#db.schemas.v1_schemas.user_schemas.UserUpdate.model_config" title="Link to this definition"></a></dt>
+<dd><p>Configuration for the model, should be a dictionary conforming to [<cite>ConfigDict</cite>][pydantic.config.ConfigDict].</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="db.schemas.v1_schemas.user_schemas.UsersBatch">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">db.schemas.v1_schemas.user_schemas.</span></span><span class="sig-name descname"><span class="pre">UsersBatch</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">data</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/DanneDevOoops/fastApi/blob/main/src/db/schemas/v1_schemas/user_schemas.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="reference internal" href="../../_modules/db/schemas/v1_schemas/user_schemas.html#UsersBatch"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#db.schemas.v1_schemas.user_schemas.UsersBatch" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference external" href="https://pydantic.dev/docs/validation/latest/api/pydantic/base_model/#pydantic.BaseModel" title="(in Pydantic v0.0.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">pydantic.main.BaseModel</span></code></a></p>
+<p>Schema for batch user lookups by IDs.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>data</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.14)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Any</span></code></a></span>)</p></li>
+<li><p><strong>id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.14)"><em>list</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a><em>]</em>)</p></li>
+</ul>
+</dd>
+</dl>
+<p>Create a new model by parsing and validating input data from keyword arguments.</p>
+<p>Raises [<cite>ValidationError</cite>][pydantic_core.ValidationError] if the input data cannot be
+validated to form a valid model.</p>
+<p><cite>self</cite> is explicitly positional-only to allow <cite>self</cite> as a field name.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>data</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.14)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Any</span></code></a></span>)</p></li>
+<li><p><strong>id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.14)"><em>list</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a><em>]</em>)</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="db.schemas.v1_schemas.user_schemas.UsersBatch.id">
+<span class="sig-name descname"><span class="pre">id</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.14)"><span class="pre">list</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="p"><span class="pre">]</span></span></span><a class="reference external" href="https://github.com/DanneDevOoops/fastApi/blob/main/src/db/schemas/v1_schemas/user_schemas.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#db.schemas.v1_schemas.user_schemas.UsersBatch.id" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="db.schemas.v1_schemas.user_schemas.UsersBatch.model_config">
+<span class="sig-name descname"><span class="pre">model_config</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClassVar</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://pydantic.dev/docs/validation/latest/api/pydantic/config/#pydantic.config.ConfigDict" title="(in Pydantic v0.0.0)"><span class="pre">pydantic.config.ConfigDict</span></a><span class="p"><span class="pre">]</span></span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{}</span></span><a class="reference external" href="https://github.com/DanneDevOoops/fastApi/blob/main/src/db/schemas/v1_schemas/user_schemas.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#db.schemas.v1_schemas.user_schemas.UsersBatch.model_config" title="Link to this definition"></a></dt>
+<dd><p>Configuration for the model, should be a dictionary conforming to [<cite>ConfigDict</cite>][pydantic.config.ConfigDict].</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="db.schemas.v1_schemas.user_schemas.UserSimple">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">db.schemas.v1_schemas.user_schemas.</span></span><span class="sig-name descname"><span class="pre">UserSimple</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">data</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/DanneDevOoops/fastApi/blob/main/src/db/schemas/v1_schemas/user_schemas.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="reference internal" href="../../_modules/db/schemas/v1_schemas/user_schemas.html#UserSimple"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#db.schemas.v1_schemas.user_schemas.UserSimple" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference external" href="https://pydantic.dev/docs/validation/latest/api/pydantic/base_model/#pydantic.BaseModel" title="(in Pydantic v0.0.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">pydantic.main.BaseModel</span></code></a></p>
+<p>Schema for retrieving a simple representation of a User instance.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>data</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.14)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Any</span></code></a></span>)</p></li>
+<li><p><strong>id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a>)</p></li>
+<li><p><strong>username</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a>)</p></li>
+<li><p><strong>email</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a>)</p></li>
+<li><p><strong>first_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a>)</p></li>
+<li><p><strong>last_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a>)</p></li>
+</ul>
+</dd>
+</dl>
+<p>Create a new model by parsing and validating input data from keyword arguments.</p>
+<p>Raises [<cite>ValidationError</cite>][pydantic_core.ValidationError] if the input data cannot be
+validated to form a valid model.</p>
+<p><cite>self</cite> is explicitly positional-only to allow <cite>self</cite> as a field name.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>data</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.14)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Any</span></code></a></span>)</p></li>
+<li><p><strong>id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a>)</p></li>
+<li><p><strong>username</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a>)</p></li>
+<li><p><strong>email</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a>)</p></li>
+<li><p><strong>first_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a>)</p></li>
+<li><p><strong>last_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a>)</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="db.schemas.v1_schemas.user_schemas.UserSimple.id">
+<span class="sig-name descname"><span class="pre">id</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></span><a class="reference external" href="https://github.com/DanneDevOoops/fastApi/blob/main/src/db/schemas/v1_schemas/user_schemas.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#db.schemas.v1_schemas.user_schemas.UserSimple.id" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="db.schemas.v1_schemas.user_schemas.UserSimple.username">
+<span class="sig-name descname"><span class="pre">username</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></span><a class="reference external" href="https://github.com/DanneDevOoops/fastApi/blob/main/src/db/schemas/v1_schemas/user_schemas.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#db.schemas.v1_schemas.user_schemas.UserSimple.username" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="db.schemas.v1_schemas.user_schemas.UserSimple.email">
+<span class="sig-name descname"><span class="pre">email</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></span><a class="reference external" href="https://github.com/DanneDevOoops/fastApi/blob/main/src/db/schemas/v1_schemas/user_schemas.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#db.schemas.v1_schemas.user_schemas.UserSimple.email" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="db.schemas.v1_schemas.user_schemas.UserSimple.first_name">
+<span class="sig-name descname"><span class="pre">first_name</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></span><a class="reference external" href="https://github.com/DanneDevOoops/fastApi/blob/main/src/db/schemas/v1_schemas/user_schemas.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#db.schemas.v1_schemas.user_schemas.UserSimple.first_name" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="db.schemas.v1_schemas.user_schemas.UserSimple.last_name">
+<span class="sig-name descname"><span class="pre">last_name</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></span><a class="reference external" href="https://github.com/DanneDevOoops/fastApi/blob/main/src/db/schemas/v1_schemas/user_schemas.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#db.schemas.v1_schemas.user_schemas.UserSimple.last_name" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="db.schemas.v1_schemas.user_schemas.UserSimple.model_config">
+<span class="sig-name descname"><span class="pre">model_config</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClassVar</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://pydantic.dev/docs/validation/latest/api/pydantic/config/#pydantic.config.ConfigDict" title="(in Pydantic v0.0.0)"><span class="pre">pydantic.config.ConfigDict</span></a><span class="p"><span class="pre">]</span></span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{'arbitrary_types_allowed':</span> <span class="pre">True,</span> <span class="pre">'from_attributes':</span> <span class="pre">True,</span> <span class="pre">'str_max_length':</span> <span class="pre">255,</span> <span class="pre">'str_min_length':</span> <span class="pre">1,</span> <span class="pre">'str_strip_whitespace':</span> <span class="pre">True}</span></span><a class="reference external" href="https://github.com/DanneDevOoops/fastApi/blob/main/src/db/schemas/v1_schemas/user_schemas.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#db.schemas.v1_schemas.user_schemas.UserSimple.model_config" title="Link to this definition"></a></dt>
+<dd><p>Configuration for the model, should be a dictionary conforming to [<cite>ConfigDict</cite>][pydantic.config.ConfigDict].</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="db.schemas.v1_schemas.user_schemas.UserOutput">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">db.schemas.v1_schemas.user_schemas.</span></span><span class="sig-name descname"><span class="pre">UserOutput</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">data</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/DanneDevOoops/fastApi/blob/main/src/db/schemas/v1_schemas/user_schemas.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="reference internal" href="../../_modules/db/schemas/v1_schemas/user_schemas.html#UserOutput"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#db.schemas.v1_schemas.user_schemas.UserOutput" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#db.schemas.v1_schemas.user_schemas.UserCreate" title="db.schemas.v1_schemas.user_schemas.UserCreate"><code class="xref py py-class docutils literal notranslate"><span class="pre">db.schemas.v1_schemas.user_schemas.UserCreate</span></code></a></p>
+<p>Schema for retrieving a User instance.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>data</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.14)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Any</span></code></a></span>)</p></li>
+<li><p><strong>id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a>)</p></li>
+<li><p><strong>username</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a>)</p></li>
+<li><p><strong>email</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a><em> | </em><em>None</em>)</p></li>
+<li><p><strong>password</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a><em> | </em><em>None</em>)</p></li>
+<li><p><strong>first_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a><em> | </em><em>None</em>)</p></li>
+<li><p><strong>last_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a><em> | </em><em>None</em>)</p></li>
+<li><p><strong>phone_number</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a><em> | </em><em>None</em>)</p></li>
+<li><p><strong>address</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a><em> | </em><em>None</em>)</p></li>
+<li><p><strong>city</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a><em> | </em><em>None</em>)</p></li>
+<li><p><strong>state</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a><em> | </em><em>None</em>)</p></li>
+<li><p><strong>country</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a><em> | </em><em>None</em>)</p></li>
+<li><p><strong>zip_code</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a><em> | </em><em>None</em>)</p></li>
+<li><p><strong>is_active</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><em>bool</em></a><em> | </em><em>None</em>)</p></li>
+<li><p><strong>is_superuser</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><em>bool</em></a><em> | </em><em>None</em>)</p></li>
+<li><p><strong>created_at</strong> (<a class="reference external" href="https://docs.python.org/3/library/datetime.html#datetime.datetime" title="(in Python v3.14)"><em>datetime.datetime</em></a><em> | </em><em>None</em>)</p></li>
+<li><p><strong>updated_at</strong> (<a class="reference external" href="https://docs.python.org/3/library/datetime.html#datetime.datetime" title="(in Python v3.14)"><em>datetime.datetime</em></a><em> | </em><em>None</em>)</p></li>
+<li><p><strong>deleted_at</strong> (<a class="reference external" href="https://docs.python.org/3/library/datetime.html#datetime.datetime" title="(in Python v3.14)"><em>datetime.datetime</em></a><em> | </em><em>None</em>)</p></li>
+</ul>
+</dd>
+</dl>
+<p>Create a new model by parsing and validating input data from keyword arguments.</p>
+<p>Raises [<cite>ValidationError</cite>][pydantic_core.ValidationError] if the input data cannot be
+validated to form a valid model.</p>
+<p><cite>self</cite> is explicitly positional-only to allow <cite>self</cite> as a field name.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>data</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.14)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Any</span></code></a></span>)</p></li>
+<li><p><strong>id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a>)</p></li>
+<li><p><strong>username</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a>)</p></li>
+<li><p><strong>email</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a><em> | </em><em>None</em>)</p></li>
+<li><p><strong>password</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a><em> | </em><em>None</em>)</p></li>
+<li><p><strong>first_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a><em> | </em><em>None</em>)</p></li>
+<li><p><strong>last_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a><em> | </em><em>None</em>)</p></li>
+<li><p><strong>phone_number</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a><em> | </em><em>None</em>)</p></li>
+<li><p><strong>address</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a><em> | </em><em>None</em>)</p></li>
+<li><p><strong>city</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a><em> | </em><em>None</em>)</p></li>
+<li><p><strong>state</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a><em> | </em><em>None</em>)</p></li>
+<li><p><strong>country</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a><em> | </em><em>None</em>)</p></li>
+<li><p><strong>zip_code</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a><em> | </em><em>None</em>)</p></li>
+<li><p><strong>is_active</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><em>bool</em></a><em> | </em><em>None</em>)</p></li>
+<li><p><strong>is_superuser</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><em>bool</em></a><em> | </em><em>None</em>)</p></li>
+<li><p><strong>created_at</strong> (<a class="reference external" href="https://docs.python.org/3/library/datetime.html#datetime.datetime" title="(in Python v3.14)"><em>datetime.datetime</em></a><em> | </em><em>None</em>)</p></li>
+<li><p><strong>updated_at</strong> (<a class="reference external" href="https://docs.python.org/3/library/datetime.html#datetime.datetime" title="(in Python v3.14)"><em>datetime.datetime</em></a><em> | </em><em>None</em>)</p></li>
+<li><p><strong>deleted_at</strong> (<a class="reference external" href="https://docs.python.org/3/library/datetime.html#datetime.datetime" title="(in Python v3.14)"><em>datetime.datetime</em></a><em> | </em><em>None</em>)</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="db.schemas.v1_schemas.user_schemas.UserOutput.id">
+<span class="sig-name descname"><span class="pre">id</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></span><a class="reference external" href="https://github.com/DanneDevOoops/fastApi/blob/main/src/db/schemas/v1_schemas/user_schemas.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#db.schemas.v1_schemas.user_schemas.UserOutput.id" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="db.schemas.v1_schemas.user_schemas.UserOutput.username">
+<span class="sig-name descname"><span class="pre">username</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></span><a class="reference external" href="https://github.com/DanneDevOoops/fastApi/blob/main/src/db/schemas/v1_schemas/user_schemas.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#db.schemas.v1_schemas.user_schemas.UserOutput.username" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="db.schemas.v1_schemas.user_schemas.UserOutput.email">
+<span class="sig-name descname"><span class="pre">email</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></span><a class="reference external" href="https://github.com/DanneDevOoops/fastApi/blob/main/src/db/schemas/v1_schemas/user_schemas.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#db.schemas.v1_schemas.user_schemas.UserOutput.email" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="db.schemas.v1_schemas.user_schemas.UserOutput.password">
+<span class="sig-name descname"><span class="pre">password</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></span><a class="reference external" href="https://github.com/DanneDevOoops/fastApi/blob/main/src/db/schemas/v1_schemas/user_schemas.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#db.schemas.v1_schemas.user_schemas.UserOutput.password" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="db.schemas.v1_schemas.user_schemas.UserOutput.first_name">
+<span class="sig-name descname"><span class="pre">first_name</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></span><a class="reference external" href="https://github.com/DanneDevOoops/fastApi/blob/main/src/db/schemas/v1_schemas/user_schemas.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#db.schemas.v1_schemas.user_schemas.UserOutput.first_name" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="db.schemas.v1_schemas.user_schemas.UserOutput.last_name">
+<span class="sig-name descname"><span class="pre">last_name</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></span><a class="reference external" href="https://github.com/DanneDevOoops/fastApi/blob/main/src/db/schemas/v1_schemas/user_schemas.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#db.schemas.v1_schemas.user_schemas.UserOutput.last_name" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="db.schemas.v1_schemas.user_schemas.UserOutput.phone_number">
+<span class="sig-name descname"><span class="pre">phone_number</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></span><a class="reference external" href="https://github.com/DanneDevOoops/fastApi/blob/main/src/db/schemas/v1_schemas/user_schemas.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#db.schemas.v1_schemas.user_schemas.UserOutput.phone_number" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="db.schemas.v1_schemas.user_schemas.UserOutput.address">
+<span class="sig-name descname"><span class="pre">address</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></span><a class="reference external" href="https://github.com/DanneDevOoops/fastApi/blob/main/src/db/schemas/v1_schemas/user_schemas.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#db.schemas.v1_schemas.user_schemas.UserOutput.address" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="db.schemas.v1_schemas.user_schemas.UserOutput.city">
+<span class="sig-name descname"><span class="pre">city</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></span><a class="reference external" href="https://github.com/DanneDevOoops/fastApi/blob/main/src/db/schemas/v1_schemas/user_schemas.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#db.schemas.v1_schemas.user_schemas.UserOutput.city" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="db.schemas.v1_schemas.user_schemas.UserOutput.state">
+<span class="sig-name descname"><span class="pre">state</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></span><a class="reference external" href="https://github.com/DanneDevOoops/fastApi/blob/main/src/db/schemas/v1_schemas/user_schemas.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#db.schemas.v1_schemas.user_schemas.UserOutput.state" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="db.schemas.v1_schemas.user_schemas.UserOutput.country">
+<span class="sig-name descname"><span class="pre">country</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></span><a class="reference external" href="https://github.com/DanneDevOoops/fastApi/blob/main/src/db/schemas/v1_schemas/user_schemas.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#db.schemas.v1_schemas.user_schemas.UserOutput.country" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="db.schemas.v1_schemas.user_schemas.UserOutput.zip_code">
+<span class="sig-name descname"><span class="pre">zip_code</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></span><a class="reference external" href="https://github.com/DanneDevOoops/fastApi/blob/main/src/db/schemas/v1_schemas/user_schemas.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#db.schemas.v1_schemas.user_schemas.UserOutput.zip_code" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="db.schemas.v1_schemas.user_schemas.UserOutput.is_active">
+<span class="sig-name descname"><span class="pre">is_active</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><span class="pre">bool</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></span><a class="reference external" href="https://github.com/DanneDevOoops/fastApi/blob/main/src/db/schemas/v1_schemas/user_schemas.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#db.schemas.v1_schemas.user_schemas.UserOutput.is_active" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="db.schemas.v1_schemas.user_schemas.UserOutput.is_superuser">
+<span class="sig-name descname"><span class="pre">is_superuser</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><span class="pre">bool</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></span><a class="reference external" href="https://github.com/DanneDevOoops/fastApi/blob/main/src/db/schemas/v1_schemas/user_schemas.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#db.schemas.v1_schemas.user_schemas.UserOutput.is_superuser" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="db.schemas.v1_schemas.user_schemas.UserOutput.created_at">
+<span class="sig-name descname"><span class="pre">created_at</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/datetime.html#datetime.datetime" title="(in Python v3.14)"><span class="pre">datetime.datetime</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></span><a class="reference external" href="https://github.com/DanneDevOoops/fastApi/blob/main/src/db/schemas/v1_schemas/user_schemas.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#db.schemas.v1_schemas.user_schemas.UserOutput.created_at" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="db.schemas.v1_schemas.user_schemas.UserOutput.updated_at">
+<span class="sig-name descname"><span class="pre">updated_at</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/datetime.html#datetime.datetime" title="(in Python v3.14)"><span class="pre">datetime.datetime</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></span><a class="reference external" href="https://github.com/DanneDevOoops/fastApi/blob/main/src/db/schemas/v1_schemas/user_schemas.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#db.schemas.v1_schemas.user_schemas.UserOutput.updated_at" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="db.schemas.v1_schemas.user_schemas.UserOutput.deleted_at">
+<span class="sig-name descname"><span class="pre">deleted_at</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/datetime.html#datetime.datetime" title="(in Python v3.14)"><span class="pre">datetime.datetime</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></span><a class="reference external" href="https://github.com/DanneDevOoops/fastApi/blob/main/src/db/schemas/v1_schemas/user_schemas.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#db.schemas.v1_schemas.user_schemas.UserOutput.deleted_at" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="db.schemas.v1_schemas.user_schemas.UserOutput.__str__">
+<span class="sig-name descname"><span class="pre">__str__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference external" href="https://github.com/DanneDevOoops/fastApi/blob/main/src/db/schemas/v1_schemas/user_schemas.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="reference internal" href="../../_modules/db/schemas/v1_schemas/user_schemas.html#UserOutput.__str__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#db.schemas.v1_schemas.user_schemas.UserOutput.__str__" title="Link to this definition"></a></dt>
+<dd><p>Returns a string representation of the UserOutput instance.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="db.schemas.v1_schemas.user_schemas.UserOutput.__eq__">
+<span class="sig-name descname"><span class="pre">__eq__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">other</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/DanneDevOoops/fastApi/blob/main/src/db/schemas/v1_schemas/user_schemas.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="reference internal" href="../../_modules/db/schemas/v1_schemas/user_schemas.html#UserOutput.__eq__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#db.schemas.v1_schemas.user_schemas.UserOutput.__eq__" title="Link to this definition"></a></dt>
+<dd><p>Compares two UserOutput instances for equality.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></a></span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="db.schemas.v1_schemas.user_schemas.UserOutput.__ne__">
+<span class="sig-name descname"><span class="pre">__ne__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">other</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/DanneDevOoops/fastApi/blob/main/src/db/schemas/v1_schemas/user_schemas.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="reference internal" href="../../_modules/db/schemas/v1_schemas/user_schemas.html#UserOutput.__ne__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#db.schemas.v1_schemas.user_schemas.UserOutput.__ne__" title="Link to this definition"></a></dt>
+<dd><p>Compares two UserOutput instances for inequality.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></a></span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="db.schemas.v1_schemas.user_schemas.UserOutput.__getattr__">
+<span class="sig-name descname"><span class="pre">__getattr__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">item</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/DanneDevOoops/fastApi/blob/main/src/db/schemas/v1_schemas/user_schemas.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="reference internal" href="../../_modules/db/schemas/v1_schemas/user_schemas.html#UserOutput.__getattr__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#db.schemas.v1_schemas.user_schemas.UserOutput.__getattr__" title="Link to this definition"></a></dt>
+<dd><p>Returns the value of the attribute with the given name.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="db.schemas.v1_schemas.user_schemas.UserOutput.as_named_tuple">
+<span class="sig-name descname"><span class="pre">as_named_tuple</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference external" href="https://github.com/DanneDevOoops/fastApi/blob/main/src/db/schemas/v1_schemas/user_schemas.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="reference internal" href="../../_modules/db/schemas/v1_schemas/user_schemas.html#UserOutput.as_named_tuple"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#db.schemas.v1_schemas.user_schemas.UserOutput.as_named_tuple" title="Link to this definition"></a></dt>
+<dd><p>Returns a namedtuple representation of the UserOutput instance.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">namedtuple</span></code></span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="db.schemas.v1_schemas.user_schemas.UserOutput.model_config">
+<span class="sig-name descname"><span class="pre">model_config</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClassVar</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://pydantic.dev/docs/validation/latest/api/pydantic/config/#pydantic.config.ConfigDict" title="(in Pydantic v0.0.0)"><span class="pre">pydantic.config.ConfigDict</span></a><span class="p"><span class="pre">]</span></span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{'arbitrary_types_allowed':</span> <span class="pre">True,</span> <span class="pre">'from_attributes':</span> <span class="pre">True,</span> <span class="pre">'str_max_length':</span> <span class="pre">255,</span> <span class="pre">'str_min_length':</span> <span class="pre">1,</span> <span class="pre">'str_strip_whitespace':</span> <span class="pre">True}</span></span><a class="reference external" href="https://github.com/DanneDevOoops/fastApi/blob/main/src/db/schemas/v1_schemas/user_schemas.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#db.schemas.v1_schemas.user_schemas.UserOutput.model_config" title="Link to this definition"></a></dt>
+<dd><p>Configuration for the model, should be a dictionary conforming to [<cite>ConfigDict</cite>][pydantic.config.ConfigDict].</p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-db.schemas.v1_schemas">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-db.schemas.v1_schemas" title="Link to this heading"></a></h2>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="db.schemas.html" class="btn btn-neutral float-left" title="db.schemas package" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="db.serializers.html" class="btn btn-neutral float-right" title="db.serializers package" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, Daniel Andersson &lt;d.andersson86@icloud.com&gt;.
+      <span class="lastupdated">Last updated on 2026-06-02.
+      </span></p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -1,0 +1,611 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>api.v1_routes.application_routes &mdash; FastAPI Application 0.0.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=9edc463e" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css?v=4ae1632d" />
+
+  
+    <link rel="canonical" href="https://github.com/DanneDevOoops/fastApi/_modules/api/v1_routes/application_routes.html" />
+      <script src="../../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../../_static/documentation_options.js?v=7026087e"></script>
+      <script src="../../../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../../../_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../index.html" class="icon icon-home">
+            FastAPI Application
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../rst/api/modules.html">api</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../rst/core/modules.html">core</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../rst/db/modules.html">db</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../rst/middlewares/modules.html">middlewares</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../rst/utils/modules.html">utils</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Documents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../coverage.html">docs coverage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../readme.html">project readme</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../docstrings.html">write docstrings</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">FastAPI Application</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content style-external-links">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">api.v1_routes.application_routes</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for api.v1_routes.application_routes</h1><div class="highlight"><pre>
+<span></span><span class="ch">#!/usr/bin/env python3</span>
+<span class="c1"># -*- coding: utf-8 -*-</span>
+
+
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Defines the Application API routes for the FastAPI v1 application.</span>
+
+<span class="sd">This module provides endpoints for managing applications/services registered</span>
+<span class="sd">in the PostgreSQL database, including creation, retrieval, updating, and</span>
+<span class="sd">soft/hard deletion of application records.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">logging</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">datetime</span><span class="w"> </span><span class="kn">import</span> <span class="n">datetime</span><span class="p">,</span> <span class="n">timezone</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">fastapi</span><span class="w"> </span><span class="kn">import</span> <span class="n">APIRouter</span><span class="p">,</span> <span class="n">Depends</span><span class="p">,</span> <span class="n">HTTPException</span><span class="p">,</span> <span class="n">status</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">fastapi.responses</span><span class="w"> </span><span class="kn">import</span> <span class="n">Response</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sqlalchemy</span><span class="w"> </span><span class="kn">import</span> <span class="n">select</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sqlalchemy.exc</span><span class="w"> </span><span class="kn">import</span> <span class="n">IntegrityError</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sqlalchemy.ext.asyncio</span><span class="w"> </span><span class="kn">import</span> <span class="n">AsyncSession</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">src.core.auth</span><span class="w"> </span><span class="kn">import</span> <span class="n">build_application_api_credentials</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">src.core.custom_exceptions</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
+    <span class="n">ConflictException</span><span class="p">,</span>
+    <span class="n">InternalServerException</span><span class="p">,</span>
+    <span class="n">NotFoundException</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">src.core.env_config</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_settings</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">src.core.responses</span><span class="w"> </span><span class="kn">import</span> <span class="n">AppJSONResponse</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">src.db.connectors.postgres_db</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_pg_db</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">src.db.models.v1_models.applications_model_v1</span><span class="w"> </span><span class="kn">import</span> <span class="n">Application</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">src.db.schemas.v1_schemas.application_schemas</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
+    <span class="n">ApplicationCreate</span><span class="p">,</span>
+    <span class="n">ApplicationOutput</span><span class="p">,</span>
+    <span class="n">ApplicationUpdate</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="c1"># Initialize the API router</span>
+<span class="n">router</span> <span class="o">=</span> <span class="n">APIRouter</span><span class="p">()</span>
+
+<span class="c1"># Initialize environment settings &amp; logger</span>
+<span class="n">settings</span> <span class="o">=</span> <span class="n">get_settings</span><span class="p">()</span>
+<span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="n">settings</span><span class="o">.</span><span class="n">app_logger_name</span> <span class="ow">or</span> <span class="s2">&quot;application_logger&quot;</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="application_routes_options">
+<a class="viewcode-back" href="../../../rst/api/api.v1_routes.html#api.v1_routes.application_routes.application_routes_options">[docs]</a>
+<span class="nd">@router</span><span class="o">.</span><span class="n">options</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">operation_id</span><span class="o">=</span><span class="s2">&quot;options_application_routes_v1&quot;</span><span class="p">)</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">application_routes_options</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">Response</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Handle OPTIONS requests for the application routes.</span>
+<span class="sd">    This is used to support CORS preflight requests.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">Response</span><span class="p">(</span>
+        <span class="n">status_code</span><span class="o">=</span><span class="n">status</span><span class="o">.</span><span class="n">HTTP_204_NO_CONTENT</span><span class="p">,</span>
+        <span class="n">headers</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;Allow&quot;</span><span class="p">:</span> <span class="s2">&quot;GET, POST, PUT, PATCH, DELETE&quot;</span><span class="p">},</span>
+    <span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="get_all_applications">
+<a class="viewcode-back" href="../../../rst/api/api.v1_routes.html#api.v1_routes.application_routes.get_all_applications">[docs]</a>
+<span class="nd">@router</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
+    <span class="s2">&quot;&quot;</span><span class="p">,</span>
+    <span class="n">name</span><span class="o">=</span><span class="s2">&quot;get_all_applications_route_v1&quot;</span><span class="p">,</span>
+    <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Route to request all registered applications/&quot;</span>
+    <span class="s2">&quot;services from the PostgreSQL database.&quot;</span><span class="p">,</span>
+    <span class="n">operation_id</span><span class="o">=</span><span class="s2">&quot;get_all_applications_route_v1&quot;</span><span class="p">,</span>
+    <span class="n">response_class</span><span class="o">=</span><span class="n">AppJSONResponse</span><span class="p">,</span>
+    <span class="n">status_code</span><span class="o">=</span><span class="n">status</span><span class="o">.</span><span class="n">HTTP_200_OK</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">get_all_applications</span><span class="p">(</span>
+    <span class="n">db</span><span class="p">:</span> <span class="n">AsyncSession</span> <span class="o">=</span> <span class="n">Depends</span><span class="p">(</span><span class="n">get_pg_db</span><span class="p">),</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">AppJSONResponse</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Get all registered applications/services that are not soft-deleted.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Getting all registered applications/services...&quot;</span><span class="p">)</span>
+        <span class="n">stmt</span> <span class="o">=</span> <span class="n">select</span><span class="p">(</span><span class="n">Application</span><span class="p">)</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">Application</span><span class="o">.</span><span class="n">deleted_at</span><span class="o">.</span><span class="n">is_</span><span class="p">(</span><span class="kc">None</span><span class="p">))</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="k">await</span> <span class="n">db</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">stmt</span><span class="p">)</span>
+        <span class="n">applications</span> <span class="o">=</span> <span class="n">result</span><span class="o">.</span><span class="n">scalars</span><span class="p">()</span><span class="o">.</span><span class="n">all</span><span class="p">()</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">applications</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">NotFoundException</span><span class="p">(</span><span class="n">message</span><span class="o">=</span><span class="s2">&quot;No applications found&quot;</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">AppJSONResponse</span><span class="p">(</span>
+            <span class="n">content</span><span class="o">=</span><span class="p">[</span>
+                <span class="n">ApplicationOutput</span><span class="o">.</span><span class="n">model_validate</span><span class="p">(</span><span class="n">app</span><span class="p">)</span><span class="o">.</span><span class="n">model_dump</span><span class="p">(</span><span class="n">exclude_none</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+                <span class="k">for</span> <span class="n">app</span> <span class="ow">in</span> <span class="n">applications</span>
+            <span class="p">],</span>
+            <span class="n">status_code</span><span class="o">=</span><span class="n">status</span><span class="o">.</span><span class="n">HTTP_200_OK</span><span class="p">,</span>
+        <span class="p">)</span>
+    <span class="k">except</span> <span class="n">NotFoundException</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="n">HTTPException</span><span class="p">(</span><span class="n">status_code</span><span class="o">=</span><span class="n">status</span><span class="o">.</span><span class="n">HTTP_404_NOT_FOUND</span><span class="p">,</span> <span class="n">detail</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">))</span> <span class="kn">from</span><span class="w"> </span><span class="nn">e</span>
+    <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;Unexpected error occurred: </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">e</span><span class="p">,</span> <span class="n">exc_info</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="n">HTTPException</span><span class="p">(</span>
+            <span class="n">status_code</span><span class="o">=</span><span class="n">status</span><span class="o">.</span><span class="n">HTTP_500_INTERNAL_SERVER_ERROR</span><span class="p">,</span>
+            <span class="n">detail</span><span class="o">=</span><span class="s2">&quot;Internal Server Error&quot;</span><span class="p">,</span>
+        <span class="p">)</span> <span class="kn">from</span><span class="w"> </span><span class="nn">e</span></div>
+
+
+
+<div class="viewcode-block" id="get_all_soft_deleted_applications">
+<a class="viewcode-back" href="../../../rst/api/api.v1_routes.html#api.v1_routes.application_routes.get_all_soft_deleted_applications">[docs]</a>
+<span class="nd">@router</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
+    <span class="s2">&quot;/deleted&quot;</span><span class="p">,</span>
+    <span class="n">name</span><span class="o">=</span><span class="s2">&quot;get_all_soft_deleted_applications_route_v1&quot;</span><span class="p">,</span>
+    <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Route to request all soft-deleted applications/&quot;</span>
+    <span class="s2">&quot;services from the PostgreSQL database.&quot;</span><span class="p">,</span>
+    <span class="n">operation_id</span><span class="o">=</span><span class="s2">&quot;get_all_deleted_applications_route_v1&quot;</span><span class="p">,</span>
+    <span class="n">response_class</span><span class="o">=</span><span class="n">AppJSONResponse</span><span class="p">,</span>
+    <span class="n">status_code</span><span class="o">=</span><span class="n">status</span><span class="o">.</span><span class="n">HTTP_200_OK</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">get_all_soft_deleted_applications</span><span class="p">(</span>
+    <span class="n">db</span><span class="p">:</span> <span class="n">AsyncSession</span> <span class="o">=</span> <span class="n">Depends</span><span class="p">(</span><span class="n">get_pg_db</span><span class="p">),</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">AppJSONResponse</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Get all soft-deleted applications/services.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Getting all soft-deleted applications/services...&quot;</span><span class="p">)</span>
+        <span class="n">stmt</span> <span class="o">=</span> <span class="n">select</span><span class="p">(</span><span class="n">Application</span><span class="p">)</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">Application</span><span class="o">.</span><span class="n">deleted_at</span><span class="o">.</span><span class="n">is_not</span><span class="p">(</span><span class="kc">None</span><span class="p">))</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="k">await</span> <span class="n">db</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">stmt</span><span class="p">)</span>
+        <span class="n">applications</span> <span class="o">=</span> <span class="n">result</span><span class="o">.</span><span class="n">scalars</span><span class="p">()</span><span class="o">.</span><span class="n">all</span><span class="p">()</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">applications</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">NotFoundException</span><span class="p">(</span><span class="n">message</span><span class="o">=</span><span class="s2">&quot;No deleted applications found&quot;</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">AppJSONResponse</span><span class="p">(</span>
+            <span class="n">content</span><span class="o">=</span><span class="p">[</span>
+                <span class="n">ApplicationOutput</span><span class="o">.</span><span class="n">model_validate</span><span class="p">(</span><span class="n">app</span><span class="p">)</span><span class="o">.</span><span class="n">model_dump</span><span class="p">(</span><span class="n">exclude_none</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+                <span class="k">for</span> <span class="n">app</span> <span class="ow">in</span> <span class="n">applications</span>
+            <span class="p">],</span>
+            <span class="n">status_code</span><span class="o">=</span><span class="n">status</span><span class="o">.</span><span class="n">HTTP_200_OK</span><span class="p">,</span>
+        <span class="p">)</span>
+    <span class="k">except</span> <span class="n">NotFoundException</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="n">HTTPException</span><span class="p">(</span><span class="n">status_code</span><span class="o">=</span><span class="n">status</span><span class="o">.</span><span class="n">HTTP_404_NOT_FOUND</span><span class="p">,</span> <span class="n">detail</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">))</span> <span class="kn">from</span><span class="w"> </span><span class="nn">e</span>
+    <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;Unexpected error occurred: </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">e</span><span class="p">,</span> <span class="n">exc_info</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="n">HTTPException</span><span class="p">(</span>
+            <span class="n">status_code</span><span class="o">=</span><span class="n">status</span><span class="o">.</span><span class="n">HTTP_500_INTERNAL_SERVER_ERROR</span><span class="p">,</span>
+            <span class="n">detail</span><span class="o">=</span><span class="s2">&quot;Internal Server Error&quot;</span><span class="p">,</span>
+        <span class="p">)</span> <span class="kn">from</span><span class="w"> </span><span class="nn">e</span></div>
+
+
+
+<div class="viewcode-block" id="get_application_by_id">
+<a class="viewcode-back" href="../../../rst/api/api.v1_routes.html#api.v1_routes.application_routes.get_application_by_id">[docs]</a>
+<span class="nd">@router</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
+    <span class="s2">&quot;/</span><span class="si">{app_id}</span><span class="s2">&quot;</span><span class="p">,</span>
+    <span class="n">name</span><span class="o">=</span><span class="s2">&quot;get_application_by_id_route_v1&quot;</span><span class="p">,</span>
+    <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Route to request a specific application/service by &quot;</span>
+    <span class="s2">&quot;its ID from the PostgreSQL database.&quot;</span><span class="p">,</span>
+    <span class="n">operation_id</span><span class="o">=</span><span class="s2">&quot;get_application_by_id_route_v1&quot;</span><span class="p">,</span>
+    <span class="n">response_class</span><span class="o">=</span><span class="n">AppJSONResponse</span><span class="p">,</span>
+    <span class="n">status_code</span><span class="o">=</span><span class="n">status</span><span class="o">.</span><span class="n">HTTP_200_OK</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">get_application_by_id</span><span class="p">(</span>
+    <span class="n">app_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">db</span><span class="p">:</span> <span class="n">AsyncSession</span> <span class="o">=</span> <span class="n">Depends</span><span class="p">(</span><span class="n">get_pg_db</span><span class="p">)</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">AppJSONResponse</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Get a specific application/service by its ID.</span>
+
+<span class="sd">    :param app_id: The ID of the application/service to retrieve.</span>
+<span class="sd">    :param db: The database session.</span>
+<span class="sd">    :return: AppJSONResponse containing the application/service data.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Getting application/service with ID </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">app_id</span><span class="p">)</span>
+        <span class="n">stmt</span> <span class="o">=</span> <span class="n">select</span><span class="p">(</span><span class="n">Application</span><span class="p">)</span><span class="o">.</span><span class="n">where</span><span class="p">(</span>
+            <span class="n">Application</span><span class="o">.</span><span class="n">id</span> <span class="o">==</span> <span class="n">app_id</span><span class="p">,</span> <span class="n">Application</span><span class="o">.</span><span class="n">deleted_at</span><span class="o">.</span><span class="n">is_</span><span class="p">(</span><span class="kc">None</span><span class="p">)</span>
+        <span class="p">)</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="k">await</span> <span class="n">db</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">stmt</span><span class="p">)</span>
+        <span class="n">app</span> <span class="o">=</span> <span class="n">result</span><span class="o">.</span><span class="n">scalar_one_or_none</span><span class="p">()</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">app</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s2">&quot;Application with ID </span><span class="si">%s</span><span class="s2"> not found.&quot;</span><span class="p">,</span> <span class="n">app_id</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="n">NotFoundException</span><span class="p">(</span><span class="n">message</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;Application (</span><span class="si">{</span><span class="n">app_id</span><span class="si">}</span><span class="s2">) not found&quot;</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">AppJSONResponse</span><span class="p">(</span>
+            <span class="n">content</span><span class="o">=</span><span class="n">ApplicationOutput</span><span class="o">.</span><span class="n">model_validate</span><span class="p">(</span><span class="n">app</span><span class="p">)</span><span class="o">.</span><span class="n">model_dump</span><span class="p">(</span><span class="n">exclude_none</span><span class="o">=</span><span class="kc">True</span><span class="p">),</span>
+            <span class="n">status_code</span><span class="o">=</span><span class="n">status</span><span class="o">.</span><span class="n">HTTP_200_OK</span><span class="p">,</span>
+        <span class="p">)</span>
+    <span class="k">except</span> <span class="n">NotFoundException</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="n">HTTPException</span><span class="p">(</span><span class="n">status_code</span><span class="o">=</span><span class="n">status</span><span class="o">.</span><span class="n">HTTP_404_NOT_FOUND</span><span class="p">,</span> <span class="n">detail</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">))</span> <span class="kn">from</span><span class="w"> </span><span class="nn">e</span>
+    <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;Unexpected error occurred: </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">e</span><span class="p">,</span> <span class="n">exc_info</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="n">HTTPException</span><span class="p">(</span>
+            <span class="n">status_code</span><span class="o">=</span><span class="n">status</span><span class="o">.</span><span class="n">HTTP_500_INTERNAL_SERVER_ERROR</span><span class="p">,</span>
+            <span class="n">detail</span><span class="o">=</span><span class="s2">&quot;Internal Server Error&quot;</span><span class="p">,</span>
+        <span class="p">)</span> <span class="kn">from</span><span class="w"> </span><span class="nn">e</span></div>
+
+
+
+<div class="viewcode-block" id="create_application">
+<a class="viewcode-back" href="../../../rst/api/api.v1_routes.html#api.v1_routes.application_routes.create_application">[docs]</a>
+<span class="nd">@router</span><span class="o">.</span><span class="n">post</span><span class="p">(</span>
+    <span class="s2">&quot;&quot;</span><span class="p">,</span>
+    <span class="n">name</span><span class="o">=</span><span class="s2">&quot;create_application_route_v1&quot;</span><span class="p">,</span>
+    <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Route to create a new application/service in the &quot;</span>
+    <span class="s2">&quot;PostgreSQL database.&quot;</span><span class="p">,</span>
+    <span class="n">operation_id</span><span class="o">=</span><span class="s2">&quot;create_application_route_v1&quot;</span><span class="p">,</span>
+    <span class="n">response_class</span><span class="o">=</span><span class="n">AppJSONResponse</span><span class="p">,</span>
+    <span class="n">status_code</span><span class="o">=</span><span class="n">status</span><span class="o">.</span><span class="n">HTTP_201_CREATED</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">create_application</span><span class="p">(</span>
+    <span class="n">app_data</span><span class="p">:</span> <span class="n">ApplicationCreate</span><span class="p">,</span> <span class="n">db</span><span class="p">:</span> <span class="n">AsyncSession</span> <span class="o">=</span> <span class="n">Depends</span><span class="p">(</span><span class="n">get_pg_db</span><span class="p">)</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">AppJSONResponse</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Create a new application/service in PostgreSQL.</span>
+
+<span class="sd">    :param app_data: The application/service data to create.</span>
+<span class="sd">    :param db: The database session.</span>
+<span class="sd">    :return: AppJSONResponse containing the created application/service data.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Creating a new application/service...&quot;</span><span class="p">)</span>
+        <span class="n">app_identifier</span> <span class="o">=</span> <span class="n">app_data</span><span class="o">.</span><span class="n">id</span> <span class="ow">or</span> <span class="s2">&quot;&quot;</span>
+
+        <span class="c1"># Generate JWT token and hash it for the API key</span>
+        <span class="n">jwt_token</span><span class="p">,</span> <span class="n">hashed_api_key</span> <span class="o">=</span> <span class="n">build_application_api_credentials</span><span class="p">(</span>
+            <span class="n">app_name</span><span class="o">=</span><span class="n">app_data</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
+            <span class="n">app_id</span><span class="o">=</span><span class="n">app_identifier</span><span class="p">,</span>
+        <span class="p">)</span>
+
+        <span class="c1"># Create the application record</span>
+        <span class="n">new_app</span> <span class="o">=</span> <span class="n">Application</span><span class="p">(</span>
+            <span class="nb">id</span><span class="o">=</span><span class="n">app_identifier</span><span class="p">,</span>
+            <span class="n">name</span><span class="o">=</span><span class="n">app_data</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
+            <span class="n">description</span><span class="o">=</span><span class="n">app_data</span><span class="o">.</span><span class="n">description</span><span class="p">,</span>
+            <span class="n">url</span><span class="o">=</span><span class="n">app_data</span><span class="o">.</span><span class="n">url</span><span class="p">,</span>
+            <span class="n">is_active</span><span class="o">=</span><span class="n">app_data</span><span class="o">.</span><span class="n">is_active</span><span class="p">,</span>
+            <span class="n">api_key</span><span class="o">=</span><span class="n">hashed_api_key</span><span class="p">,</span>
+            <span class="n">created_at</span><span class="o">=</span><span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">(</span><span class="n">timezone</span><span class="o">.</span><span class="n">utc</span><span class="p">),</span>
+            <span class="n">updated_at</span><span class="o">=</span><span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">(</span><span class="n">timezone</span><span class="o">.</span><span class="n">utc</span><span class="p">),</span>
+        <span class="p">)</span>
+
+        <span class="n">db</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">new_app</span><span class="p">)</span>
+        <span class="k">await</span> <span class="n">db</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
+        <span class="k">await</span> <span class="n">db</span><span class="o">.</span><span class="n">refresh</span><span class="p">(</span><span class="n">new_app</span><span class="p">)</span>
+
+        <span class="c1"># Prepare response with JWT token (only displayed once)</span>
+        <span class="n">response_data</span> <span class="o">=</span> <span class="n">ApplicationOutput</span><span class="o">.</span><span class="n">model_validate</span><span class="p">(</span><span class="n">new_app</span><span class="p">)</span><span class="o">.</span><span class="n">model_dump</span><span class="p">(</span>
+            <span class="n">exclude_none</span><span class="o">=</span><span class="kc">True</span>
+        <span class="p">)</span>
+        <span class="n">response_data</span><span class="p">[</span><span class="s2">&quot;jwt_token&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">jwt_token</span>
+
+        <span class="k">return</span> <span class="n">AppJSONResponse</span><span class="p">(</span>
+            <span class="n">content</span><span class="o">=</span><span class="n">response_data</span><span class="p">,</span> <span class="n">status_code</span><span class="o">=</span><span class="n">status</span><span class="o">.</span><span class="n">HTTP_201_CREATED</span>
+        <span class="p">)</span>
+    <span class="k">except</span> <span class="n">IntegrityError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+        <span class="k">await</span> <span class="n">db</span><span class="o">.</span><span class="n">rollback</span><span class="p">()</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;Application already exists: </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">e</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="n">ConflictException</span><span class="p">(</span>
+            <span class="n">message</span><span class="o">=</span><span class="s2">&quot;Application with given details already exists&quot;</span>
+        <span class="p">)</span> <span class="kn">from</span><span class="w"> </span><span class="nn">e</span>
+    <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+        <span class="k">await</span> <span class="n">db</span><span class="o">.</span><span class="n">rollback</span><span class="p">()</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;Unexpected error occurred: </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">e</span><span class="p">,</span> <span class="n">exc_info</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="n">InternalServerException</span><span class="p">(</span><span class="n">message</span><span class="o">=</span><span class="s2">&quot;Internal Server Error&quot;</span><span class="p">)</span> <span class="kn">from</span><span class="w"> </span><span class="nn">e</span></div>
+
+
+
+<div class="viewcode-block" id="soft_delete_application">
+<a class="viewcode-back" href="../../../rst/api/api.v1_routes.html#api.v1_routes.application_routes.soft_delete_application">[docs]</a>
+<span class="nd">@router</span><span class="o">.</span><span class="n">patch</span><span class="p">(</span>
+    <span class="s2">&quot;/delete/</span><span class="si">{app_id}</span><span class="s2">&quot;</span><span class="p">,</span>
+    <span class="n">name</span><span class="o">=</span><span class="s2">&quot;soft_delete_application_route_v1&quot;</span><span class="p">,</span>
+    <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Route to soft delete an existing application/&quot;</span>
+    <span class="s2">&quot;service from the PostgreSQL database.&quot;</span><span class="p">,</span>
+    <span class="n">operation_id</span><span class="o">=</span><span class="s2">&quot;soft_delete_application_route_v1&quot;</span><span class="p">,</span>
+    <span class="n">response_class</span><span class="o">=</span><span class="n">AppJSONResponse</span><span class="p">,</span>
+    <span class="n">status_code</span><span class="o">=</span><span class="n">status</span><span class="o">.</span><span class="n">HTTP_200_OK</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">soft_delete_application</span><span class="p">(</span>
+    <span class="n">app_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">db</span><span class="p">:</span> <span class="n">AsyncSession</span> <span class="o">=</span> <span class="n">Depends</span><span class="p">(</span><span class="n">get_pg_db</span><span class="p">)</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">AppJSONResponse</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Soft delete an existing application/service by its ID.</span>
+
+<span class="sd">    :param app_id: The ID of the application to delete.</span>
+<span class="sd">    :param db: The database session.</span>
+<span class="sd">    :return: AppJSONResponse with deletion confirmation.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Soft deleting application/service with ID </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">app_id</span><span class="p">)</span>
+        <span class="n">stmt</span> <span class="o">=</span> <span class="n">select</span><span class="p">(</span><span class="n">Application</span><span class="p">)</span><span class="o">.</span><span class="n">where</span><span class="p">(</span>
+            <span class="n">Application</span><span class="o">.</span><span class="n">id</span> <span class="o">==</span> <span class="n">app_id</span><span class="p">,</span> <span class="n">Application</span><span class="o">.</span><span class="n">deleted_at</span><span class="o">.</span><span class="n">is_</span><span class="p">(</span><span class="kc">None</span><span class="p">)</span>
+        <span class="p">)</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="k">await</span> <span class="n">db</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">stmt</span><span class="p">)</span>
+        <span class="n">app</span> <span class="o">=</span> <span class="n">result</span><span class="o">.</span><span class="n">scalar_one_or_none</span><span class="p">()</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">app</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s2">&quot;Application with ID </span><span class="si">%s</span><span class="s2"> not found.&quot;</span><span class="p">,</span> <span class="n">app_id</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="n">NotFoundException</span><span class="p">(</span><span class="n">message</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;Application (</span><span class="si">{</span><span class="n">app_id</span><span class="si">}</span><span class="s2">) not found&quot;</span><span class="p">)</span>
+
+        <span class="c1"># Soft delete by setting deleted_at timestamp</span>
+        <span class="n">app</span><span class="o">.</span><span class="n">deleted_at</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">(</span><span class="n">timezone</span><span class="o">.</span><span class="n">utc</span><span class="p">)</span>
+        <span class="k">await</span> <span class="n">db</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
+
+        <span class="k">return</span> <span class="n">AppJSONResponse</span><span class="p">(</span>
+            <span class="n">content</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;detail&quot;</span><span class="p">:</span> <span class="sa">f</span><span class="s2">&quot;Application </span><span class="si">{</span><span class="n">app_id</span><span class="si">}</span><span class="s2"> &quot;</span> <span class="s2">&quot;soft deleted successfully&quot;</span><span class="p">},</span>
+            <span class="n">status_code</span><span class="o">=</span><span class="n">status</span><span class="o">.</span><span class="n">HTTP_200_OK</span><span class="p">,</span>
+        <span class="p">)</span>
+    <span class="k">except</span> <span class="n">NotFoundException</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="n">HTTPException</span><span class="p">(</span><span class="n">status_code</span><span class="o">=</span><span class="n">status</span><span class="o">.</span><span class="n">HTTP_404_NOT_FOUND</span><span class="p">,</span> <span class="n">detail</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">))</span> <span class="kn">from</span><span class="w"> </span><span class="nn">e</span>
+    <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+        <span class="k">await</span> <span class="n">db</span><span class="o">.</span><span class="n">rollback</span><span class="p">()</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;Unexpected error occurred: </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">e</span><span class="p">,</span> <span class="n">exc_info</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="n">HTTPException</span><span class="p">(</span>
+            <span class="n">status_code</span><span class="o">=</span><span class="n">status</span><span class="o">.</span><span class="n">HTTP_500_INTERNAL_SERVER_ERROR</span><span class="p">,</span>
+            <span class="n">detail</span><span class="o">=</span><span class="s2">&quot;Internal Server Error&quot;</span><span class="p">,</span>
+        <span class="p">)</span> <span class="kn">from</span><span class="w"> </span><span class="nn">e</span></div>
+
+
+
+<div class="viewcode-block" id="patch_update_application">
+<a class="viewcode-back" href="../../../rst/api/api.v1_routes.html#api.v1_routes.application_routes.patch_update_application">[docs]</a>
+<span class="nd">@router</span><span class="o">.</span><span class="n">patch</span><span class="p">(</span>
+    <span class="s2">&quot;/</span><span class="si">{app_id}</span><span class="s2">&quot;</span><span class="p">,</span>
+    <span class="n">name</span><span class="o">=</span><span class="s2">&quot;update_application_route_v1&quot;</span><span class="p">,</span>
+    <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Route to update an existing application/service in &quot;</span>
+    <span class="s2">&quot;the PostgreSQL database.&quot;</span><span class="p">,</span>
+    <span class="n">operation_id</span><span class="o">=</span><span class="s2">&quot;update_application_route_v1&quot;</span><span class="p">,</span>
+    <span class="n">response_class</span><span class="o">=</span><span class="n">AppJSONResponse</span><span class="p">,</span>
+    <span class="n">status_code</span><span class="o">=</span><span class="n">status</span><span class="o">.</span><span class="n">HTTP_200_OK</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">patch_update_application</span><span class="p">(</span>
+    <span class="n">app_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">app_data</span><span class="p">:</span> <span class="n">ApplicationUpdate</span><span class="p">,</span> <span class="n">db</span><span class="p">:</span> <span class="n">AsyncSession</span> <span class="o">=</span> <span class="n">Depends</span><span class="p">(</span><span class="n">get_pg_db</span><span class="p">)</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">AppJSONResponse</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Partially update an existing application/service.</span>
+
+<span class="sd">    :param app_id: The ID of the application to update.</span>
+<span class="sd">    :param app_data: The fields to update.</span>
+<span class="sd">    :param db: The database session.</span>
+<span class="sd">    :return: AppJSONResponse containing the updated application data.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Updating application/service with ID </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">app_id</span><span class="p">)</span>
+
+        <span class="n">stmt</span> <span class="o">=</span> <span class="n">select</span><span class="p">(</span><span class="n">Application</span><span class="p">)</span><span class="o">.</span><span class="n">where</span><span class="p">(</span>
+            <span class="n">Application</span><span class="o">.</span><span class="n">id</span> <span class="o">==</span> <span class="n">app_id</span><span class="p">,</span> <span class="n">Application</span><span class="o">.</span><span class="n">deleted_at</span><span class="o">.</span><span class="n">is_</span><span class="p">(</span><span class="kc">None</span><span class="p">)</span>
+        <span class="p">)</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="k">await</span> <span class="n">db</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">stmt</span><span class="p">)</span>
+        <span class="n">app</span> <span class="o">=</span> <span class="n">result</span><span class="o">.</span><span class="n">scalar_one_or_none</span><span class="p">()</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">app</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s2">&quot;Application with ID </span><span class="si">%s</span><span class="s2"> not found.&quot;</span><span class="p">,</span> <span class="n">app_id</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="n">NotFoundException</span><span class="p">(</span><span class="n">message</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;Application (</span><span class="si">{</span><span class="n">app_id</span><span class="si">}</span><span class="s2">) not found&quot;</span><span class="p">)</span>
+
+        <span class="c1"># Update only provided fields</span>
+        <span class="n">update_data</span> <span class="o">=</span> <span class="n">app_data</span><span class="o">.</span><span class="n">model_dump</span><span class="p">(</span><span class="n">exclude_unset</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">update_data</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="k">if</span> <span class="n">value</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="nb">setattr</span><span class="p">(</span><span class="n">app</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
+
+        <span class="n">app</span><span class="o">.</span><span class="n">updated_at</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">(</span><span class="n">timezone</span><span class="o">.</span><span class="n">utc</span><span class="p">)</span>
+        <span class="k">await</span> <span class="n">db</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
+        <span class="k">await</span> <span class="n">db</span><span class="o">.</span><span class="n">refresh</span><span class="p">(</span><span class="n">app</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">AppJSONResponse</span><span class="p">(</span>
+            <span class="n">content</span><span class="o">=</span><span class="n">ApplicationOutput</span><span class="o">.</span><span class="n">model_validate</span><span class="p">(</span><span class="n">app</span><span class="p">)</span><span class="o">.</span><span class="n">model_dump</span><span class="p">(</span><span class="n">exclude_none</span><span class="o">=</span><span class="kc">True</span><span class="p">),</span>
+            <span class="n">status_code</span><span class="o">=</span><span class="n">status</span><span class="o">.</span><span class="n">HTTP_200_OK</span><span class="p">,</span>
+        <span class="p">)</span>
+    <span class="k">except</span> <span class="n">NotFoundException</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="n">HTTPException</span><span class="p">(</span><span class="n">status_code</span><span class="o">=</span><span class="n">status</span><span class="o">.</span><span class="n">HTTP_404_NOT_FOUND</span><span class="p">,</span> <span class="n">detail</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">))</span> <span class="kn">from</span><span class="w"> </span><span class="nn">e</span>
+    <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+        <span class="k">await</span> <span class="n">db</span><span class="o">.</span><span class="n">rollback</span><span class="p">()</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;Unexpected error occurred: </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">e</span><span class="p">,</span> <span class="n">exc_info</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="n">HTTPException</span><span class="p">(</span>
+            <span class="n">status_code</span><span class="o">=</span><span class="n">status</span><span class="o">.</span><span class="n">HTTP_500_INTERNAL_SERVER_ERROR</span><span class="p">,</span>
+            <span class="n">detail</span><span class="o">=</span><span class="s2">&quot;Internal Server Error&quot;</span><span class="p">,</span>
+        <span class="p">)</span> <span class="kn">from</span><span class="w"> </span><span class="nn">e</span></div>
+
+
+
+<div class="viewcode-block" id="put_update_application">
+<a class="viewcode-back" href="../../../rst/api/api.v1_routes.html#api.v1_routes.application_routes.put_update_application">[docs]</a>
+<span class="nd">@router</span><span class="o">.</span><span class="n">put</span><span class="p">(</span>
+    <span class="s2">&quot;/</span><span class="si">{app_id}</span><span class="s2">&quot;</span><span class="p">,</span>
+    <span class="n">name</span><span class="o">=</span><span class="s2">&quot;full_update_application_route_v1&quot;</span><span class="p">,</span>
+    <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Route to fully update an existing application/&quot;</span>
+    <span class="s2">&quot;service in the PostgreSQL database using PUT &quot;</span>
+    <span class="s2">&quot;method.&quot;</span><span class="p">,</span>
+    <span class="n">operation_id</span><span class="o">=</span><span class="s2">&quot;full_update_application_route_v1&quot;</span><span class="p">,</span>
+    <span class="n">response_class</span><span class="o">=</span><span class="n">AppJSONResponse</span><span class="p">,</span>
+    <span class="n">status_code</span><span class="o">=</span><span class="n">status</span><span class="o">.</span><span class="n">HTTP_200_OK</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">put_update_application</span><span class="p">(</span>
+    <span class="n">app_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">app_data</span><span class="p">:</span> <span class="n">ApplicationCreate</span><span class="p">,</span> <span class="n">db</span><span class="p">:</span> <span class="n">AsyncSession</span> <span class="o">=</span> <span class="n">Depends</span><span class="p">(</span><span class="n">get_pg_db</span><span class="p">)</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">AppJSONResponse</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Fully update an existing application/service using PUT method.</span>
+
+<span class="sd">    :param app_id: The ID of the application to update.</span>
+<span class="sd">    :param app_data: The complete application data.</span>
+<span class="sd">    :param db: The database session.</span>
+<span class="sd">    :return: AppJSONResponse containing the updated application data.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Fully updating application/service with ID </span><span class="si">%s</span><span class="s2"> using PUT&quot;</span><span class="p">,</span> <span class="n">app_id</span><span class="p">)</span>
+        <span class="n">stmt</span> <span class="o">=</span> <span class="n">select</span><span class="p">(</span><span class="n">Application</span><span class="p">)</span><span class="o">.</span><span class="n">where</span><span class="p">(</span>
+            <span class="n">Application</span><span class="o">.</span><span class="n">id</span> <span class="o">==</span> <span class="n">app_id</span><span class="p">,</span> <span class="n">Application</span><span class="o">.</span><span class="n">deleted_at</span><span class="o">.</span><span class="n">is_</span><span class="p">(</span><span class="kc">None</span><span class="p">)</span>
+        <span class="p">)</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="k">await</span> <span class="n">db</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">stmt</span><span class="p">)</span>
+        <span class="n">app</span> <span class="o">=</span> <span class="n">result</span><span class="o">.</span><span class="n">scalar_one_or_none</span><span class="p">()</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">app</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s2">&quot;Application with ID </span><span class="si">%s</span><span class="s2"> not found.&quot;</span><span class="p">,</span> <span class="n">app_id</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="n">NotFoundException</span><span class="p">(</span><span class="n">message</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;Application (</span><span class="si">{</span><span class="n">app_id</span><span class="si">}</span><span class="s2">) not found&quot;</span><span class="p">)</span>
+
+        <span class="c1"># Update all fields from request</span>
+        <span class="n">app</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">app_data</span><span class="o">.</span><span class="n">name</span>
+        <span class="n">app</span><span class="o">.</span><span class="n">description</span> <span class="o">=</span> <span class="n">app_data</span><span class="o">.</span><span class="n">description</span>
+        <span class="n">app</span><span class="o">.</span><span class="n">url</span> <span class="o">=</span> <span class="n">app_data</span><span class="o">.</span><span class="n">url</span>
+        <span class="n">app</span><span class="o">.</span><span class="n">is_active</span> <span class="o">=</span> <span class="n">app_data</span><span class="o">.</span><span class="n">is_active</span>
+        <span class="n">app</span><span class="o">.</span><span class="n">updated_at</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">(</span><span class="n">timezone</span><span class="o">.</span><span class="n">utc</span><span class="p">)</span>
+
+        <span class="k">await</span> <span class="n">db</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
+        <span class="k">await</span> <span class="n">db</span><span class="o">.</span><span class="n">refresh</span><span class="p">(</span><span class="n">app</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">AppJSONResponse</span><span class="p">(</span>
+            <span class="n">content</span><span class="o">=</span><span class="n">ApplicationOutput</span><span class="o">.</span><span class="n">model_validate</span><span class="p">(</span><span class="n">app</span><span class="p">)</span><span class="o">.</span><span class="n">model_dump</span><span class="p">(</span><span class="n">exclude_none</span><span class="o">=</span><span class="kc">True</span><span class="p">),</span>
+            <span class="n">status_code</span><span class="o">=</span><span class="n">status</span><span class="o">.</span><span class="n">HTTP_200_OK</span><span class="p">,</span>
+        <span class="p">)</span>
+    <span class="k">except</span> <span class="n">NotFoundException</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="n">HTTPException</span><span class="p">(</span><span class="n">status_code</span><span class="o">=</span><span class="n">status</span><span class="o">.</span><span class="n">HTTP_404_NOT_FOUND</span><span class="p">,</span> <span class="n">detail</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">))</span> <span class="kn">from</span><span class="w"> </span><span class="nn">e</span>
+    <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+        <span class="k">await</span> <span class="n">db</span><span class="o">.</span><span class="n">rollback</span><span class="p">()</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;Unexpected error occurred: </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">e</span><span class="p">,</span> <span class="n">exc_info</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="n">HTTPException</span><span class="p">(</span>
+            <span class="n">status_code</span><span class="o">=</span><span class="n">status</span><span class="o">.</span><span class="n">HTTP_500_INTERNAL_SERVER_ERROR</span><span class="p">,</span>
+            <span class="n">detail</span><span class="o">=</span><span class="s2">&quot;Internal Server Error&quot;</span><span class="p">,</span>
+        <span class="p">)</span> <span class="kn">from</span><span class="w"> </span><span class="nn">e</span></div>
+
+
+
+<div class="viewcode-block" id="hard_delete_application">
+<a class="viewcode-back" href="../../../rst/api/api.v1_routes.html#api.v1_routes.application_routes.hard_delete_application">[docs]</a>
+<span class="nd">@router</span><span class="o">.</span><span class="n">delete</span><span class="p">(</span>
+    <span class="s2">&quot;/delete/</span><span class="si">{app_id}</span><span class="s2">&quot;</span><span class="p">,</span>
+    <span class="n">name</span><span class="o">=</span><span class="s2">&quot;hard_delete_application_route_v1&quot;</span><span class="p">,</span>
+    <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Route to hard delete an existing application/&quot;</span>
+    <span class="s2">&quot;service from the PostgreSQL database.&quot;</span><span class="p">,</span>
+    <span class="n">operation_id</span><span class="o">=</span><span class="s2">&quot;hard_delete_application_route_v1&quot;</span><span class="p">,</span>
+    <span class="n">response_class</span><span class="o">=</span><span class="n">AppJSONResponse</span><span class="p">,</span>
+    <span class="n">status_code</span><span class="o">=</span><span class="n">status</span><span class="o">.</span><span class="n">HTTP_200_OK</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">hard_delete_application</span><span class="p">(</span>
+    <span class="n">app_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">db</span><span class="p">:</span> <span class="n">AsyncSession</span> <span class="o">=</span> <span class="n">Depends</span><span class="p">(</span><span class="n">get_pg_db</span><span class="p">)</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">AppJSONResponse</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Hard delete an existing application/service by its ID.</span>
+
+<span class="sd">    :param app_id: The ID of the application to delete.</span>
+<span class="sd">    :param db: The database session.</span>
+<span class="sd">    :return: AppJSONResponse with deletion confirmation.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Hard deleting application/service with ID </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">app_id</span><span class="p">)</span>
+        <span class="n">stmt</span> <span class="o">=</span> <span class="n">select</span><span class="p">(</span><span class="n">Application</span><span class="p">)</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">Application</span><span class="o">.</span><span class="n">id</span> <span class="o">==</span> <span class="n">app_id</span><span class="p">)</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="k">await</span> <span class="n">db</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">stmt</span><span class="p">)</span>
+        <span class="n">app</span> <span class="o">=</span> <span class="n">result</span><span class="o">.</span><span class="n">scalar_one_or_none</span><span class="p">()</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">app</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s2">&quot;Application with ID </span><span class="si">%s</span><span class="s2"> not found.&quot;</span><span class="p">,</span> <span class="n">app_id</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="n">NotFoundException</span><span class="p">(</span><span class="n">message</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;Application (</span><span class="si">{</span><span class="n">app_id</span><span class="si">}</span><span class="s2">) not found&quot;</span><span class="p">)</span>
+
+        <span class="c1"># Hard delete from database</span>
+        <span class="k">await</span> <span class="n">db</span><span class="o">.</span><span class="n">delete</span><span class="p">(</span><span class="n">app</span><span class="p">)</span>
+        <span class="k">await</span> <span class="n">db</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
+
+        <span class="k">return</span> <span class="n">AppJSONResponse</span><span class="p">(</span>
+            <span class="n">content</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;detail&quot;</span><span class="p">:</span> <span class="sa">f</span><span class="s2">&quot;Application </span><span class="si">{</span><span class="n">app_id</span><span class="si">}</span><span class="s2"> &quot;</span> <span class="s2">&quot;deleted successfully&quot;</span><span class="p">},</span>
+            <span class="n">status_code</span><span class="o">=</span><span class="n">status</span><span class="o">.</span><span class="n">HTTP_200_OK</span><span class="p">,</span>
+        <span class="p">)</span>
+    <span class="k">except</span> <span class="n">NotFoundException</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="n">HTTPException</span><span class="p">(</span><span class="n">status_code</span><span class="o">=</span><span class="n">status</span><span class="o">.</span><span class="n">HTTP_404_NOT_FOUND</span><span class="p">,</span> <span class="n">detail</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">))</span> <span class="kn">from</span><span class="w"> </span><span class="nn">e</span>
+    <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+        <span class="k">await</span> <span class="n">db</span><span class="o">.</span><span class="n">rollback</span><span class="p">()</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;Unexpected error occurred: </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">e</span><span class="p">,</span> <span class="n">exc_info</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="n">HTTPException</span><span class="p">(</span>
+            <span class="n">status_code</span><span class="o">=</span><span class="n">status</span><span class="o">.</span><span class="n">HTTP_500_INTERNAL_SERVER_ERROR</span><span class="p">,</span>
+            <span class="n">detail</span><span class="o">=</span><span class="s2">&quot;Internal Server Error&quot;</span><span class="p">,</span>
+        <span class="p">)</span> <span class="kn">from</span><span class="w"> </span><span class="nn">e</span></div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, Daniel Andersson &lt;d.andersson86@icloud.com&gt;.
+      <span class="lastupdated">Last updated on 2026-06-02.
+      </span></p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

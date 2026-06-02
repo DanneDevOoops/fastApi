@@ -1,0 +1,61 @@
+db.models.v2\_models package
+============================
+
+Submodules
+----------
+
+db.models.v2\_models.application\_model\_v2 module
+--------------------------------------------------
+
+.. automodule:: db.models.v2_models.application_model_v2
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
+db.models.v2\_models.auth\_model\_v2 module
+-------------------------------------------
+
+.. automodule:: db.models.v2_models.auth_model_v2
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
+db.models.v2\_models.device\_model\_v2 module
+---------------------------------------------
+
+.. automodule:: db.models.v2_models.device_model_v2
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
+db.models.v2\_models.sensor\_model\_v2 module
+---------------------------------------------
+
+.. automodule:: db.models.v2_models.sensor_model_v2
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
+db.models.v2\_models.sensor\_telemetry\_model\_v2 module
+--------------------------------------------------------
+
+.. automodule:: db.models.v2_models.sensor_telemetry_model_v2
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
+db.models.v2\_models.user\_model\_v2 module
+-------------------------------------------
+
+.. automodule:: db.models.v2_models.user_model_v2
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
+Module contents
+---------------
+
+.. automodule:: db.models.v2_models
+   :members:
+   :show-inheritance:
+   :undoc-members:

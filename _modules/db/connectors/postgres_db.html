@@ -1,0 +1,283 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>db.connectors.postgres_db &mdash; FastAPI Application 0.0.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=9edc463e" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css?v=4ae1632d" />
+
+  
+    <link rel="canonical" href="https://github.com/DanneDevOoops/fastApi/_modules/db/connectors/postgres_db.html" />
+      <script src="../../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../../_static/documentation_options.js?v=7026087e"></script>
+      <script src="../../../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../../../_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../index.html" class="icon icon-home">
+            FastAPI Application
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../rst/api/modules.html">api</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../rst/core/modules.html">core</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../rst/db/modules.html">db</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../rst/middlewares/modules.html">middlewares</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../rst/utils/modules.html">utils</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Documents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../coverage.html">docs coverage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../readme.html">project readme</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../docstrings.html">write docstrings</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">FastAPI Application</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content style-external-links">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">db.connectors.postgres_db</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for db.connectors.postgres_db</h1><div class="highlight"><pre>
+<span></span><span class="ch">#!/usr/bin/env python3</span>
+<span class="c1"># -*- coding: utf-8 -*-</span>
+
+
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Postgres Database configuration module for the FastAPI application.</span>
+
+<span class="sd">This module contains the `PostgresConnector` class, which manages the</span>
+<span class="sd">PostgreSQL database connection using SQLAlchemy&#39;s asynchronous engine and</span>
+<span class="sd">session maker.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">logging</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">asyncio</span><span class="w"> </span><span class="kn">import</span> <span class="n">current_task</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">collections.abc</span><span class="w"> </span><span class="kn">import</span> <span class="n">AsyncIterator</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">sqlalchemy.ext.asyncio</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
+    <span class="n">AsyncSession</span><span class="p">,</span>
+    <span class="n">async_scoped_session</span><span class="p">,</span>
+    <span class="n">async_sessionmaker</span><span class="p">,</span>
+    <span class="n">create_async_engine</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">src.core.custom_exceptions</span><span class="w"> </span><span class="kn">import</span> <span class="n">DatabaseException</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">src.core.env_config</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_settings</span>
+
+<span class="n">settings</span> <span class="o">=</span> <span class="n">get_settings</span><span class="p">()</span>
+<span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="n">settings</span><span class="o">.</span><span class="n">app_logger_name</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="PgsqlDbSessionManager">
+<a class="viewcode-back" href="../../../rst/db/db.connectors.html#db.connectors.postgres_db.PgsqlDbSessionManager">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">PgsqlDbSessionManager</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    A session manager class for the Postgres database connection within a</span>
+<span class="sd">    FastAPI application. This class manages the creation and disposal of</span>
+<span class="sd">    asynchronous database sessions using SQLAlchemy.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">db_connection_str</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Constructor method for the PgsqlDbSessionManager class to</span>
+<span class="sd">        initialize the database connection instance.</span>
+
+<span class="sd">        This method sets up the database connection string, creates the</span>
+<span class="sd">        asynchronous database engine, session maker, and scoped session.</span>
+
+<span class="sd">        :param db_connection_str: The database connection string.</span>
+<span class="sd">        :type db_connection_str: str</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Initializing the PgsqlDbSessionManager instance...&quot;</span><span class="p">)</span>
+
+        <span class="c1"># Set the database connection string based on the environment</span>
+        <span class="c1"># settings or a provided case specific connector string...</span>
+        <span class="k">if</span> <span class="n">db_connection_str</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Using the default database connection string...&quot;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_postgres_database_url</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">settings</span><span class="o">.</span><span class="n">pg_db_url</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span>
+                <span class="s2">&quot;postgresql://&quot;</span><span class="p">,</span> <span class="s2">&quot;postgresql+asyncpg://&quot;</span>
+            <span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Using the provided database connection string...&quot;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_postgres_database_url</span> <span class="o">=</span> <span class="n">db_connection_str</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span>
+                <span class="s2">&quot;postgresql://&quot;</span><span class="p">,</span> <span class="s2">&quot;postgresql+asyncpg://&quot;</span>
+            <span class="p">)</span>
+
+        <span class="c1"># Create the async database engine...</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Creating the async database engine...&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">pgsql_db_engine</span> <span class="o">=</span> <span class="n">create_async_engine</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_postgres_database_url</span><span class="p">,</span>
+            <span class="n">future</span><span class="o">=</span><span class="n">settings</span><span class="o">.</span><span class="n">pg_db_future</span><span class="p">,</span>
+            <span class="n">echo</span><span class="o">=</span><span class="n">settings</span><span class="o">.</span><span class="n">pg_db_echo</span><span class="p">,</span>
+            <span class="n">pool_size</span><span class="o">=</span><span class="n">settings</span><span class="o">.</span><span class="n">pg_db_connection_pool_size</span><span class="p">,</span>
+            <span class="n">max_overflow</span><span class="o">=</span><span class="n">settings</span><span class="o">.</span><span class="n">pg_db_max_overflow</span><span class="p">,</span>
+        <span class="p">)</span>
+
+        <span class="c1"># Create the async session maker...</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Creating the async session maker...&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">session_maker</span> <span class="o">=</span> <span class="n">async_sessionmaker</span><span class="p">(</span>
+            <span class="n">autocommit</span><span class="o">=</span><span class="n">settings</span><span class="o">.</span><span class="n">pg_db_auto_commit</span><span class="p">,</span>
+            <span class="n">autoflush</span><span class="o">=</span><span class="n">settings</span><span class="o">.</span><span class="n">pg_db_auto_flush</span><span class="p">,</span>
+            <span class="n">bind</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">pgsql_db_engine</span><span class="p">,</span>
+            <span class="n">class_</span><span class="o">=</span><span class="n">AsyncSession</span><span class="p">,</span>
+            <span class="n">expire_on_commit</span><span class="o">=</span><span class="n">settings</span><span class="o">.</span><span class="n">pg_db_expire_on_commit</span><span class="p">,</span>
+        <span class="p">)</span>
+
+        <span class="c1"># Create the scoped session...</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Creating the scoped session...&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">scoped_session</span> <span class="o">=</span> <span class="n">async_scoped_session</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">session_maker</span><span class="p">,</span>
+            <span class="n">scopefunc</span><span class="o">=</span><span class="n">current_task</span><span class="p">,</span>
+        <span class="p">)</span>
+
+<div class="viewcode-block" id="PgsqlDbSessionManager.get_session">
+<a class="viewcode-back" href="../../../rst/db/db.connectors.html#db.connectors.postgres_db.PgsqlDbSessionManager.get_session">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_session</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">AsyncSession</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Get a new asynchronous database session.</span>
+
+<span class="sd">        :return: A new asynchronous database session.</span>
+<span class="sd">        :rtype: AsyncSession</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">session_maker</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="PgsqlDbSessionManager.close_session">
+<a class="viewcode-back" href="../../../rst/db/db.connectors.html#db.connectors.postgres_db.PgsqlDbSessionManager.close_session">[docs]</a>
+    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">close_session</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Close the asynchronous database session. This method disposes of</span>
+<span class="sd">        the database engine, effectively closing all active sessions.</span>
+
+<span class="sd">        :raises DatabaseException: If the database engine is not initialized.</span>
+<span class="sd">        :return: None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">pgsql_db_engine</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">DatabaseException</span><span class="p">(</span><span class="s2">&quot;Database engine is not initialized...&quot;</span><span class="p">)</span>
+        <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">pgsql_db_engine</span><span class="o">.</span><span class="n">dispose</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="PgsqlDbSessionManager.get_db_connection_str">
+<a class="viewcode-back" href="../../../rst/db/db.connectors.html#db.connectors.postgres_db.PgsqlDbSessionManager.get_db_connection_str">[docs]</a>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_db_connection_str</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">         Get the Postgres database connection string.</span>
+
+<span class="sd">        :return: The Postgres database connection string.</span>
+<span class="sd">        :rtype: str</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">        dbname=</span><span class="si">{</span><span class="n">settings</span><span class="o">.</span><span class="n">pg_db_name</span><span class="si">}</span>
+<span class="s2">        user=</span><span class="si">{</span><span class="n">settings</span><span class="o">.</span><span class="n">pg_db_username</span><span class="si">}</span>
+<span class="s2">        password=</span><span class="si">{</span><span class="n">settings</span><span class="o">.</span><span class="n">pg_db_password</span><span class="si">}</span>
+<span class="s2">        host=</span><span class="si">{</span><span class="n">settings</span><span class="o">.</span><span class="n">pg_db_host</span><span class="si">}</span>
+<span class="s2">        port=</span><span class="si">{</span><span class="n">settings</span><span class="o">.</span><span class="n">pg_db_port</span><span class="si">}</span>
+<span class="s2">        &quot;&quot;&quot;</span></div>
+</div>
+
+
+
+<span class="c1"># Initialize the PgsqlDbSessionManager instance</span>
+<span class="n">session_manager</span> <span class="o">=</span> <span class="n">PgsqlDbSessionManager</span><span class="p">()</span>
+
+
+<div class="viewcode-block" id="get_pg_db">
+<a class="viewcode-back" href="../../../rst/db/db.connectors.html#db.connectors.postgres_db.get_pg_db">[docs]</a>
+<span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">get_pg_db</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">AsyncIterator</span><span class="p">[</span><span class="n">AsyncSession</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Get a new session for the database. This method retrieves a new</span>
+<span class="sd">    asynchronous database session from the session manager. If the session</span>
+<span class="sd">    manager is not initialized correctly, it raises a DatabaseException.</span>
+
+<span class="sd">    :raises DatabaseException: If the PgsqlDbSessionManager is not</span>
+<span class="sd">        initialized correctly.</span>
+<span class="sd">    :yield: A new asynchronous database session.</span>
+<span class="sd">    :rtype: AsyncIterator[AsyncSession]</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">session</span> <span class="o">=</span> <span class="n">session_manager</span><span class="o">.</span><span class="n">get_session</span><span class="p">()</span>
+    <span class="k">if</span> <span class="n">session</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="n">DatabaseException</span><span class="p">(</span><span class="s2">&quot;PgsqlDbSessionManager is not initialized correctly...&quot;</span><span class="p">)</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="k">yield</span> <span class="n">session</span>
+    <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+        <span class="k">await</span> <span class="n">session</span><span class="o">.</span><span class="n">rollback</span><span class="p">()</span>
+        <span class="k">raise</span>
+    <span class="k">finally</span><span class="p">:</span>
+        <span class="k">await</span> <span class="n">session</span><span class="o">.</span><span class="n">close</span><span class="p">()</span></div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, Daniel Andersson &lt;d.andersson86@icloud.com&gt;.
+      <span class="lastupdated">Last updated on 2026-06-02.
+      </span></p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

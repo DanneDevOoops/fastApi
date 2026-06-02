@@ -1,0 +1,194 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>utils.nano_id &mdash; FastAPI Application 0.0.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=9edc463e" />
+      <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=4ae1632d" />
+
+  
+    <link rel="canonical" href="https://github.com/DanneDevOoops/fastApi/_modules/utils/nano_id.html" />
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=7026087e"></script>
+      <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            FastAPI Application
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../rst/api/modules.html">api</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../rst/core/modules.html">core</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../rst/db/modules.html">db</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../rst/middlewares/modules.html">middlewares</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../rst/utils/modules.html">utils</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Documents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../coverage.html">docs coverage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../readme.html">project readme</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../docstrings.html">write docstrings</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">FastAPI Application</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content style-external-links">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">utils.nano_id</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for utils.nano_id</h1><div class="highlight"><pre>
+<span></span><span class="ch">#!/usr/bin/env python3</span>
+<span class="c1"># -*- coding: utf-8 -*-</span>
+
+
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Utility functions for generating unique Nano IDs and BSON ObjectIds.</span>
+
+<span class="sd">This module provides functions to generate customizable Nano IDs using the</span>
+<span class="sd">`nanoid` library, with support for environment-based configuration of</span>
+<span class="sd">character set and size. It also includes a function to create BSON</span>
+<span class="sd">ObjectIds derived from Nano IDs, suitable for use as unique identifiers in</span>
+<span class="sd">MongoDB and other systems.</span>
+
+<span class="sd">Environment Variables:</span>
+<span class="sd">- `NANO_ID_CHARACTERS`: Characters to use for Nano ID generation (default:</span>
+<span class="sd">    alphanumeric).</span>
+<span class="sd">- `NANO_ID_SIZE`: Length of the Nano ID (default: 24).</span>
+
+<span class="sd">Functions:</span>
+<span class="sd">- generate_nano_id: Generate a unique Nano ID with optional size.</span>
+<span class="sd">- generate_nano_id_bson: Generate a BSON ObjectId based on a Nano ID.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">hashlib</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">bson</span><span class="w"> </span><span class="kn">import</span> <span class="n">ObjectId</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">nanoid</span><span class="w"> </span><span class="kn">import</span> <span class="n">generate</span>
+
+
+<div class="viewcode-block" id="generate_nano_id">
+<a class="viewcode-back" href="../../rst/utils/utils.html#utils.nano_id.generate_nano_id">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">generate_nano_id</span><span class="p">(</span><span class="n">size</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Generate a unique Nano ID.</span>
+
+<span class="sd">    Generates a Nano ID using the `nanoid` library. The characters and size</span>
+<span class="sd">    of the Nano ID can be customized using the `NANO_ID_CHARACTERS` and</span>
+<span class="sd">    `NANO_ID_SIZE` environment variables, or by passing the `size` argument.</span>
+
+<span class="sd">    :param size: Optional. The length of the Nano ID to generate. If not</span>
+<span class="sd">        provided, uses the `NANO_ID_SIZE` environment variable or defaults</span>
+<span class="sd">        to 24.</span>
+<span class="sd">    :type size: int or None</span>
+<span class="sd">    :return: A unique Nano ID string.</span>
+<span class="sd">    :rtype: str</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">id_characters</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span>
+        <span class="s2">&quot;NANO_ID_CHARACTERS&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">size</span><span class="p">:</span>
+        <span class="c1"># Default size is 24 if not specified in the environment variable</span>
+        <span class="n">id_size</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s2">&quot;NANO_ID_SIZE&quot;</span><span class="p">,</span> <span class="s2">&quot;24&quot;</span><span class="p">))</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">id_size</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">size</span>
+    <span class="n">new_nano_id</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">generate</span><span class="p">(</span><span class="n">id_characters</span><span class="p">,</span> <span class="nb">int</span><span class="p">(</span><span class="n">id_size</span><span class="p">))</span>
+
+    <span class="k">return</span> <span class="n">new_nano_id</span></div>
+
+
+
+<div class="viewcode-block" id="generate_nano_id_bson">
+<a class="viewcode-back" href="../../rst/utils/utils.html#utils.nano_id.generate_nano_id_bson">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">generate_nano_id_bson</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">ObjectId</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Generate a BSON ObjectId from a Nano ID.</span>
+
+<span class="sd">    Creates a Nano ID of length 24, hashes it using SHA-1, and returns a</span>
+<span class="sd">    BSON ObjectId from the first 24 hex characters of the hash.</span>
+
+<span class="sd">    :return: A BSON ObjectId derived from a Nano ID.</span>
+<span class="sd">    :rtype: ObjectId</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">nano_id</span> <span class="o">=</span> <span class="n">generate_nano_id</span><span class="p">(</span><span class="mi">24</span><span class="p">)</span>
+    <span class="n">hex_str</span> <span class="o">=</span> <span class="n">hashlib</span><span class="o">.</span><span class="n">sha1</span><span class="p">(</span><span class="n">nano_id</span><span class="o">.</span><span class="n">encode</span><span class="p">())</span><span class="o">.</span><span class="n">hexdigest</span><span class="p">()[:</span><span class="mi">24</span><span class="p">]</span>
+    <span class="k">return</span> <span class="n">ObjectId</span><span class="p">(</span><span class="n">hex_str</span><span class="p">)</span></div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, Daniel Andersson &lt;d.andersson86@icloud.com&gt;.
+      <span class="lastupdated">Last updated on 2026-06-02.
+      </span></p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

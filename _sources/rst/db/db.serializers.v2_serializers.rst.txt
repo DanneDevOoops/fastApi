@@ -1,0 +1,21 @@
+db.serializers.v2\_serializers package
+======================================
+
+Submodules
+----------
+
+db.serializers.v2\_serializers.v2\_model\_serializers module
+------------------------------------------------------------
+
+.. automodule:: db.serializers.v2_serializers.v2_model_serializers
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
+Module contents
+---------------
+
+.. automodule:: db.serializers.v2_serializers
+   :members:
+   :show-inheritance:
+   :undoc-members:

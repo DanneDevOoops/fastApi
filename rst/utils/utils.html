@@ -1,0 +1,386 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>utils package &mdash; FastAPI Application 0.0.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=9edc463e" />
+      <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=4ae1632d" />
+
+  
+    <link rel="canonical" href="https://github.com/DanneDevOoops/fastApi/rst/utils/utils.html" />
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=7026087e"></script>
+      <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="docs coverage" href="../../coverage.html" />
+    <link rel="prev" title="utils" href="modules.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            FastAPI Application
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../api/modules.html">api</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../core/modules.html">core</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../db/modules.html">db</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../middlewares/modules.html">middlewares</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="modules.html">utils</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">utils package</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#submodules">Submodules</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-utils.app_constants">utils.app_constants module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#constants">Constants:</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#module-utils.generate_v1_application_auth">utils.generate_v1_application_auth module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#utils.generate_v1_application_auth.parse_args"><code class="docutils literal notranslate"><span class="pre">utils.generate_v1_application_auth.parse_args()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#utils.generate_v1_application_auth.main"><code class="docutils literal notranslate"><span class="pre">utils.generate_v1_application_auth.main()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#module-utils.nano_id">utils.nano_id module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#utils.nano_id.generate_nano_id"><code class="docutils literal notranslate"><span class="pre">utils.nano_id.generate_nano_id()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#utils.nano_id.generate_nano_id_bson"><code class="docutils literal notranslate"><span class="pre">utils.nano_id.generate_nano_id_bson()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#module-utils.web_socket_connection_manager">utils.web_socket_connection_manager module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#utils.web_socket_connection_manager.WebSocketConnectionManager"><code class="docutils literal notranslate"><span class="pre">utils.web_socket_connection_manager.WebSocketConnectionManager</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#module-utils">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Documents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../coverage.html">docs coverage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../readme.html">project readme</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../docstrings.html">write docstrings</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">FastAPI Application</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content style-external-links">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="modules.html">utils</a></li>
+      <li class="breadcrumb-item active">utils package</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../_sources/rst/utils/utils.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="utils-package">
+<h1>utils package<a class="headerlink" href="#utils-package" title="Link to this heading"></a></h1>
+<section id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Link to this heading"></a></h2>
+</section>
+<section id="module-utils.app_constants">
+<span id="utils-app-constants-module"></span><h2>utils.app_constants module<a class="headerlink" href="#module-utils.app_constants" title="Link to this heading"></a></h2>
+<p>Module: app_constants</p>
+<p>This module defines constants used for configuring Cross-Origin Resource
+Sharing (CORS) and HTTP request handling in the application.</p>
+<section id="constants">
+<h3>Constants:<a class="headerlink" href="#constants" title="Link to this heading"></a></h3>
+<ol class="arabic simple">
+<li><dl class="simple">
+<dt>REQUEST_HEADERS:</dt><dd><ul class="simple">
+<li><p>Description: A list of HTTP headers allowed for CORS requests.</p></li>
+<li><dl class="simple">
+<dt>Values:</dt><dd><ul>
+<li><p>“Accept”: Specifies the media types acceptable for the response.</p></li>
+<li><dl class="simple">
+<dt>“Accept-Language”: Indicates the preferred language for the</dt><dd><p>response.</p>
+</dd>
+</dl>
+</li>
+<li><p>“Content-Type”: Specifies the media type of the request body.</p></li>
+<li><p>“Authorization”: Used for passing authentication credentials.</p></li>
+<li><p>“X-Requested-With”: Commonly used for identifying AJAX requests.</p></li>
+<li><p>“X-API-Key”: Custom header for API key authentication.</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>REQUEST_METHODS:</dt><dd><ul class="simple">
+<li><p>Description: A list of HTTP methods allowed for CORS requests.</p></li>
+<li><dl class="simple">
+<dt>Values:</dt><dd><ul>
+<li><p>“GET”: Retrieve data from the server.</p></li>
+<li><p>“POST”: Submit data to the server.</p></li>
+<li><p>“PUT”: Update existing data on the server.</p></li>
+<li><p>“PATCH”: Partially update data on the server.</p></li>
+<li><p>“DELETE”: Remove data from the server.</p></li>
+<li><p>“OPTIONS”: Used for preflight requests in CORS.</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>REQUEST_ORIGINS:</dt><dd><ul class="simple">
+<li><p>Description: A list of origins allowed to access the application.</p></li>
+<li><dl class="simple">
+<dt>Values:</dt><dd><ul>
+<li><p>“*”: Allows requests from any origin.</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+</ul>
+</dd>
+</dl>
+</li>
+</ol>
+</section>
+</section>
+<section id="module-utils.generate_v1_application_auth">
+<span id="utils-generate-v1-application-auth-module"></span><h2>utils.generate_v1_application_auth module<a class="headerlink" href="#module-utils.generate_v1_application_auth" title="Link to this heading"></a></h2>
+<p>Generate Postgres-backed v1 application authentication credentials.</p>
+<p>This utility prints:
+- the raw JWT token to send as <cite>x-api-key</cite>
+- the bcrypt hash to store in <cite>applications.api_key</cite>
+- a ready-to-run SQL update statement
+- a sample curl command for testing the protected v1 routes</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="utils.generate_v1_application_auth.parse_args">
+<span class="sig-prename descclassname"><span class="pre">utils.generate_v1_application_auth.</span></span><span class="sig-name descname"><span class="pre">parse_args</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference external" href="https://github.com/DanneDevOoops/fastApi/blob/main/src/utils/generate_v1_application_auth.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="reference internal" href="../../_modules/utils/generate_v1_application_auth.html#parse_args"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#utils.generate_v1_application_auth.parse_args" title="Link to this definition"></a></dt>
+<dd><p>Parse command-line arguments.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/argparse.html#argparse.Namespace" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Namespace</span></code></a></span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="utils.generate_v1_application_auth.main">
+<span class="sig-prename descclassname"><span class="pre">utils.generate_v1_application_auth.</span></span><span class="sig-name descname"><span class="pre">main</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference external" href="https://github.com/DanneDevOoops/fastApi/blob/main/src/utils/generate_v1_application_auth.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="reference internal" href="../../_modules/utils/generate_v1_application_auth.html#main"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#utils.generate_v1_application_auth.main" title="Link to this definition"></a></dt>
+<dd><p>Generate the raw JWT and hashed API key for a v1 application.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></a></span></p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="module-utils.nano_id">
+<span id="utils-nano-id-module"></span><h2>utils.nano_id module<a class="headerlink" href="#module-utils.nano_id" title="Link to this heading"></a></h2>
+<p>Utility functions for generating unique Nano IDs and BSON ObjectIds.</p>
+<p>This module provides functions to generate customizable Nano IDs using the
+<cite>nanoid</cite> library, with support for environment-based configuration of
+character set and size. It also includes a function to create BSON
+ObjectIds derived from Nano IDs, suitable for use as unique identifiers in
+MongoDB and other systems.</p>
+<p>Environment Variables:
+- <cite>NANO_ID_CHARACTERS</cite>: Characters to use for Nano ID generation (default:</p>
+<blockquote>
+<div><p>alphanumeric).</p>
+</div></blockquote>
+<ul class="simple">
+<li><p><cite>NANO_ID_SIZE</cite>: Length of the Nano ID (default: 24).</p></li>
+</ul>
+<p>Functions:
+- generate_nano_id: Generate a unique Nano ID with optional size.
+- generate_nano_id_bson: Generate a BSON ObjectId based on a Nano ID.</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="utils.nano_id.generate_nano_id">
+<span class="sig-prename descclassname"><span class="pre">utils.nano_id.</span></span><span class="sig-name descname"><span class="pre">generate_nano_id</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/DanneDevOoops/fastApi/blob/main/src/utils/nano_id.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="reference internal" href="../../_modules/utils/nano_id.html#generate_nano_id"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#utils.nano_id.generate_nano_id" title="Link to this definition"></a></dt>
+<dd><p>Generate a unique Nano ID.</p>
+<p>Generates a Nano ID using the <cite>nanoid</cite> library. The characters and size
+of the Nano ID can be customized using the <cite>NANO_ID_CHARACTERS</cite> and
+<cite>NANO_ID_SIZE</cite> environment variables, or by passing the <cite>size</cite> argument.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>size</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></a> | <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></a></span>) – Optional. The length of the Nano ID to generate. If not
+provided, uses the <cite>NANO_ID_SIZE</cite> environment variable or defaults
+to 24.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A unique Nano ID string.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="utils.nano_id.generate_nano_id_bson">
+<span class="sig-prename descclassname"><span class="pre">utils.nano_id.</span></span><span class="sig-name descname"><span class="pre">generate_nano_id_bson</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference external" href="https://github.com/DanneDevOoops/fastApi/blob/main/src/utils/nano_id.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="reference internal" href="../../_modules/utils/nano_id.html#generate_nano_id_bson"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#utils.nano_id.generate_nano_id_bson" title="Link to this definition"></a></dt>
+<dd><p>Generate a BSON ObjectId from a Nano ID.</p>
+<p>Creates a Nano ID of length 24, hashes it using SHA-1, and returns a
+BSON ObjectId from the first 24 hex characters of the hash.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>A BSON ObjectId derived from a Nano ID.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">ObjectId</span></code></span></p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="module-utils.web_socket_connection_manager">
+<span id="utils-web-socket-connection-manager-module"></span><h2>utils.web_socket_connection_manager module<a class="headerlink" href="#module-utils.web_socket_connection_manager" title="Link to this heading"></a></h2>
+<p>Module containing a WebSocket connection manager class. This class is
+initialized in the router module and used in routes where WebSocket
+are needed to manage the connections for broadcasting messages to all
+active clients.</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="utils.web_socket_connection_manager.WebSocketConnectionManager">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">utils.web_socket_connection_manager.</span></span><span class="sig-name descname"><span class="pre">WebSocketConnectionManager</span></span><a class="reference external" href="https://github.com/DanneDevOoops/fastApi/blob/main/src/utils/web_socket_connection_manager.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="reference internal" href="../../_modules/utils/web_socket_connection_manager.html#WebSocketConnectionManager"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#utils.web_socket_connection_manager.WebSocketConnectionManager" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<p>Manages the WebSocket connections</p>
+<p>Initializes the WebSocket connection manager class.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="utils.web_socket_connection_manager.WebSocketConnectionManager.connect">
+<span class="property"><span class="k"><span class="pre">async</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">connect</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">websocket</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/DanneDevOoops/fastApi/blob/main/src/utils/web_socket_connection_manager.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="reference internal" href="../../_modules/utils/web_socket_connection_manager.html#WebSocketConnectionManager.connect"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#utils.web_socket_connection_manager.WebSocketConnectionManager.connect" title="Link to this definition"></a></dt>
+<dd><p>Connects a WebSocket connection.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>websocket</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://fastapi.tiangolo.com/reference/websockets/#fastapi.WebSocket" title="(in FastAPI None)"><code class="xref py py-class docutils literal notranslate"><span class="pre">WebSocket</span></code></a></span>) – The WebSocket connection to be connected.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></a></span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="utils.web_socket_connection_manager.WebSocketConnectionManager.disconnect">
+<span class="sig-name descname"><span class="pre">disconnect</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">websocket</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/DanneDevOoops/fastApi/blob/main/src/utils/web_socket_connection_manager.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="reference internal" href="../../_modules/utils/web_socket_connection_manager.html#WebSocketConnectionManager.disconnect"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#utils.web_socket_connection_manager.WebSocketConnectionManager.disconnect" title="Link to this definition"></a></dt>
+<dd><p>Disconnects a WebSocket connection.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>websocket</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://fastapi.tiangolo.com/reference/websockets/#fastapi.WebSocket" title="(in FastAPI None)"><code class="xref py py-class docutils literal notranslate"><span class="pre">WebSocket</span></code></a></span>) – The WebSocket connection to be disconnected.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></a></span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="utils.web_socket_connection_manager.WebSocketConnectionManager.send_personal_message">
+<span class="property"><span class="k"><span class="pre">async</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">send_personal_message</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">message</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">websocket</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/DanneDevOoops/fastApi/blob/main/src/utils/web_socket_connection_manager.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="reference internal" href="../../_modules/utils/web_socket_connection_manager.html#WebSocketConnectionManager.send_personal_message"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#utils.web_socket_connection_manager.WebSocketConnectionManager.send_personal_message" title="Link to this definition"></a></dt>
+<dd><p>Sends a personal message to a specific WebSocket connection.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>message</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></span>) – The message to be sent.</p></li>
+<li><p><strong>websocket</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://fastapi.tiangolo.com/reference/websockets/#fastapi.WebSocket" title="(in FastAPI None)"><code class="xref py py-class docutils literal notranslate"><span class="pre">WebSocket</span></code></a></span>) – The WebSocket connection to send the message to.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></a></span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="utils.web_socket_connection_manager.WebSocketConnectionManager.broadcast">
+<span class="property"><span class="k"><span class="pre">async</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">broadcast</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">message</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/DanneDevOoops/fastApi/blob/main/src/utils/web_socket_connection_manager.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="reference internal" href="../../_modules/utils/web_socket_connection_manager.html#WebSocketConnectionManager.broadcast"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#utils.web_socket_connection_manager.WebSocketConnectionManager.broadcast" title="Link to this definition"></a></dt>
+<dd><p>Broadcasts a message to all active WebSocket connections.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>message</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></span>) – The message to be broadcasted.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></a></span></p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-utils">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-utils" title="Link to this heading"></a></h2>
+<p>Package initialization file for the utils module.</p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="modules.html" class="btn btn-neutral float-left" title="utils" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../../coverage.html" class="btn btn-neutral float-right" title="docs coverage" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, Daniel Andersson &lt;d.andersson86@icloud.com&gt;.
+      <span class="lastupdated">Last updated on 2026-06-02.
+      </span></p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

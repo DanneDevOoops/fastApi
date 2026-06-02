@@ -1,0 +1,77 @@
+core package
+============
+
+Submodules
+----------
+
+core.app\_lifespan module
+-------------------------
+
+.. automodule:: core.app_lifespan
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
+core.auth module
+----------------
+
+.. automodule:: core.auth
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
+core.cors\_config module
+------------------------
+
+.. automodule:: core.cors_config
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
+core.custom\_exceptions module
+------------------------------
+
+.. automodule:: core.custom_exceptions
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
+core.env\_config module
+-----------------------
+
+.. automodule:: core.env_config
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
+core.exception\_handlers module
+-------------------------------
+
+.. automodule:: core.exception_handlers
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
+core.logger\_config module
+--------------------------
+
+.. automodule:: core.logger_config
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
+core.responses module
+---------------------
+
+.. automodule:: core.responses
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
+Module contents
+---------------
+
+.. automodule:: core
+   :members:
+   :show-inheritance:
+   :undoc-members:

@@ -1,0 +1,29 @@
+middlewares package
+===================
+
+Submodules
+----------
+
+middlewares.gzip module
+-----------------------
+
+.. automodule:: middlewares.gzip
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
+middlewares.logger module
+-------------------------
+
+.. automodule:: middlewares.logger
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
+Module contents
+---------------
+
+.. automodule:: middlewares
+   :members:
+   :show-inheritance:
+   :undoc-members:

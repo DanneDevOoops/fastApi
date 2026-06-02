@@ -1,0 +1,499 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>db.connectors package &mdash; FastAPI Application 0.0.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=9edc463e" />
+      <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=4ae1632d" />
+
+  
+    <link rel="canonical" href="https://github.com/DanneDevOoops/fastApi/rst/db/db.connectors.html" />
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=7026087e"></script>
+      <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="db.models package" href="db.models.html" />
+    <link rel="prev" title="db.config package" href="db.config.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            FastAPI Application
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../api/modules.html">api</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../core/modules.html">core</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="modules.html">db</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="db.html">db package</a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="db.html#subpackages">Subpackages</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="db.config.html">db.config package</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">db.connectors package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="db.models.html">db.models package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="db.schemas.html">db.schemas package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="db.serializers.html">db.serializers package</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="db.html#module-db">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../middlewares/modules.html">middlewares</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../utils/modules.html">utils</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Documents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../coverage.html">docs coverage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../readme.html">project readme</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../docstrings.html">write docstrings</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">FastAPI Application</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content style-external-links">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="modules.html">db</a></li>
+          <li class="breadcrumb-item"><a href="db.html">db package</a></li>
+      <li class="breadcrumb-item active">db.connectors package</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../_sources/rst/db/db.connectors.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="db-connectors-package">
+<h1>db.connectors package<a class="headerlink" href="#db-connectors-package" title="Link to this heading"></a></h1>
+<section id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Link to this heading"></a></h2>
+</section>
+<section id="module-db.connectors.mongo_db">
+<span id="db-connectors-mongo-db-module"></span><h2>db.connectors.mongo_db module<a class="headerlink" href="#module-db.connectors.mongo_db" title="Link to this heading"></a></h2>
+<p>MongoDB connection utilities using Motor.</p>
+<p>This module provides a connector class for managing asynchronous MongoDB
+connections with Motor, including access to the client and database
+instances, and proper connection cleanup.</p>
+<p>Classes:
+- MongoDBConnector: Handles connection setup, access, and teardown</p>
+<blockquote>
+<div><p>for MongoDB.</p>
+</div></blockquote>
+<dl class="py class">
+<dt class="sig sig-object py" id="db.connectors.mongo_db.MongoDBConnector">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">db.connectors.mongo_db.</span></span><span class="sig-name descname"><span class="pre">MongoDBConnector</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">uri</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">db_name</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/DanneDevOoops/fastApi/blob/main/src/db/connectors/mongo_db.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="reference internal" href="../../_modules/db/connectors/mongo_db.html#MongoDBConnector"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#db.connectors.mongo_db.MongoDBConnector" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<p>Handles MongoDB connections using Motor.</p>
+<p>Provides methods to initialize a connection, access the client and
+database, and close the connection cleanly.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>uri</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></span>)</p></li>
+<li><p><strong>db_name</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></span>)</p></li>
+</ul>
+</dd>
+</dl>
+<p>Initialize the MongoDBConnector.</p>
+<p>Establishes a connection to the MongoDB instance using the provided
+URI and database name.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>uri</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></span>) – The MongoDB connection URI.</p></li>
+<li><p><strong>db_name</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></span>) – The name of the MongoDB database to use.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py property">
+<dt class="sig sig-object py" id="db.connectors.mongo_db.MongoDBConnector.client">
+<span class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">client</span></span><a class="reference external" href="https://github.com/DanneDevOoops/fastApi/blob/main/src/db/connectors/mongo_db.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#db.connectors.mongo_db.MongoDBConnector.client" title="Link to this definition"></a></dt>
+<dd><p>Get the MongoDB client instance.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The Motor async MongoDB client.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>AsyncIOMotorClient</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="db.connectors.mongo_db.MongoDBConnector.db">
+<span class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">db</span></span><a class="reference external" href="https://github.com/DanneDevOoops/fastApi/blob/main/src/db/connectors/mongo_db.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#db.connectors.mongo_db.MongoDBConnector.db" title="Link to this definition"></a></dt>
+<dd><p>Get the MongoDB database instance.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The Motor async MongoDB database.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference external" href="https://motor.readthedocs.io/en/stable/api-asyncio/asyncio_motor_database.html#motor.motor_asyncio.AsyncIOMotorDatabase" title="(in Motor v3.7.1)">motor.motor_asyncio.AsyncIOMotorDatabase</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="db.connectors.mongo_db.MongoDBConnector.close">
+<span class="property"><span class="k"><span class="pre">async</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">close</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference external" href="https://github.com/DanneDevOoops/fastApi/blob/main/src/db/connectors/mongo_db.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="reference internal" href="../../_modules/db/connectors/mongo_db.html#MongoDBConnector.close"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#db.connectors.mongo_db.MongoDBConnector.close" title="Link to this definition"></a></dt>
+<dd><p>Close the MongoDB client connection.</p>
+<p>Shuts down the Motor client and releases all resources.</p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-db.connectors.mongo_db_utils">
+<span id="db-connectors-mongo-db-utils-module"></span><h2>db.connectors.mongo_db_utils module<a class="headerlink" href="#module-db.connectors.mongo_db_utils" title="Link to this heading"></a></h2>
+<p>This module contains utility functions for MongoDB interactions.</p>
+<p>The utility functions are defined as classes, each representing a specific
+type of data used in the application.</p>
+<p>The following classes are defined:</p>
+<ul class="simple">
+<li><p>PyObjectId: Custom class for Pydantic to parse ObjectId.</p></li>
+</ul>
+<p>Each class includes a detailed docstring with information about its
+purpose, the parameters it takes, the response it returns, and any
+exceptions it might raise.</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="db.connectors.mongo_db_utils.PyObjectId">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">db.connectors.mongo_db_utils.</span></span><span class="sig-name descname"><span class="pre">PyObjectId</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">oid</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/DanneDevOoops/fastApi/blob/main/src/db/connectors/mongo_db_utils.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="reference internal" href="../../_modules/db/connectors/mongo_db_utils.html#PyObjectId"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#db.connectors.mongo_db_utils.PyObjectId" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">bson.objectid.ObjectId</span></code></p>
+<p>Custom class for Pydantic to parse ObjectId.</p>
+<p>This class defines the following methods:</p>
+<ul class="simple">
+<li><p>__get_validators__: Returns a generator that yields the validate method.</p></li>
+<li><p>validate: Validates the ObjectId.</p></li>
+<li><p>__get_pydantic_json_schema__: Modifies the schema.</p></li>
+</ul>
+<p>Each method includes a detailed docstring with information about its
+purpose, the parameters it takes, the response it returns, and any
+exceptions it might raise.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>oid</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>, <code class="xref py py-class docutils literal notranslate"><span class="pre">ObjectId</span></code>, <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#bytes" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bytes</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></a>]</span>)</p>
+</dd>
+</dl>
+<p>Initialize a new ObjectId.</p>
+<p>An ObjectId is a 12-byte unique identifier consisting of:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>a 4-byte value representing the seconds since the Unix epoch,</p></li>
+<li><p>a 5-byte random value,</p></li>
+<li><p>a 3-byte counter, starting with a random value.</p></li>
+</ul>
+</div></blockquote>
+<p>By default, <code class="docutils literal notranslate"><span class="pre">ObjectId()</span></code> creates a new unique identifier. The
+optional parameter <cite>oid</cite> can be an <code class="xref py py-class docutils literal notranslate"><span class="pre">ObjectId</span></code>, or any 12
+<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#bytes" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bytes</span></code></a>.</p>
+<p>For example, the 12 bytes b’foo-bar-quux’ do not follow the ObjectId
+specification but they are acceptable input:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">ObjectId</span><span class="p">(</span><span class="sa">b</span><span class="s1">&#39;foo-bar-quux&#39;</span><span class="p">)</span>
+<span class="go">ObjectId(&#39;666f6f2d6261722d71757578&#39;)</span>
+</pre></div>
+</div>
+<p><cite>oid</cite> can also be a <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a> of 24 hex digits:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">ObjectId</span><span class="p">(</span><span class="s1">&#39;0123456789ab0123456789ab&#39;</span><span class="p">)</span>
+<span class="go">ObjectId(&#39;0123456789ab0123456789ab&#39;)</span>
+</pre></div>
+</div>
+<p>Raises <code class="xref py py-class docutils literal notranslate"><span class="pre">InvalidId</span></code> if <cite>oid</cite> is not 12 bytes nor
+24 hex digits, or <a class="reference external" href="https://docs.python.org/3/library/exceptions.html#TypeError" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">TypeError</span></code></a> if <cite>oid</cite> is not an accepted type.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>oid</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>, <code class="xref py py-class docutils literal notranslate"><span class="pre">ObjectId</span></code>, <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#bytes" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bytes</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></a>]</span>) – a valid ObjectId.</p>
+</dd>
+</dl>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<p>The MongoDB documentation on  <a class="reference external" href="http://dochub.mongodb.org/core/objectids">ObjectIds</a>.</p>
+</div>
+<div class="versionchanged">
+<p><span class="versionmodified changed">Changed in version 3.8: </span><code class="xref py py-class docutils literal notranslate"><span class="pre">ObjectId</span></code> now implements the <a class="reference external" href="https://github.com/mongodb/specifications/blob/master/source/objectid.rst">ObjectID
+specification version 0.2</a>.</p>
+</div>
+<dl class="py method">
+<dt class="sig sig-object py" id="db.connectors.mongo_db_utils.PyObjectId.__get_validators__">
+<span class="property"><span class="k"><span class="pre">classmethod</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">__get_validators__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference external" href="https://github.com/DanneDevOoops/fastApi/blob/main/src/db/connectors/mongo_db_utils.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="reference internal" href="../../_modules/db/connectors/mongo_db_utils.html#PyObjectId.__get_validators__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#db.connectors.mongo_db_utils.PyObjectId.__get_validators__" title="Link to this definition"></a></dt>
+<dd><p>Returns a generator that yields the validate method.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>A generator that yields the validate method.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>generator</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="db.connectors.mongo_db_utils.PyObjectId.validate">
+<span class="property"><span class="k"><span class="pre">classmethod</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">validate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">v</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/DanneDevOoops/fastApi/blob/main/src/db/connectors/mongo_db_utils.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="reference internal" href="../../_modules/db/connectors/mongo_db_utils.html#PyObjectId.validate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#db.connectors.mongo_db_utils.PyObjectId.validate" title="Link to this definition"></a></dt>
+<dd><p>Validates the ObjectId.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>v</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a>) – The value to validate.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The validated ObjectId.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">ObjectId</span></code></span></p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.14)"><strong>ValueError</strong></a> – If the value is not a valid ObjectId.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="db.connectors.mongo_db_utils.PyObjectId.__get_pydantic_json_schema__">
+<span class="property"><span class="k"><span class="pre">classmethod</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">__get_pydantic_json_schema__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">field_schema</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/DanneDevOoops/fastApi/blob/main/src/db/connectors/mongo_db_utils.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="reference internal" href="../../_modules/db/connectors/mongo_db_utils.html#PyObjectId.__get_pydantic_json_schema__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#db.connectors.mongo_db_utils.PyObjectId.__get_pydantic_json_schema__" title="Link to this definition"></a></dt>
+<dd><p>Modifies the schema.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>field_schema</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.14)"><em>dict</em></a>) – The field schema to modify.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-db.connectors.postgres_db">
+<span id="db-connectors-postgres-db-module"></span><h2>db.connectors.postgres_db module<a class="headerlink" href="#module-db.connectors.postgres_db" title="Link to this heading"></a></h2>
+<p>Postgres Database configuration module for the FastAPI application.</p>
+<p>This module contains the <cite>PostgresConnector</cite> class, which manages the
+PostgreSQL database connection using SQLAlchemy’s asynchronous engine and
+session maker.</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="db.connectors.postgres_db.PgsqlDbSessionManager">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">db.connectors.postgres_db.</span></span><span class="sig-name descname"><span class="pre">PgsqlDbSessionManager</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">db_connection_str</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/DanneDevOoops/fastApi/blob/main/src/db/connectors/postgres_db.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="reference internal" href="../../_modules/db/connectors/postgres_db.html#PgsqlDbSessionManager"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#db.connectors.postgres_db.PgsqlDbSessionManager" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<p>A session manager class for the Postgres database connection within a
+FastAPI application. This class manages the creation and disposal of
+asynchronous database sessions using SQLAlchemy.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>db_connection_str</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></span>)</p>
+</dd>
+</dl>
+<p>Constructor method for the PgsqlDbSessionManager class to
+initialize the database connection instance.</p>
+<p>This method sets up the database connection string, creates the
+asynchronous database engine, session maker, and scoped session.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>db_connection_str</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></span>) – The database connection string.</p>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="db.connectors.postgres_db.PgsqlDbSessionManager.get_session">
+<span class="sig-name descname"><span class="pre">get_session</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference external" href="https://github.com/DanneDevOoops/fastApi/blob/main/src/db/connectors/postgres_db.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="reference internal" href="../../_modules/db/connectors/postgres_db.html#PgsqlDbSessionManager.get_session"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#db.connectors.postgres_db.PgsqlDbSessionManager.get_session" title="Link to this definition"></a></dt>
+<dd><p>Get a new asynchronous database session.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>A new asynchronous database session.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">AsyncSession</span></code></span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="db.connectors.postgres_db.PgsqlDbSessionManager.close_session">
+<span class="property"><span class="k"><span class="pre">async</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">close_session</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference external" href="https://github.com/DanneDevOoops/fastApi/blob/main/src/db/connectors/postgres_db.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="reference internal" href="../../_modules/db/connectors/postgres_db.html#PgsqlDbSessionManager.close_session"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#db.connectors.postgres_db.PgsqlDbSessionManager.close_session" title="Link to this definition"></a></dt>
+<dd><p>Close the asynchronous database session. This method disposes of
+the database engine, effectively closing all active sessions.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="../core/core.html#core.custom_exceptions.DatabaseException" title="core.custom_exceptions.DatabaseException"><strong>DatabaseException</strong></a> – If the database engine is not initialized.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="db.connectors.postgres_db.PgsqlDbSessionManager.get_db_connection_str">
+<span class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">get_db_connection_str</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference external" href="https://github.com/DanneDevOoops/fastApi/blob/main/src/db/connectors/postgres_db.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="reference internal" href="../../_modules/db/connectors/postgres_db.html#PgsqlDbSessionManager.get_db_connection_str"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#db.connectors.postgres_db.PgsqlDbSessionManager.get_db_connection_str" title="Link to this definition"></a></dt>
+<dd><blockquote>
+<div><p>Get the Postgres database connection string.</p>
+</div></blockquote>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The Postgres database connection string.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></span></p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="db.connectors.postgres_db.get_pg_db">
+<span class="property"><span class="k"><span class="pre">async</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">db.connectors.postgres_db.</span></span><span class="sig-name descname"><span class="pre">get_pg_db</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference external" href="https://github.com/DanneDevOoops/fastApi/blob/main/src/db/connectors/postgres_db.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="reference internal" href="../../_modules/db/connectors/postgres_db.html#get_pg_db"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#db.connectors.postgres_db.get_pg_db" title="Link to this definition"></a></dt>
+<dd><p>Get a new session for the database. This method retrieves a new
+asynchronous database session from the session manager. If the session
+manager is not initialized correctly, it raises a DatabaseException.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="../core/core.html#core.custom_exceptions.DatabaseException" title="core.custom_exceptions.DatabaseException"><strong>DatabaseException</strong></a> – If the PgsqlDbSessionManager is not
+initialized correctly.</p>
+</dd>
+<dt class="field-even">Yield<span class="colon">:</span></dt>
+<dd class="field-even"><p>A new asynchronous database session.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>AsyncIterator[AsyncSession]</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="module-db.connectors.sqlite_db">
+<span id="db-connectors-sqlite-db-module"></span><h2>db.connectors.sqlite_db module<a class="headerlink" href="#module-db.connectors.sqlite_db" title="Link to this heading"></a></h2>
+<p>SQLite Database configuration module for the FastAPI application.</p>
+<p>This module contains the <cite>SQLiteConnector</cite> class, which manages the SQLite
+database connection using SQLAlchemy’s asynchronous engine and session maker.</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="db.connectors.sqlite_db.SQLiteConnector">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">db.connectors.sqlite_db.</span></span><span class="sig-name descname"><span class="pre">SQLiteConnector</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">db_path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/DanneDevOoops/fastApi/blob/main/src/db/connectors/sqlite_db.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="reference internal" href="../../_modules/db/connectors/sqlite_db.html#SQLiteConnector"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#db.connectors.sqlite_db.SQLiteConnector" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<p>A class to manage the SQLite database connection for a FastAPI application.</p>
+<p>This class encapsulates the configuration and management of the SQLite
+database connection using SQLAlchemy’s asynchronous engine and session
+maker.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Variables<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>DATABASE_URL</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a>) – The database URL for connecting to SQLite.</p></li>
+<li><p><strong>sqlite_engine</strong> (<em>AsyncEngine</em>) – The SQLAlchemy asynchronous engine for the database.</p></li>
+<li><p><strong>async_session_local</strong> (<em>async_sessionmaker</em>) – The SQLAlchemy session maker for creating
+async sessions.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>db_path</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a> | <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></a></span>)</p>
+</dd>
+</dl>
+<p>Initialize the SQLiteConnector instance.</p>
+<p>This method sets up the database URL, creates an asynchronous
+database engine, and initializes the asynchronous session maker.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>db_path</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a> | <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></a></span>) – The file path to the SQLite database.</p>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="db.connectors.sqlite_db.SQLiteConnector.get_sqlite_db">
+<span class="property"><span class="k"><span class="pre">async</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">get_sqlite_db</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference external" href="https://github.com/DanneDevOoops/fastApi/blob/main/src/db/connectors/sqlite_db.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="reference internal" href="../../_modules/db/connectors/sqlite_db.html#SQLiteConnector.get_sqlite_db"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#db.connectors.sqlite_db.SQLiteConnector.get_sqlite_db" title="Link to this definition"></a></dt>
+<dd><p>Method to get a database session.</p>
+<p>This method does not take any parameters and returns a database
+session.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>A database session.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">AsyncSession</span></code></span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="db.connectors.sqlite_db.SQLiteConnector.get_db_url">
+<span class="sig-name descname"><span class="pre">get_db_url</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference external" href="https://github.com/DanneDevOoops/fastApi/blob/main/src/db/connectors/sqlite_db.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="reference internal" href="../../_modules/db/connectors/sqlite_db.html#SQLiteConnector.get_db_url"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#db.connectors.sqlite_db.SQLiteConnector.get_db_url" title="Link to this definition"></a></dt>
+<dd><p>Method to get the SQLite database URL.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The database URL.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></span></p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-db.connectors">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-db.connectors" title="Link to this heading"></a></h2>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="db.config.html" class="btn btn-neutral float-left" title="db.config package" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="db.models.html" class="btn btn-neutral float-right" title="db.models package" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, Daniel Andersson &lt;d.andersson86@icloud.com&gt;.
+      <span class="lastupdated">Last updated on 2026-06-02.
+      </span></p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

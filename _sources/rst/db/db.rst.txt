@@ -1,0 +1,22 @@
+db package
+==========
+
+Subpackages
+-----------
+
+.. toctree::
+   :maxdepth: 3
+
+   db.config
+   db.connectors
+   db.models
+   db.schemas
+   db.serializers
+
+Module contents
+---------------
+
+.. automodule:: db
+   :members:
+   :show-inheritance:
+   :undoc-members:

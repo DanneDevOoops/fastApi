@@ -1,0 +1,643 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>db.models.v2_models.application_model_v2 &mdash; FastAPI Application 0.0.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../../../_static/css/theme.css?v=9edc463e" />
+      <link rel="stylesheet" type="text/css" href="../../../../_static/graphviz.css?v=4ae1632d" />
+
+  
+    <link rel="canonical" href="https://github.com/DanneDevOoops/fastApi/_modules/db/models/v2_models/application_model_v2.html" />
+      <script src="../../../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../../../_static/documentation_options.js?v=7026087e"></script>
+      <script src="../../../../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../../../../_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="../../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../../index.html" class="icon icon-home">
+            FastAPI Application
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../rst/api/modules.html">api</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../rst/core/modules.html">core</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../rst/db/modules.html">db</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../rst/middlewares/modules.html">middlewares</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../rst/utils/modules.html">utils</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Documents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../coverage.html">docs coverage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../readme.html">project readme</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../docstrings.html">write docstrings</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../index.html">FastAPI Application</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content style-external-links">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">db.models.v2_models.application_model_v2</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for db.models.v2_models.application_model_v2</h1><div class="highlight"><pre>
+<span></span><span class="ch">#!/usr/bin/env python3</span>
+<span class="c1"># -*- coding: utf-8 -*-</span>
+
+
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">This module provides data models for representing, creating, updating,</span>
+<span class="sd">and deleting application or service records in a database. It defines</span>
+<span class="sd">schemas for application documents, including metadata, configuration,</span>
+<span class="sd">and utility settings, supporting both full and partial updates as well as</span>
+<span class="sd">deletion operations. The models are designed for integration with MongoDB</span>
+<span class="sd">and Beanie ODM, ensuring type safety, validation, and consistent structure</span>
+<span class="sd">for application data management.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">datetime</span><span class="w"> </span><span class="kn">import</span> <span class="n">datetime</span><span class="p">,</span> <span class="n">timezone</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">Optional</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">pymongo</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">beanie</span><span class="w"> </span><span class="kn">import</span> <span class="n">Document</span><span class="p">,</span> <span class="n">Indexed</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">bson</span><span class="w"> </span><span class="kn">import</span> <span class="n">ObjectId</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pydantic</span><span class="w"> </span><span class="kn">import</span> <span class="n">BaseModel</span><span class="p">,</span> <span class="n">Field</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">src.utils.nano_id</span><span class="w"> </span><span class="kn">import</span> <span class="n">generate_nano_id</span>
+
+
+<div class="viewcode-block" id="Application">
+<a class="viewcode-back" href="../../../../rst/db/db.models.v2_models.html#db.models.v2_models.application_model_v2.Application">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">Application</span><span class="p">(</span><span class="n">Document</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Represents an application document stored in the database.</span>
+
+<span class="sd">    :param id: Unique identifier of the application (MongoDB `_id`).</span>
+<span class="sd">    :type id: str</span>
+<span class="sd">    :param index: Unique index for the application.</span>
+<span class="sd">    :type index: int</span>
+<span class="sd">    :param name: Name of the application.</span>
+<span class="sd">    :type name: str</span>
+<span class="sd">    :param description: Description of the application.</span>
+<span class="sd">    :type description: str</span>
+<span class="sd">    :param api_key: API key associated with the application (optional).</span>
+<span class="sd">    :type api_key: Optional[str]</span>
+<span class="sd">    :param ip_adress: IP address or URL of the application.</span>
+<span class="sd">    :type ip_adress: str</span>
+<span class="sd">    :param port: Port number for the application.</span>
+<span class="sd">    :type port: int</span>
+<span class="sd">    :param tags: Additional metadata as key-value pairs (optional).</span>
+<span class="sd">    :type tags: Optional[Dict]</span>
+<span class="sd">    :param created_at: Timestamp when the application was created (UTC).</span>
+<span class="sd">    :type created_at: datetime</span>
+<span class="sd">    :param updated_at: Timestamp when the application was last updated (UTC).</span>
+<span class="sd">    :type updated_at: datetime</span>
+<span class="sd">    :param deleted_at: Timestamp when the application was deleted,</span>
+<span class="sd">        if applicable.</span>
+<span class="sd">    :type deleted_at: Optional[datetime]</span>
+
+<span class="sd">    :cvar model_config: Allows arbitrary types and encodes</span>
+<span class="sd">        ObjectId as string.</span>
+<span class="sd">    :cvar Settings: Contains collection name and utility methods</span>
+<span class="sd">        for the model.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="nb">id</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="n">alias</span><span class="o">=</span><span class="s2">&quot;_id&quot;</span><span class="p">,</span> <span class="n">default_factory</span><span class="o">=</span><span class="n">generate_nano_id</span><span class="p">)</span>
+    <span class="n">index</span><span class="p">:</span> <span class="n">Indexed</span><span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="n">pymongo</span><span class="o">.</span><span class="n">ASCENDING</span><span class="p">,</span> <span class="n">unique</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;app-index&quot;</span><span class="p">)</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="n">default_factory</span><span class="o">=</span><span class="nb">int</span>
+    <span class="p">)</span>
+    <span class="n">name</span><span class="p">:</span> <span class="n">Indexed</span><span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="n">pymongo</span><span class="o">.</span><span class="n">DESCENDING</span><span class="p">,</span> <span class="n">unique</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;app-name&quot;</span><span class="p">)</span>
+
+    <span class="n">description</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="s2">&quot;No description provided&quot;</span><span class="p">)</span>
+    <span class="n">api_key</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">ip_adress</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;http://localhost&quot;</span>
+    <span class="n">port</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">3000</span>
+    <span class="n">tags</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="n">default_factory</span><span class="o">=</span><span class="nb">dict</span><span class="p">)</span>
+
+    <span class="n">created_at</span><span class="p">:</span> <span class="n">datetime</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="n">default_factory</span><span class="o">=</span><span class="k">lambda</span><span class="p">:</span> <span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">(</span><span class="n">timezone</span><span class="o">.</span><span class="n">utc</span><span class="p">))</span>
+    <span class="n">updated_at</span><span class="p">:</span> <span class="n">datetime</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="n">default_factory</span><span class="o">=</span><span class="k">lambda</span><span class="p">:</span> <span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">(</span><span class="n">timezone</span><span class="o">.</span><span class="n">utc</span><span class="p">))</span>
+    <span class="n">deleted_at</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">datetime</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+
+    <span class="n">model_config</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;arbitrary_types_allowed&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span> <span class="s2">&quot;json_encoders&quot;</span><span class="p">:</span> <span class="p">{</span><span class="n">ObjectId</span><span class="p">:</span> <span class="nb">str</span><span class="p">}}</span>
+
+<div class="viewcode-block" id="Application.Settings">
+<a class="viewcode-back" href="../../../../rst/db/db.models.v2_models.html#db.models.v2_models.application_model_v2.Application.Settings">[docs]</a>
+    <span class="k">class</span><span class="w"> </span><span class="nc">Settings</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Settings for the Application model.</span>
+
+<span class="sd">        :cvar name: The name of the MongoDB collection for applications.</span>
+<span class="sd">        :type name: str</span>
+
+<span class="sd">        :return __str__: The name of the application (collection).</span>
+<span class="sd">        :rtype __str__: str</span>
+
+<span class="sd">        :return __dir__: List of attribute names relevant to the</span>
+<span class="sd">            Application model.</span>
+<span class="sd">        :rtype __dir__: list</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;applications&quot;</span>
+
+<div class="viewcode-block" id="Application.Settings.__str__">
+<a class="viewcode-back" href="../../../../rst/db/db.models.v2_models.html#db.models.v2_models.application_model_v2.Application.Settings.__str__">[docs]</a>
+        <span class="k">def</span><span class="w"> </span><span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">            </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">            String representation of the Application model.</span>
+
+<span class="sd">            :return: The name of the application.</span>
+<span class="sd">            :rtype: str</span>
+<span class="sd">            &quot;&quot;&quot;</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span></div>
+
+
+<div class="viewcode-block" id="Application.Settings.__dir__">
+<a class="viewcode-back" href="../../../../rst/db/db.models.v2_models.html#db.models.v2_models.application_model_v2.Application.Settings.__dir__">[docs]</a>
+        <span class="k">def</span><span class="w"> </span><span class="fm">__dir__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">            </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">            Return the list of attributes for the Application model.</span>
+
+<span class="sd">            :return: List of attributes.</span>
+<span class="sd">            :rtype: list</span>
+<span class="sd">            &quot;&quot;&quot;</span>
+            <span class="k">return</span> <span class="p">[</span>
+                <span class="s2">&quot;name&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;index&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;description&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;api_key&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;host_ip&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;host_port&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;tags&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;created_at&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;updated_at&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;deleted_at&quot;</span><span class="p">,</span>
+            <span class="p">]</span></div>
+</div>
+</div>
+
+
+
+<div class="viewcode-block" id="NewApplication">
+<a class="viewcode-back" href="../../../../rst/db/db.models.v2_models.html#db.models.v2_models.application_model_v2.NewApplication">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">NewApplication</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Represents a new application document in the database.</span>
+
+<span class="sd">    :param id: Unique identifier of the application (MongoDB `_id`).</span>
+<span class="sd">    :type id: str</span>
+<span class="sd">    :param index: Unique index for the application.</span>
+<span class="sd">    :type index: int</span>
+<span class="sd">    :param name: Name of the application.</span>
+<span class="sd">    :type name: str</span>
+<span class="sd">    :param description: Description of the application.</span>
+<span class="sd">    :type description: str</span>
+<span class="sd">    :param api_key: API key associated with the application.</span>
+<span class="sd">    :type api_key: str</span>
+<span class="sd">    :param token_exposed: Exposed token for the application.</span>
+<span class="sd">    :type token_exposed: str</span>
+<span class="sd">    :param ip_adress: IP address of the application.</span>
+<span class="sd">    :type ip_adress: str</span>
+<span class="sd">    :param port: Port number for the application.</span>
+<span class="sd">    :type port: int</span>
+<span class="sd">    :param tags: Additional metadata as key-value pairs.</span>
+<span class="sd">    :type tags: Dict</span>
+<span class="sd">    :param created_at: Timestamp when the application was created (UTC).</span>
+<span class="sd">    :type created_at: datetime</span>
+
+<span class="sd">    :cvar model_config: Allows arbitrary types and encodes</span>
+<span class="sd">        ObjectId as string.</span>
+<span class="sd">    :cvar Settings: Contains collection name and utility methods</span>
+<span class="sd">        for the model.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="nb">id</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="n">alias</span><span class="o">=</span><span class="s2">&quot;_id&quot;</span><span class="p">)</span>
+    <span class="n">index</span><span class="p">:</span> <span class="nb">int</span>
+    <span class="n">name</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">description</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">api_key</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">token_exposed</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">ip_adress</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">port</span><span class="p">:</span> <span class="nb">int</span>
+    <span class="n">tags</span><span class="p">:</span> <span class="n">Dict</span>
+    <span class="n">created_at</span><span class="p">:</span> <span class="n">datetime</span>
+
+    <span class="n">model_config</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;arbitrary_types_allowed&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span> <span class="s2">&quot;json_encoders&quot;</span><span class="p">:</span> <span class="p">{</span><span class="n">ObjectId</span><span class="p">:</span> <span class="nb">str</span><span class="p">}}</span>
+
+<div class="viewcode-block" id="NewApplication.Settings">
+<a class="viewcode-back" href="../../../../rst/db/db.models.v2_models.html#db.models.v2_models.application_model_v2.NewApplication.Settings">[docs]</a>
+    <span class="k">class</span><span class="w"> </span><span class="nc">Settings</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Settings for the Application model.</span>
+
+<span class="sd">        :cvar name: The name of the MongoDB collection for applications.</span>
+<span class="sd">        :type name: str</span>
+
+<span class="sd">        :return __str__: The name of the application (collection).</span>
+<span class="sd">        :rtype __str__: str</span>
+
+<span class="sd">        :return __dir__: List of attribute names relevant to the</span>
+<span class="sd">            Application model.</span>
+<span class="sd">        :rtype __dir__: list</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;applications&quot;</span>
+
+<div class="viewcode-block" id="NewApplication.Settings.__str__">
+<a class="viewcode-back" href="../../../../rst/db/db.models.v2_models.html#db.models.v2_models.application_model_v2.NewApplication.Settings.__str__">[docs]</a>
+        <span class="k">def</span><span class="w"> </span><span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">            </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">            String representation of the Application model.</span>
+
+<span class="sd">            :return: The name of the application.</span>
+<span class="sd">            :rtype: str</span>
+<span class="sd">            &quot;&quot;&quot;</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span></div>
+
+
+<div class="viewcode-block" id="NewApplication.Settings.__dir__">
+<a class="viewcode-back" href="../../../../rst/db/db.models.v2_models.html#db.models.v2_models.application_model_v2.NewApplication.Settings.__dir__">[docs]</a>
+        <span class="k">def</span><span class="w"> </span><span class="fm">__dir__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">            </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">            Return the list of attributes for the Application model.</span>
+
+<span class="sd">            :return: List of attributes.</span>
+<span class="sd">            :rtype: list</span>
+<span class="sd">            &quot;&quot;&quot;</span>
+            <span class="k">return</span> <span class="p">[</span>
+                <span class="s2">&quot;name&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;index&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;description&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;api_key&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;host_ip&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;host_port&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;tags&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;created_at&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;updated_at&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;deleted_at&quot;</span><span class="p">,</span>
+            <span class="p">]</span></div>
+</div>
+</div>
+
+
+
+<div class="viewcode-block" id="CreateApplication">
+<a class="viewcode-back" href="../../../../rst/db/db.models.v2_models.html#db.models.v2_models.application_model_v2.CreateApplication">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">CreateApplication</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Represents a request to create a new application or service.</span>
+
+<span class="sd">    :param index: Optional unique index for the application.</span>
+<span class="sd">    :type index: Optional[int]</span>
+<span class="sd">    :param name: Name of the application.</span>
+<span class="sd">    :type name: str</span>
+<span class="sd">    :param description: Description of the application (optional).</span>
+<span class="sd">    :type description: Optional[str]</span>
+<span class="sd">    :param ip_adress: IP address of the application.</span>
+<span class="sd">    :type ip_adress: str</span>
+<span class="sd">    :param port: Port number for the application.</span>
+<span class="sd">    :type port: int</span>
+<span class="sd">    :param tags: Additional metadata as key-value pairs (optional).</span>
+<span class="sd">    :type tags: Optional[Dict]</span>
+<span class="sd">    :param created_at: Timestamp when the application was</span>
+<span class="sd">        created (UTC, optional).</span>
+<span class="sd">    :type created_at: Optional[datetime]</span>
+<span class="sd">    :param updated_at: Timestamp when the application was last</span>
+<span class="sd">        updated (UTC, optional).</span>
+<span class="sd">    :type updated_at: Optional[datetime]</span>
+<span class="sd">    :param deleted_at: Timestamp when the application was deleted,</span>
+<span class="sd">        if applicable.</span>
+<span class="sd">    :type deleted_at: Optional[datetime]</span>
+
+<span class="sd">    :cvar model_config: Allows arbitrary types and encodes</span>
+<span class="sd">        ObjectId as string.</span>
+<span class="sd">    :cvar Settings: Contains collection name and utility methods</span>
+<span class="sd">        for the model.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">index</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="n">default_factory</span><span class="o">=</span><span class="nb">int</span><span class="p">)</span>
+    <span class="n">name</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">description</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="s2">&quot;No description provided...&quot;</span><span class="p">)</span>
+    <span class="n">ip_adress</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;127.0.0.1&quot;</span>
+    <span class="n">port</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">3000</span>
+    <span class="n">tags</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="n">default_factory</span><span class="o">=</span><span class="nb">dict</span><span class="p">)</span>
+
+    <span class="n">created_at</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">datetime</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="n">default_factory</span><span class="o">=</span><span class="k">lambda</span><span class="p">:</span> <span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">(</span><span class="n">timezone</span><span class="o">.</span><span class="n">utc</span><span class="p">)</span>
+    <span class="p">)</span>
+    <span class="n">updated_at</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">datetime</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="n">default_factory</span><span class="o">=</span><span class="k">lambda</span><span class="p">:</span> <span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">(</span><span class="n">timezone</span><span class="o">.</span><span class="n">utc</span><span class="p">)</span>
+    <span class="p">)</span>
+    <span class="n">deleted_at</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="kc">None</span> <span class="o">|</span> <span class="n">datetime</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+
+    <span class="n">model_config</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;arbitrary_types_allowed&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span> <span class="s2">&quot;json_encoders&quot;</span><span class="p">:</span> <span class="p">{</span><span class="n">ObjectId</span><span class="p">:</span> <span class="nb">str</span><span class="p">}}</span>
+
+<div class="viewcode-block" id="CreateApplication.Settings">
+<a class="viewcode-back" href="../../../../rst/db/db.models.v2_models.html#db.models.v2_models.application_model_v2.CreateApplication.Settings">[docs]</a>
+    <span class="k">class</span><span class="w"> </span><span class="nc">Settings</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Settings for the Application model.</span>
+
+<span class="sd">        :cvar name: The name of the MongoDB collection for applications.</span>
+<span class="sd">        :type name: str</span>
+
+<span class="sd">        :return __str__: The name of the application (collection).</span>
+<span class="sd">        :rtype __str__: str</span>
+
+<span class="sd">        :return __dir__: List of attribute names relevant to the</span>
+<span class="sd">            Application model.</span>
+<span class="sd">        :rtype __dir__: list</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;applications&quot;</span>
+
+<div class="viewcode-block" id="CreateApplication.Settings.__str__">
+<a class="viewcode-back" href="../../../../rst/db/db.models.v2_models.html#db.models.v2_models.application_model_v2.CreateApplication.Settings.__str__">[docs]</a>
+        <span class="k">def</span><span class="w"> </span><span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">            </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">            String representation of the Application model.</span>
+
+<span class="sd">            :return: The name of the application.</span>
+<span class="sd">            :rtype: str</span>
+<span class="sd">            &quot;&quot;&quot;</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span></div>
+
+
+<div class="viewcode-block" id="CreateApplication.Settings.__dir__">
+<a class="viewcode-back" href="../../../../rst/db/db.models.v2_models.html#db.models.v2_models.application_model_v2.CreateApplication.Settings.__dir__">[docs]</a>
+        <span class="k">def</span><span class="w"> </span><span class="fm">__dir__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">            </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">            Return the list of attributes for the Application model.</span>
+
+<span class="sd">            :return: List of attributes.</span>
+<span class="sd">            :rtype: list</span>
+<span class="sd">            &quot;&quot;&quot;</span>
+            <span class="k">return</span> <span class="p">[</span>
+                <span class="s2">&quot;name&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;index&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;description&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;api_key&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;host_ip&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;host_port&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;tags&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;created_at&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;updated_at&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;deleted_at&quot;</span><span class="p">,</span>
+            <span class="p">]</span></div>
+</div>
+</div>
+
+
+
+<div class="viewcode-block" id="PatchUpdateApplication">
+<a class="viewcode-back" href="../../../../rst/db/db.models.v2_models.html#db.models.v2_models.application_model_v2.PatchUpdateApplication">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">PatchUpdateApplication</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Represents a request to partially update an existing application or</span>
+<span class="sd">    service.</span>
+
+<span class="sd">    :param name: New name for the application (optional).</span>
+<span class="sd">    :type name: Optional[str]</span>
+<span class="sd">    :param description: Updated description of the application (optional).</span>
+<span class="sd">    :type description: Optional[str]</span>
+<span class="sd">    :param ip_adress: Updated IP address of the application (optional).</span>
+<span class="sd">    :type ip_adress: Optional[str]</span>
+<span class="sd">    :param port: Updated port number for the application (optional).</span>
+<span class="sd">    :type port: Optional[int]</span>
+<span class="sd">    :param tags: Additional metadata as key-value pairs (optional).</span>
+<span class="sd">    :type tags: Optional[Dict]</span>
+
+<span class="sd">    :cvar model_config: Allows arbitrary types and encodes</span>
+<span class="sd">        ObjectId as string.</span>
+<span class="sd">    :cvar Settings: Contains collection name and utility methods for</span>
+<span class="sd">        the model.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">name</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">description</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">ip_adress</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">port</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">tags</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+
+    <span class="n">model_config</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;arbitrary_types_allowed&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span> <span class="s2">&quot;json_encoders&quot;</span><span class="p">:</span> <span class="p">{</span><span class="n">ObjectId</span><span class="p">:</span> <span class="nb">str</span><span class="p">}}</span>
+
+<div class="viewcode-block" id="PatchUpdateApplication.Settings">
+<a class="viewcode-back" href="../../../../rst/db/db.models.v2_models.html#db.models.v2_models.application_model_v2.PatchUpdateApplication.Settings">[docs]</a>
+    <span class="k">class</span><span class="w"> </span><span class="nc">Settings</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Settings for the PatchUpdateApplication model.</span>
+
+<span class="sd">        :cvar name: The name of the MongoDB collection for applications.</span>
+<span class="sd">        :type name: str</span>
+
+<span class="sd">        :return: String representation of the Settings instance.</span>
+<span class="sd">        :rtype: str</span>
+
+<span class="sd">        :return: List of attributes for the PatchUpdateApplication model.</span>
+<span class="sd">        :rtype: list</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;applications&quot;</span>
+
+<div class="viewcode-block" id="PatchUpdateApplication.Settings.__str__">
+<a class="viewcode-back" href="../../../../rst/db/db.models.v2_models.html#db.models.v2_models.application_model_v2.PatchUpdateApplication.Settings.__str__">[docs]</a>
+        <span class="k">def</span><span class="w"> </span><span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">            </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">            String representation of the Application model.</span>
+
+<span class="sd">            :return: The name of the application.</span>
+<span class="sd">            :rtype: str</span>
+<span class="sd">            &quot;&quot;&quot;</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span></div>
+
+
+<div class="viewcode-block" id="PatchUpdateApplication.Settings.__dir__">
+<a class="viewcode-back" href="../../../../rst/db/db.models.v2_models.html#db.models.v2_models.application_model_v2.PatchUpdateApplication.Settings.__dir__">[docs]</a>
+        <span class="k">def</span><span class="w"> </span><span class="fm">__dir__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">            </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">            Return the list of attributes for the Application model.</span>
+
+<span class="sd">            :return: List of attributes.</span>
+<span class="sd">            :rtype: list</span>
+<span class="sd">            &quot;&quot;&quot;</span>
+            <span class="k">return</span> <span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">,</span> <span class="s2">&quot;description&quot;</span><span class="p">,</span> <span class="s2">&quot;ip_adress&quot;</span><span class="p">,</span> <span class="s2">&quot;port&quot;</span><span class="p">,</span> <span class="s2">&quot;tags&quot;</span><span class="p">]</span></div>
+</div>
+</div>
+
+
+
+<div class="viewcode-block" id="PutApplicationData">
+<a class="viewcode-back" href="../../../../rst/db/db.models.v2_models.html#db.models.v2_models.application_model_v2.PutApplicationData">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">PutApplicationData</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    some...</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">name</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">description</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">ip_adress</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">port</span><span class="p">:</span> <span class="nb">int</span>
+    <span class="n">tags</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+
+    <span class="n">model_config</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;arbitrary_types_allowed&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span> <span class="s2">&quot;json_encoders&quot;</span><span class="p">:</span> <span class="p">{</span><span class="n">ObjectId</span><span class="p">:</span> <span class="nb">str</span><span class="p">}}</span>
+
+<div class="viewcode-block" id="PutApplicationData.Settings">
+<a class="viewcode-back" href="../../../../rst/db/db.models.v2_models.html#db.models.v2_models.application_model_v2.PutApplicationData.Settings">[docs]</a>
+    <span class="k">class</span><span class="w"> </span><span class="nc">Settings</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Settings for the PutApplicationData model.</span>
+
+<span class="sd">        :cvar name: The name of the MongoDB collection for applications.</span>
+<span class="sd">        :type name: str</span>
+
+<span class="sd">        :return: String representation of the Settings instance.</span>
+<span class="sd">        :rtype: str</span>
+
+<span class="sd">        :return: List of attributes for the PutApplicationData model.</span>
+<span class="sd">        :rtype: list</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;applications&quot;</span>
+
+        <span class="k">def</span><span class="w"> </span><span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span>
+
+        <span class="k">def</span><span class="w"> </span><span class="fm">__dir__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+            <span class="k">return</span> <span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">,</span> <span class="s2">&quot;description&quot;</span><span class="p">,</span> <span class="s2">&quot;ip_adress&quot;</span><span class="p">,</span> <span class="s2">&quot;port&quot;</span><span class="p">,</span> <span class="s2">&quot;tags&quot;</span><span class="p">]</span></div>
+</div>
+
+
+
+<div class="viewcode-block" id="DeleteApplication">
+<a class="viewcode-back" href="../../../../rst/db/db.models.v2_models.html#db.models.v2_models.application_model_v2.DeleteApplication">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">DeleteApplication</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Represents a request to delete an existing application or service.</span>
+
+<span class="sd">    :param id: Unique identifier of the application to be</span>
+<span class="sd">        deleted (MongoDB `_id`).</span>
+<span class="sd">    :type id: str</span>
+
+<span class="sd">    :cvar model_config: Allows arbitrary types and encodes ObjectId as string.</span>
+<span class="sd">    :cvar Settings: Contains collection name and utility methods for</span>
+<span class="sd">        the model.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="nb">id</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="n">alias</span><span class="o">=</span><span class="s2">&quot;_id&quot;</span><span class="p">)</span>
+
+    <span class="n">model_config</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;arbitrary_types_allowed&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span> <span class="s2">&quot;json_encoders&quot;</span><span class="p">:</span> <span class="p">{</span><span class="n">ObjectId</span><span class="p">:</span> <span class="nb">str</span><span class="p">}}</span>
+
+<div class="viewcode-block" id="DeleteApplication.Settings">
+<a class="viewcode-back" href="../../../../rst/db/db.models.v2_models.html#db.models.v2_models.application_model_v2.DeleteApplication.Settings">[docs]</a>
+    <span class="k">class</span><span class="w"> </span><span class="nc">Settings</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Settings for the DeleteApplication model.</span>
+
+<span class="sd">        :cvar name: The name of the MongoDB collection for applications.</span>
+<span class="sd">        :type name: str</span>
+
+<span class="sd">        :return: String representation of the Settings instance.</span>
+<span class="sd">        :rtype: str</span>
+
+<span class="sd">        :return: List of attributes and methods of the Settings instance.</span>
+<span class="sd">        :rtype: list</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;applications&quot;</span>
+
+<div class="viewcode-block" id="DeleteApplication.Settings.__str__">
+<a class="viewcode-back" href="../../../../rst/db/db.models.v2_models.html#db.models.v2_models.application_model_v2.DeleteApplication.Settings.__str__">[docs]</a>
+        <span class="k">def</span><span class="w"> </span><span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">            </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">            String representation of the Application model.</span>
+
+<span class="sd">            :return: The name of the application.</span>
+<span class="sd">            :rtype: str</span>
+<span class="sd">            &quot;&quot;&quot;</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span></div>
+
+
+<div class="viewcode-block" id="DeleteApplication.Settings.__dir__">
+<a class="viewcode-back" href="../../../../rst/db/db.models.v2_models.html#db.models.v2_models.application_model_v2.DeleteApplication.Settings.__dir__">[docs]</a>
+        <span class="k">def</span><span class="w"> </span><span class="fm">__dir__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">            </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">            Return the list of attributes for the Application model.</span>
+
+<span class="sd">            :return: List of attributes.</span>
+<span class="sd">            :rtype: list</span>
+<span class="sd">            &quot;&quot;&quot;</span>
+            <span class="k">return</span> <span class="p">[</span><span class="s2">&quot;id&quot;</span><span class="p">]</span></div>
+</div>
+</div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, Daniel Andersson &lt;d.andersson86@icloud.com&gt;.
+      <span class="lastupdated">Last updated on 2026-06-02.
+      </span></p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

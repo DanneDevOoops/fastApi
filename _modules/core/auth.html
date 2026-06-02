@@ -1,0 +1,536 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>core.auth &mdash; FastAPI Application 0.0.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=9edc463e" />
+      <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=4ae1632d" />
+
+  
+    <link rel="canonical" href="https://github.com/DanneDevOoops/fastApi/_modules/core/auth.html" />
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=7026087e"></script>
+      <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            FastAPI Application
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../rst/api/modules.html">api</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../rst/core/modules.html">core</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../rst/db/modules.html">db</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../rst/middlewares/modules.html">middlewares</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../rst/utils/modules.html">utils</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Documents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../coverage.html">docs coverage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../readme.html">project readme</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../docstrings.html">write docstrings</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">FastAPI Application</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content style-external-links">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">core.auth</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for core.auth</h1><div class="highlight"><pre>
+<span></span><span class="ch">#!/usr/bin/env python3</span>
+<span class="c1"># -*- coding: utf-8 -*-</span>
+<span class="c1"># pylint: disable=singleton-comparison</span>
+
+
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">This module contains the authentication logic for the FastAPI application.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">hashlib</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">logging</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">datetime</span><span class="w"> </span><span class="kn">import</span> <span class="n">datetime</span><span class="p">,</span> <span class="n">timedelta</span><span class="p">,</span> <span class="n">timezone</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">bcrypt</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">fastapi</span><span class="w"> </span><span class="kn">import</span> <span class="n">Depends</span><span class="p">,</span> <span class="n">HTTPException</span><span class="p">,</span> <span class="n">Request</span><span class="p">,</span> <span class="n">Security</span><span class="p">,</span> <span class="n">status</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">fastapi.security</span><span class="w"> </span><span class="kn">import</span> <span class="n">APIKeyHeader</span><span class="p">,</span> <span class="n">APIKeyQuery</span><span class="p">,</span> <span class="n">OAuth2PasswordBearer</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">jose</span><span class="w"> </span><span class="kn">import</span> <span class="n">JWTError</span><span class="p">,</span> <span class="n">jwt</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sqlalchemy</span><span class="w"> </span><span class="kn">import</span> <span class="n">select</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sqlalchemy.ext.asyncio</span><span class="w"> </span><span class="kn">import</span> <span class="n">AsyncSession</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">src.core.env_config</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_settings</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">src.db.connectors.postgres_db</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_pg_db</span>
+
+<span class="c1"># Postgres models</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">src.db.models.v1_models.applications_model_v1</span><span class="w"> </span><span class="kn">import</span> <span class="n">Application</span> <span class="k">as</span> <span class="n">ApplicationV1</span>
+
+<span class="c1"># MongiDB models</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">src.db.models.v2_models.application_model_v2</span><span class="w"> </span><span class="kn">import</span> <span class="n">Application</span> <span class="k">as</span> <span class="n">ApplicationV2</span>
+
+<span class="n">settings</span> <span class="o">=</span> <span class="n">get_settings</span><span class="p">()</span>
+<span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="n">settings</span><span class="o">.</span><span class="n">app_logger_name</span> <span class="ow">or</span> <span class="s2">&quot;application_logger&quot;</span><span class="p">)</span>
+
+<span class="n">oauth2_bearer</span> <span class="o">=</span> <span class="n">OAuth2PasswordBearer</span><span class="p">(</span><span class="n">tokenUrl</span><span class="o">=</span><span class="s2">&quot;api/v2/auth/token&quot;</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="get_auth_headers_and_query_params">
+<a class="viewcode-back" href="../../rst/core/core.html#core.auth.get_auth_headers_and_query_params">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">get_auth_headers_and_query_params</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Create and return the authentication headers and query parameters.</span>
+
+<span class="sd">    This function initializes and returns two objects used for API key</span>
+<span class="sd">    authentication: one for query parameters and one for headers. These</span>
+<span class="sd">    objects are configured to handle API key validation without raising</span>
+<span class="sd">    automatic errors.</span>
+
+<span class="sd">    :returns:</span>
+<span class="sd">        A tuple containing:</span>
+
+<span class="sd">        - **header_key** (*APIKeyHeader*): The API key object for the</span>
+<span class="sd">          `x-api-key` header.</span>
+<span class="sd">        - **query_key** (*APIKeyQuery*): The API key object for the</span>
+<span class="sd">          `api_key` query parameter.</span>
+
+<span class="sd">    :rtype: tuple</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">query_key</span> <span class="o">=</span> <span class="n">APIKeyQuery</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;api_key&quot;</span><span class="p">,</span> <span class="n">auto_error</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="n">header_key</span> <span class="o">=</span> <span class="n">APIKeyHeader</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;x-api-key&quot;</span><span class="p">,</span> <span class="n">auto_error</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">header_key</span><span class="p">,</span> <span class="n">query_key</span></div>
+
+
+
+<span class="c1"># Auth headers &amp; query params</span>
+<span class="n">header_api_key</span><span class="p">,</span> <span class="n">query_api_key</span> <span class="o">=</span> <span class="n">get_auth_headers_and_query_params</span><span class="p">()</span>
+
+
+<div class="viewcode-block" id="hash_key_v2">
+<a class="viewcode-back" href="../../rst/core/core.html#core.auth.hash_key_v2">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">hash_key_v2</span><span class="p">(</span><span class="n">input_password</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Encrypt the input password using bcrypt hashing.</span>
+
+<span class="sd">    SHA-256 pre-hashing is applied first to ensure the input stays within</span>
+<span class="sd">    bcrypt&#39;s 72-byte limit (JWT tokens and long API keys exceed this).</span>
+
+<span class="sd">    :param input_password: The plain text password to encrypt.</span>
+<span class="sd">    :return: The hashed password.</span>
+<span class="sd">    :rtype: str</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">digest</span> <span class="o">=</span> <span class="n">hashlib</span><span class="o">.</span><span class="n">sha256</span><span class="p">(</span><span class="n">input_password</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s2">&quot;utf-8&quot;</span><span class="p">))</span><span class="o">.</span><span class="n">digest</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">bcrypt</span><span class="o">.</span><span class="n">hashpw</span><span class="p">(</span><span class="n">digest</span><span class="p">,</span> <span class="n">bcrypt</span><span class="o">.</span><span class="n">gensalt</span><span class="p">())</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s2">&quot;utf-8&quot;</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="verify_password_v2">
+<a class="viewcode-back" href="../../rst/core/core.html#core.auth.verify_password_v2">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">verify_password_v2</span><span class="p">(</span><span class="n">plain_password</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">hashed_password</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Verify if the plain password matches the hashed password.</span>
+
+<span class="sd">    :param plain_password: The plain text password to verify.</span>
+<span class="sd">    :param hashed_password: The hashed password stored in the database to</span>
+<span class="sd">        compare against.</span>
+<span class="sd">    :return: True if the passwords match, False otherwise.</span>
+<span class="sd">    :rtype: bool</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">hashed_password</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">False</span>
+
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">digest</span> <span class="o">=</span> <span class="n">hashlib</span><span class="o">.</span><span class="n">sha256</span><span class="p">(</span><span class="n">plain_password</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s2">&quot;utf-8&quot;</span><span class="p">))</span><span class="o">.</span><span class="n">digest</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">bcrypt</span><span class="o">.</span><span class="n">checkpw</span><span class="p">(</span><span class="n">digest</span><span class="p">,</span> <span class="n">hashed_password</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s2">&quot;utf-8&quot;</span><span class="p">))</span>
+    <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s2">&quot;Invalid bcrypt hash format received&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="kc">False</span></div>
+
+
+
+<div class="viewcode-block" id="create_user_access_token">
+<a class="viewcode-back" href="../../rst/core/core.html#core.auth.create_user_access_token">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">create_user_access_token</span><span class="p">(</span>
+    <span class="n">username</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="n">user_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="n">user_role</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="n">expires_in_sec</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">settings</span><span class="o">.</span><span class="n">app_jwt_expiration</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Create a JWT access token for a user.</span>
+
+<span class="sd">    :param username: The username to include in the token payload.</span>
+<span class="sd">    :param user_id: The unique identifier of the user.</span>
+<span class="sd">    :param expires_in_sec: The number of seconds until the token expires.</span>
+<span class="sd">        This is optional and defaults to the value set in the application</span>
+<span class="sd">        settings.</span>
+<span class="sd">    :return: The encoded JWT access token as a string.</span>
+<span class="sd">    :rtype: str</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span>
+        <span class="s2">&quot;Encoding </span><span class="si">%s</span><span class="s2"> access token for user </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">settings</span><span class="o">.</span><span class="n">app_jwt_token_type</span><span class="p">,</span> <span class="n">user_id</span>
+    <span class="p">)</span>
+    <span class="n">expires_in_delta</span> <span class="o">=</span> <span class="n">timedelta</span><span class="p">(</span><span class="n">minutes</span><span class="o">=</span><span class="n">expires_in_sec</span><span class="p">)</span>
+    <span class="n">token_expires_delta</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">(</span><span class="n">timezone</span><span class="o">.</span><span class="n">utc</span><span class="p">)</span> <span class="o">+</span> <span class="n">expires_in_delta</span>
+    <span class="n">encode_object</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s2">&quot;sub&quot;</span><span class="p">:</span> <span class="n">username</span><span class="p">,</span>
+        <span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="n">user_id</span><span class="p">,</span>
+        <span class="s2">&quot;role&quot;</span><span class="p">:</span> <span class="n">user_role</span><span class="p">,</span>
+        <span class="s2">&quot;iat&quot;</span><span class="p">:</span> <span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">(</span><span class="n">timezone</span><span class="o">.</span><span class="n">utc</span><span class="p">),</span>
+        <span class="s2">&quot;exp&quot;</span><span class="p">:</span> <span class="n">token_expires_delta</span><span class="p">,</span>
+    <span class="p">}</span>
+
+    <span class="k">return</span> <span class="n">jwt</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span>
+        <span class="n">encode_object</span><span class="p">,</span> <span class="n">settings</span><span class="o">.</span><span class="n">app_jwt_secret_key</span><span class="p">,</span> <span class="n">algorithm</span><span class="o">=</span><span class="n">settings</span><span class="o">.</span><span class="n">app_jwt_algorithm</span>
+    <span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="get_current_user">
+<a class="viewcode-back" href="../../rst/core/core.html#core.auth.get_current_user">[docs]</a>
+<span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">get_current_user</span><span class="p">(</span><span class="n">access_token</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">Depends</span><span class="p">(</span><span class="n">oauth2_bearer</span><span class="p">)):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Retrieve the current user from the access token.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Starting to decode access token for user credentials...&quot;</span><span class="p">)</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">payload</span> <span class="o">=</span> <span class="n">jwt</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span>
+            <span class="n">access_token</span><span class="p">,</span>
+            <span class="n">settings</span><span class="o">.</span><span class="n">app_jwt_secret_key</span><span class="p">,</span>
+            <span class="n">algorithms</span><span class="o">=</span><span class="p">[</span><span class="n">settings</span><span class="o">.</span><span class="n">app_jwt_algorithm</span><span class="p">],</span>
+        <span class="p">)</span>
+        <span class="n">username</span> <span class="o">=</span> <span class="n">payload</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;sub&quot;</span><span class="p">)</span>
+        <span class="n">user_id</span> <span class="o">=</span> <span class="n">payload</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;id&quot;</span><span class="p">)</span>
+
+        <span class="c1"># Validate that username and user_id are present in the payload</span>
+        <span class="k">if</span> <span class="n">username</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">user_id</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">HTTPException</span><span class="p">(</span>
+                <span class="n">detail</span><span class="o">=</span><span class="s2">&quot;Invalid authentication credentials&quot;</span><span class="p">,</span>
+                <span class="n">status_code</span><span class="o">=</span><span class="n">status</span><span class="o">.</span><span class="n">HTTP_401_UNAUTHORIZED</span><span class="p">,</span>
+            <span class="p">)</span>
+
+        <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;username&quot;</span><span class="p">:</span> <span class="n">username</span><span class="p">,</span> <span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="n">user_id</span><span class="p">}</span>
+    <span class="k">except</span> <span class="n">JWTError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="n">HTTPException</span><span class="p">(</span>
+            <span class="n">detail</span><span class="o">=</span><span class="s2">&quot;Invalid authentication credentials&quot;</span><span class="p">,</span>
+            <span class="n">status_code</span><span class="o">=</span><span class="n">status</span><span class="o">.</span><span class="n">HTTP_401_UNAUTHORIZED</span><span class="p">,</span>
+        <span class="p">)</span> <span class="kn">from</span><span class="w"> </span><span class="nn">e</span></div>
+
+
+
+<div class="viewcode-block" id="create_application_access_token">
+<a class="viewcode-back" href="../../rst/core/core.html#core.auth.create_application_access_token">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">create_application_access_token</span><span class="p">(</span>
+    <span class="n">app_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">app_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">expires_in_sec</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Create a JWT access token for an application or service.</span>
+
+<span class="sd">    This function generates a JWT token containing the application name and ID.</span>
+<span class="sd">    If `expires_in_sec` is provided, the token will include an expiration</span>
+<span class="sd">    time; otherwise, the token will not expire.</span>
+
+<span class="sd">    :param app_name: The name of the application to include in the token</span>
+<span class="sd">        payload.</span>
+<span class="sd">    :type app_name: str</span>
+<span class="sd">    :param app_id: The unique identifier of the application.</span>
+<span class="sd">    :type app_id: str</span>
+<span class="sd">    :param expires_in_sec: The number of seconds until the token expires.</span>
+<span class="sd">        If None, the token will not expire.</span>
+<span class="sd">    :type expires_in_sec: int or None</span>
+<span class="sd">    :return: The encoded JWT access token as a string.</span>
+<span class="sd">    :rtype: str</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span>
+        <span class="s2">&quot;Encoding </span><span class="si">%s</span><span class="s2"> access token for application </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span>
+        <span class="n">settings</span><span class="o">.</span><span class="n">app_jwt_token_type</span><span class="p">,</span>
+        <span class="n">app_id</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="n">encode_object</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">object</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;sub&quot;</span><span class="p">:</span> <span class="n">app_name</span><span class="p">,</span> <span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="n">app_id</span><span class="p">}</span>
+
+    <span class="k">if</span> <span class="n">expires_in_sec</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">expires_in_delta</span> <span class="o">=</span> <span class="n">timedelta</span><span class="p">(</span><span class="n">minutes</span><span class="o">=</span><span class="n">expires_in_sec</span><span class="p">)</span>
+        <span class="n">token_expires_delta</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">(</span><span class="n">timezone</span><span class="o">.</span><span class="n">utc</span><span class="p">)</span> <span class="o">+</span> <span class="n">expires_in_delta</span>
+        <span class="n">encode_object</span><span class="p">[</span><span class="s2">&quot;exp&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">token_expires_delta</span>
+
+    <span class="k">return</span> <span class="n">jwt</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span>
+        <span class="n">encode_object</span><span class="p">,</span> <span class="n">settings</span><span class="o">.</span><span class="n">app_jwt_secret_key</span><span class="p">,</span> <span class="n">algorithm</span><span class="o">=</span><span class="n">settings</span><span class="o">.</span><span class="n">app_jwt_algorithm</span>
+    <span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="decode_application_access_token">
+<a class="viewcode-back" href="../../rst/core/core.html#core.auth.decode_application_access_token">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">decode_application_access_token</span><span class="p">(</span><span class="n">access_token</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Decode the application access token and return its payload.</span>
+
+<span class="sd">    :param access_token: The JWT access token to decode.</span>
+<span class="sd">    :return: The decoded payload of the JWT token.</span>
+<span class="sd">    :rtype: dict</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">payload</span> <span class="o">=</span> <span class="n">jwt</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span>
+            <span class="n">access_token</span><span class="p">,</span>
+            <span class="n">settings</span><span class="o">.</span><span class="n">app_jwt_secret_key</span><span class="p">,</span>
+            <span class="n">algorithms</span><span class="o">=</span><span class="p">[</span><span class="n">settings</span><span class="o">.</span><span class="n">app_jwt_algorithm</span><span class="p">],</span>
+        <span class="p">)</span>
+        <span class="k">return</span> <span class="n">payload</span>
+    <span class="k">except</span> <span class="n">JWTError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="n">HTTPException</span><span class="p">(</span>
+            <span class="n">detail</span><span class="o">=</span><span class="s2">&quot;Invalid authentication credentials&quot;</span><span class="p">,</span>
+            <span class="n">status_code</span><span class="o">=</span><span class="n">status</span><span class="o">.</span><span class="n">HTTP_401_UNAUTHORIZED</span><span class="p">,</span>
+        <span class="p">)</span> <span class="kn">from</span><span class="w"> </span><span class="nn">e</span></div>
+
+
+
+<div class="viewcode-block" id="build_application_api_credentials">
+<a class="viewcode-back" href="../../rst/core/core.html#core.auth.build_application_api_credentials">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">build_application_api_credentials</span><span class="p">(</span>
+    <span class="n">app_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">app_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">expires_in_sec</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Build the raw JWT and hashed API key for an application.</span>
+
+<span class="sd">    :param app_name: The application name to encode in the token.</span>
+<span class="sd">    :param app_id: The application identifier to encode in the token.</span>
+<span class="sd">    :param expires_in_sec: Optional expiration in minutes.</span>
+<span class="sd">    :return: Tuple of (raw JWT token, hashed token for database storage).</span>
+<span class="sd">    :rtype: tuple[str, str]</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">raw_token</span> <span class="o">=</span> <span class="n">create_application_access_token</span><span class="p">(</span>
+        <span class="n">app_name</span><span class="o">=</span><span class="n">app_name</span><span class="p">,</span>
+        <span class="n">app_id</span><span class="o">=</span><span class="n">app_id</span><span class="p">,</span>
+        <span class="n">expires_in_sec</span><span class="o">=</span><span class="n">expires_in_sec</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="k">return</span> <span class="n">raw_token</span><span class="p">,</span> <span class="n">hash_key_v2</span><span class="p">(</span><span class="n">raw_token</span><span class="p">)</span></div>
+
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_get_supplied_api_key</span><span class="p">(</span><span class="n">api_key_header</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span> <span class="n">api_key_query</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Return the supplied raw API key, preferring the header value.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">api_key_header</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">api_key_header</span>
+    <span class="k">if</span> <span class="n">api_key_query</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">api_key_query</span>
+
+    <span class="k">raise</span> <span class="n">HTTPException</span><span class="p">(</span>
+        <span class="n">status_code</span><span class="o">=</span><span class="n">status</span><span class="o">.</span><span class="n">HTTP_401_UNAUTHORIZED</span><span class="p">,</span>
+        <span class="n">detail</span><span class="o">=</span><span class="s2">&quot;Invalid or missing API Key&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
+
+
+<div class="viewcode-block" id="get_health_check_api_key">
+<a class="viewcode-back" href="../../rst/core/core.html#core.auth.get_health_check_api_key">[docs]</a>
+<span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">get_health_check_api_key</span><span class="p">(</span>
+    <span class="n">api_key_query</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">Security</span><span class="p">(</span><span class="n">query_api_key</span><span class="p">),</span>
+    <span class="n">api_key_header</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">Security</span><span class="p">(</span><span class="n">header_api_key</span><span class="p">),</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Validate the dedicated API key used by the health check endpoint.</span>
+
+<span class="sd">    The health check route is intentionally separate from the JWT-backed</span>
+<span class="sd">    service authentication used by the v1/v2 routes. This validator reads the</span>
+<span class="sd">    expected key from the current environment on every request so test fixtures</span>
+<span class="sd">    can inject a value without needing to restart the application.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">raw_api_key</span> <span class="o">=</span> <span class="n">_get_supplied_api_key</span><span class="p">(</span><span class="n">api_key_header</span><span class="p">,</span> <span class="n">api_key_query</span><span class="p">)</span>
+    <span class="n">expected_api_key</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s2">&quot;APP_HEALTH_CHECK_API_KEY&quot;</span><span class="p">)</span> <span class="ow">or</span> <span class="n">settings</span><span class="o">.</span><span class="n">app_health_check_api_key</span>
+    <span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">expected_api_key</span> <span class="ow">and</span> <span class="n">raw_api_key</span> <span class="o">==</span> <span class="n">expected_api_key</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">raw_api_key</span>
+
+    <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s2">&quot;Invalid health check API key supplied&quot;</span><span class="p">)</span>
+    <span class="k">raise</span> <span class="n">HTTPException</span><span class="p">(</span>
+        <span class="n">status_code</span><span class="o">=</span><span class="n">status</span><span class="o">.</span><span class="n">HTTP_401_UNAUTHORIZED</span><span class="p">,</span>
+        <span class="n">detail</span><span class="o">=</span><span class="s2">&quot;Invalid or missing API Key&quot;</span><span class="p">,</span>
+    <span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="get_api_key_v1">
+<a class="viewcode-back" href="../../rst/core/core.html#core.auth.get_api_key_v1">[docs]</a>
+<span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">get_api_key_v1</span><span class="p">(</span>
+    <span class="n">request</span><span class="p">:</span> <span class="n">Request</span><span class="p">,</span>
+    <span class="n">api_key_query</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">Security</span><span class="p">(</span><span class="n">query_api_key</span><span class="p">),</span>
+    <span class="n">api_key_header</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">Security</span><span class="p">(</span><span class="n">header_api_key</span><span class="p">),</span>
+    <span class="n">db</span><span class="p">:</span> <span class="n">AsyncSession</span> <span class="o">=</span> <span class="n">Depends</span><span class="p">(</span><span class="n">get_pg_db</span><span class="p">),</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Validate the API key provided in the query parameters or headers for v1</span>
+<span class="sd">    (PostgreSQL) authentication.</span>
+
+<span class="sd">    This function checks if the API key provided in the `x-api-key` header</span>
+<span class="sd">    or the `api_key` query parameter is valid by verifying it against the</span>
+<span class="sd">    application record stored in PostgreSQL. If a match is found, the valid</span>
+<span class="sd">    API key is returned. If neither matches, an HTTP 401 Unauthorized</span>
+<span class="sd">    exception is raised.</span>
+
+<span class="sd">    :param api_key_query: The API key provided in the query parameters.</span>
+<span class="sd">    :type api_key_query: str</span>
+<span class="sd">    :param api_key_header: The API key provided in the headers.</span>
+<span class="sd">    :type api_key_header: str</span>
+<span class="sd">    :param db: The PostgreSQL database session.</span>
+<span class="sd">    :type db: AsyncSession</span>
+<span class="sd">    :return: The valid API key if authentication is successful.</span>
+<span class="sd">    :rtype: str</span>
+<span class="sd">    :raises HTTPException: If the API key is invalid or missing.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">request</span><span class="o">.</span><span class="n">method</span> <span class="o">==</span> <span class="s2">&quot;OPTIONS&quot;</span><span class="p">:</span>
+        <span class="k">return</span> <span class="s2">&quot;&quot;</span>
+
+    <span class="n">raw_api_key</span> <span class="o">=</span> <span class="n">_get_supplied_api_key</span><span class="p">(</span><span class="n">api_key_header</span><span class="p">,</span> <span class="n">api_key_query</span><span class="p">)</span>
+    <span class="n">token_payload</span> <span class="o">=</span> <span class="n">decode_application_access_token</span><span class="p">(</span><span class="n">raw_api_key</span><span class="p">)</span>
+
+    <span class="n">stmt</span> <span class="o">=</span> <span class="n">select</span><span class="p">(</span><span class="n">ApplicationV1</span><span class="p">)</span><span class="o">.</span><span class="n">where</span><span class="p">(</span>
+        <span class="n">ApplicationV1</span><span class="o">.</span><span class="n">id</span> <span class="o">==</span> <span class="n">token_payload</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;id&quot;</span><span class="p">),</span>
+        <span class="n">ApplicationV1</span><span class="o">.</span><span class="n">deleted_at</span><span class="o">.</span><span class="n">is_</span><span class="p">(</span><span class="kc">None</span><span class="p">),</span>
+        <span class="n">ApplicationV1</span><span class="o">.</span><span class="n">is_active</span><span class="o">.</span><span class="n">is_</span><span class="p">(</span><span class="kc">True</span><span class="p">),</span>
+    <span class="p">)</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="k">await</span> <span class="n">db</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">stmt</span><span class="p">)</span>
+    <span class="n">service_details</span> <span class="o">=</span> <span class="n">result</span><span class="o">.</span><span class="n">scalar_one_or_none</span><span class="p">()</span>
+
+    <span class="k">if</span> <span class="p">(</span>
+        <span class="n">service_details</span>
+        <span class="ow">and</span> <span class="n">service_details</span><span class="o">.</span><span class="n">api_key</span>
+        <span class="ow">and</span> <span class="n">verify_password_v2</span><span class="p">(</span><span class="n">raw_api_key</span><span class="p">,</span> <span class="n">service_details</span><span class="o">.</span><span class="n">api_key</span><span class="p">)</span>
+    <span class="p">):</span>
+        <span class="k">return</span> <span class="n">raw_api_key</span>
+
+    <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
+        <span class="s2">&quot;Invalid Postgres API key for application id </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">token_payload</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;id&quot;</span><span class="p">)</span>
+    <span class="p">)</span>
+    <span class="k">raise</span> <span class="n">HTTPException</span><span class="p">(</span>
+        <span class="n">status_code</span><span class="o">=</span><span class="n">status</span><span class="o">.</span><span class="n">HTTP_401_UNAUTHORIZED</span><span class="p">,</span>
+        <span class="n">detail</span><span class="o">=</span><span class="s2">&quot;Invalid or missing API Key&quot;</span><span class="p">,</span>
+    <span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="get_api_key_v2">
+<a class="viewcode-back" href="../../rst/core/core.html#core.auth.get_api_key_v2">[docs]</a>
+<span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">get_api_key_v2</span><span class="p">(</span>
+    <span class="n">request</span><span class="p">:</span> <span class="n">Request</span><span class="p">,</span>
+    <span class="n">api_key_query</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">Security</span><span class="p">(</span><span class="n">query_api_key</span><span class="p">),</span>
+    <span class="n">api_key_header</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">Security</span><span class="p">(</span><span class="n">header_api_key</span><span class="p">),</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Validate the API key provided in the query parameters or headers for v2</span>
+<span class="sd">    (MongoDB) authentication.</span>
+
+<span class="sd">    This function checks if the API key provided in the `x-api-key` header</span>
+<span class="sd">    or the `api_key` query parameter matches any of the keys in the</span>
+<span class="sd">    `ALLOWED_API_KEYS` list. If a match is found, the valid API key is</span>
+<span class="sd">    returned. If neither matches, an HTTP 401 Unauthorized exception is</span>
+<span class="sd">    raised.</span>
+
+<span class="sd">    :param api_key_query: The API key provided in the query parameters.</span>
+<span class="sd">    :type api_key_query: str</span>
+<span class="sd">    :param api_key_header: The API key provided in the headers.</span>
+<span class="sd">    :type api_key_header: str</span>
+<span class="sd">    :return: The valid API key if authentication is successful.</span>
+<span class="sd">    :rtype: str</span>
+<span class="sd">    :raises HTTPException: If the API key is invalid or missing.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">request</span><span class="o">.</span><span class="n">method</span> <span class="o">==</span> <span class="s2">&quot;OPTIONS&quot;</span><span class="p">:</span>
+        <span class="k">return</span> <span class="s2">&quot;&quot;</span>
+
+    <span class="n">raw_api_key</span> <span class="o">=</span> <span class="n">_get_supplied_api_key</span><span class="p">(</span><span class="n">api_key_header</span><span class="p">,</span> <span class="n">api_key_query</span><span class="p">)</span>
+    <span class="n">token_payload</span> <span class="o">=</span> <span class="n">decode_application_access_token</span><span class="p">(</span><span class="n">raw_api_key</span><span class="p">)</span>
+
+    <span class="n">service_details</span> <span class="o">=</span> <span class="k">await</span> <span class="n">ApplicationV2</span><span class="o">.</span><span class="n">find_one</span><span class="p">(</span>
+        <span class="n">ApplicationV2</span><span class="o">.</span><span class="n">id</span> <span class="o">==</span> <span class="n">token_payload</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;id&quot;</span><span class="p">),</span> <span class="n">ApplicationV2</span><span class="o">.</span><span class="n">deleted_at</span> <span class="o">==</span> <span class="kc">None</span>
+    <span class="p">)</span>
+    <span class="k">if</span> <span class="p">(</span>
+        <span class="n">service_details</span>
+        <span class="ow">and</span> <span class="n">service_details</span><span class="o">.</span><span class="n">api_key</span>
+        <span class="ow">and</span> <span class="n">verify_password_v2</span><span class="p">(</span><span class="n">raw_api_key</span><span class="p">,</span> <span class="n">service_details</span><span class="o">.</span><span class="n">api_key</span><span class="p">)</span>
+    <span class="p">):</span>
+        <span class="k">return</span> <span class="n">raw_api_key</span>
+
+    <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
+        <span class="s2">&quot;Invalid Mongo API key for application id </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">token_payload</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;id&quot;</span><span class="p">)</span>
+    <span class="p">)</span>
+    <span class="k">raise</span> <span class="n">HTTPException</span><span class="p">(</span>
+        <span class="n">status_code</span><span class="o">=</span><span class="n">status</span><span class="o">.</span><span class="n">HTTP_401_UNAUTHORIZED</span><span class="p">,</span>
+        <span class="n">detail</span><span class="o">=</span><span class="s2">&quot;Invalid or missing API Key&quot;</span><span class="p">,</span>
+    <span class="p">)</span></div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, Daniel Andersson &lt;d.andersson86@icloud.com&gt;.
+      <span class="lastupdated">Last updated on 2026-06-02.
+      </span></p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

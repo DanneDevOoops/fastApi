@@ -1,0 +1,499 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>api.v2_routes.sensor_routes &mdash; FastAPI Application 0.0.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=9edc463e" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css?v=4ae1632d" />
+
+  
+    <link rel="canonical" href="https://github.com/DanneDevOoops/fastApi/_modules/api/v2_routes/sensor_routes.html" />
+      <script src="../../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../../_static/documentation_options.js?v=7026087e"></script>
+      <script src="../../../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../../../_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../index.html" class="icon icon-home">
+            FastAPI Application
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../rst/api/modules.html">api</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../rst/core/modules.html">core</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../rst/db/modules.html">db</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../rst/middlewares/modules.html">middlewares</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../rst/utils/modules.html">utils</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Documents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../coverage.html">docs coverage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../readme.html">project readme</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../docstrings.html">write docstrings</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">FastAPI Application</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content style-external-links">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">api.v2_routes.sensor_routes</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for api.v2_routes.sensor_routes</h1><div class="highlight"><pre>
+<span></span><span class="ch">#!/usr/bin/env python3</span>
+<span class="c1"># -*- coding: utf-8 -*-</span>
+<span class="c1"># pylint: disable=singleton-comparison</span>
+
+
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Implements FastAPI routes for sensor management in API v2.</span>
+
+<span class="sd">Includes endpoints for creating sensors, retrieving single or multiple sensors</span>
+<span class="sd">(active and soft deleted), updating sensor data (partial and full),</span>
+<span class="sd">soft deleting sensors, and permanently deleting sensors from the MongoDB</span>
+<span class="sd">database. Each route handles request validation, response formatting,</span>
+<span class="sd">and logging as appropriate.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">logging</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">datetime</span><span class="w"> </span><span class="kn">import</span> <span class="n">datetime</span><span class="p">,</span> <span class="n">timezone</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">fastapi</span><span class="w"> </span><span class="kn">import</span> <span class="n">APIRouter</span><span class="p">,</span> <span class="n">status</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">fastapi.responses</span><span class="w"> </span><span class="kn">import</span> <span class="n">Response</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">src.core.env_config</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_settings</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">src.core.responses</span><span class="w"> </span><span class="kn">import</span> <span class="n">AppJSONResponse</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">src.db.models.v2_models.sensor_model_v2</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
+    <span class="n">CreateSensor</span><span class="p">,</span>
+    <span class="n">PatchSensorData</span><span class="p">,</span>
+    <span class="n">PutUpdateSensorData</span><span class="p">,</span>
+    <span class="n">Sensor</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">src.db.serializers.v2_serializers.v2_model_serializers</span><span class="w"> </span><span class="kn">import</span> <span class="n">model_serialize</span>
+
+<span class="n">router</span> <span class="o">=</span> <span class="n">APIRouter</span><span class="p">()</span>
+<span class="n">settings</span> <span class="o">=</span> <span class="n">get_settings</span><span class="p">()</span>
+<span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="n">settings</span><span class="o">.</span><span class="n">app_logger_name</span> <span class="ow">or</span> <span class="s2">&quot;application_logger&quot;</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="sensor_routes_options_v2">
+<a class="viewcode-back" href="../../../rst/api/api.v2_routes.html#api.v2_routes.sensor_routes.sensor_routes_options_v2">[docs]</a>
+<span class="nd">@router</span><span class="o">.</span><span class="n">options</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">operation_id</span><span class="o">=</span><span class="s2">&quot;options_sensor_routes_v2&quot;</span><span class="p">)</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">sensor_routes_options_v2</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">Response</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Handle OPTIONS requests for the sensor routes.</span>
+
+<span class="sd">    This is used to support CORS preflight requests and provides</span>
+<span class="sd">    information about the allowed HTTP methods for the sensor routes.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">Response</span><span class="p">(</span>
+        <span class="n">headers</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;Allow&quot;</span><span class="p">:</span> <span class="s2">&quot;GET, POST, PUT, PATCH, DELETE&quot;</span><span class="p">},</span>
+        <span class="n">status_code</span><span class="o">=</span><span class="n">status</span><span class="o">.</span><span class="n">HTTP_204_NO_CONTENT</span><span class="p">,</span>
+    <span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="get_sensors">
+<a class="viewcode-back" href="../../../rst/api/api.v2_routes.html#api.v2_routes.sensor_routes.get_sensors">[docs]</a>
+<span class="nd">@router</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
+    <span class="s2">&quot;&quot;</span><span class="p">,</span>
+    <span class="n">name</span><span class="o">=</span><span class="s2">&quot;get_all_sensors_route_v2&quot;</span><span class="p">,</span>
+    <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Route to get all sensors.&quot;</span><span class="p">,</span>
+    <span class="n">operation_id</span><span class="o">=</span><span class="s2">&quot;get_all_sensors_route_v2&quot;</span><span class="p">,</span>
+    <span class="n">response_model</span><span class="o">=</span><span class="nb">list</span><span class="p">[</span><span class="n">Sensor</span><span class="p">],</span>
+    <span class="n">status_code</span><span class="o">=</span><span class="n">status</span><span class="o">.</span><span class="n">HTTP_200_OK</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">get_sensors</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">AppJSONResponse</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Retrieve all sensors.</span>
+
+<span class="sd">    Returns a list of all sensors that have not been soft deleted (i.e.,</span>
+<span class="sd">    have a null `deleted_at` field). If no sensors are found, returns a 404</span>
+<span class="sd">    error response.</span>
+
+<span class="sd">    :return: A list of sensor data, or a 404 error if none are found.</span>
+<span class="sd">    :rtype: AppJSONResponse</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">all_sensors</span> <span class="o">=</span> <span class="k">await</span> <span class="n">Sensor</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="n">Sensor</span><span class="o">.</span><span class="n">deleted_at</span> <span class="o">==</span> <span class="kc">None</span><span class="p">)</span><span class="o">.</span><span class="n">to_list</span><span class="p">()</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">all_sensors</span><span class="p">:</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s2">&quot;No sensors found.&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">AppJSONResponse</span><span class="p">(</span>
+            <span class="n">content</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;detail&quot;</span><span class="p">:</span> <span class="s2">&quot;No sensors found.&quot;</span><span class="p">},</span>
+            <span class="n">status_code</span><span class="o">=</span><span class="n">status</span><span class="o">.</span><span class="n">HTTP_404_NOT_FOUND</span><span class="p">,</span>
+        <span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">AppJSONResponse</span><span class="p">(</span>
+        <span class="n">content</span><span class="o">=</span><span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="n">model_serialize</span><span class="p">,</span> <span class="n">all_sensors</span><span class="p">)),</span> <span class="n">status_code</span><span class="o">=</span><span class="n">status</span><span class="o">.</span><span class="n">HTTP_200_OK</span>
+    <span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="get_all_soft_deleted_sensors">
+<a class="viewcode-back" href="../../../rst/api/api.v2_routes.html#api.v2_routes.sensor_routes.get_all_soft_deleted_sensors">[docs]</a>
+<span class="nd">@router</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
+    <span class="s2">&quot;/deleted&quot;</span><span class="p">,</span>
+    <span class="n">name</span><span class="o">=</span><span class="s2">&quot;get_soft_deleted_sensors_route_v2&quot;</span><span class="p">,</span>
+    <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Route to get all soft deleted sensors.&quot;</span><span class="p">,</span>
+    <span class="n">operation_id</span><span class="o">=</span><span class="s2">&quot;get_soft_deleted_sensors_route_v2&quot;</span><span class="p">,</span>
+    <span class="n">response_model</span><span class="o">=</span><span class="n">Sensor</span><span class="p">,</span>
+    <span class="n">status_code</span><span class="o">=</span><span class="n">status</span><span class="o">.</span><span class="n">HTTP_200_OK</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">get_all_soft_deleted_sensors</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">AppJSONResponse</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Retrieve all soft deleted sensors.</span>
+
+<span class="sd">    Returns a list of sensors that have been soft deleted (i.e., have a</span>
+<span class="sd">    non-null `deleted_at` field). If no soft deleted sensors are found,</span>
+<span class="sd">    returns a 404 error response.</span>
+
+<span class="sd">    :return: A list of soft deleted sensor data, or a 404 error if none</span>
+<span class="sd">        are found.</span>
+<span class="sd">    :rtype: AppJSONResponse</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">soft_deleted_sensors</span> <span class="o">=</span> <span class="k">await</span> <span class="n">Sensor</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="n">Sensor</span><span class="o">.</span><span class="n">deleted_at</span> <span class="o">!=</span> <span class="kc">None</span><span class="p">)</span><span class="o">.</span><span class="n">to_list</span><span class="p">()</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">soft_deleted_sensors</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">AppJSONResponse</span><span class="p">(</span>
+            <span class="n">content</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;detail&quot;</span><span class="p">:</span> <span class="s2">&quot;No soft deleted sensors found.&quot;</span><span class="p">},</span>
+            <span class="n">status_code</span><span class="o">=</span><span class="n">status</span><span class="o">.</span><span class="n">HTTP_404_NOT_FOUND</span><span class="p">,</span>
+        <span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">AppJSONResponse</span><span class="p">(</span>
+        <span class="n">content</span><span class="o">=</span><span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="n">model_serialize</span><span class="p">,</span> <span class="n">soft_deleted_sensors</span><span class="p">)),</span>
+        <span class="n">status_code</span><span class="o">=</span><span class="n">status</span><span class="o">.</span><span class="n">HTTP_200_OK</span><span class="p">,</span>
+    <span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="get_sensor_by_id">
+<a class="viewcode-back" href="../../../rst/api/api.v2_routes.html#api.v2_routes.sensor_routes.get_sensor_by_id">[docs]</a>
+<span class="nd">@router</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
+    <span class="s2">&quot;/</span><span class="si">{sensor_id}</span><span class="s2">&quot;</span><span class="p">,</span>
+    <span class="n">name</span><span class="o">=</span><span class="s2">&quot;get_sensor_by_id_route_v2&quot;</span><span class="p">,</span>
+    <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Route to get a sensor by ID.&quot;</span><span class="p">,</span>
+    <span class="n">operation_id</span><span class="o">=</span><span class="s2">&quot;get_sensor_by_id_route_v2&quot;</span><span class="p">,</span>
+    <span class="n">response_model</span><span class="o">=</span><span class="n">Sensor</span><span class="p">,</span>
+    <span class="n">status_code</span><span class="o">=</span><span class="n">status</span><span class="o">.</span><span class="n">HTTP_200_OK</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">get_sensor_by_id</span><span class="p">(</span><span class="n">sensor_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">AppJSONResponse</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Retrieve a sensor by its unique ID.</span>
+
+<span class="sd">    Returns the sensor data for the specified ID if it exists and has not</span>
+<span class="sd">    been soft deleted. If the sensor does not exist, returns a 404 error</span>
+<span class="sd">    response.</span>
+
+<span class="sd">    :param sensor_id: The unique identifier of the sensor to retrieve.</span>
+<span class="sd">    :type sensor_id: str</span>
+<span class="sd">    :return: The sensor data if found, or a 404 error if not found.</span>
+<span class="sd">    :rtype: AppJSONResponse</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">sensor</span> <span class="o">=</span> <span class="k">await</span> <span class="n">Sensor</span><span class="o">.</span><span class="n">find</span><span class="p">(</span>
+        <span class="n">Sensor</span><span class="o">.</span><span class="n">id</span> <span class="o">==</span> <span class="n">sensor_id</span><span class="p">,</span> <span class="n">Sensor</span><span class="o">.</span><span class="n">deleted_at</span> <span class="o">==</span> <span class="kc">None</span>
+    <span class="p">)</span><span class="o">.</span><span class="n">first_or_none</span><span class="p">()</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">sensor</span><span class="p">:</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s2">&quot;Sensor with ID </span><span class="si">%s</span><span class="s2"> not found.&quot;</span><span class="p">,</span> <span class="n">sensor_id</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">AppJSONResponse</span><span class="p">(</span>
+            <span class="n">content</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;detail&quot;</span><span class="p">:</span> <span class="s2">&quot;Sensor not found.&quot;</span><span class="p">},</span>
+            <span class="n">status_code</span><span class="o">=</span><span class="n">status</span><span class="o">.</span><span class="n">HTTP_404_NOT_FOUND</span><span class="p">,</span>
+        <span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">AppJSONResponse</span><span class="p">(</span>
+        <span class="n">content</span><span class="o">=</span><span class="n">model_serialize</span><span class="p">(</span><span class="n">sensor</span><span class="p">),</span> <span class="n">status_code</span><span class="o">=</span><span class="n">status</span><span class="o">.</span><span class="n">HTTP_200_OK</span>
+    <span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="create_sensor">
+<a class="viewcode-back" href="../../../rst/api/api.v2_routes.html#api.v2_routes.sensor_routes.create_sensor">[docs]</a>
+<span class="nd">@router</span><span class="o">.</span><span class="n">post</span><span class="p">(</span>
+    <span class="s2">&quot;&quot;</span><span class="p">,</span>
+    <span class="n">name</span><span class="o">=</span><span class="s2">&quot;create_sensor_route_v2&quot;</span><span class="p">,</span>
+    <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Route to create a new sensor.&quot;</span><span class="p">,</span>
+    <span class="n">operation_id</span><span class="o">=</span><span class="s2">&quot;create_sensor_route_v2&quot;</span><span class="p">,</span>
+    <span class="n">response_model</span><span class="o">=</span><span class="n">Sensor</span><span class="p">,</span>
+    <span class="n">status_code</span><span class="o">=</span><span class="n">status</span><span class="o">.</span><span class="n">HTTP_201_CREATED</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">create_sensor</span><span class="p">(</span><span class="n">sensor_data</span><span class="p">:</span> <span class="n">CreateSensor</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">AppJSONResponse</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Create a new sensor.</span>
+
+<span class="sd">    Adds a new sensor to the database with a unique index. The index is set</span>
+<span class="sd">    to one higher than the current maximum. Returns the created sensor data.</span>
+
+<span class="sd">    :param sensor_data: The data required to create the new sensor.</span>
+<span class="sd">    :type sensor_data: CreateSensor</span>
+<span class="sd">    :return: The newly created sensor data.</span>
+<span class="sd">    :rtype: AppJSONResponse</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Find the current max index</span>
+    <span class="n">last_sensor</span> <span class="o">=</span> <span class="k">await</span> <span class="n">Sensor</span><span class="o">.</span><span class="n">find</span><span class="p">()</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="s2">&quot;-index&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">first_or_none</span><span class="p">()</span>
+    <span class="n">next_index</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="p">(</span><span class="n">last_sensor</span><span class="o">.</span><span class="n">index</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="k">if</span> <span class="n">last_sensor</span> <span class="ow">and</span> <span class="n">last_sensor</span><span class="o">.</span><span class="n">index</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="mi">1</span>
+    <span class="p">)</span>
+
+    <span class="c1"># Create the Sensor with the required index</span>
+    <span class="n">new_sensor</span> <span class="o">=</span> <span class="n">Sensor</span><span class="p">(</span><span class="n">index</span><span class="o">=</span><span class="n">next_index</span><span class="p">,</span> <span class="o">**</span><span class="n">sensor_data</span><span class="o">.</span><span class="n">model_dump</span><span class="p">())</span>
+    <span class="n">new_sensor</span> <span class="o">=</span> <span class="k">await</span> <span class="n">new_sensor</span><span class="o">.</span><span class="n">create</span><span class="p">()</span>
+
+    <span class="k">return</span> <span class="n">AppJSONResponse</span><span class="p">(</span>
+        <span class="n">content</span><span class="o">=</span><span class="n">model_serialize</span><span class="p">(</span><span class="n">new_sensor</span><span class="p">),</span> <span class="n">status_code</span><span class="o">=</span><span class="n">status</span><span class="o">.</span><span class="n">HTTP_201_CREATED</span>
+    <span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="soft_delete_sensor_v2">
+<a class="viewcode-back" href="../../../rst/api/api.v2_routes.html#api.v2_routes.sensor_routes.soft_delete_sensor_v2">[docs]</a>
+<span class="nd">@router</span><span class="o">.</span><span class="n">patch</span><span class="p">(</span>
+    <span class="s2">&quot;/delete/</span><span class="si">{sensor_id}</span><span class="s2">&quot;</span><span class="p">,</span>
+    <span class="n">name</span><span class="o">=</span><span class="s2">&quot;soft_delete_sensor_route_v2&quot;</span><span class="p">,</span>
+    <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Route to soft delete a sensor by ID.&quot;</span><span class="p">,</span>
+    <span class="n">operation_id</span><span class="o">=</span><span class="s2">&quot;soft_delete_sensor_route_v2&quot;</span><span class="p">,</span>
+    <span class="n">response_model</span><span class="o">=</span><span class="n">Sensor</span><span class="p">,</span>
+    <span class="n">status_code</span><span class="o">=</span><span class="n">status</span><span class="o">.</span><span class="n">HTTP_200_OK</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">soft_delete_sensor_v2</span><span class="p">(</span><span class="n">sensor_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">AppJSONResponse</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Soft delete a sensor by its unique ID.</span>
+
+<span class="sd">    Marks the specified sensor as deleted by setting its `deleted_at`</span>
+<span class="sd">    timestamp. If the sensor does not exist or is already deleted, returns</span>
+<span class="sd">    a 404 error response.</span>
+
+<span class="sd">    :param sensor_id: The unique identifier of the sensor to soft delete.</span>
+<span class="sd">    :type sensor_id: str</span>
+<span class="sd">    :return: The updated sensor data with the `deleted_at` field set,</span>
+<span class="sd">        or a 404 error if not found.</span>
+<span class="sd">    :rtype: AppJSONResponse</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">sensor</span> <span class="o">=</span> <span class="k">await</span> <span class="n">Sensor</span><span class="o">.</span><span class="n">find_one</span><span class="p">(</span><span class="n">Sensor</span><span class="o">.</span><span class="n">id</span> <span class="o">==</span> <span class="n">sensor_id</span><span class="p">,</span> <span class="n">Sensor</span><span class="o">.</span><span class="n">deleted_at</span> <span class="o">==</span> <span class="kc">None</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">sensor</span><span class="p">:</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
+            <span class="s2">&quot;Sensor with ID </span><span class="si">%s</span><span class="s2"> not found or already marked as deleted.&quot;</span><span class="p">,</span> <span class="n">sensor_id</span>
+        <span class="p">)</span>
+        <span class="k">return</span> <span class="n">AppJSONResponse</span><span class="p">(</span>
+            <span class="n">content</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;detail&quot;</span><span class="p">:</span> <span class="s2">&quot;Sensor not found.&quot;</span><span class="p">},</span>
+            <span class="n">status_code</span><span class="o">=</span><span class="n">status</span><span class="o">.</span><span class="n">HTTP_404_NOT_FOUND</span><span class="p">,</span>
+        <span class="p">)</span>
+
+    <span class="c1"># Set the deleted_at field to the current time</span>
+    <span class="n">sensor</span><span class="o">.</span><span class="n">updated_at</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">(</span><span class="n">timezone</span><span class="o">.</span><span class="n">utc</span><span class="p">)</span>
+    <span class="n">sensor</span><span class="o">.</span><span class="n">deleted_at</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">(</span><span class="n">timezone</span><span class="o">.</span><span class="n">utc</span><span class="p">)</span>
+    <span class="n">sensor_updated</span> <span class="o">=</span> <span class="k">await</span> <span class="n">sensor</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+
+    <span class="k">return</span> <span class="n">AppJSONResponse</span><span class="p">(</span>
+        <span class="n">content</span><span class="o">=</span><span class="n">model_serialize</span><span class="p">(</span><span class="n">sensor_updated</span><span class="p">),</span> <span class="n">status_code</span><span class="o">=</span><span class="n">status</span><span class="o">.</span><span class="n">HTTP_200_OK</span>
+    <span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="patch_update_sensor_v2">
+<a class="viewcode-back" href="../../../rst/api/api.v2_routes.html#api.v2_routes.sensor_routes.patch_update_sensor_v2">[docs]</a>
+<span class="nd">@router</span><span class="o">.</span><span class="n">patch</span><span class="p">(</span>
+    <span class="s2">&quot;/</span><span class="si">{sensor_id}</span><span class="s2">&quot;</span><span class="p">,</span>
+    <span class="n">name</span><span class="o">=</span><span class="s2">&quot;update_sensor_route_v2&quot;</span><span class="p">,</span>
+    <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Route to update a sensor by ID.&quot;</span><span class="p">,</span>
+    <span class="n">operation_id</span><span class="o">=</span><span class="s2">&quot;update_sensor_route_v2&quot;</span><span class="p">,</span>
+    <span class="n">response_model</span><span class="o">=</span><span class="n">Sensor</span><span class="p">,</span>
+    <span class="n">status_code</span><span class="o">=</span><span class="n">status</span><span class="o">.</span><span class="n">HTTP_200_OK</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">patch_update_sensor_v2</span><span class="p">(</span>
+    <span class="n">sensor_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">sensor_data</span><span class="p">:</span> <span class="n">PatchSensorData</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">AppJSONResponse</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Partially update a sensor by its unique ID.</span>
+
+<span class="sd">    Updates one or more fields of the specified sensor with the provided</span>
+<span class="sd">    data. If the sensor does not exist or has been soft deleted, returns a</span>
+<span class="sd">    404 error response.</span>
+
+<span class="sd">    :param sensor_id: The unique identifier of the sensor to update.</span>
+<span class="sd">    :type sensor_id: str</span>
+<span class="sd">    :param sensor_data: The partial set of sensor data to update.</span>
+<span class="sd">    :type sensor_data: PatchSensorData</span>
+<span class="sd">    :return: The updated sensor data if successful, or a 404 error if</span>
+<span class="sd">        not found.</span>
+<span class="sd">    :rtype: AppJSONResponse</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">sensor</span> <span class="o">=</span> <span class="k">await</span> <span class="n">Sensor</span><span class="o">.</span><span class="n">find</span><span class="p">(</span>
+        <span class="n">Sensor</span><span class="o">.</span><span class="n">id</span> <span class="o">==</span> <span class="n">sensor_id</span><span class="p">,</span> <span class="n">Sensor</span><span class="o">.</span><span class="n">deleted_at</span> <span class="o">==</span> <span class="kc">None</span>
+    <span class="p">)</span><span class="o">.</span><span class="n">first_or_none</span><span class="p">()</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">sensor</span><span class="p">:</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s2">&quot;Sensor with ID </span><span class="si">%s</span><span class="s2"> not found.&quot;</span><span class="p">,</span> <span class="n">sensor_id</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">AppJSONResponse</span><span class="p">(</span>
+            <span class="n">content</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;detail&quot;</span><span class="p">:</span> <span class="s2">&quot;Sensor not found.&quot;</span><span class="p">},</span>
+            <span class="n">status_code</span><span class="o">=</span><span class="n">status</span><span class="o">.</span><span class="n">HTTP_404_NOT_FOUND</span><span class="p">,</span>
+        <span class="p">)</span>
+
+    <span class="c1"># Update the sensor with the provided data</span>
+    <span class="n">sensor_data_dict</span> <span class="o">=</span> <span class="n">sensor_data</span><span class="o">.</span><span class="n">model_dump</span><span class="p">(</span><span class="n">exclude_unset</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">sensor_data_dict</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="nb">setattr</span><span class="p">(</span><span class="n">sensor</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
+
+    <span class="n">sensor</span><span class="o">.</span><span class="n">updated_at</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">(</span><span class="n">timezone</span><span class="o">.</span><span class="n">utc</span><span class="p">)</span>
+    <span class="n">sensor_updated</span> <span class="o">=</span> <span class="k">await</span> <span class="n">sensor</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+
+    <span class="k">return</span> <span class="n">AppJSONResponse</span><span class="p">(</span>
+        <span class="n">content</span><span class="o">=</span><span class="n">model_serialize</span><span class="p">(</span><span class="n">sensor_updated</span><span class="p">),</span> <span class="n">status_code</span><span class="o">=</span><span class="n">status</span><span class="o">.</span><span class="n">HTTP_200_OK</span>
+    <span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="update_sensor_full_route_v2">
+<a class="viewcode-back" href="../../../rst/api/api.v2_routes.html#api.v2_routes.sensor_routes.update_sensor_full_route_v2">[docs]</a>
+<span class="nd">@router</span><span class="o">.</span><span class="n">put</span><span class="p">(</span>
+    <span class="s2">&quot;/</span><span class="si">{sensor_id}</span><span class="s2">&quot;</span><span class="p">,</span>
+    <span class="n">name</span><span class="o">=</span><span class="s2">&quot;update_sensor_full_route_v2&quot;</span><span class="p">,</span>
+    <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Route to fully update a sensor by ID.&quot;</span><span class="p">,</span>
+    <span class="n">operation_id</span><span class="o">=</span><span class="s2">&quot;update_sensor_full_route_v2&quot;</span><span class="p">,</span>
+    <span class="n">response_model</span><span class="o">=</span><span class="n">Sensor</span><span class="p">,</span>
+    <span class="n">status_code</span><span class="o">=</span><span class="n">status</span><span class="o">.</span><span class="n">HTTP_200_OK</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">update_sensor_full_route_v2</span><span class="p">(</span>
+    <span class="n">sensor_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">sensor_data</span><span class="p">:</span> <span class="n">PutUpdateSensorData</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">AppJSONResponse</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Fully update a sensor by its unique ID.</span>
+
+<span class="sd">    Replaces all fields of the specified sensor with the provided data. If</span>
+<span class="sd">    the sensor does not exist or has been soft deleted, returns a 404 error</span>
+<span class="sd">    response.</span>
+
+<span class="sd">    :param sensor_id: The unique identifier of the sensor to update.</span>
+<span class="sd">    :type sensor_id: str</span>
+<span class="sd">    :param sensor_data: The complete set of new sensor data.</span>
+<span class="sd">    :type sensor_data: PutUpdateSensorData</span>
+<span class="sd">    :return: The updated sensor data if successful, or a 404 error if</span>
+<span class="sd">        not found.</span>
+<span class="sd">    :rtype: AppJSONResponse</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">sensor</span> <span class="o">=</span> <span class="k">await</span> <span class="n">Sensor</span><span class="o">.</span><span class="n">find_one</span><span class="p">(</span><span class="n">Sensor</span><span class="o">.</span><span class="n">id</span> <span class="o">==</span> <span class="n">sensor_id</span><span class="p">,</span> <span class="n">Sensor</span><span class="o">.</span><span class="n">deleted_at</span> <span class="o">==</span> <span class="kc">None</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">sensor</span><span class="p">:</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s2">&quot;Sensor with ID </span><span class="si">%s</span><span class="s2"> not found.&quot;</span><span class="p">,</span> <span class="n">sensor_id</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">AppJSONResponse</span><span class="p">(</span>
+            <span class="n">content</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;detail&quot;</span><span class="p">:</span> <span class="s2">&quot;Sensor not found.&quot;</span><span class="p">},</span>
+            <span class="n">status_code</span><span class="o">=</span><span class="n">status</span><span class="o">.</span><span class="n">HTTP_404_NOT_FOUND</span><span class="p">,</span>
+        <span class="p">)</span>
+
+    <span class="c1"># Update the sensor with the provided data</span>
+    <span class="n">sensor_data_dict</span> <span class="o">=</span> <span class="n">sensor_data</span><span class="o">.</span><span class="n">model_dump</span><span class="p">(</span><span class="n">exclude_unset</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">sensor_data_dict</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="nb">setattr</span><span class="p">(</span><span class="n">sensor</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
+
+    <span class="n">sensor</span><span class="o">.</span><span class="n">updated_at</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">(</span><span class="n">timezone</span><span class="o">.</span><span class="n">utc</span><span class="p">)</span>
+    <span class="n">sensor_updated</span> <span class="o">=</span> <span class="k">await</span> <span class="n">sensor</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+
+    <span class="k">return</span> <span class="n">AppJSONResponse</span><span class="p">(</span>
+        <span class="n">content</span><span class="o">=</span><span class="n">model_serialize</span><span class="p">(</span><span class="n">sensor_updated</span><span class="p">),</span> <span class="n">status_code</span><span class="o">=</span><span class="n">status</span><span class="o">.</span><span class="n">HTTP_200_OK</span>
+    <span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="delete_sensor">
+<a class="viewcode-back" href="../../../rst/api/api.v2_routes.html#api.v2_routes.sensor_routes.delete_sensor">[docs]</a>
+<span class="nd">@router</span><span class="o">.</span><span class="n">delete</span><span class="p">(</span>
+    <span class="s2">&quot;/delete/</span><span class="si">{sensor_id}</span><span class="s2">&quot;</span><span class="p">,</span>
+    <span class="n">name</span><span class="o">=</span><span class="s2">&quot;delete_sensor_route_v2&quot;</span><span class="p">,</span>
+    <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Route to delete a sensor by ID.&quot;</span><span class="p">,</span>
+    <span class="n">operation_id</span><span class="o">=</span><span class="s2">&quot;delete_sensor_route_v2&quot;</span><span class="p">,</span>
+    <span class="n">status_code</span><span class="o">=</span><span class="n">status</span><span class="o">.</span><span class="n">HTTP_204_NO_CONTENT</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">delete_sensor</span><span class="p">(</span><span class="n">sensor_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">AppJSONResponse</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Delete a sensor by its unique ID.</span>
+
+<span class="sd">    Permanently removes the sensor from the database. If the sensor does</span>
+<span class="sd">    not exist, returns a 404 error response.</span>
+
+<span class="sd">    :param sensor_id: The unique identifier of the sensor to delete.</span>
+<span class="sd">    :type sensor_id: str</span>
+<span class="sd">    :return: An empty response with HTTP 204 status if successful, or a 404</span>
+<span class="sd">        error if not found.</span>
+<span class="sd">    :rtype: AppJSONResponse</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">sensor</span> <span class="o">=</span> <span class="k">await</span> <span class="n">Sensor</span><span class="o">.</span><span class="n">find_one</span><span class="p">(</span><span class="n">Sensor</span><span class="o">.</span><span class="n">id</span> <span class="o">==</span> <span class="n">sensor_id</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">sensor</span><span class="p">:</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s2">&quot;Sensor with ID </span><span class="si">%s</span><span class="s2"> not found.&quot;</span><span class="p">,</span> <span class="n">sensor_id</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">AppJSONResponse</span><span class="p">(</span>
+            <span class="n">content</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;detail&quot;</span><span class="p">:</span> <span class="s2">&quot;Sensor not found.&quot;</span><span class="p">},</span>
+            <span class="n">status_code</span><span class="o">=</span><span class="n">status</span><span class="o">.</span><span class="n">HTTP_404_NOT_FOUND</span><span class="p">,</span>
+        <span class="p">)</span>
+
+    <span class="k">await</span> <span class="n">sensor</span><span class="o">.</span><span class="n">delete</span><span class="p">()</span>
+
+    <span class="k">return</span> <span class="n">AppJSONResponse</span><span class="p">(</span><span class="n">content</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">status_code</span><span class="o">=</span><span class="n">status</span><span class="o">.</span><span class="n">HTTP_204_NO_CONTENT</span><span class="p">)</span></div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, Daniel Andersson &lt;d.andersson86@icloud.com&gt;.
+      <span class="lastupdated">Last updated on 2026-06-02.
+      </span></p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

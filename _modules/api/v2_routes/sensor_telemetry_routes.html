@@ -1,0 +1,359 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>api.v2_routes.sensor_telemetry_routes &mdash; FastAPI Application 0.0.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=9edc463e" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css?v=4ae1632d" />
+
+  
+    <link rel="canonical" href="https://github.com/DanneDevOoops/fastApi/_modules/api/v2_routes/sensor_telemetry_routes.html" />
+      <script src="../../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../../_static/documentation_options.js?v=7026087e"></script>
+      <script src="../../../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../../../_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../index.html" class="icon icon-home">
+            FastAPI Application
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../rst/api/modules.html">api</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../rst/core/modules.html">core</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../rst/db/modules.html">db</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../rst/middlewares/modules.html">middlewares</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../rst/utils/modules.html">utils</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Documents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../coverage.html">docs coverage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../readme.html">project readme</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../docstrings.html">write docstrings</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">FastAPI Application</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content style-external-links">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">api.v2_routes.sensor_telemetry_routes</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for api.v2_routes.sensor_telemetry_routes</h1><div class="highlight"><pre>
+<span></span><span class="ch">#!/usr/bin/env python3</span>
+<span class="c1"># -*- coding: utf-8 -*-</span>
+
+
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Write a good module docstring here...</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">asyncio</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">logging</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">fastapi</span><span class="w"> </span><span class="kn">import</span> <span class="n">APIRouter</span><span class="p">,</span> <span class="n">status</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">fastapi.responses</span><span class="w"> </span><span class="kn">import</span> <span class="n">Response</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">src.core.env_config</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_settings</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">src.core.responses</span><span class="w"> </span><span class="kn">import</span> <span class="n">AppJSONResponse</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">src.db.models.v2_models.sensor_telemetry_model_v2</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>  <span class="c1"># PatchUpdateTelemetryData</span>
+    <span class="n">CreateSensorTelemetry</span><span class="p">,</span>
+    <span class="n">FilteredSearchTelemetry</span><span class="p">,</span>
+    <span class="n">SensorTelemetry</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">src.db.serializers.v2_serializers.v2_model_serializers</span><span class="w"> </span><span class="kn">import</span> <span class="n">model_serialize</span>
+
+<span class="n">router</span> <span class="o">=</span> <span class="n">APIRouter</span><span class="p">()</span>
+<span class="n">settings</span> <span class="o">=</span> <span class="n">get_settings</span><span class="p">()</span>
+<span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">Logger</span><span class="p">(</span><span class="n">settings</span><span class="o">.</span><span class="n">app_logger_name</span> <span class="ow">or</span> <span class="s2">&quot;application_logger&quot;</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="sensor_telemetry_options_v2">
+<a class="viewcode-back" href="../../../rst/api/api.v2_routes.html#api.v2_routes.sensor_telemetry_routes.sensor_telemetry_options_v2">[docs]</a>
+<span class="nd">@router</span><span class="o">.</span><span class="n">options</span><span class="p">(</span>
+    <span class="s2">&quot;&quot;</span><span class="p">,</span>
+    <span class="n">name</span><span class="o">=</span><span class="s2">&quot;sensor_telemetry_options_v2&quot;</span><span class="p">,</span>
+    <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Handle OPTIONS requests for sensor &quot;</span> <span class="s2">&quot;telemetry routes.&quot;</span><span class="p">,</span>
+    <span class="n">operation_id</span><span class="o">=</span><span class="s2">&quot;sensor_telemetry_options_v2&quot;</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">sensor_telemetry_options_v2</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">Response</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Handle OPTIONS requests for sensor telemetry routes.</span>
+<span class="sd">    This is used to support CORS preflight requests.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Handling OPTIONS request for sensor telemetry routes.&quot;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">Response</span><span class="p">(</span>
+        <span class="n">headers</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;Allow&quot;</span><span class="p">:</span> <span class="s2">&quot;GET, POST, PUT, PATCH, DELETE&quot;</span><span class="p">},</span>
+        <span class="n">status_code</span><span class="o">=</span><span class="n">status</span><span class="o">.</span><span class="n">HTTP_204_NO_CONTENT</span><span class="p">,</span>
+    <span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="get_all_sensor_telemetry_v2">
+<a class="viewcode-back" href="../../../rst/api/api.v2_routes.html#api.v2_routes.sensor_telemetry_routes.get_all_sensor_telemetry_v2">[docs]</a>
+<span class="nd">@router</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
+    <span class="s2">&quot;&quot;</span><span class="p">,</span>
+    <span class="n">name</span><span class="o">=</span><span class="s2">&quot;get_all_sensor_telemetry_v2&quot;</span><span class="p">,</span>
+    <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Route to request all sensor telemetry data.&quot;</span><span class="p">,</span>
+    <span class="n">operation_id</span><span class="o">=</span><span class="s2">&quot;get_all_sensor_telemetry_v2&quot;</span><span class="p">,</span>
+    <span class="n">status_code</span><span class="o">=</span><span class="n">status</span><span class="o">.</span><span class="n">HTTP_200_OK</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">get_all_sensor_telemetry_v2</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">AppJSONResponse</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Get all sensor telemetry data.</span>
+<span class="sd">    This is a placeholder function and should be implemented.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Getting all sensor telemetry data...&quot;</span><span class="p">)</span>
+    <span class="n">all_sensor_telemetry</span> <span class="o">=</span> <span class="k">await</span> <span class="n">SensorTelemetry</span><span class="o">.</span><span class="n">all</span><span class="p">()</span><span class="o">.</span><span class="n">to_list</span><span class="p">()</span>
+
+    <span class="k">return</span> <span class="n">AppJSONResponse</span><span class="p">(</span>
+        <span class="n">content</span><span class="o">=</span><span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="n">model_serialize</span><span class="p">,</span> <span class="n">all_sensor_telemetry</span><span class="p">)),</span>
+        <span class="n">status_code</span><span class="o">=</span><span class="n">status</span><span class="o">.</span><span class="n">HTTP_200_OK</span><span class="p">,</span>
+    <span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="get_sensor_telemetry_by_id_v2">
+<a class="viewcode-back" href="../../../rst/api/api.v2_routes.html#api.v2_routes.sensor_telemetry_routes.get_sensor_telemetry_by_id_v2">[docs]</a>
+<span class="nd">@router</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
+    <span class="s2">&quot;/</span><span class="si">{sensor_id}</span><span class="s2">&quot;</span><span class="p">,</span>
+    <span class="n">name</span><span class="o">=</span><span class="s2">&quot;get_sensor_telemetry_by_id_v2&quot;</span><span class="p">,</span>
+    <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Route to request sensor telemetry data by sensor ID.&quot;</span><span class="p">,</span>
+    <span class="n">operation_id</span><span class="o">=</span><span class="s2">&quot;get_sensor_telemetry_by_id_v2&quot;</span><span class="p">,</span>
+    <span class="n">status_code</span><span class="o">=</span><span class="mi">200</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">get_sensor_telemetry_by_id_v2</span><span class="p">(</span><span class="n">sensor_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Response</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Get sensor telemetry data by sensor ID.</span>
+<span class="sd">    This is a placeholder function and should be implemented.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Getting telemetry data for sensor ID: </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">sensor_id</span><span class="p">)</span>
+    <span class="c1"># Placeholder for actual implementation</span>
+    <span class="k">return</span> <span class="n">AppJSONResponse</span><span class="p">(</span>
+        <span class="n">content</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;Telemetry data for sensor ID: </span><span class="si">{</span><span class="n">sensor_id</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
+        <span class="n">status_code</span><span class="o">=</span><span class="n">status</span><span class="o">.</span><span class="n">HTTP_200_OK</span><span class="p">,</span>
+    <span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="create_sensor_telemetry_v2">
+<a class="viewcode-back" href="../../../rst/api/api.v2_routes.html#api.v2_routes.sensor_telemetry_routes.create_sensor_telemetry_v2">[docs]</a>
+<span class="nd">@router</span><span class="o">.</span><span class="n">post</span><span class="p">(</span>
+    <span class="s2">&quot;&quot;</span><span class="p">,</span>
+    <span class="n">name</span><span class="o">=</span><span class="s2">&quot;create_sensor_telemetry_v2&quot;</span><span class="p">,</span>
+    <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Route to create new sensor telemetry data.&quot;</span><span class="p">,</span>
+    <span class="n">operation_id</span><span class="o">=</span><span class="s2">&quot;create_sensor_telemetry_v2&quot;</span><span class="p">,</span>
+    <span class="n">status_code</span><span class="o">=</span><span class="n">status</span><span class="o">.</span><span class="n">HTTP_201_CREATED</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">create_sensor_telemetry_v2</span><span class="p">(</span>
+    <span class="n">input_telemetry_data</span><span class="p">:</span> <span class="n">CreateSensorTelemetry</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">AppJSONResponse</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Create new sensor telemetry data.</span>
+<span class="sd">    This is a placeholder function and should be implemented.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Creating new sensor telemetry data...&quot;</span><span class="p">)</span>
+    <span class="n">new_telemetry</span> <span class="o">=</span> <span class="n">SensorTelemetry</span><span class="p">(</span>
+        <span class="o">**</span><span class="n">input_telemetry_data</span><span class="o">.</span><span class="n">model_dump</span><span class="p">(</span><span class="n">exclude_unset</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="p">)</span>
+
+    <span class="n">new_telemetry_item</span> <span class="o">=</span> <span class="k">await</span> <span class="n">new_telemetry</span><span class="o">.</span><span class="n">create</span><span class="p">()</span>
+
+    <span class="k">return</span> <span class="n">AppJSONResponse</span><span class="p">(</span>
+        <span class="n">content</span><span class="o">=</span><span class="n">model_serialize</span><span class="p">(</span><span class="n">new_telemetry_item</span><span class="p">),</span> <span class="n">status_code</span><span class="o">=</span><span class="n">status</span><span class="o">.</span><span class="n">HTTP_201_CREATED</span>
+    <span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="get_filtered_sensor_telemetry_v2">
+<a class="viewcode-back" href="../../../rst/api/api.v2_routes.html#api.v2_routes.sensor_telemetry_routes.get_filtered_sensor_telemetry_v2">[docs]</a>
+<span class="nd">@router</span><span class="o">.</span><span class="n">post</span><span class="p">(</span>
+    <span class="s2">&quot;/filtered&quot;</span><span class="p">,</span>
+    <span class="n">name</span><span class="o">=</span><span class="s2">&quot;get_filtered_sensor_telemetry_v2&quot;</span><span class="p">,</span>
+    <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Route to get filtered sensor telemetry data.&quot;</span><span class="p">,</span>
+    <span class="n">operation_id</span><span class="o">=</span><span class="s2">&quot;get_filtered_sensor_telemetry_v2&quot;</span><span class="p">,</span>
+    <span class="n">status_code</span><span class="o">=</span><span class="n">status</span><span class="o">.</span><span class="n">HTTP_200_OK</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">get_filtered_sensor_telemetry_v2</span><span class="p">(</span>
+    <span class="n">filter_params</span><span class="p">:</span> <span class="n">FilteredSearchTelemetry</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">AppJSONResponse</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Create new sensor telemetry data.</span>
+<span class="sd">    This is a placeholder function and should be implemented.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Filtering telemetry data with parameters: </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">filter_params</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">filter_params</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="p">))</span>
+
+    <span class="c1"># # Check if filter_params contains specific keys</span>
+    <span class="c1"># if filter_params.get(&quot;sensor_id&quot;) and filter_params.get(&quot;key&quot;) and \</span>
+    <span class="c1">#         filter_params.get(&quot;value&quot;) and filter_params.get(&quot;time&quot;):</span>
+    <span class="c1">#     logger.debug(&quot;Filtering telemetry data with provided parameters.&quot;)</span>
+    <span class="c1">#</span>
+    <span class="c1"># elif filter_params.get(&quot;sensor_id&quot;) and filter_params.get(</span>
+    <span class="c1">#         &quot;key&quot;) and filter_params.get(&quot;value&quot;):</span>
+    <span class="c1">#     logger.debug(</span>
+    <span class="c1">#         &quot;Filtering telemetry data with sensor_id, key, and value.&quot;)</span>
+    <span class="c1">#</span>
+    <span class="c1"># if not filter_params:</span>
+    <span class="c1">#     logger.warning(&quot;No filter parameters provided.&quot;)</span>
+    <span class="c1">#     return AppJSONResponse(</span>
+    <span class="c1">#         content={&quot;detail&quot;: &quot;No filter parameters provided&quot;},</span>
+    <span class="c1">#         status_code=status.HTTP_400_BAD_REQUEST</span>
+    <span class="c1">#     )</span>
+    <span class="c1">#</span>
+    <span class="c1"># filtered_telemetry = await SensorTelemetry.filter(</span>
+    <span class="c1">#     SensorTelemetry.key == filter_params.get(&quot;key&quot;, None)</span>
+    <span class="c1"># ).to_list()</span>
+    <span class="c1">#</span>
+    <span class="c1"># # Validate filter_params</span>
+    <span class="c1"># new_telemetry = SensorTelemetry(</span>
+    <span class="c1">#     **filter_params.model_dump(exclude_unset=True))</span>
+    <span class="c1">#</span>
+    <span class="c1"># new_telemetry_item = await new_telemetry.create()</span>
+
+    <span class="k">return</span> <span class="n">AppJSONResponse</span><span class="p">(</span>
+        <span class="n">content</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;Händer det något...? </span><span class="si">{</span><span class="n">filter_params</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">status_code</span><span class="o">=</span><span class="n">status</span><span class="o">.</span><span class="n">HTTP_200_OK</span>
+    <span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="update_sensor_telemetry_v2">
+<a class="viewcode-back" href="../../../rst/api/api.v2_routes.html#api.v2_routes.sensor_telemetry_routes.update_sensor_telemetry_v2">[docs]</a>
+<span class="nd">@router</span><span class="o">.</span><span class="n">patch</span><span class="p">(</span>
+    <span class="s2">&quot;/</span><span class="si">{sensor_id}</span><span class="s2">&quot;</span><span class="p">,</span>
+    <span class="n">name</span><span class="o">=</span><span class="s2">&quot;update_sensor_telemetry_v2&quot;</span><span class="p">,</span>
+    <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Route to update sensor telemetry data by &quot;</span> <span class="s2">&quot;sensor ID.&quot;</span><span class="p">,</span>
+    <span class="n">operation_id</span><span class="o">=</span><span class="s2">&quot;update_sensor_telemetry_v2&quot;</span><span class="p">,</span>
+    <span class="n">status_code</span><span class="o">=</span><span class="n">status</span><span class="o">.</span><span class="n">HTTP_200_OK</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">update_sensor_telemetry_v2</span><span class="p">(</span>
+    <span class="n">telemetry_data_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="c1"># telemetry_data: PathchUpdateTelemetryData</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">AppJSONResponse</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Update sensor telemetry data by sensor ID.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Updating telemetry data for sensor ID: </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">telemetry_data_id</span><span class="p">)</span>
+    <span class="n">telemetry_data_in_db</span> <span class="o">=</span> <span class="k">await</span> <span class="n">SensorTelemetry</span><span class="o">.</span><span class="n">find_one</span><span class="p">(</span>
+        <span class="n">SensorTelemetry</span><span class="o">.</span><span class="n">sensor_id</span> <span class="o">==</span> <span class="n">telemetry_data_id</span>
+    <span class="p">)</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">telemetry_data_in_db</span><span class="p">:</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s2">&quot;Telemetry data with ID </span><span class="si">%s</span><span class="s2"> not found.&quot;</span><span class="p">,</span> <span class="n">telemetry_data_id</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">AppJSONResponse</span><span class="p">(</span>
+            <span class="n">content</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;detail&quot;</span><span class="p">:</span> <span class="s2">&quot;Telemetry data not found&quot;</span><span class="p">},</span>
+            <span class="n">status_code</span><span class="o">=</span><span class="n">status</span><span class="o">.</span><span class="n">HTTP_404_NOT_FOUND</span><span class="p">,</span>
+        <span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="fake_some_sensor_telemetry_v2">
+<a class="viewcode-back" href="../../../rst/api/api.v2_routes.html#api.v2_routes.sensor_telemetry_routes.fake_some_sensor_telemetry_v2">[docs]</a>
+<span class="nd">@router</span><span class="o">.</span><span class="n">post</span><span class="p">(</span>
+    <span class="s2">&quot;/fake_some&quot;</span><span class="p">,</span>
+    <span class="n">name</span><span class="o">=</span><span class="s2">&quot;fake_some_sensor_telemetry_v2&quot;</span><span class="p">,</span>
+    <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Route to create fake sensor telemetry data.&quot;</span><span class="p">,</span>
+    <span class="n">operation_id</span><span class="o">=</span><span class="s2">&quot;fake_some_sensor_telemetry_v2&quot;</span><span class="p">,</span>
+    <span class="n">status_code</span><span class="o">=</span><span class="n">status</span><span class="o">.</span><span class="n">HTTP_201_CREATED</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">fake_some_sensor_telemetry_v2</span><span class="p">(</span>
+    <span class="n">number_of_items</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">10</span><span class="p">,</span> <span class="n">interval</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">AppJSONResponse</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Create fake sensor telemetry data for testing purposes.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span>
+        <span class="s2">&quot;Creating </span><span class="si">%s</span><span class="s2"> fake sensor telemetry items with an interval of </span><span class="si">%s</span><span class="s2"> seconds...&quot;</span><span class="p">,</span>
+        <span class="n">number_of_items</span><span class="p">,</span>
+        <span class="n">interval</span><span class="p">,</span>
+    <span class="p">)</span>
+
+    <span class="n">created_items</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">number_of_items</span><span class="p">):</span>
+        <span class="n">fake_telemetry</span> <span class="o">=</span> <span class="n">SensorTelemetry</span><span class="p">(</span>
+            <span class="n">key</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;test_value_</span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="n">i</span> <span class="o">*</span> <span class="mf">3.14</span><span class="p">,</span> <span class="n">sensor_id</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;sensor_id_</span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="p">)</span>
+
+        <span class="k">await</span> <span class="n">fake_telemetry</span><span class="o">.</span><span class="n">create</span><span class="p">()</span>
+        <span class="n">created_items</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">model_serialize</span><span class="p">(</span><span class="n">fake_telemetry</span><span class="p">))</span>
+
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Created fake telemetry item </span><span class="si">%s</span><span class="s2"> of </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="p">(</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">),</span> <span class="n">number_of_items</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">number_of_items</span> <span class="o">-</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="k">await</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="n">interval</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">AppJSONResponse</span><span class="p">(</span><span class="n">content</span><span class="o">=</span><span class="n">created_items</span><span class="p">,</span> <span class="n">status_code</span><span class="o">=</span><span class="n">status</span><span class="o">.</span><span class="n">HTTP_201_CREATED</span><span class="p">)</span></div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, Daniel Andersson &lt;d.andersson86@icloud.com&gt;.
+      <span class="lastupdated">Last updated on 2026-06-02.
+      </span></p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

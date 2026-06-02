@@ -1,0 +1,199 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>db.connectors.mongo_db_utils &mdash; FastAPI Application 0.0.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=9edc463e" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css?v=4ae1632d" />
+
+  
+    <link rel="canonical" href="https://github.com/DanneDevOoops/fastApi/_modules/db/connectors/mongo_db_utils.html" />
+      <script src="../../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../../_static/documentation_options.js?v=7026087e"></script>
+      <script src="../../../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../../../_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../index.html" class="icon icon-home">
+            FastAPI Application
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../rst/api/modules.html">api</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../rst/core/modules.html">core</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../rst/db/modules.html">db</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../rst/middlewares/modules.html">middlewares</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../rst/utils/modules.html">utils</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Documents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../coverage.html">docs coverage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../readme.html">project readme</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../docstrings.html">write docstrings</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">FastAPI Application</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content style-external-links">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">db.connectors.mongo_db_utils</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for db.connectors.mongo_db_utils</h1><div class="highlight"><pre>
+<span></span><span class="ch">#!/usr/bin/env python3</span>
+<span class="c1"># -*- coding: utf-8 -*-</span>
+
+
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">This module contains utility functions for MongoDB interactions.</span>
+
+<span class="sd">The utility functions are defined as classes, each representing a specific</span>
+<span class="sd">type of data used in the application.</span>
+
+<span class="sd">The following classes are defined:</span>
+
+<span class="sd">- PyObjectId: Custom class for Pydantic to parse ObjectId.</span>
+
+<span class="sd">Each class includes a detailed docstring with information about its</span>
+<span class="sd">purpose, the parameters it takes, the response it returns, and any</span>
+<span class="sd">exceptions it might raise.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">bson</span><span class="w"> </span><span class="kn">import</span> <span class="n">ObjectId</span>
+
+
+<div class="viewcode-block" id="PyObjectId">
+<a class="viewcode-back" href="../../../rst/db/db.connectors.html#db.connectors.mongo_db_utils.PyObjectId">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">PyObjectId</span><span class="p">(</span><span class="n">ObjectId</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Custom class for Pydantic to parse ObjectId.</span>
+
+<span class="sd">    This class defines the following methods:</span>
+
+<span class="sd">    - __get_validators__: Returns a generator that yields the validate method.</span>
+<span class="sd">    - validate: Validates the ObjectId.</span>
+<span class="sd">    - __get_pydantic_json_schema__: Modifies the schema.</span>
+
+<span class="sd">    Each method includes a detailed docstring with information about its</span>
+<span class="sd">    purpose, the parameters it takes, the response it returns, and any</span>
+<span class="sd">    exceptions it might raise.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="PyObjectId.__get_validators__">
+<a class="viewcode-back" href="../../../rst/db/db.connectors.html#db.connectors.mongo_db_utils.PyObjectId.__get_validators__">[docs]</a>
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">__get_validators__</span><span class="p">(</span><span class="bp">cls</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns a generator that yields the validate method.</span>
+
+<span class="sd">        :return: A generator that yields the validate method.</span>
+<span class="sd">        :rtype: generator</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">yield</span> <span class="bp">cls</span><span class="o">.</span><span class="n">validate</span></div>
+
+
+<div class="viewcode-block" id="PyObjectId.validate">
+<a class="viewcode-back" href="../../../rst/db/db.connectors.html#db.connectors.mongo_db_utils.PyObjectId.validate">[docs]</a>
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">validate</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ObjectId</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Validates the ObjectId.</span>
+
+<span class="sd">        :param v: The value to validate.</span>
+<span class="sd">        :type v: str</span>
+<span class="sd">        :return: The validated ObjectId.</span>
+<span class="sd">        :rtype: ObjectId</span>
+<span class="sd">        :raises ValueError: If the value is not a valid ObjectId.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">ObjectId</span><span class="o">.</span><span class="n">is_valid</span><span class="p">(</span><span class="n">v</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Invalid ObjectId&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">ObjectId</span><span class="p">(</span><span class="n">v</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="PyObjectId.__get_pydantic_json_schema__">
+<a class="viewcode-back" href="../../../rst/db/db.connectors.html#db.connectors.mongo_db_utils.PyObjectId.__get_pydantic_json_schema__">[docs]</a>
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">__get_pydantic_json_schema__</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">field_schema</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Modifies the schema.</span>
+
+<span class="sd">        :param field_schema: The field schema to modify.</span>
+<span class="sd">        :type field_schema: dict</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">field_schema</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="nb">type</span><span class="o">=</span><span class="s2">&quot;string&quot;</span><span class="p">)</span></div>
+</div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, Daniel Andersson &lt;d.andersson86@icloud.com&gt;.
+      <span class="lastupdated">Last updated on 2026-06-02.
+      </span></p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

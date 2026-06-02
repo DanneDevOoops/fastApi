@@ -1,0 +1,375 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>core.env_config &mdash; FastAPI Application 0.0.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=9edc463e" />
+      <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=4ae1632d" />
+
+  
+    <link rel="canonical" href="https://github.com/DanneDevOoops/fastApi/_modules/core/env_config.html" />
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=7026087e"></script>
+      <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            FastAPI Application
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../rst/api/modules.html">api</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../rst/core/modules.html">core</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../rst/db/modules.html">db</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../rst/middlewares/modules.html">middlewares</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../rst/utils/modules.html">utils</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Documents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../coverage.html">docs coverage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../readme.html">project readme</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../docstrings.html">write docstrings</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">FastAPI Application</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content style-external-links">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">core.env_config</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for core.env_config</h1><div class="highlight"><pre>
+<span></span><span class="ch">#!/usr/bin/env python3</span>
+<span class="c1"># -*- coding: utf-8 -*-</span>
+
+
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">This module contains the configuration settings for the FastAPI application.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">functools</span><span class="w"> </span><span class="kn">import</span> <span class="n">lru_cache</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">pydantic</span><span class="w"> </span><span class="kn">import</span> <span class="n">Field</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pydantic_settings</span><span class="w"> </span><span class="kn">import</span> <span class="n">BaseSettings</span><span class="p">,</span> <span class="n">SettingsConfigDict</span>
+
+
+<div class="viewcode-block" id="Settings">
+<a class="viewcode-back" href="../../rst/core/core.html#core.env_config.Settings">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">Settings</span><span class="p">(</span><span class="n">BaseSettings</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Class to define the configuration settings for the application.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1"># --- Environment -------------------------------------------------------</span>
+    <span class="n">env_name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="n">default</span><span class="o">=</span><span class="s2">&quot;development&quot;</span><span class="p">,</span> <span class="n">json_schema_extra</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;env_name&quot;</span><span class="p">:</span> <span class="s2">&quot;ENV_NAME&quot;</span><span class="p">}</span>
+    <span class="p">)</span>
+    <span class="n">pyenv_version</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="n">default</span><span class="o">=</span><span class="s2">&quot;3.11.4&quot;</span><span class="p">,</span> <span class="n">json_schema_extra</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;env_name&quot;</span><span class="p">:</span> <span class="s2">&quot;PYENV_VERSION&quot;</span><span class="p">}</span>
+    <span class="p">)</span>
+    <span class="n">app_debug</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">json_schema_extra</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;env_name&quot;</span><span class="p">:</span> <span class="s2">&quot;APP_DEBUG&quot;</span><span class="p">})</span>
+
+    <span class="c1"># --- Application -------------------------------------------------------</span>
+    <span class="n">app_name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="n">default</span><span class="o">=</span><span class="s2">&quot;Fast API application&quot;</span><span class="p">,</span> <span class="n">json_schema_extra</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;env_name&quot;</span><span class="p">:</span> <span class="s2">&quot;APP_NAME&quot;</span><span class="p">}</span>
+    <span class="p">)</span>
+    <span class="n">app_host</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="n">default</span><span class="o">=</span><span class="s2">&quot;localhost&quot;</span><span class="p">,</span> <span class="n">json_schema_extra</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;env_name&quot;</span><span class="p">:</span> <span class="s2">&quot;APP_HOST&quot;</span><span class="p">}</span>
+    <span class="p">)</span>
+    <span class="n">app_port</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="mi">1337</span><span class="p">,</span> <span class="n">json_schema_extra</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;env_name&quot;</span><span class="p">:</span> <span class="s2">&quot;APP_PORT&quot;</span><span class="p">})</span>
+    <span class="n">app_reload</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">json_schema_extra</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;env_name&quot;</span><span class="p">:</span> <span class="s2">&quot;APP_RELOAD&quot;</span><span class="p">})</span>
+    <span class="n">app_logger_name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="n">default</span><span class="o">=</span><span class="s2">&quot;application_logger&quot;</span><span class="p">,</span> <span class="n">json_schema_extra</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;env_name&quot;</span><span class="p">:</span> <span class="s2">&quot;APP_LOGGER_NAME&quot;</span><span class="p">}</span>
+    <span class="p">)</span>
+    <span class="n">app_gzip_enabled</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="n">default</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">json_schema_extra</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;env_name&quot;</span><span class="p">:</span> <span class="s2">&quot;APP_GZIP_ENABLED&quot;</span><span class="p">}</span>
+    <span class="p">)</span>
+    <span class="n">app_gzip_minimum_size</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="n">default</span><span class="o">=</span><span class="mi">500</span><span class="p">,</span> <span class="n">json_schema_extra</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;env_name&quot;</span><span class="p">:</span> <span class="s2">&quot;APP_GZIP_MINIMUM_SIZE&quot;</span><span class="p">}</span>
+    <span class="p">)</span>
+    <span class="n">app_gzip_compress_level</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="n">default</span><span class="o">=</span><span class="mi">9</span><span class="p">,</span> <span class="n">json_schema_extra</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;env_name&quot;</span><span class="p">:</span> <span class="s2">&quot;APP_GZIP_COMPRESS_LEVEL&quot;</span><span class="p">}</span>
+    <span class="p">)</span>
+
+    <span class="c1"># --- JWT Token settings -------------------------------------------------</span>
+    <span class="n">app_jwt_algorithm</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="n">default</span><span class="o">=</span><span class="s2">&quot;HS256&quot;</span><span class="p">,</span> <span class="n">json_schema_extra</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;env_name&quot;</span><span class="p">:</span> <span class="s2">&quot;APP_JWT_ALGORITHM&quot;</span><span class="p">}</span>
+    <span class="p">)</span>
+    <span class="n">app_jwt_secret_key</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="n">default</span><span class="o">=</span><span class="s2">&quot;a_secret_key&quot;</span><span class="p">,</span> <span class="n">json_schema_extra</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;env_name&quot;</span><span class="p">:</span> <span class="s2">&quot;APP_JWT_SECRET_KEY&quot;</span><span class="p">}</span>
+    <span class="p">)</span>
+    <span class="n">app_jwt_expiration</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="n">default</span><span class="o">=</span><span class="mi">1200</span><span class="p">,</span> <span class="n">json_schema_extra</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;env_name&quot;</span><span class="p">:</span> <span class="s2">&quot;APP_JWT_EXPIRATION&quot;</span><span class="p">}</span>
+    <span class="p">)</span>
+    <span class="n">app_jwt_token_type</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="n">default</span><span class="o">=</span><span class="s2">&quot;bearer&quot;</span><span class="p">,</span> <span class="n">json_schema_extra</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;env_name&quot;</span><span class="p">:</span> <span class="s2">&quot;APP_JWT_TOKEN_TYPE&quot;</span><span class="p">}</span>
+    <span class="p">)</span>
+    <span class="n">app_health_check_api_key</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">json_schema_extra</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;env_name&quot;</span><span class="p">:</span> <span class="s2">&quot;APP_HEALTH_CHECK_API_KEY&quot;</span><span class="p">}</span>
+    <span class="p">)</span>
+
+    <span class="c1"># --- Docker settings ----------------------------------------------------</span>
+    <span class="n">compose_bake</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="n">default</span><span class="o">=</span><span class="s2">&quot;True&quot;</span><span class="p">,</span> <span class="n">json_schema_extra</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;env_name&quot;</span><span class="p">:</span> <span class="s2">&quot;COMPOSE_BAKE&quot;</span><span class="p">}</span>
+    <span class="p">)</span>
+
+    <span class="c1"># --- Console Logger settings --------------------------------------------</span>
+    <span class="n">console_logger_level</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="n">default</span><span class="o">=</span><span class="s2">&quot;DEBUG&quot;</span><span class="p">,</span> <span class="n">json_schema_extra</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;env_name&quot;</span><span class="p">:</span> <span class="s2">&quot;CONSOLE_LOGGER_LEVEL&quot;</span><span class="p">}</span>
+    <span class="p">)</span>
+    <span class="n">console_logger_format</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="n">default</span><span class="o">=</span><span class="s2">&quot;</span><span class="si">%(asctime)s</span><span class="s2"> - </span><span class="si">%(name)s</span><span class="s2"> - </span><span class="si">%(levelname)s</span><span class="s2"> - </span><span class="si">%(message)s</span><span class="s2">&quot;</span><span class="p">,</span>
+        <span class="n">json_schema_extra</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;env_name&quot;</span><span class="p">:</span> <span class="s2">&quot;CONSOLE_LOGGER_FORMAT&quot;</span><span class="p">},</span>
+    <span class="p">)</span>
+    <span class="n">console_logger_propagate</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="n">default</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">json_schema_extra</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;env_name&quot;</span><span class="p">:</span> <span class="s2">&quot;CONSOLE_LOGGER_PROPAGATE&quot;</span><span class="p">}</span>
+    <span class="p">)</span>
+
+    <span class="c1"># --- File Logger settings -----------------------------------------------</span>
+    <span class="n">file_logger_level</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="n">default</span><span class="o">=</span><span class="s2">&quot;DEBUG&quot;</span><span class="p">,</span> <span class="n">json_schema_extra</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;env_name&quot;</span><span class="p">:</span> <span class="s2">&quot;FILE_LOGGER_LEVEL&quot;</span><span class="p">}</span>
+    <span class="p">)</span>
+    <span class="n">file_logger_file_name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="n">default</span><span class="o">=</span><span class="s2">&quot;fastapi_log&quot;</span><span class="p">,</span> <span class="n">json_schema_extra</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;env_name&quot;</span><span class="p">:</span> <span class="s2">&quot;FILE_LOGGER_FILE_NAME&quot;</span><span class="p">}</span>
+    <span class="p">)</span>
+    <span class="n">file_logger_file_size</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="n">default</span><span class="o">=</span><span class="mi">1000000</span><span class="p">,</span> <span class="n">json_schema_extra</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;env_name&quot;</span><span class="p">:</span> <span class="s2">&quot;FILE_LOGGER_FILE_SIZE&quot;</span><span class="p">}</span>
+    <span class="p">)</span>
+    <span class="n">file_logger_file_count</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="n">default</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">json_schema_extra</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;env_name&quot;</span><span class="p">:</span> <span class="s2">&quot;FILE_LOGGER_FILE_COUNT&quot;</span><span class="p">}</span>
+    <span class="p">)</span>
+    <span class="n">file_logger_dir</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="n">default</span><span class="o">=</span><span class="s2">&quot;./../logs&quot;</span><span class="p">,</span> <span class="n">json_schema_extra</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;env_name&quot;</span><span class="p">:</span> <span class="s2">&quot;FILE_LOGGER_DIR&quot;</span><span class="p">}</span>
+    <span class="p">)</span>
+    <span class="n">file_logger_format</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="n">default</span><span class="o">=</span><span class="s2">&quot;</span><span class="si">%(asctime)s</span><span class="s2"> - </span><span class="si">%(name)s</span><span class="s2"> - </span><span class="si">%(levelname)s</span><span class="s2"> - </span><span class="si">%(message)s</span><span class="s2">&quot;</span><span class="p">,</span>
+        <span class="n">json_schema_extra</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;env_name&quot;</span><span class="p">:</span> <span class="s2">&quot;FILE_LOGGER_FORMAT&quot;</span><span class="p">},</span>
+    <span class="p">)</span>
+    <span class="n">file_logger_mode</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="n">default</span><span class="o">=</span><span class="s2">&quot;w&quot;</span><span class="p">,</span> <span class="n">json_schema_extra</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;env_name&quot;</span><span class="p">:</span> <span class="s2">&quot;FILE_LOGGER_MODE&quot;</span><span class="p">}</span>
+    <span class="p">)</span>
+    <span class="n">file_logger_propagate</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="n">default</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">json_schema_extra</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;env_name&quot;</span><span class="p">:</span> <span class="s2">&quot;FILE_LOGGER_PROPAGATE&quot;</span><span class="p">}</span>
+    <span class="p">)</span>
+    <span class="n">file_logger_docker_host_machine_path</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="n">default</span><span class="o">=</span><span class="s2">&quot;/var/log/fastapi&quot;</span><span class="p">,</span>
+        <span class="n">json_schema_extra</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;env_name&quot;</span><span class="p">:</span> <span class="s2">&quot;FILE_LOGGER_DOCKER_HOST_MACHINE_PATH&quot;</span><span class="p">},</span>
+    <span class="p">)</span>
+
+    <span class="c1"># --- Postgres Database --------------------------------------------------</span>
+    <span class="n">pg_db_url</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="n">default</span><span class="o">=</span><span class="s2">&quot;postgresql://&quot;</span>
+        <span class="s2">&quot;a_postgresql_db_username:&quot;</span>
+        <span class="s2">&quot;a_postgresql_db_password@&quot;</span>
+        <span class="s2">&quot;the_db_host:&quot;</span>
+        <span class="s2">&quot;5432/the_db_name&quot;</span><span class="p">,</span>
+        <span class="n">json_schema_extra</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;env_name&quot;</span><span class="p">:</span> <span class="s2">&quot;PG_DB_URL&quot;</span><span class="p">},</span>
+    <span class="p">)</span>
+    <span class="n">pg_db_name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="n">default</span><span class="o">=</span><span class="s2">&quot;the_db_name&quot;</span><span class="p">,</span> <span class="n">json_schema_extra</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;env_name&quot;</span><span class="p">:</span> <span class="s2">&quot;PG_DB_NAME&quot;</span><span class="p">}</span>
+    <span class="p">)</span>
+    <span class="n">pg_db_host</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="n">default</span><span class="o">=</span><span class="s2">&quot;the_db_host&quot;</span><span class="p">,</span> <span class="n">json_schema_extra</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;env_name&quot;</span><span class="p">:</span> <span class="s2">&quot;PG_DB_HOST&quot;</span><span class="p">}</span>
+    <span class="p">)</span>
+    <span class="n">pg_db_port</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="mi">5432</span><span class="p">,</span> <span class="n">json_schema_extra</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;env_name&quot;</span><span class="p">:</span> <span class="s2">&quot;PG_DB_PORT&quot;</span><span class="p">})</span>
+    <span class="n">pg_db_username</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="n">default</span><span class="o">=</span><span class="s2">&quot;a_postgresql_db_username&quot;</span><span class="p">,</span>
+        <span class="n">json_schema_extra</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;env_name&quot;</span><span class="p">:</span> <span class="s2">&quot;PG_DB_USERNAME&quot;</span><span class="p">},</span>
+    <span class="p">)</span>
+    <span class="n">pg_db_password</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="n">default</span><span class="o">=</span><span class="s2">&quot;a_postgresql_db_password&quot;</span><span class="p">,</span>
+        <span class="n">json_schema_extra</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;env_name&quot;</span><span class="p">:</span> <span class="s2">&quot;PG_DB_PASSWORD&quot;</span><span class="p">},</span>
+    <span class="p">)</span>
+    <span class="n">pg_db_backup_dir</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="n">default</span><span class="o">=</span><span class="s2">&quot;./src/db/db_scripts&quot;</span><span class="p">,</span>
+        <span class="n">json_schema_extra</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;env_name&quot;</span><span class="p">:</span> <span class="s2">&quot;PG_DB_BACKUP_DIR&quot;</span><span class="p">},</span>
+    <span class="p">)</span>
+    <span class="n">pg_db_docker_host_machine_backup_path</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="n">default</span><span class="o">=</span><span class="s2">&quot;~/documents/db/backup&quot;</span><span class="p">,</span>
+        <span class="n">json_schema_extra</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;env_name&quot;</span><span class="p">:</span> <span class="s2">&quot;PG_DB_DOCKER_HOST_MACHINE_BACKUP_PATH&quot;</span><span class="p">},</span>
+    <span class="p">)</span>
+    <span class="n">pg_db_connection_pool_size</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="n">default</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">json_schema_extra</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;env_name&quot;</span><span class="p">:</span> <span class="s2">&quot;PG_DB_CONNECTION_POOL_SIZE&quot;</span><span class="p">}</span>
+    <span class="p">)</span>
+    <span class="n">pg_db_max_overflow</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="n">default</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">json_schema_extra</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;env_name&quot;</span><span class="p">:</span> <span class="s2">&quot;PG_DB_MAX_OVERFLOW&quot;</span><span class="p">}</span>
+    <span class="p">)</span>
+    <span class="n">pg_db_echo</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="n">default</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">json_schema_extra</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;env_name&quot;</span><span class="p">:</span> <span class="s2">&quot;PG_DB_ECHO&quot;</span><span class="p">}</span>
+    <span class="p">)</span>
+    <span class="n">pg_db_future</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="n">default</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">json_schema_extra</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;env_name&quot;</span><span class="p">:</span> <span class="s2">&quot;PG_DB_FUTURE&quot;</span><span class="p">}</span>
+    <span class="p">)</span>
+    <span class="n">pg_db_auto_commit</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="n">default</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">json_schema_extra</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;env_name&quot;</span><span class="p">:</span> <span class="s2">&quot;PG_DB_AUTO_COMMIT&quot;</span><span class="p">}</span>
+    <span class="p">)</span>
+    <span class="n">pg_db_auto_flush</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="n">default</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">json_schema_extra</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;env_name&quot;</span><span class="p">:</span> <span class="s2">&quot;PG_DB_AUTO_FLUSH&quot;</span><span class="p">}</span>
+    <span class="p">)</span>
+    <span class="n">pg_db_pre_ping</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="n">default</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">json_schema_extra</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;env_name&quot;</span><span class="p">:</span> <span class="s2">&quot;PG_DB_PRE_PING&quot;</span><span class="p">}</span>
+    <span class="p">)</span>
+    <span class="n">pg_db_expire_on_commit</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="n">default</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">json_schema_extra</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;env_name&quot;</span><span class="p">:</span> <span class="s2">&quot;PG_DB_EXPIRE_ON_COMMIT&quot;</span><span class="p">}</span>
+    <span class="p">)</span>
+    <span class="n">pg_db_volume_path</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="n">default</span><span class="o">=</span><span class="s2">&quot;/var/lib/postgresql/data&quot;</span><span class="p">,</span>
+        <span class="n">json_schema_extra</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;env_name&quot;</span><span class="p">:</span> <span class="s2">&quot;PG_DB_VOLUME_PATH&quot;</span><span class="p">},</span>
+    <span class="p">)</span>
+    <span class="n">pg_local_user_id</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="n">default</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span> <span class="n">json_schema_extra</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;env_name&quot;</span><span class="p">:</span> <span class="s2">&quot;PG_LOCAL_USER_ID&quot;</span><span class="p">}</span>
+    <span class="p">)</span>
+    <span class="n">pg_local_group_id</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="n">default</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span> <span class="n">json_schema_extra</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;env_name&quot;</span><span class="p">:</span> <span class="s2">&quot;PG_LOCAL_GROUP_ID&quot;</span><span class="p">}</span>
+    <span class="p">)</span>
+    <span class="n">pg_db_docker_service_name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="n">default</span><span class="o">=</span><span class="s2">&quot;the_db_docker_service_name&quot;</span><span class="p">,</span>
+        <span class="n">json_schema_extra</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;env_name&quot;</span><span class="p">:</span> <span class="s2">&quot;PG_DB_DOCKER_SERVICE_NAME&quot;</span><span class="p">},</span>
+    <span class="p">)</span>
+    <span class="n">pg_db_docker_data_path</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="n">default</span><span class="o">=</span><span class="s2">&quot;/var/lib/postgresql/data&quot;</span><span class="p">,</span>
+        <span class="n">json_schema_extra</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;env_name&quot;</span><span class="p">:</span> <span class="s2">&quot;PG_DB_DOCKER_DATA_PATH&quot;</span><span class="p">},</span>
+    <span class="p">)</span>
+
+    <span class="c1"># --- MongoDB Database ---------------------------------------------------</span>
+    <span class="n">mongo_db_url</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="n">default</span><span class="o">=</span><span class="s2">&quot;mongodb://a_mongodb_db_username:&quot;</span>
+        <span class="s2">&quot;a_mongodb_db_password@&quot;</span>
+        <span class="s2">&quot;the_db_host:&quot;</span>
+        <span class="s2">&quot;27017&quot;</span><span class="p">,</span>
+        <span class="n">json_schema_extra</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;env_name&quot;</span><span class="p">:</span> <span class="s2">&quot;MONGO_DB_URL&quot;</span><span class="p">},</span>
+    <span class="p">)</span>
+    <span class="n">mongo_db_name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="n">default</span><span class="o">=</span><span class="s2">&quot;the_mongo_db_name&quot;</span><span class="p">,</span> <span class="n">json_schema_extra</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;env_name&quot;</span><span class="p">:</span> <span class="s2">&quot;MONGO_DB_NAME&quot;</span><span class="p">}</span>
+    <span class="p">)</span>
+    <span class="n">mongo_db_host</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="n">default</span><span class="o">=</span><span class="s2">&quot;the_mongo_db_host&quot;</span><span class="p">,</span> <span class="n">json_schema_extra</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;env_name&quot;</span><span class="p">:</span> <span class="s2">&quot;MONGO_DB_HOST&quot;</span><span class="p">}</span>
+    <span class="p">)</span>
+    <span class="n">mongo_db_port</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="n">default</span><span class="o">=</span><span class="mi">27017</span><span class="p">,</span> <span class="n">json_schema_extra</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;env_name&quot;</span><span class="p">:</span> <span class="s2">&quot;MONGO_DB_PORT&quot;</span><span class="p">}</span>
+    <span class="p">)</span>
+    <span class="n">mongo_db_username</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="n">default</span><span class="o">=</span><span class="s2">&quot;a_mongodb_db_username&quot;</span><span class="p">,</span>
+        <span class="n">json_schema_extra</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;env_name&quot;</span><span class="p">:</span> <span class="s2">&quot;MONGO_DB_USERNAME&quot;</span><span class="p">},</span>
+    <span class="p">)</span>
+    <span class="n">mongo_db_password</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="n">default</span><span class="o">=</span><span class="s2">&quot;a_mongodb_db_password&quot;</span><span class="p">,</span>
+        <span class="n">json_schema_extra</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;env_name&quot;</span><span class="p">:</span> <span class="s2">&quot;MONGO_DB_PASSWORD&quot;</span><span class="p">},</span>
+    <span class="p">)</span>
+    <span class="n">mongo_db_docker_host_volume_path</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="n">default</span><span class="o">=</span><span class="s2">&quot;~/data/db&quot;</span><span class="p">,</span>
+        <span class="n">json_schema_extra</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;env_name&quot;</span><span class="p">:</span> <span class="s2">&quot;MONGO_DB_DOCKER_HOST_VOLUME_PATH&quot;</span><span class="p">},</span>
+    <span class="p">)</span>
+
+    <span class="c1"># --- SQLite3 Database settings ------------------------------------------</span>
+    <span class="n">sqlite_db_url</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="n">default</span><span class="o">=</span><span class="s2">&quot;sqlite:///a_sqlite_db_name.db&quot;</span><span class="p">,</span>
+        <span class="n">json_schema_extra</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;env_name&quot;</span><span class="p">:</span> <span class="s2">&quot;SQLITE_DB_URL&quot;</span><span class="p">},</span>
+    <span class="p">)</span>
+
+    <span class="c1"># --- App utility settings -----------------------------------------------</span>
+    <span class="n">nano_id_characters</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="n">default</span><span class="o">=</span><span class="s2">&quot;0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz&quot;</span><span class="p">,</span>
+        <span class="n">json_schema_extra</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;env_name&quot;</span><span class="p">:</span> <span class="s2">&quot;NANO_ID_CHARACTERS&quot;</span><span class="p">},</span>
+    <span class="p">)</span>
+    <span class="n">nano_id_size</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="n">default</span><span class="o">=</span><span class="mi">25</span><span class="p">,</span> <span class="n">json_schema_extra</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;env_name&quot;</span><span class="p">:</span> <span class="s2">&quot;NANO_ID_SIZE&quot;</span><span class="p">}</span>
+    <span class="p">)</span>
+
+    <span class="c1"># Pydantic config of .env file</span>
+    <span class="n">model_config</span> <span class="o">=</span> <span class="n">SettingsConfigDict</span><span class="p">(</span><span class="n">env_file</span><span class="o">=</span><span class="s2">&quot;.env&quot;</span><span class="p">)</span>
+
+<div class="viewcode-block" id="Settings.__str__">
+<a class="viewcode-back" href="../../rst/core/core.html#core.env_config.Settings.__str__">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Method to return the string representation of the class.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="vm">__dict__</span><span class="p">)</span></div>
+</div>
+
+
+
+<div class="viewcode-block" id="get_settings">
+<a class="viewcode-back" href="../../rst/core/core.html#core.env_config.get_settings">[docs]</a>
+<span class="nd">@lru_cache</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">get_settings</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">Settings</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Function to get the settings.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">Settings</span><span class="p">()</span></div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, Daniel Andersson &lt;d.andersson86@icloud.com&gt;.
+      <span class="lastupdated">Last updated on 2026-06-02.
+      </span></p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

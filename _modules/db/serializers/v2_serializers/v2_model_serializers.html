@@ -1,0 +1,218 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>db.serializers.v2_serializers.v2_model_serializers &mdash; FastAPI Application 0.0.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../../../_static/css/theme.css?v=9edc463e" />
+      <link rel="stylesheet" type="text/css" href="../../../../_static/graphviz.css?v=4ae1632d" />
+
+  
+    <link rel="canonical" href="https://github.com/DanneDevOoops/fastApi/_modules/db/serializers/v2_serializers/v2_model_serializers.html" />
+      <script src="../../../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../../../_static/documentation_options.js?v=7026087e"></script>
+      <script src="../../../../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../../../../_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="../../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../../index.html" class="icon icon-home">
+            FastAPI Application
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../rst/api/modules.html">api</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../rst/core/modules.html">core</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../rst/db/modules.html">db</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../rst/middlewares/modules.html">middlewares</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../rst/utils/modules.html">utils</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Documents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../coverage.html">docs coverage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../readme.html">project readme</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../docstrings.html">write docstrings</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../index.html">FastAPI Application</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content style-external-links">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">db.serializers.v2_serializers.v2_model_serializers</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for db.serializers.v2_serializers.v2_model_serializers</h1><div class="highlight"><pre>
+<span></span><span class="ch">#!/usr/bin/env python3</span>
+<span class="c1"># -*- coding: utf-8 -*-</span>
+
+
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Serialization utilities for API v2 database schemas.</span>
+
+<span class="sd">This module provides functions to serialize individual and batch database</span>
+<span class="sd">records, including users and generic items, into dictionary formats</span>
+<span class="sd">suitable for API responses. It supports both single-object and list</span>
+<span class="sd">serialization, handling conversion of MongoDB ObjectIds and model instances</span>
+<span class="sd">to standard Python dictionaries.</span>
+
+<span class="sd">Functions:</span>
+<span class="sd">- individual_serializer: Serialize a single generic database record.</span>
+<span class="sd">- list_serial: Serialize a list of generic database records.</span>
+<span class="sd">- user_serializer: Serialize a single User document or model.</span>
+<span class="sd">- user_list_serializer: Serialize a list of User documents or models.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+
+<div class="viewcode-block" id="individual_serializer">
+<a class="viewcode-back" href="../../../../rst/db/db.serializers.v2_serializers.html#db.serializers.v2_serializers.v2_model_serializers.individual_serializer">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">individual_serializer</span><span class="p">(</span><span class="n">individual</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Serialize a single generic database record.</span>
+
+<span class="sd">    Converts an individual database record (typically a MongoDB document)</span>
+<span class="sd">    into a dictionary with stringified `id` and selected fields.</span>
+
+<span class="sd">    :param individual: The database record to serialize.</span>
+<span class="sd">    :type individual: dict</span>
+<span class="sd">    :return: A dictionary representation of the record.</span>
+<span class="sd">    :rtype: dict</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="p">{</span>
+        <span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="nb">str</span><span class="p">(</span><span class="n">individual</span><span class="p">[</span><span class="s2">&quot;_id&quot;</span><span class="p">]),</span>
+        <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="n">individual</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">],</span>
+        <span class="s2">&quot;description&quot;</span><span class="p">:</span> <span class="n">individual</span><span class="p">[</span><span class="s2">&quot;description&quot;</span><span class="p">],</span>
+        <span class="s2">&quot;complete&quot;</span><span class="p">:</span> <span class="n">individual</span><span class="p">[</span><span class="s2">&quot;complete&quot;</span><span class="p">],</span>
+        <span class="s2">&quot;api_key&quot;</span><span class="p">:</span> <span class="n">individual</span><span class="p">[</span><span class="s2">&quot;api_key&quot;</span><span class="p">],</span>
+    <span class="p">}</span></div>
+
+
+
+<div class="viewcode-block" id="list_serial">
+<a class="viewcode-back" href="../../../../rst/db/db.serializers.v2_serializers.html#db.serializers.v2_serializers.v2_model_serializers.list_serial">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">list_serial</span><span class="p">(</span><span class="n">individual</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Serialize a list of generic database records.</span>
+
+<span class="sd">    Applies `individual_serializer` to each record in the provided list.</span>
+
+<span class="sd">    :param individual: A list of database records to serialize.</span>
+<span class="sd">    :type individual: list[dict]</span>
+<span class="sd">    :return: A list of serialized record dictionaries.</span>
+<span class="sd">    :rtype: list[dict]</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="n">individual_serializer</span><span class="p">,</span> <span class="n">individual</span><span class="p">))</span></div>
+
+
+
+<div class="viewcode-block" id="model_serialize">
+<a class="viewcode-back" href="../../../../rst/db/db.serializers.v2_serializers.html#db.serializers.v2_serializers.v2_model_serializers.model_serialize">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">model_serialize</span><span class="p">(</span><span class="n">input_data_model</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Serialize a single User document or model.</span>
+
+<span class="sd">    Converts a data model instance or dictionary to a standard dictionary,</span>
+<span class="sd">    stringify the `id` field and removing the MongoDB `_id` key.</span>
+
+<span class="sd">    :param input_data_model: The beanie Document model to serialize.</span>
+<span class="sd">    :type input_data_model: Any</span>
+<span class="sd">    :return: A dictionary representation of the User.</span>
+<span class="sd">    :rtype: dict</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="n">input_data_model</span><span class="o">.</span><span class="n">model_dump</span><span class="p">()</span>
+        <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">input_data_model</span><span class="p">,</span> <span class="s2">&quot;model_dump&quot;</span><span class="p">)</span>
+        <span class="k">else</span> <span class="p">(</span><span class="nb">dict</span><span class="p">(</span><span class="n">input_data_model</span><span class="p">))</span>
+    <span class="p">)</span>
+    <span class="k">if</span> <span class="s2">&quot;_id&quot;</span> <span class="ow">in</span> <span class="n">data</span> <span class="ow">and</span> <span class="n">data</span><span class="p">[</span><span class="s2">&quot;_id&quot;</span><span class="p">]</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">data</span><span class="p">[</span><span class="s2">&quot;id&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;_id&quot;</span><span class="p">])</span>
+        <span class="k">del</span> <span class="n">data</span><span class="p">[</span><span class="s2">&quot;_id&quot;</span><span class="p">]</span>
+    <span class="k">return</span> <span class="n">data</span></div>
+
+
+
+<div class="viewcode-block" id="user_list_serializer">
+<a class="viewcode-back" href="../../../../rst/db/db.serializers.v2_serializers.html#db.serializers.v2_serializers.v2_model_serializers.user_list_serializer">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">user_list_serializer</span><span class="p">(</span><span class="n">users</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Serialize a list of User documents or models.</span>
+
+<span class="sd">    Applies `user_serializer` to each User in the provided list.</span>
+
+<span class="sd">    :param users: A list of User documents or models to serialize.</span>
+<span class="sd">    :type users: list</span>
+<span class="sd">    :return: A list of serialized User dictionaries.</span>
+<span class="sd">    :rtype: list[dict]</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="n">model_serialize</span><span class="p">,</span> <span class="n">users</span><span class="p">))</span></div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, Daniel Andersson &lt;d.andersson86@icloud.com&gt;.
+      <span class="lastupdated">Last updated on 2026-06-02.
+      </span></p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

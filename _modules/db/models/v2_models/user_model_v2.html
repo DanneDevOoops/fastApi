@@ -1,0 +1,631 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>db.models.v2_models.user_model_v2 &mdash; FastAPI Application 0.0.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../../../_static/css/theme.css?v=9edc463e" />
+      <link rel="stylesheet" type="text/css" href="../../../../_static/graphviz.css?v=4ae1632d" />
+
+  
+    <link rel="canonical" href="https://github.com/DanneDevOoops/fastApi/_modules/db/models/v2_models/user_model_v2.html" />
+      <script src="../../../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../../../_static/documentation_options.js?v=7026087e"></script>
+      <script src="../../../../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../../../../_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="../../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../../index.html" class="icon icon-home">
+            FastAPI Application
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../rst/api/modules.html">api</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../rst/core/modules.html">core</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../rst/db/modules.html">db</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../rst/middlewares/modules.html">middlewares</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../rst/utils/modules.html">utils</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Documents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../coverage.html">docs coverage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../readme.html">project readme</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../docstrings.html">write docstrings</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../index.html">FastAPI Application</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content style-external-links">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">db.models.v2_models.user_model_v2</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for db.models.v2_models.user_model_v2</h1><div class="highlight"><pre>
+<span></span><span class="ch">#!/usr/bin/env python3</span>
+<span class="c1"># -*- coding: utf-8 -*-</span>
+
+
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">User model definitions for MongoDB with Beanie ODM.</span>
+
+<span class="sd">This module defines Pydantic and Beanie models for user data, supporting</span>
+<span class="sd">CRUD operations, batch processing, and schema validation for API v2.</span>
+<span class="sd">It includes models for user creation, updates (full and partial), and</span>
+<span class="sd">batch operations, with automatic timestamping and MongoDB ObjectId handling.</span>
+
+<span class="sd">Classes:</span>
+<span class="sd">- User: Main Beanie document model for users.</span>
+<span class="sd">- UsersBatch: Model for batch user operations.</span>
+<span class="sd">- CreateUser: Schema for creating a new user.</span>
+<span class="sd">- PatchUserData: Schema for partial user updates.</span>
+<span class="sd">- UpdateUser: Schema for full user updates.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">datetime</span><span class="w"> </span><span class="kn">import</span> <span class="n">datetime</span><span class="p">,</span> <span class="n">timezone</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">enum</span><span class="w"> </span><span class="kn">import</span> <span class="n">Enum</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Optional</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">pymongo</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">beanie</span><span class="w"> </span><span class="kn">import</span> <span class="n">Document</span><span class="p">,</span> <span class="n">Indexed</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">bson</span><span class="w"> </span><span class="kn">import</span> <span class="n">ObjectId</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pydantic</span><span class="w"> </span><span class="kn">import</span> <span class="n">BaseModel</span><span class="p">,</span> <span class="n">Field</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">src.utils.nano_id</span><span class="w"> </span><span class="kn">import</span> <span class="n">generate_nano_id</span>
+
+
+<div class="viewcode-block" id="UserRole">
+<a class="viewcode-back" href="../../../../rst/db/db.models.v2_models.html#db.models.v2_models.user_model_v2.UserRole">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">UserRole</span><span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="n">Enum</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Enum for user roles in the system. Privileges and access levels are</span>
+<span class="sd">    determined by the role assigned to the user.</span>
+
+<span class="sd">    Available roles:</span>
+<span class="sd">    - USER: Regular user with standard access.</span>
+<span class="sd">    - ADMIN: User with administrative privileges.</span>
+<span class="sd">    - SUPERUSER: User with elevated privileges, typically for system</span>
+<span class="sd">        maintenance or higher level management tasks. This role is the only one</span>
+<span class="sd">        that can create, update into, or delete admin users.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">USER</span> <span class="o">=</span> <span class="s2">&quot;user&quot;</span>
+    <span class="n">ADMIN</span> <span class="o">=</span> <span class="s2">&quot;admin&quot;</span>
+    <span class="n">SUPERUSER</span> <span class="o">=</span> <span class="s2">&quot;superuser&quot;</span></div>
+
+
+
+<div class="viewcode-block" id="User">
+<a class="viewcode-back" href="../../../../rst/db/db.models.v2_models.html#db.models.v2_models.user_model_v2.User">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">User</span><span class="p">(</span><span class="n">Document</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    User document model for MongoDB.</span>
+
+<span class="sd">    :param id: Unique identifier for the user (MongoDB `_id`).</span>
+<span class="sd">    :type id: str</span>
+<span class="sd">    :param username: Username for authentication (unique, indexed).</span>
+<span class="sd">    :type username: str</span>
+<span class="sd">    :param index: Unique integer index for the user (indexed).</span>
+<span class="sd">    :type index: int</span>
+<span class="sd">    :param role: User role (default: &quot;user&quot;).</span>
+<span class="sd">    :type role: str</span>
+<span class="sd">    :param password: User password (hashed).</span>
+<span class="sd">    :type password: str</span>
+<span class="sd">    :param firstname: User&#39;s first name.</span>
+<span class="sd">    :type firstname: str</span>
+<span class="sd">    :param lastname: User&#39;s last name.</span>
+<span class="sd">    :type lastname: str</span>
+<span class="sd">    :param address: User&#39;s address.</span>
+<span class="sd">    :type address: str</span>
+<span class="sd">    :param zip_code: Postal code.</span>
+<span class="sd">    :type zip_code: str</span>
+<span class="sd">    :param city: City of residence.</span>
+<span class="sd">    :type city: str</span>
+<span class="sd">    :param country: Country of residence.</span>
+<span class="sd">    :type country: str</span>
+<span class="sd">    :param phone: Contact phone number.</span>
+<span class="sd">    :type phone: str</span>
+<span class="sd">    :param email: Email address (unique, indexed).</span>
+<span class="sd">    :type email: str</span>
+<span class="sd">    :param tags: Additional metadata as key-value pairs.</span>
+<span class="sd">    :type tags: Optional[Dict]</span>
+<span class="sd">    :param created_at: Timestamp when the user was created (UTC).</span>
+<span class="sd">    :type created_at: datetime</span>
+<span class="sd">    :param updated_at: Timestamp when the user was last updated (UTC).</span>
+<span class="sd">    :type updated_at: datetime</span>
+<span class="sd">    :param deleted_at: Timestamp when the user was deleted, if applicable.</span>
+<span class="sd">    :type deleted_at: Optional[datetime]</span>
+
+<span class="sd">    :cvar model_config: Allows arbitrary types and encodes ObjectId as string.</span>
+<span class="sd">    :cvar Settings: Contains collection name and utility methods.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="nb">id</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="n">alias</span><span class="o">=</span><span class="s2">&quot;_id&quot;</span><span class="p">,</span> <span class="n">default_factory</span><span class="o">=</span><span class="n">generate_nano_id</span><span class="p">)</span>
+    <span class="n">username</span><span class="p">:</span> <span class="n">Indexed</span><span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="n">pymongo</span><span class="o">.</span><span class="n">TEXT</span><span class="p">,</span> <span class="n">unique</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;user-username&quot;</span><span class="p">)</span>
+    <span class="n">index</span><span class="p">:</span> <span class="n">Indexed</span><span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="n">pymongo</span><span class="o">.</span><span class="n">ASCENDING</span><span class="p">,</span> <span class="n">unique</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;user-index&quot;</span><span class="p">)</span>
+
+    <span class="n">password</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">role</span><span class="p">:</span> <span class="n">Indexed</span><span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="n">unique</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;user-role&quot;</span><span class="p">)</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="n">UserRole</span><span class="o">.</span><span class="n">USER</span><span class="p">)</span>
+
+    <span class="n">firstname</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">lastname</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">address</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">zip_code</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">city</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">country</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">phone</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">email</span><span class="p">:</span> <span class="n">Indexed</span><span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="n">pymongo</span><span class="o">.</span><span class="n">ASCENDING</span><span class="p">,</span> <span class="n">unique</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;user-email&quot;</span><span class="p">)</span>
+
+    <span class="n">tags</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="n">default_factory</span><span class="o">=</span><span class="nb">dict</span><span class="p">)</span>
+
+    <span class="n">created_at</span><span class="p">:</span> <span class="n">datetime</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="n">default_factory</span><span class="o">=</span><span class="k">lambda</span><span class="p">:</span> <span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">(</span><span class="n">timezone</span><span class="o">.</span><span class="n">utc</span><span class="p">))</span>
+    <span class="n">updated_at</span><span class="p">:</span> <span class="n">datetime</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="n">default_factory</span><span class="o">=</span><span class="k">lambda</span><span class="p">:</span> <span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">(</span><span class="n">timezone</span><span class="o">.</span><span class="n">utc</span><span class="p">))</span>
+    <span class="n">deleted_at</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">datetime</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+
+    <span class="n">model_config</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;arbitrary_types_allowed&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span> <span class="s2">&quot;json_encoders&quot;</span><span class="p">:</span> <span class="p">{</span><span class="n">ObjectId</span><span class="p">:</span> <span class="nb">str</span><span class="p">}}</span>
+
+<div class="viewcode-block" id="User.Settings">
+<a class="viewcode-back" href="../../../../rst/db/db.models.v2_models.html#db.models.v2_models.user_model_v2.User.Settings">[docs]</a>
+    <span class="k">class</span><span class="w"> </span><span class="nc">Settings</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Settings for the User model.</span>
+
+<span class="sd">        :cvar name: The name of the MongoDB collection for users.</span>
+<span class="sd">        :type name: str</span>
+
+<span class="sd">        :return: String representation of the Settings instance.</span>
+<span class="sd">        :rtype: str</span>
+
+<span class="sd">        :return: List of attributes and methods of the Settings instance.</span>
+<span class="sd">        :rtype: list</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;users&quot;</span>
+
+<div class="viewcode-block" id="User.Settings.__str__">
+<a class="viewcode-back" href="../../../../rst/db/db.models.v2_models.html#db.models.v2_models.user_model_v2.User.Settings.__str__">[docs]</a>
+        <span class="k">def</span><span class="w"> </span><span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">            </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">            String representation of the Settings instance.</span>
+<span class="sd">            &quot;&quot;&quot;</span>
+            <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;User.Settings.name: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">&quot;</span></div>
+
+
+<div class="viewcode-block" id="User.Settings.__dir__">
+<a class="viewcode-back" href="../../../../rst/db/db.models.v2_models.html#db.models.v2_models.user_model_v2.User.Settings.__dir__">[docs]</a>
+        <span class="k">def</span><span class="w"> </span><span class="fm">__dir__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">            </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">            Returns the list of attributes and methods of the Settings</span>
+<span class="sd">            instance.</span>
+<span class="sd">            &quot;&quot;&quot;</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__dict__</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span></div>
+</div>
+</div>
+
+
+
+<div class="viewcode-block" id="UsersBatch">
+<a class="viewcode-back" href="../../../../rst/db/db.models.v2_models.html#db.models.v2_models.user_model_v2.UsersBatch">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">UsersBatch</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Represents a batch of user IDs for bulk operations such as deletion,</span>
+<span class="sd">    updates, or retrieval.</span>
+
+<span class="sd">    :param id: List of user IDs included in the batch operation.</span>
+<span class="sd">    :type id: List[str]</span>
+
+<span class="sd">    :cvar Settings: Contains collectio name and utility methods for</span>
+<span class="sd">        batch operations.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="nb">id</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span>
+
+<div class="viewcode-block" id="UsersBatch.Settings">
+<a class="viewcode-back" href="../../../../rst/db/db.models.v2_models.html#db.models.v2_models.user_model_v2.UsersBatch.Settings">[docs]</a>
+    <span class="k">class</span><span class="w"> </span><span class="nc">Settings</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Settings for the UsersBatch model.</span>
+
+<span class="sd">        :cvar name: The name of the MongoDB collection for users.</span>
+<span class="sd">        :type name: str</span>
+
+<span class="sd">        :return: String representation of the Settings instance.</span>
+<span class="sd">        :rtype: str</span>
+
+<span class="sd">        :return: List of attributes and methods of the Settings instance.</span>
+<span class="sd">        :rtype: list</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;users&quot;</span>
+
+<div class="viewcode-block" id="UsersBatch.Settings.__str__">
+<a class="viewcode-back" href="../../../../rst/db/db.models.v2_models.html#db.models.v2_models.user_model_v2.UsersBatch.Settings.__str__">[docs]</a>
+        <span class="k">def</span><span class="w"> </span><span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">            </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">            String representation of the Settings instance.</span>
+<span class="sd">            &quot;&quot;&quot;</span>
+            <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;UsersBatch.Settings.name: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">&quot;</span></div>
+
+
+<div class="viewcode-block" id="UsersBatch.Settings.__dir__">
+<a class="viewcode-back" href="../../../../rst/db/db.models.v2_models.html#db.models.v2_models.user_model_v2.UsersBatch.Settings.__dir__">[docs]</a>
+        <span class="k">def</span><span class="w"> </span><span class="fm">__dir__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">            </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">            Returns the list of attributes and methods of the Settings</span>
+<span class="sd">            instance.</span>
+<span class="sd">            &quot;&quot;&quot;</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__dict__</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span></div>
+</div>
+</div>
+
+
+
+<div class="viewcode-block" id="CreateUser">
+<a class="viewcode-back" href="../../../../rst/db/db.models.v2_models.html#db.models.v2_models.user_model_v2.CreateUser">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">CreateUser</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Represents a request to create a new user.</span>
+
+<span class="sd">    :param index: Unique integer index for the user (optional,</span>
+<span class="sd">        auto-generated).</span>
+<span class="sd">    :type index: Optional[int]</span>
+<span class="sd">    :param username: Username for authentication.</span>
+<span class="sd">    :type username: str</span>
+<span class="sd">    :param password: User password (hashed).</span>
+<span class="sd">    :type password: str</span>
+<span class="sd">    :param firstname: User&#39;s first name.</span>
+<span class="sd">    :type firstname: str</span>
+<span class="sd">    :param lastname: User&#39;s last name.</span>
+<span class="sd">    :type lastname: str</span>
+<span class="sd">    :param address: User&#39;s address.</span>
+<span class="sd">    :type address: str</span>
+<span class="sd">    :param zip_code: Postal code.</span>
+<span class="sd">    :type zip_code: str</span>
+<span class="sd">    :param city: City of residence.</span>
+<span class="sd">    :type city: str</span>
+<span class="sd">    :param country: Country of residence.</span>
+<span class="sd">    :type country: str</span>
+<span class="sd">    :param email: Email address.</span>
+<span class="sd">    :type email: str</span>
+<span class="sd">    :param phone: Contact phone number.</span>
+<span class="sd">    :type phone: str</span>
+<span class="sd">    :param tags: Additional metadata as key-value pairs.</span>
+<span class="sd">    :type tags: Optional[Dict]</span>
+<span class="sd">    :param created_at: Timestamp when the user was created (UTC).</span>
+<span class="sd">    :type created_at: Optional[datetime]</span>
+<span class="sd">    :param updated_at: Timestamp when the user was last updated (UTC).</span>
+<span class="sd">    :type updated_at: Optional[datetime]</span>
+<span class="sd">    :param deleted_at: Timestamp when the user was deleted, if applicable.</span>
+<span class="sd">    :type deleted_at: Optional[datetime]</span>
+
+<span class="sd">    :cvar model_config: Allows arbitrary types and encodes ObjectId as string.</span>
+<span class="sd">    :cvar Settings: Contains collection name and utility methods.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">index</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="n">default_factory</span><span class="o">=</span><span class="nb">int</span><span class="p">)</span>
+    <span class="n">username</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">password</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">firstname</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">lastname</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">address</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">zip_code</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">city</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">country</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">email</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">phone</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">tags</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="n">default_factory</span><span class="o">=</span><span class="nb">dict</span><span class="p">)</span>
+    <span class="n">created_at</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">datetime</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="n">default_factory</span><span class="o">=</span><span class="k">lambda</span><span class="p">:</span> <span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">(</span><span class="n">timezone</span><span class="o">.</span><span class="n">utc</span><span class="p">)</span>
+    <span class="p">)</span>
+    <span class="n">updated_at</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">datetime</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="n">default_factory</span><span class="o">=</span><span class="k">lambda</span><span class="p">:</span> <span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">(</span><span class="n">timezone</span><span class="o">.</span><span class="n">utc</span><span class="p">)</span>
+    <span class="p">)</span>
+    <span class="n">deleted_at</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="kc">None</span> <span class="o">|</span> <span class="n">datetime</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+
+    <span class="n">model_config</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;arbitrary_types_allowed&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span> <span class="s2">&quot;json_encoders&quot;</span><span class="p">:</span> <span class="p">{</span><span class="n">ObjectId</span><span class="p">:</span> <span class="nb">str</span><span class="p">}}</span>
+
+<div class="viewcode-block" id="CreateUser.Settings">
+<a class="viewcode-back" href="../../../../rst/db/db.models.v2_models.html#db.models.v2_models.user_model_v2.CreateUser.Settings">[docs]</a>
+    <span class="k">class</span><span class="w"> </span><span class="nc">Settings</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Settings for the User model.</span>
+
+<span class="sd">        :cvar name: The name of the MongoDB collection for users.</span>
+<span class="sd">        :type name: str</span>
+
+<span class="sd">        :return: String representation of the Settings instance.</span>
+<span class="sd">        :rtype: str</span>
+
+<span class="sd">        :return: List of attributes and methods of the Settings instance.</span>
+<span class="sd">        :rtype: list</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;users&quot;</span>
+
+<div class="viewcode-block" id="CreateUser.Settings.__str__">
+<a class="viewcode-back" href="../../../../rst/db/db.models.v2_models.html#db.models.v2_models.user_model_v2.CreateUser.Settings.__str__">[docs]</a>
+        <span class="k">def</span><span class="w"> </span><span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">            </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">            String representation of the Settings instance.</span>
+<span class="sd">            &quot;&quot;&quot;</span>
+            <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;User.Settings.name: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">&quot;</span></div>
+
+
+<div class="viewcode-block" id="CreateUser.Settings.__dir__">
+<a class="viewcode-back" href="../../../../rst/db/db.models.v2_models.html#db.models.v2_models.user_model_v2.CreateUser.Settings.__dir__">[docs]</a>
+        <span class="k">def</span><span class="w"> </span><span class="fm">__dir__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">            </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">            Returns the list of attributes and methods of the Settings</span>
+<span class="sd">            instance.</span>
+<span class="sd">            &quot;&quot;&quot;</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__dict__</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span></div>
+</div>
+</div>
+
+
+
+<div class="viewcode-block" id="PatchUserData">
+<a class="viewcode-back" href="../../../../rst/db/db.models.v2_models.html#db.models.v2_models.user_model_v2.PatchUserData">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">PatchUserData</span><span class="p">(</span><span class="n">CreateUser</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Represents a request to partially update user information.</span>
+
+<span class="sd">    :param firstname: User&#39;s first name (optional,</span>
+<span class="sd">        can be omitted or set to None).</span>
+<span class="sd">    :type firstname: Optional[str]</span>
+<span class="sd">    :param lastname: User&#39;s last name (optional,</span>
+<span class="sd">        can be omitted or set to None).</span>
+<span class="sd">    :type lastname: Optional[str]</span>
+<span class="sd">    :param address: User&#39;s address (optional,</span>
+<span class="sd">        can be omitted or set to None).</span>
+<span class="sd">    :type address: Optional[str]</span>
+<span class="sd">    :param zip_code: Postal code (optional, can be</span>
+<span class="sd">        omitted, or set to None).</span>
+<span class="sd">    :type zip_code: Optional[str]</span>
+<span class="sd">    :param city: City of residence (optional, can be</span>
+<span class="sd">        omitted, or set to None).</span>
+<span class="sd">    :type city: Optional[str]</span>
+<span class="sd">    :param country: Country of residence (optional, can be</span>
+<span class="sd">        omitted, or set to None).</span>
+<span class="sd">    :type country: Optional[str]</span>
+<span class="sd">    :param phone: Contact phone number (optional, can be</span>
+<span class="sd">        omitted, or set to None).</span>
+<span class="sd">    :type phone: Optional[str]</span>
+<span class="sd">    :param email: Email address (optional, can be omitted</span>
+<span class="sd">        or set to None).</span>
+<span class="sd">    :type email: Optional[str]</span>
+<span class="sd">    :param tags: Additional metadata as key-value pairs (optional,</span>
+<span class="sd">        can be omitted, or set to None).</span>
+<span class="sd">    :type tags: Optional[Dict]</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">username</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">password</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">firstname</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">lastname</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">address</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">zip_code</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">city</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">country</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">phone</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">email</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">tags</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span></div>
+
+
+
+<div class="viewcode-block" id="PutUserData">
+<a class="viewcode-back" href="../../../../rst/db/db.models.v2_models.html#db.models.v2_models.user_model_v2.PutUserData">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">PutUserData</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Represents a request to update a user with full data replacement.</span>
+
+<span class="sd">    :param username: Username for authentication (optional).</span>
+<span class="sd">    :type username: Optional[str]</span>
+<span class="sd">    :param role: User role (optional).</span>
+<span class="sd">    :type role: Optional[str]</span>
+<span class="sd">    :param firstname: User&#39;s first name.</span>
+<span class="sd">    :type firstname: str</span>
+<span class="sd">    :param lastname: User&#39;s last name.</span>
+<span class="sd">    :type lastname: str</span>
+<span class="sd">    :param address: User&#39;s address.</span>
+<span class="sd">    :type address: str</span>
+<span class="sd">    :param zip_code: Postal code.</span>
+<span class="sd">    :type zip_code: str</span>
+<span class="sd">    :param city: City of residence.</span>
+<span class="sd">    :type city: str</span>
+<span class="sd">    :param country: Country of residence.</span>
+<span class="sd">    :type country: str</span>
+<span class="sd">    :param phone: Contact phone number.</span>
+<span class="sd">    :type phone: str</span>
+<span class="sd">    :param email: Email address (optional).</span>
+<span class="sd">    :type email: Optional[str]</span>
+<span class="sd">    :param tags: Additional metadata as key-value pairs (optional).</span>
+<span class="sd">    :type tags: Optional[Dict]</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">username</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">role</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">firstname</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">lastname</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">address</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">zip_code</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">city</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">country</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">phone</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">email</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">tags</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+
+<div class="viewcode-block" id="PutUserData.Settings">
+<a class="viewcode-back" href="../../../../rst/db/db.models.v2_models.html#db.models.v2_models.user_model_v2.PutUserData.Settings">[docs]</a>
+    <span class="k">class</span><span class="w"> </span><span class="nc">Settings</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Settings for the User model.</span>
+
+<span class="sd">        :cvar name: The name of the MongoDB collection for users.</span>
+<span class="sd">        :type name: str</span>
+
+<span class="sd">        :return: String representation of the Settings instance.</span>
+<span class="sd">        :rtype: str</span>
+
+<span class="sd">        :return: List of attributes and methods of the Settings instance.</span>
+<span class="sd">        :rtype: list</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;users&quot;</span>
+
+        <span class="n">model_config</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;arbitrary_types_allowed&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+            <span class="s2">&quot;json_encoders&quot;</span><span class="p">:</span> <span class="p">{</span><span class="n">ObjectId</span><span class="p">:</span> <span class="nb">str</span><span class="p">},</span>
+        <span class="p">}</span>
+
+<div class="viewcode-block" id="PutUserData.Settings.__str__">
+<a class="viewcode-back" href="../../../../rst/db/db.models.v2_models.html#db.models.v2_models.user_model_v2.PutUserData.Settings.__str__">[docs]</a>
+        <span class="k">def</span><span class="w"> </span><span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">            </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">            String representation of the Settings instance.</span>
+<span class="sd">            &quot;&quot;&quot;</span>
+            <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;CreateUser.Settings.name: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">&quot;</span></div>
+
+
+<div class="viewcode-block" id="PutUserData.Settings.__dir__">
+<a class="viewcode-back" href="../../../../rst/db/db.models.v2_models.html#db.models.v2_models.user_model_v2.PutUserData.Settings.__dir__">[docs]</a>
+        <span class="k">def</span><span class="w"> </span><span class="fm">__dir__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">            </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">            Returns the list of attributes and methods of the Settings</span>
+<span class="sd">            instance.</span>
+<span class="sd">            &quot;&quot;&quot;</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__dict__</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span></div>
+</div>
+</div>
+
+
+
+<div class="viewcode-block" id="DeleteUser">
+<a class="viewcode-back" href="../../../../rst/db/db.models.v2_models.html#db.models.v2_models.user_model_v2.DeleteUser">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">DeleteUser</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Represents a request to delete a user by ID.</span>
+
+<span class="sd">    :param id: Unique identifier of the user to be deleted.</span>
+<span class="sd">    :type id: str</span>
+
+<span class="sd">    :cvar model_config: Allows arbitrary types and encodes ObjectId as string.</span>
+<span class="sd">    :cvar Settings: Contains collection name and utility methods.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="nb">id</span><span class="p">:</span> <span class="nb">str</span>
+
+<div class="viewcode-block" id="DeleteUser.Settings">
+<a class="viewcode-back" href="../../../../rst/db/db.models.v2_models.html#db.models.v2_models.user_model_v2.DeleteUser.Settings">[docs]</a>
+    <span class="k">class</span><span class="w"> </span><span class="nc">Settings</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Settings for the User model.</span>
+
+<span class="sd">        :cvar name: The name of the MongoDB collection for users.</span>
+<span class="sd">        :type name: str</span>
+
+<span class="sd">        :return: String representation of the Settings instance.</span>
+<span class="sd">        :rtype: str</span>
+
+<span class="sd">        :return: List of attributes and methods of the Settings instance.</span>
+<span class="sd">        :rtype: list</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;users&quot;</span>
+
+        <span class="n">model_config</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;arbitrary_types_allowed&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+            <span class="s2">&quot;json_encoders&quot;</span><span class="p">:</span> <span class="p">{</span><span class="n">ObjectId</span><span class="p">:</span> <span class="nb">str</span><span class="p">},</span>
+        <span class="p">}</span>
+
+<div class="viewcode-block" id="DeleteUser.Settings.__str__">
+<a class="viewcode-back" href="../../../../rst/db/db.models.v2_models.html#db.models.v2_models.user_model_v2.DeleteUser.Settings.__str__">[docs]</a>
+        <span class="k">def</span><span class="w"> </span><span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">            </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">            String representation of the Settings instance.</span>
+<span class="sd">            &quot;&quot;&quot;</span>
+            <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;CreateUser.Settings.name: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">&quot;</span></div>
+
+
+<div class="viewcode-block" id="DeleteUser.Settings.__dir__">
+<a class="viewcode-back" href="../../../../rst/db/db.models.v2_models.html#db.models.v2_models.user_model_v2.DeleteUser.Settings.__dir__">[docs]</a>
+        <span class="k">def</span><span class="w"> </span><span class="fm">__dir__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">            </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">            Returns the list of attributes and methods of the Settings</span>
+<span class="sd">            instance.</span>
+<span class="sd">            &quot;&quot;&quot;</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__dict__</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span></div>
+</div>
+</div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, Daniel Andersson &lt;d.andersson86@icloud.com&gt;.
+      <span class="lastupdated">Last updated on 2026-06-02.
+      </span></p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

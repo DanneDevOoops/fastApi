@@ -1,0 +1,29 @@
+db.models.v1\_models package
+============================
+
+Submodules
+----------
+
+db.models.v1\_models.applications\_model\_v1 module
+---------------------------------------------------
+
+.. automodule:: db.models.v1_models.applications_model_v1
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
+db.models.v1\_models.users\_model\_v1 module
+--------------------------------------------
+
+.. automodule:: db.models.v1_models.users_model_v1
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
+Module contents
+---------------
+
+.. automodule:: db.models.v1_models
+   :members:
+   :show-inheritance:
+   :undoc-members:

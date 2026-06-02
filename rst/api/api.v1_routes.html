@@ -1,0 +1,603 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>api.v1_routes package &mdash; FastAPI Application 0.0.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=9edc463e" />
+      <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=4ae1632d" />
+
+  
+    <link rel="canonical" href="https://github.com/DanneDevOoops/fastApi/rst/api/api.v1_routes.html" />
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=7026087e"></script>
+      <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="api.v2_routes package" href="api.v2_routes.html" />
+    <link rel="prev" title="api.health_check_routes package" href="api.health_check_routes.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            FastAPI Application
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="modules.html">api</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="api.html">api package</a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="api.html#subpackages">Subpackages</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="api.health_check_routes.html">api.health_check_routes package</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">api.v1_routes package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="api.v2_routes.html">api.v2_routes package</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="api.html#submodules">Submodules</a></li>
+<li class="toctree-l3"><a class="reference internal" href="api.html#module-api.api_utilities">api.api_utilities module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="api.html#module-api.api_v1">api.api_v1 module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="api.html#module-api.api_v1_ws_router">api.api_v1_ws_router module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="api.html#module-api.api_v2">api.api_v2 module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="api.html#module-api">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../core/modules.html">core</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../db/modules.html">db</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../middlewares/modules.html">middlewares</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../utils/modules.html">utils</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Documents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../coverage.html">docs coverage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../readme.html">project readme</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../docstrings.html">write docstrings</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">FastAPI Application</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content style-external-links">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="modules.html">api</a></li>
+          <li class="breadcrumb-item"><a href="api.html">api package</a></li>
+      <li class="breadcrumb-item active">api.v1_routes package</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../_sources/rst/api/api.v1_routes.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="api-v1-routes-package">
+<h1>api.v1_routes package<a class="headerlink" href="#api-v1-routes-package" title="Link to this heading"></a></h1>
+<section id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Link to this heading"></a></h2>
+</section>
+<section id="module-api.v1_routes.application_routes">
+<span id="api-v1-routes-application-routes-module"></span><h2>api.v1_routes.application_routes module<a class="headerlink" href="#module-api.v1_routes.application_routes" title="Link to this heading"></a></h2>
+<p>Defines the Application API routes for the FastAPI v1 application.</p>
+<p>This module provides endpoints for managing applications/services registered
+in the PostgreSQL database, including creation, retrieval, updating, and
+soft/hard deletion of application records.</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="api.v1_routes.application_routes.application_routes_options">
+<span class="sig-prename descclassname"><span class="pre">api.v1_routes.application_routes.</span></span><span class="sig-name descname"><span class="pre">application_routes_options</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference external" href="https://github.com/DanneDevOoops/fastApi/blob/main/src/api/v1_routes/application_routes.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="reference internal" href="../../_modules/api/v1_routes/application_routes.html#application_routes_options"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#api.v1_routes.application_routes.application_routes_options" title="Link to this definition"></a></dt>
+<dd><p>Handle OPTIONS requests for the application routes.
+This is used to support CORS preflight requests.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://fastapi.tiangolo.com/reference/responses/#fastapi.responses.Response" title="(in FastAPI None)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Response</span></code></a></span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="api.v1_routes.application_routes.get_all_applications">
+<span class="property"><span class="k"><span class="pre">async</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">api.v1_routes.application_routes.</span></span><span class="sig-name descname"><span class="pre">get_all_applications</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">db</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">Depends(dependency=&lt;function</span> <span class="pre">get_pg_db&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">use_cache</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scope</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None)</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/DanneDevOoops/fastApi/blob/main/src/api/v1_routes/application_routes.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="reference internal" href="../../_modules/api/v1_routes/application_routes.html#get_all_applications"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#api.v1_routes.application_routes.get_all_applications" title="Link to this definition"></a></dt>
+<dd><p>Get all registered applications/services that are not soft-deleted.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>db</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">AsyncSession</span></code></span>)</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">AppJSONResponse</span></code></span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="api.v1_routes.application_routes.get_all_soft_deleted_applications">
+<span class="property"><span class="k"><span class="pre">async</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">api.v1_routes.application_routes.</span></span><span class="sig-name descname"><span class="pre">get_all_soft_deleted_applications</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">db</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">Depends(dependency=&lt;function</span> <span class="pre">get_pg_db&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">use_cache</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scope</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None)</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/DanneDevOoops/fastApi/blob/main/src/api/v1_routes/application_routes.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="reference internal" href="../../_modules/api/v1_routes/application_routes.html#get_all_soft_deleted_applications"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#api.v1_routes.application_routes.get_all_soft_deleted_applications" title="Link to this definition"></a></dt>
+<dd><p>Get all soft-deleted applications/services.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>db</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">AsyncSession</span></code></span>)</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">AppJSONResponse</span></code></span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="api.v1_routes.application_routes.get_application_by_id">
+<span class="property"><span class="k"><span class="pre">async</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">api.v1_routes.application_routes.</span></span><span class="sig-name descname"><span class="pre">get_application_by_id</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">app_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">db</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">Depends(dependency=&lt;function</span> <span class="pre">get_pg_db&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">use_cache</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scope</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None)</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/DanneDevOoops/fastApi/blob/main/src/api/v1_routes/application_routes.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="reference internal" href="../../_modules/api/v1_routes/application_routes.html#get_application_by_id"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#api.v1_routes.application_routes.get_application_by_id" title="Link to this definition"></a></dt>
+<dd><p>Get a specific application/service by its ID.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>app_id</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></span>) – The ID of the application/service to retrieve.</p></li>
+<li><p><strong>db</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">AsyncSession</span></code></span>) – The database session.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">AppJSONResponse</span></code></span></p>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>AppJSONResponse containing the application/service data.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="api.v1_routes.application_routes.create_application">
+<span class="property"><span class="k"><span class="pre">async</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">api.v1_routes.application_routes.</span></span><span class="sig-name descname"><span class="pre">create_application</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">app_data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">db</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">Depends(dependency=&lt;function</span> <span class="pre">get_pg_db&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">use_cache</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scope</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None)</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/DanneDevOoops/fastApi/blob/main/src/api/v1_routes/application_routes.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="reference internal" href="../../_modules/api/v1_routes/application_routes.html#create_application"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#api.v1_routes.application_routes.create_application" title="Link to this definition"></a></dt>
+<dd><p>Create a new application/service in PostgreSQL.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>app_data</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">ApplicationCreate</span></code></span>) – The application/service data to create.</p></li>
+<li><p><strong>db</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">AsyncSession</span></code></span>) – The database session.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">AppJSONResponse</span></code></span></p>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>AppJSONResponse containing the created application/service data.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="api.v1_routes.application_routes.soft_delete_application">
+<span class="property"><span class="k"><span class="pre">async</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">api.v1_routes.application_routes.</span></span><span class="sig-name descname"><span class="pre">soft_delete_application</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">app_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">db</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">Depends(dependency=&lt;function</span> <span class="pre">get_pg_db&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">use_cache</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scope</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None)</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/DanneDevOoops/fastApi/blob/main/src/api/v1_routes/application_routes.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="reference internal" href="../../_modules/api/v1_routes/application_routes.html#soft_delete_application"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#api.v1_routes.application_routes.soft_delete_application" title="Link to this definition"></a></dt>
+<dd><p>Soft delete an existing application/service by its ID.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>app_id</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></span>) – The ID of the application to delete.</p></li>
+<li><p><strong>db</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">AsyncSession</span></code></span>) – The database session.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">AppJSONResponse</span></code></span></p>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>AppJSONResponse with deletion confirmation.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="api.v1_routes.application_routes.patch_update_application">
+<span class="property"><span class="k"><span class="pre">async</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">api.v1_routes.application_routes.</span></span><span class="sig-name descname"><span class="pre">patch_update_application</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">app_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">app_data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">db</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">Depends(dependency=&lt;function</span> <span class="pre">get_pg_db&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">use_cache</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scope</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None)</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/DanneDevOoops/fastApi/blob/main/src/api/v1_routes/application_routes.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="reference internal" href="../../_modules/api/v1_routes/application_routes.html#patch_update_application"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#api.v1_routes.application_routes.patch_update_application" title="Link to this definition"></a></dt>
+<dd><p>Partially update an existing application/service.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>app_id</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></span>) – The ID of the application to update.</p></li>
+<li><p><strong>app_data</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">ApplicationUpdate</span></code></span>) – The fields to update.</p></li>
+<li><p><strong>db</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">AsyncSession</span></code></span>) – The database session.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">AppJSONResponse</span></code></span></p>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>AppJSONResponse containing the updated application data.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="api.v1_routes.application_routes.put_update_application">
+<span class="property"><span class="k"><span class="pre">async</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">api.v1_routes.application_routes.</span></span><span class="sig-name descname"><span class="pre">put_update_application</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">app_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">app_data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">db</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">Depends(dependency=&lt;function</span> <span class="pre">get_pg_db&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">use_cache</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scope</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None)</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/DanneDevOoops/fastApi/blob/main/src/api/v1_routes/application_routes.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="reference internal" href="../../_modules/api/v1_routes/application_routes.html#put_update_application"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#api.v1_routes.application_routes.put_update_application" title="Link to this definition"></a></dt>
+<dd><p>Fully update an existing application/service using PUT method.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>app_id</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></span>) – The ID of the application to update.</p></li>
+<li><p><strong>app_data</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">ApplicationCreate</span></code></span>) – The complete application data.</p></li>
+<li><p><strong>db</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">AsyncSession</span></code></span>) – The database session.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">AppJSONResponse</span></code></span></p>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>AppJSONResponse containing the updated application data.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="api.v1_routes.application_routes.hard_delete_application">
+<span class="property"><span class="k"><span class="pre">async</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">api.v1_routes.application_routes.</span></span><span class="sig-name descname"><span class="pre">hard_delete_application</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">app_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">db</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">Depends(dependency=&lt;function</span> <span class="pre">get_pg_db&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">use_cache</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scope</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None)</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/DanneDevOoops/fastApi/blob/main/src/api/v1_routes/application_routes.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="reference internal" href="../../_modules/api/v1_routes/application_routes.html#hard_delete_application"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#api.v1_routes.application_routes.hard_delete_application" title="Link to this definition"></a></dt>
+<dd><p>Hard delete an existing application/service by its ID.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>app_id</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></span>) – The ID of the application to delete.</p></li>
+<li><p><strong>db</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">AsyncSession</span></code></span>) – The database session.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">AppJSONResponse</span></code></span></p>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>AppJSONResponse with deletion confirmation.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="module-api.v1_routes.user_routes">
+<span id="api-v1-routes-user-routes-module"></span><h2>api.v1_routes.user_routes module<a class="headerlink" href="#module-api.v1_routes.user_routes" title="Link to this heading"></a></h2>
+<p>Defines the User API routes for the FastAPI application (v1 – PostgreSQL).</p>
+<p>Includes endpoints for creating users, retrieving single or multiple users
+(active and soft-deleted), updating user data (PUT &amp; PATCH), soft deleting
+users, and permanently deleting users from the PostgreSQL database.</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="api.v1_routes.user_routes.options_user_routes">
+<span class="sig-prename descclassname"><span class="pre">api.v1_routes.user_routes.</span></span><span class="sig-name descname"><span class="pre">options_user_routes</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference external" href="https://github.com/DanneDevOoops/fastApi/blob/main/src/api/v1_routes/user_routes.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="reference internal" href="../../_modules/api/v1_routes/user_routes.html#options_user_routes"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#api.v1_routes.user_routes.options_user_routes" title="Link to this definition"></a></dt>
+<dd><p>Handle HTTP OPTIONS requests for the /users endpoint.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Empty response with status code 204 and Allow header.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://fastapi.tiangolo.com/reference/responses/#fastapi.responses.Response" title="(in FastAPI None)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Response</span></code></a></span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="api.v1_routes.user_routes.get_all_users">
+<span class="property"><span class="k"><span class="pre">async</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">api.v1_routes.user_routes.</span></span><span class="sig-name descname"><span class="pre">get_all_users</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">db</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">Depends(dependency=&lt;function</span> <span class="pre">get_pg_db&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">use_cache</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scope</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None)</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/DanneDevOoops/fastApi/blob/main/src/api/v1_routes/user_routes.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="reference internal" href="../../_modules/api/v1_routes/user_routes.html#get_all_users"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#api.v1_routes.user_routes.get_all_users" title="Link to this definition"></a></dt>
+<dd><p>Retrieve all Users that are not soft-deleted.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>A list of active user data.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">AppJSONResponse</span></code></span></p>
+</dd>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>db</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">AsyncSession</span></code></span>)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="api.v1_routes.user_routes.get_all_soft_deleted_users">
+<span class="property"><span class="k"><span class="pre">async</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">api.v1_routes.user_routes.</span></span><span class="sig-name descname"><span class="pre">get_all_soft_deleted_users</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">db</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">Depends(dependency=&lt;function</span> <span class="pre">get_pg_db&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">use_cache</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scope</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None)</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/DanneDevOoops/fastApi/blob/main/src/api/v1_routes/user_routes.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="reference internal" href="../../_modules/api/v1_routes/user_routes.html#get_all_soft_deleted_users"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#api.v1_routes.user_routes.get_all_soft_deleted_users" title="Link to this definition"></a></dt>
+<dd><p>Retrieve all Users that have been soft-deleted.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>A list of soft-deleted user data.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">AppJSONResponse</span></code></span></p>
+</dd>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>db</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">AsyncSession</span></code></span>)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="api.v1_routes.user_routes.get_all_activated_users">
+<span class="property"><span class="k"><span class="pre">async</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">api.v1_routes.user_routes.</span></span><span class="sig-name descname"><span class="pre">get_all_activated_users</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">db</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">Depends(dependency=&lt;function</span> <span class="pre">get_pg_db&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">use_cache</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scope</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None)</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/DanneDevOoops/fastApi/blob/main/src/api/v1_routes/user_routes.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="reference internal" href="../../_modules/api/v1_routes/user_routes.html#get_all_activated_users"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#api.v1_routes.user_routes.get_all_activated_users" title="Link to this definition"></a></dt>
+<dd><p>Retrieve all users where <cite>is_active</cite> is True and not soft-deleted.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>A list of activated user data.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">AppJSONResponse</span></code></span></p>
+</dd>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>db</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">AsyncSession</span></code></span>)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="api.v1_routes.user_routes.get_all_deactivated_users">
+<span class="property"><span class="k"><span class="pre">async</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">api.v1_routes.user_routes.</span></span><span class="sig-name descname"><span class="pre">get_all_deactivated_users</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">db</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">Depends(dependency=&lt;function</span> <span class="pre">get_pg_db&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">use_cache</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scope</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None)</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/DanneDevOoops/fastApi/blob/main/src/api/v1_routes/user_routes.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="reference internal" href="../../_modules/api/v1_routes/user_routes.html#get_all_deactivated_users"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#api.v1_routes.user_routes.get_all_deactivated_users" title="Link to this definition"></a></dt>
+<dd><p>Retrieve all users where <cite>is_active</cite> is False and not soft-deleted.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>A list of deactivated user data.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">AppJSONResponse</span></code></span></p>
+</dd>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>db</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">AsyncSession</span></code></span>)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="api.v1_routes.user_routes.get_all_superusers">
+<span class="property"><span class="k"><span class="pre">async</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">api.v1_routes.user_routes.</span></span><span class="sig-name descname"><span class="pre">get_all_superusers</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">db</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">Depends(dependency=&lt;function</span> <span class="pre">get_pg_db&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">use_cache</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scope</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None)</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/DanneDevOoops/fastApi/blob/main/src/api/v1_routes/user_routes.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="reference internal" href="../../_modules/api/v1_routes/user_routes.html#get_all_superusers"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#api.v1_routes.user_routes.get_all_superusers" title="Link to this definition"></a></dt>
+<dd><p>Retrieve all users where <cite>is_superuser</cite> is True and not soft-deleted.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>A list of superuser data.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">AppJSONResponse</span></code></span></p>
+</dd>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>db</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">AsyncSession</span></code></span>)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="api.v1_routes.user_routes.get_user_by_id">
+<span class="property"><span class="k"><span class="pre">async</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">api.v1_routes.user_routes.</span></span><span class="sig-name descname"><span class="pre">get_user_by_id</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">user_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">db</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">Depends(dependency=&lt;function</span> <span class="pre">get_pg_db&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">use_cache</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scope</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None)</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/DanneDevOoops/fastApi/blob/main/src/api/v1_routes/user_routes.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="reference internal" href="../../_modules/api/v1_routes/user_routes.html#get_user_by_id"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#api.v1_routes.user_routes.get_user_by_id" title="Link to this definition"></a></dt>
+<dd><p>Retrieve a single active User by ID.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>user_id</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></span>) – The unique identifier of the user.</p></li>
+<li><p><strong>db</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">AsyncSession</span></code></span>)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The user data if found, or 404 if not found.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">AppJSONResponse</span></code></span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="api.v1_routes.user_routes.create_user">
+<span class="property"><span class="k"><span class="pre">async</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">api.v1_routes.user_routes.</span></span><span class="sig-name descname"><span class="pre">create_user</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">user</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">db</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">Depends(dependency=&lt;function</span> <span class="pre">get_pg_db&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">use_cache</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scope</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None)</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/DanneDevOoops/fastApi/blob/main/src/api/v1_routes/user_routes.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="reference internal" href="../../_modules/api/v1_routes/user_routes.html#create_user"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#api.v1_routes.user_routes.create_user" title="Link to this definition"></a></dt>
+<dd><p>Create a new User with a hashed password.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>user</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">UserCreate</span></code></span>) – The data required to create a new user.</p></li>
+<li><p><strong>db</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">AsyncSession</span></code></span>)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The created user data (excluding sensitive fields), or an error response.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">AppJSONResponse</span></code></span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="api.v1_routes.user_routes.get_users_batch_by_ids">
+<span class="property"><span class="k"><span class="pre">async</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">api.v1_routes.user_routes.</span></span><span class="sig-name descname"><span class="pre">get_users_batch_by_ids</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">user_ids</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">db</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">Depends(dependency=&lt;function</span> <span class="pre">get_pg_db&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">use_cache</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scope</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None)</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/DanneDevOoops/fastApi/blob/main/src/api/v1_routes/user_routes.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="reference internal" href="../../_modules/api/v1_routes/user_routes.html#get_users_batch_by_ids"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#api.v1_routes.user_routes.get_users_batch_by_ids" title="Link to this definition"></a></dt>
+<dd><p>Retrieve a batch of active Users by a list of IDs.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>user_ids</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">UsersBatch</span></code></span>) – A payload containing the list of user IDs to retrieve.</p></li>
+<li><p><strong>db</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">AsyncSession</span></code></span>)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A list of user data matching the given IDs.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">AppJSONResponse</span></code></span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="api.v1_routes.user_routes.soft_delete_user_by_id">
+<span class="property"><span class="k"><span class="pre">async</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">api.v1_routes.user_routes.</span></span><span class="sig-name descname"><span class="pre">soft_delete_user_by_id</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">user_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">db</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">Depends(dependency=&lt;function</span> <span class="pre">get_pg_db&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">use_cache</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scope</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None)</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/DanneDevOoops/fastApi/blob/main/src/api/v1_routes/user_routes.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="reference internal" href="../../_modules/api/v1_routes/user_routes.html#soft_delete_user_by_id"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#api.v1_routes.user_routes.soft_delete_user_by_id" title="Link to this definition"></a></dt>
+<dd><p>Soft-delete an active User by setting the <cite>deleted_at</cite> timestamp.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>user_id</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></span>) – The unique identifier of the user to soft-delete.</p></li>
+<li><p><strong>db</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">AsyncSession</span></code></span>)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The updated user data, or 404 if not found / already deleted.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">AppJSONResponse</span></code></span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="api.v1_routes.user_routes.patch_update_user_by_id">
+<span class="property"><span class="k"><span class="pre">async</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">api.v1_routes.user_routes.</span></span><span class="sig-name descname"><span class="pre">patch_update_user_by_id</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">user_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">user_data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">db</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">Depends(dependency=&lt;function</span> <span class="pre">get_pg_db&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">use_cache</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scope</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None)</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/DanneDevOoops/fastApi/blob/main/src/api/v1_routes/user_routes.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="reference internal" href="../../_modules/api/v1_routes/user_routes.html#patch_update_user_by_id"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#api.v1_routes.user_routes.patch_update_user_by_id" title="Link to this definition"></a></dt>
+<dd><p>Partially update an active User’s data by ID (only provided fields are changed).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>user_id</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></span>) – The unique identifier of the user to update.</p></li>
+<li><p><strong>user_data</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">UserUpdate</span></code></span>) – The fields and values to update.</p></li>
+<li><p><strong>db</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">AsyncSession</span></code></span>)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The updated user data, or 404 if not found.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">AppJSONResponse</span></code></span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="api.v1_routes.user_routes.put_update_user_by_id">
+<span class="property"><span class="k"><span class="pre">async</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">api.v1_routes.user_routes.</span></span><span class="sig-name descname"><span class="pre">put_update_user_by_id</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">user_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">user_data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">db</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">Depends(dependency=&lt;function</span> <span class="pre">get_pg_db&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">use_cache</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scope</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None)</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/DanneDevOoops/fastApi/blob/main/src/api/v1_routes/user_routes.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="reference internal" href="../../_modules/api/v1_routes/user_routes.html#put_update_user_by_id"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#api.v1_routes.user_routes.put_update_user_by_id" title="Link to this definition"></a></dt>
+<dd><p>Fully replace an active User’s data by ID.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>user_id</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></span>) – The unique identifier of the user to update.</p></li>
+<li><p><strong>user_data</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">UserUpdate</span></code></span>) – The new user data.</p></li>
+<li><p><strong>db</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">AsyncSession</span></code></span>)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The updated user data, or 404 if not found.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">AppJSONResponse</span></code></span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="api.v1_routes.user_routes.delete_user_by_id">
+<span class="property"><span class="k"><span class="pre">async</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">api.v1_routes.user_routes.</span></span><span class="sig-name descname"><span class="pre">delete_user_by_id</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">user_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">db</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">Depends(dependency=&lt;function</span> <span class="pre">get_pg_db&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">use_cache</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scope</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None)</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/DanneDevOoops/fastApi/blob/main/src/api/v1_routes/user_routes.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="reference internal" href="../../_modules/api/v1_routes/user_routes.html#delete_user_by_id"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#api.v1_routes.user_routes.delete_user_by_id" title="Link to this definition"></a></dt>
+<dd><p>Permanently delete a User by ID.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>user_id</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></span>) – The unique identifier of the user to delete.</p></li>
+<li><p><strong>db</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">AsyncSession</span></code></span>)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Empty 204 response if successful, or 404 if not found.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://fastapi.tiangolo.com/reference/responses/#fastapi.responses.Response" title="(in FastAPI None)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Response</span></code></a></span></p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="module-api.v1_routes.web_socket_routes">
+<span id="api-v1-routes-web-socket-routes-module"></span><h2>api.v1_routes.web_socket_routes module<a class="headerlink" href="#module-api.v1_routes.web_socket_routes" title="Link to this heading"></a></h2>
+<p>This module contains the WebSockets for the application.</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="api.v1_routes.web_socket_routes.get">
+<span class="property"><span class="k"><span class="pre">async</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">api.v1_routes.web_socket_routes.</span></span><span class="sig-name descname"><span class="pre">get</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference external" href="https://github.com/DanneDevOoops/fastApi/blob/main/src/api/v1_routes/web_socket_routes.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="reference internal" href="../../_modules/api/v1_routes/web_socket_routes.html#get"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#api.v1_routes.web_socket_routes.get" title="Link to this definition"></a></dt>
+<dd><p>Handles the GET request for the WebSocket endpoint.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The HTML response.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://fastapi.tiangolo.com/reference/responses/#fastapi.responses.HTMLResponse" title="(in FastAPI None)"><code class="xref py py-class docutils literal notranslate"><span class="pre">HTMLResponse</span></code></a></span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="api.v1_routes.web_socket_routes.websocket_endpoint">
+<span class="property"><span class="k"><span class="pre">async</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">api.v1_routes.web_socket_routes.</span></span><span class="sig-name descname"><span class="pre">websocket_endpoint</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">websocket</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">client_id</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/DanneDevOoops/fastApi/blob/main/src/api/v1_routes/web_socket_routes.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="reference internal" href="../../_modules/api/v1_routes/web_socket_routes.html#websocket_endpoint"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#api.v1_routes.web_socket_routes.websocket_endpoint" title="Link to this definition"></a></dt>
+<dd><p>Handles the WebSocket connection endpoint.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>websocket</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://fastapi.tiangolo.com/reference/websockets/#fastapi.WebSocket" title="(in FastAPI None)"><code class="xref py py-class docutils literal notranslate"><span class="pre">WebSocket</span></code></a></span>) – The WebSocket connection.</p></li>
+<li><p><strong>client_id</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></a></span>) – The client ID.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>This function does not return anything.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></a></span></p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="module-api.v1_routes">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-api.v1_routes" title="Link to this heading"></a></h2>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="api.health_check_routes.html" class="btn btn-neutral float-left" title="api.health_check_routes package" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="api.v2_routes.html" class="btn btn-neutral float-right" title="api.v2_routes package" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, Daniel Andersson &lt;d.andersson86@icloud.com&gt;.
+      <span class="lastupdated">Last updated on 2026-06-02.
+      </span></p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

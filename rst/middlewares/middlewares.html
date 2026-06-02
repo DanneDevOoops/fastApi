@@ -1,0 +1,256 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>middlewares package &mdash; FastAPI Application 0.0.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=9edc463e" />
+      <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=4ae1632d" />
+
+  
+    <link rel="canonical" href="https://github.com/DanneDevOoops/fastApi/rst/middlewares/middlewares.html" />
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=7026087e"></script>
+      <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="utils" href="../utils/modules.html" />
+    <link rel="prev" title="middlewares" href="modules.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            FastAPI Application
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../api/modules.html">api</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../core/modules.html">core</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../db/modules.html">db</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="modules.html">middlewares</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">middlewares package</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#submodules">Submodules</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-middlewares.gzip">middlewares.gzip module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#middlewares.gzip.GzipResponseMiddleware"><code class="docutils literal notranslate"><span class="pre">middlewares.gzip.GzipResponseMiddleware</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#module-middlewares.logger">middlewares.logger module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#middlewares.logger.LoggerMiddleware"><code class="docutils literal notranslate"><span class="pre">middlewares.logger.LoggerMiddleware</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#module-middlewares">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../utils/modules.html">utils</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Documents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../coverage.html">docs coverage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../readme.html">project readme</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../docstrings.html">write docstrings</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">FastAPI Application</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content style-external-links">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="modules.html">middlewares</a></li>
+      <li class="breadcrumb-item active">middlewares package</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../_sources/rst/middlewares/middlewares.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="middlewares-package">
+<h1>middlewares package<a class="headerlink" href="#middlewares-package" title="Link to this heading"></a></h1>
+<section id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Link to this heading"></a></h2>
+</section>
+<section id="module-middlewares.gzip">
+<span id="middlewares-gzip-module"></span><h2>middlewares.gzip module<a class="headerlink" href="#module-middlewares.gzip" title="Link to this heading"></a></h2>
+<p>Gzip response middleware.</p>
+<p>This module wraps Starlette’s GZip middleware so it can be configured and used
+consistently with the rest of this project middleware stack.</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="middlewares.gzip.GzipResponseMiddleware">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">middlewares.gzip.</span></span><span class="sig-name descname"><span class="pre">GzipResponseMiddleware</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">app</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">minimum_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">500</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">compresslevel</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">9</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/DanneDevOoops/fastApi/blob/main/src/middlewares/gzip.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="reference internal" href="../../_modules/middlewares/gzip.html#GzipResponseMiddleware"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#middlewares.gzip.GzipResponseMiddleware" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference external" href="https://fastapi.tiangolo.com/reference/middleware/#fastapi.middleware.gzip.GZipMiddleware" title="(in FastAPI None)"><code class="xref py py-class docutils literal notranslate"><span class="pre">starlette.middleware.gzip.GZipMiddleware</span></code></a></p>
+<p>Middleware that compresses eligible HTTP responses using gzip.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>minimum_size</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></a></span>)</p></li>
+<li><p><strong>compresslevel</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></a></span>)</p></li>
+</ul>
+</dd>
+</dl>
+<p>Initialize gzip middleware settings.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>app</strong> – ASGI application instance.</p></li>
+<li><p><strong>minimum_size</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></a></span>) – Minimum number of response bytes before compression.</p></li>
+<li><p><strong>compresslevel</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></a></span>) – Gzip compression level (1-9).</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="module-middlewares.logger">
+<span id="middlewares-logger-module"></span><h2>middlewares.logger module<a class="headerlink" href="#module-middlewares.logger" title="Link to this heading"></a></h2>
+<p>This module provides middleware for logging HTTP requests and responses in
+a FastAPI application.</p>
+<p>It defines the LoggerMiddleware class, which logs incoming request details
+and outgoing response details using a configured logger. The logger is
+initialized based on application settings, allowing for customizable
+logging behavior. This middleware is intended to be added to the FastAPI
+middleware stack to enable consistent and centralized logging of API
+interactions for monitoring and debugging purposes.</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="middlewares.logger.LoggerMiddleware">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">middlewares.logger.</span></span><span class="sig-name descname"><span class="pre">LoggerMiddleware</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">app</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/DanneDevOoops/fastApi/blob/main/src/middlewares/logger.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="reference internal" href="../../_modules/middlewares/logger.html#LoggerMiddleware"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#middlewares.logger.LoggerMiddleware" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">starlette.middleware.base.BaseHTTPMiddleware</span></code></p>
+<p>Middleware for logging HTTP request and response details in a FastAPI
+application.</p>
+<p>This middleware captures and logs information about each incoming HTTP
+request and its corresponding response using a configured logger. It is
+intended to be added to the FastAPI middleware stack to provide
+centralized logging for monitoring and debugging purposes.</p>
+<p>Initialize the LoggerMiddleware with the given FastAPI application.</p>
+<p>Retrieves application settings and initializes the logger based on the
+configured logger name. Sets up the middleware to intercept and log
+HTTP requests and responses.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>app</strong> (<em>FastAPI</em>) – The FastAPI application instance to which this
+middleware is attached.</p>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="middlewares.logger.LoggerMiddleware.dispatch">
+<span class="property"><span class="k"><span class="pre">async</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">dispatch</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">call_next</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/DanneDevOoops/fastApi/blob/main/src/middlewares/logger.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="reference internal" href="../../_modules/middlewares/logger.html#LoggerMiddleware.dispatch"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#middlewares.logger.LoggerMiddleware.dispatch" title="Link to this definition"></a></dt>
+<dd><p>Intercepts each HTTP request to log request and response details.</p>
+<p>This method logs information about the incoming request before
+passing it to the next middleware or route handler. After receiving
+the response, it logs response details and returns the response to
+the client.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>request</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://fastapi.tiangolo.com/reference/request/#fastapi.Request" title="(in FastAPI None)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Request</span></code></a></span>) – The incoming HTTP request object.</p></li>
+<li><p><strong>call_next</strong> (<em>Callable</em>) – Callable that forwards the request to the next
+middleware or route handler.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The HTTP response object generated by the downstream handler.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://fastapi.tiangolo.com/reference/responses/#fastapi.responses.Response" title="(in FastAPI None)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Response</span></code></a></span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="middlewares.logger.LoggerMiddleware.log_request_details">
+<span class="sig-name descname"><span class="pre">log_request_details</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/DanneDevOoops/fastApi/blob/main/src/middlewares/logger.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="reference internal" href="../../_modules/middlewares/logger.html#LoggerMiddleware.log_request_details"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#middlewares.logger.LoggerMiddleware.log_request_details" title="Link to this definition"></a></dt>
+<dd><p>Log detailed information about the request</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>request</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://fastapi.tiangolo.com/reference/request/#fastapi.Request" title="(in FastAPI None)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Request</span></code></a></span>) – Request object</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="middlewares.logger.LoggerMiddleware.log_response_details">
+<span class="sig-name descname"><span class="pre">log_response_details</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">response</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/DanneDevOoops/fastApi/blob/main/src/middlewares/logger.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="reference internal" href="../../_modules/middlewares/logger.html#LoggerMiddleware.log_response_details"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#middlewares.logger.LoggerMiddleware.log_response_details" title="Link to this definition"></a></dt>
+<dd><p>Log detailed information about the response</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>response</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://fastapi.tiangolo.com/reference/responses/#fastapi.responses.Response" title="(in FastAPI None)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Response</span></code></a></span>) – Response object</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-middlewares">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-middlewares" title="Link to this heading"></a></h2>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="modules.html" class="btn btn-neutral float-left" title="middlewares" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../utils/modules.html" class="btn btn-neutral float-right" title="utils" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, Daniel Andersson &lt;d.andersson86@icloud.com&gt;.
+      <span class="lastupdated">Last updated on 2026-06-02.
+      </span></p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

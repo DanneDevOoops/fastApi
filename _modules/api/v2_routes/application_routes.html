@@ -1,0 +1,420 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>api.v2_routes.application_routes &mdash; FastAPI Application 0.0.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=9edc463e" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css?v=4ae1632d" />
+
+  
+    <link rel="canonical" href="https://github.com/DanneDevOoops/fastApi/_modules/api/v2_routes/application_routes.html" />
+      <script src="../../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../../_static/documentation_options.js?v=7026087e"></script>
+      <script src="../../../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../../../_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../index.html" class="icon icon-home">
+            FastAPI Application
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../rst/api/modules.html">api</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../rst/core/modules.html">core</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../rst/db/modules.html">db</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../rst/middlewares/modules.html">middlewares</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../rst/utils/modules.html">utils</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Documents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../coverage.html">docs coverage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../readme.html">project readme</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../docstrings.html">write docstrings</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">FastAPI Application</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content style-external-links">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">api.v2_routes.application_routes</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for api.v2_routes.application_routes</h1><div class="highlight"><pre>
+<span></span><span class="ch">#!/usr/bin/env python3</span>
+<span class="c1"># -*- coding: utf-8 -*-</span>
+<span class="c1"># pylint: disable=singleton-comparison</span>
+
+
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Write a good module docstring here...</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">logging</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">datetime</span><span class="w"> </span><span class="kn">import</span> <span class="n">datetime</span><span class="p">,</span> <span class="n">timezone</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">fastapi</span><span class="w"> </span><span class="kn">import</span> <span class="n">APIRouter</span><span class="p">,</span> <span class="n">status</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">fastapi.responses</span><span class="w"> </span><span class="kn">import</span> <span class="n">Response</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">src.core.auth</span><span class="w"> </span><span class="kn">import</span> <span class="n">create_application_access_token</span><span class="p">,</span> <span class="n">hash_key_v2</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">src.core.env_config</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_settings</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">src.core.responses</span><span class="w"> </span><span class="kn">import</span> <span class="n">AppJSONResponse</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">src.db.models.v2_models.application_model_v2</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
+    <span class="n">Application</span><span class="p">,</span>
+    <span class="n">CreateApplication</span><span class="p">,</span>
+    <span class="n">NewApplication</span><span class="p">,</span>
+    <span class="n">PatchUpdateApplication</span><span class="p">,</span>
+    <span class="n">PutApplicationData</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">src.db.serializers.v2_serializers.v2_model_serializers</span><span class="w"> </span><span class="kn">import</span> <span class="n">model_serialize</span>
+
+<span class="n">router</span> <span class="o">=</span> <span class="n">APIRouter</span><span class="p">()</span>
+<span class="n">settings</span> <span class="o">=</span> <span class="n">get_settings</span><span class="p">()</span>
+<span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="n">settings</span><span class="o">.</span><span class="n">app_logger_name</span> <span class="ow">or</span> <span class="s2">&quot;application_logger&quot;</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="application_routes_options">
+<a class="viewcode-back" href="../../../rst/api/api.v2_routes.html#api.v2_routes.application_routes.application_routes_options">[docs]</a>
+<span class="nd">@router</span><span class="o">.</span><span class="n">options</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">operation_id</span><span class="o">=</span><span class="s2">&quot;options_application_routes_v2&quot;</span><span class="p">)</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">application_routes_options</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">Response</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Handle OPTIONS requests for the application routes.</span>
+<span class="sd">    This is used to support CORS preflight requests.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">Response</span><span class="p">(</span>
+        <span class="n">status_code</span><span class="o">=</span><span class="n">status</span><span class="o">.</span><span class="n">HTTP_204_NO_CONTENT</span><span class="p">,</span>
+        <span class="n">headers</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;Allow&quot;</span><span class="p">:</span> <span class="s2">&quot;GET, POST, PUT, PATCH, DELETE&quot;</span><span class="p">},</span>
+    <span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="get_all_applications">
+<a class="viewcode-back" href="../../../rst/api/api.v2_routes.html#api.v2_routes.application_routes.get_all_applications">[docs]</a>
+<span class="nd">@router</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
+    <span class="s2">&quot;&quot;</span><span class="p">,</span>
+    <span class="n">name</span><span class="o">=</span><span class="s2">&quot;get_all_applications_route_v2&quot;</span><span class="p">,</span>
+    <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Route to request all registered &quot;</span>
+    <span class="s2">&quot;applications/services from the mongo database.&quot;</span><span class="p">,</span>
+    <span class="n">operation_id</span><span class="o">=</span><span class="s2">&quot;get_all_applications_route_v2&quot;</span><span class="p">,</span>
+    <span class="n">response_model</span><span class="o">=</span><span class="n">Application</span><span class="p">,</span>
+    <span class="n">status_code</span><span class="o">=</span><span class="n">status</span><span class="o">.</span><span class="n">HTTP_200_OK</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">get_all_applications</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">AppJSONResponse</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Get all registered applications/services.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Getting all registered applications/services...&quot;</span><span class="p">)</span>
+    <span class="n">all_applications</span> <span class="o">=</span> <span class="k">await</span> <span class="n">Application</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="n">Application</span><span class="o">.</span><span class="n">deleted_at</span> <span class="o">==</span> <span class="kc">None</span><span class="p">)</span><span class="o">.</span><span class="n">to_list</span><span class="p">()</span>
+
+    <span class="k">return</span> <span class="n">AppJSONResponse</span><span class="p">(</span>
+        <span class="n">content</span><span class="o">=</span><span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="n">model_serialize</span><span class="p">,</span> <span class="n">all_applications</span><span class="p">)),</span>
+        <span class="n">status_code</span><span class="o">=</span><span class="n">status</span><span class="o">.</span><span class="n">HTTP_200_OK</span><span class="p">,</span>
+    <span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="get_application_by_id">
+<a class="viewcode-back" href="../../../rst/api/api.v2_routes.html#api.v2_routes.application_routes.get_application_by_id">[docs]</a>
+<span class="nd">@router</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
+    <span class="s2">&quot;/</span><span class="si">{app_id}</span><span class="s2">&quot;</span><span class="p">,</span>
+    <span class="n">name</span><span class="o">=</span><span class="s2">&quot;get_application_by_id_route_v2&quot;</span><span class="p">,</span>
+    <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Route to request a specific application/service &quot;</span>
+    <span class="s2">&quot;by its ID from the mongo database.&quot;</span><span class="p">,</span>
+    <span class="n">operation_id</span><span class="o">=</span><span class="s2">&quot;get_application_by_id_route_v2&quot;</span><span class="p">,</span>
+    <span class="n">response_model</span><span class="o">=</span><span class="n">Application</span><span class="p">,</span>
+    <span class="n">status_code</span><span class="o">=</span><span class="n">status</span><span class="o">.</span><span class="n">HTTP_200_OK</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">get_application_by_id</span><span class="p">(</span><span class="n">app_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">AppJSONResponse</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Get a specific application/service by its ID.</span>
+
+<span class="sd">    :param app_id: The ID of the application/service to retrieve.</span>
+<span class="sd">    :return: AppJSONResponse containing the application/service data.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Getting application/service with ID </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">app_id</span><span class="p">)</span>
+    <span class="n">app</span> <span class="o">=</span> <span class="k">await</span> <span class="n">Application</span><span class="o">.</span><span class="n">find_one</span><span class="p">(</span>
+        <span class="n">Application</span><span class="o">.</span><span class="n">id</span> <span class="o">==</span> <span class="n">app_id</span><span class="p">,</span> <span class="n">Application</span><span class="o">.</span><span class="n">deleted_at</span> <span class="o">==</span> <span class="kc">None</span>
+    <span class="p">)</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">app</span><span class="p">:</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s2">&quot;Application with ID </span><span class="si">%s</span><span class="s2"> not found.&quot;</span><span class="p">,</span> <span class="n">app_id</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">AppJSONResponse</span><span class="p">(</span>
+            <span class="n">content</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;detail&quot;</span><span class="p">:</span> <span class="s2">&quot;Application not found&quot;</span><span class="p">},</span>
+            <span class="n">status_code</span><span class="o">=</span><span class="n">status</span><span class="o">.</span><span class="n">HTTP_404_NOT_FOUND</span><span class="p">,</span>
+        <span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">AppJSONResponse</span><span class="p">(</span><span class="n">content</span><span class="o">=</span><span class="n">model_serialize</span><span class="p">(</span><span class="n">app</span><span class="p">),</span> <span class="n">status_code</span><span class="o">=</span><span class="n">status</span><span class="o">.</span><span class="n">HTTP_200_OK</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="create_application">
+<a class="viewcode-back" href="../../../rst/api/api.v2_routes.html#api.v2_routes.application_routes.create_application">[docs]</a>
+<span class="nd">@router</span><span class="o">.</span><span class="n">post</span><span class="p">(</span>
+    <span class="s2">&quot;&quot;</span><span class="p">,</span>
+    <span class="n">name</span><span class="o">=</span><span class="s2">&quot;create_application_route_v2&quot;</span><span class="p">,</span>
+    <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Route to create a new application/service &quot;</span> <span class="s2">&quot;in the mongo database.&quot;</span><span class="p">,</span>
+    <span class="n">operation_id</span><span class="o">=</span><span class="s2">&quot;create_application_route_v2&quot;</span><span class="p">,</span>
+    <span class="n">response_model</span><span class="o">=</span><span class="n">NewApplication</span><span class="p">,</span>
+    <span class="n">status_code</span><span class="o">=</span><span class="n">status</span><span class="o">.</span><span class="n">HTTP_201_CREATED</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">create_application</span><span class="p">(</span><span class="n">app_data</span><span class="p">:</span> <span class="n">CreateApplication</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">AppJSONResponse</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Create a new application/service.</span>
+
+<span class="sd">    :param application: The application/service data to create.</span>
+<span class="sd">    :return: AppJSONResponse containing the created application/service data.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Creating a new application/service...&quot;</span><span class="p">)</span>
+    <span class="n">new_app</span> <span class="o">=</span> <span class="n">Application</span><span class="p">(</span><span class="o">**</span><span class="n">app_data</span><span class="o">.</span><span class="n">model_dump</span><span class="p">(</span><span class="n">exclude_unset</span><span class="o">=</span><span class="kc">True</span><span class="p">))</span>
+
+    <span class="c1"># Find the current max index and increment it for the new application</span>
+    <span class="n">last_app</span> <span class="o">=</span> <span class="k">await</span> <span class="n">Application</span><span class="o">.</span><span class="n">find</span><span class="p">()</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="s2">&quot;-index&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">first_or_none</span><span class="p">()</span>
+    <span class="n">next_index</span> <span class="o">=</span> <span class="p">(</span><span class="n">last_app</span><span class="o">.</span><span class="n">index</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="k">if</span> <span class="n">last_app</span> <span class="ow">and</span> <span class="n">last_app</span><span class="o">.</span><span class="n">index</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="mi">1</span>
+    <span class="n">new_app</span><span class="o">.</span><span class="n">index</span> <span class="o">=</span> <span class="n">next_index</span>
+
+    <span class="c1"># Create a JWT token for the application/service</span>
+    <span class="n">jwt_token</span> <span class="o">=</span> <span class="n">create_application_access_token</span><span class="p">(</span><span class="n">app_data</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">new_app</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
+    <span class="c1"># Hash the JWT token to secure the JWT token</span>
+    <span class="n">new_app</span><span class="o">.</span><span class="n">api_key</span> <span class="o">=</span> <span class="n">hash_key_v2</span><span class="p">(</span><span class="n">jwt_token</span><span class="p">)</span>
+
+    <span class="c1"># Create the application in the database</span>
+    <span class="n">new_app</span> <span class="o">=</span> <span class="k">await</span> <span class="n">Application</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">new_app</span><span class="p">)</span>
+
+    <span class="c1"># Serialize the new application data</span>
+    <span class="n">new_app</span> <span class="o">=</span> <span class="n">model_serialize</span><span class="p">(</span><span class="n">new_app</span><span class="p">)</span>
+
+    <span class="c1"># Add the JWT token to the response for this first time only display</span>
+    <span class="n">new_app</span><span class="p">[</span><span class="s2">&quot;jwt_token&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">jwt_token</span>
+
+    <span class="k">return</span> <span class="n">AppJSONResponse</span><span class="p">(</span><span class="n">content</span><span class="o">=</span><span class="p">{</span><span class="o">**</span><span class="n">new_app</span><span class="p">},</span> <span class="n">status_code</span><span class="o">=</span><span class="n">status</span><span class="o">.</span><span class="n">HTTP_201_CREATED</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="soft_delete_application">
+<a class="viewcode-back" href="../../../rst/api/api.v2_routes.html#api.v2_routes.application_routes.soft_delete_application">[docs]</a>
+<span class="nd">@router</span><span class="o">.</span><span class="n">patch</span><span class="p">(</span>
+    <span class="s2">&quot;/delete/</span><span class="si">{app_id}</span><span class="s2">&quot;</span><span class="p">,</span>
+    <span class="n">name</span><span class="o">=</span><span class="s2">&quot;soft_delete_application_route_v2&quot;</span><span class="p">,</span>
+    <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Route to soft delete an existing &quot;</span>
+    <span class="s2">&quot;application/service from the mongo database.&quot;</span><span class="p">,</span>
+    <span class="n">operation_id</span><span class="o">=</span><span class="s2">&quot;soft_delete_application_route_v2&quot;</span><span class="p">,</span>
+    <span class="n">response_model</span><span class="o">=</span><span class="n">Application</span><span class="p">,</span>
+    <span class="n">status_code</span><span class="o">=</span><span class="n">status</span><span class="o">.</span><span class="n">HTTP_200_OK</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">soft_delete_application</span><span class="p">(</span><span class="n">app_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">AppJSONResponse</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Delete an existing application/service by its ID.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Deleting application/service with ID </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">app_id</span><span class="p">)</span>
+    <span class="n">app</span> <span class="o">=</span> <span class="k">await</span> <span class="n">Application</span><span class="o">.</span><span class="n">find_one</span><span class="p">(</span>
+        <span class="n">Application</span><span class="o">.</span><span class="n">id</span> <span class="o">==</span> <span class="n">app_id</span><span class="p">,</span> <span class="n">Application</span><span class="o">.</span><span class="n">deleted_at</span> <span class="o">==</span> <span class="kc">None</span>
+    <span class="p">)</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">app</span><span class="p">:</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s2">&quot;Application with ID </span><span class="si">%s</span><span class="s2"> not found.&quot;</span><span class="p">,</span> <span class="n">app_id</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">AppJSONResponse</span><span class="p">(</span>
+            <span class="n">content</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;detail&quot;</span><span class="p">:</span> <span class="sa">f</span><span class="s2">&quot;Application (</span><span class="si">{</span><span class="n">app_id</span><span class="si">}</span><span class="s2">) not found&quot;</span><span class="p">},</span>
+            <span class="n">status_code</span><span class="o">=</span><span class="n">status</span><span class="o">.</span><span class="n">HTTP_404_NOT_FOUND</span><span class="p">,</span>
+        <span class="p">)</span>
+
+    <span class="c1"># Soft delete the application by setting deleted_at timestamp</span>
+    <span class="n">app</span><span class="o">.</span><span class="n">deleted_at</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">(</span><span class="n">timezone</span><span class="o">.</span><span class="n">utc</span><span class="p">)</span>
+    <span class="k">await</span> <span class="n">app</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+
+    <span class="k">return</span> <span class="n">AppJSONResponse</span><span class="p">(</span>
+        <span class="n">content</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;detail&quot;</span><span class="p">:</span> <span class="sa">f</span><span class="s2">&quot;Application </span><span class="si">{</span><span class="n">app_id</span><span class="si">}</span><span class="s2"> soft deleted successfully&quot;</span><span class="p">},</span>
+        <span class="n">status_code</span><span class="o">=</span><span class="n">status</span><span class="o">.</span><span class="n">HTTP_200_OK</span><span class="p">,</span>
+    <span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="patch_update_application">
+<a class="viewcode-back" href="../../../rst/api/api.v2_routes.html#api.v2_routes.application_routes.patch_update_application">[docs]</a>
+<span class="nd">@router</span><span class="o">.</span><span class="n">patch</span><span class="p">(</span>
+    <span class="s2">&quot;/</span><span class="si">{app_id}</span><span class="s2">&quot;</span><span class="p">,</span>
+    <span class="n">name</span><span class="o">=</span><span class="s2">&quot;update_application_route_v2&quot;</span><span class="p">,</span>
+    <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Route to update an existing application/service &quot;</span>
+    <span class="s2">&quot;in the mongo database.&quot;</span><span class="p">,</span>
+    <span class="n">operation_id</span><span class="o">=</span><span class="s2">&quot;update_application_route_v2&quot;</span><span class="p">,</span>
+    <span class="n">response_model</span><span class="o">=</span><span class="n">NewApplication</span><span class="p">,</span>
+    <span class="n">status_code</span><span class="o">=</span><span class="n">status</span><span class="o">.</span><span class="n">HTTP_200_OK</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">patch_update_application</span><span class="p">(</span>
+    <span class="n">app_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">app_data</span><span class="p">:</span> <span class="n">PatchUpdateApplication</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">AppJSONResponse</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Update an existing application/service.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Updating application/service with ID </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">app_id</span><span class="p">)</span>
+    <span class="n">app</span> <span class="o">=</span> <span class="k">await</span> <span class="n">Application</span><span class="o">.</span><span class="n">find_one</span><span class="p">(</span>
+        <span class="n">Application</span><span class="o">.</span><span class="n">id</span> <span class="o">==</span> <span class="n">app_id</span><span class="p">,</span> <span class="n">Application</span><span class="o">.</span><span class="n">deleted_at</span> <span class="o">==</span> <span class="kc">None</span>
+    <span class="p">)</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">app</span><span class="p">:</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s2">&quot;Application with ID </span><span class="si">%s</span><span class="s2"> not found.&quot;</span><span class="p">,</span> <span class="n">app_id</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">AppJSONResponse</span><span class="p">(</span>
+            <span class="n">content</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;detail&quot;</span><span class="p">:</span> <span class="sa">f</span><span class="s2">&quot;Application (</span><span class="si">{</span><span class="n">app_id</span><span class="si">}</span><span class="s2">) not found&quot;</span><span class="p">},</span>
+            <span class="n">status_code</span><span class="o">=</span><span class="n">status</span><span class="o">.</span><span class="n">HTTP_404_NOT_FOUND</span><span class="p">,</span>
+        <span class="p">)</span>
+
+    <span class="c1"># Update the application data with the provided attributes</span>
+    <span class="n">app_data_dict</span> <span class="o">=</span> <span class="n">app_data</span><span class="o">.</span><span class="n">model_dump</span><span class="p">(</span><span class="n">exclude_unset</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">app_data_dict</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="nb">setattr</span><span class="p">(</span><span class="n">app</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
+
+    <span class="c1"># Save updated data &amp; serialize for response</span>
+    <span class="n">app</span><span class="o">.</span><span class="n">updated_at</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">(</span><span class="n">timezone</span><span class="o">.</span><span class="n">utc</span><span class="p">)</span>
+    <span class="n">app</span> <span class="o">=</span> <span class="k">await</span> <span class="n">app</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+
+    <span class="k">return</span> <span class="n">AppJSONResponse</span><span class="p">(</span><span class="n">content</span><span class="o">=</span><span class="n">model_serialize</span><span class="p">(</span><span class="n">app</span><span class="p">),</span> <span class="n">status_code</span><span class="o">=</span><span class="n">status</span><span class="o">.</span><span class="n">HTTP_200_OK</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="put_update_application">
+<a class="viewcode-back" href="../../../rst/api/api.v2_routes.html#api.v2_routes.application_routes.put_update_application">[docs]</a>
+<span class="nd">@router</span><span class="o">.</span><span class="n">put</span><span class="p">(</span>
+    <span class="s2">&quot;/</span><span class="si">{app_id}</span><span class="s2">&quot;</span><span class="p">,</span>
+    <span class="n">name</span><span class="o">=</span><span class="s2">&quot;update_application_put_route_v2&quot;</span><span class="p">,</span>
+    <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Route to update an existing application/service &quot;</span>
+    <span class="s2">&quot;in the mongo database using PUT method.&quot;</span><span class="p">,</span>
+    <span class="n">operation_id</span><span class="o">=</span><span class="s2">&quot;update_application_put_route_v2&quot;</span><span class="p">,</span>
+    <span class="n">response_model</span><span class="o">=</span><span class="n">PutApplicationData</span><span class="p">,</span>
+    <span class="n">status_code</span><span class="o">=</span><span class="n">status</span><span class="o">.</span><span class="n">HTTP_200_OK</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">put_update_application</span><span class="p">(</span>
+    <span class="n">app_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">app_data</span><span class="p">:</span> <span class="n">PutApplicationData</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">AppJSONResponse</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Update an existing application/service using PUT method.</span>
+<span class="sd">    This method is used to update the application/service data.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Updating application/service with ID </span><span class="si">%s</span><span class="s2"> using PUT&quot;</span><span class="p">,</span> <span class="n">app_id</span><span class="p">)</span>
+    <span class="n">app</span> <span class="o">=</span> <span class="k">await</span> <span class="n">Application</span><span class="o">.</span><span class="n">find_one</span><span class="p">(</span>
+        <span class="n">Application</span><span class="o">.</span><span class="n">id</span> <span class="o">==</span> <span class="n">app_id</span><span class="p">,</span> <span class="n">Application</span><span class="o">.</span><span class="n">deleted_at</span> <span class="o">==</span> <span class="kc">None</span>
+    <span class="p">)</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">app</span><span class="p">:</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s2">&quot;Application with ID </span><span class="si">%s</span><span class="s2"> not found.&quot;</span><span class="p">,</span> <span class="n">app_id</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">AppJSONResponse</span><span class="p">(</span>
+            <span class="n">content</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;detail&quot;</span><span class="p">:</span> <span class="sa">f</span><span class="s2">&quot;Application (</span><span class="si">{</span><span class="n">app_id</span><span class="si">}</span><span class="s2">) not found&quot;</span><span class="p">},</span>
+            <span class="n">status_code</span><span class="o">=</span><span class="n">status</span><span class="o">.</span><span class="n">HTTP_404_NOT_FOUND</span><span class="p">,</span>
+        <span class="p">)</span>
+
+    <span class="c1"># Update the application data with the provided attributes</span>
+    <span class="n">app_data_dict</span> <span class="o">=</span> <span class="n">app_data</span><span class="o">.</span><span class="n">model_dump</span><span class="p">(</span><span class="n">exclude_unset</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">app_data_dict</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="nb">setattr</span><span class="p">(</span><span class="n">app</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
+
+    <span class="c1"># Save updated data &amp; serialize for response</span>
+    <span class="n">app</span><span class="o">.</span><span class="n">updated_at</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">(</span><span class="n">timezone</span><span class="o">.</span><span class="n">utc</span><span class="p">)</span>
+    <span class="n">app</span> <span class="o">=</span> <span class="k">await</span> <span class="n">app</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+
+    <span class="k">return</span> <span class="n">AppJSONResponse</span><span class="p">(</span><span class="n">content</span><span class="o">=</span><span class="n">model_serialize</span><span class="p">(</span><span class="n">app</span><span class="p">),</span> <span class="n">status_code</span><span class="o">=</span><span class="n">status</span><span class="o">.</span><span class="n">HTTP_200_OK</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="hard_delete_application">
+<a class="viewcode-back" href="../../../rst/api/api.v2_routes.html#api.v2_routes.application_routes.hard_delete_application">[docs]</a>
+<span class="nd">@router</span><span class="o">.</span><span class="n">delete</span><span class="p">(</span>
+    <span class="s2">&quot;/delete/</span><span class="si">{app_id}</span><span class="s2">&quot;</span><span class="p">,</span>
+    <span class="n">name</span><span class="o">=</span><span class="s2">&quot;hard_delete_application_route_v2&quot;</span><span class="p">,</span>
+    <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Route to hard delete an existing &quot;</span>
+    <span class="s2">&quot;application/service from the mongo database.&quot;</span><span class="p">,</span>
+    <span class="n">operation_id</span><span class="o">=</span><span class="s2">&quot;hard_delete_application_route_v2&quot;</span><span class="p">,</span>
+    <span class="n">response_model</span><span class="o">=</span><span class="n">Application</span><span class="p">,</span>
+    <span class="n">status_code</span><span class="o">=</span><span class="n">status</span><span class="o">.</span><span class="n">HTTP_200_OK</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">hard_delete_application</span><span class="p">(</span><span class="n">app_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">AppJSONResponse</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Hard delete an existing application/service by its ID.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Hard deleting application/service with ID </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">app_id</span><span class="p">)</span>
+    <span class="n">app</span> <span class="o">=</span> <span class="k">await</span> <span class="n">Application</span><span class="o">.</span><span class="n">find_one</span><span class="p">(</span><span class="n">Application</span><span class="o">.</span><span class="n">id</span> <span class="o">==</span> <span class="n">app_id</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">app</span><span class="p">:</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s2">&quot;Application with ID </span><span class="si">%s</span><span class="s2"> not found.&quot;</span><span class="p">,</span> <span class="n">app_id</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">AppJSONResponse</span><span class="p">(</span>
+            <span class="n">content</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;detail&quot;</span><span class="p">:</span> <span class="sa">f</span><span class="s2">&quot;Application (</span><span class="si">{</span><span class="n">app_id</span><span class="si">}</span><span class="s2">) not found&quot;</span><span class="p">},</span>
+            <span class="n">status_code</span><span class="o">=</span><span class="n">status</span><span class="o">.</span><span class="n">HTTP_404_NOT_FOUND</span><span class="p">,</span>
+        <span class="p">)</span>
+
+    <span class="c1"># Hard delete the application from the database</span>
+    <span class="k">await</span> <span class="n">app</span><span class="o">.</span><span class="n">delete</span><span class="p">()</span>
+
+    <span class="k">return</span> <span class="n">AppJSONResponse</span><span class="p">(</span>
+        <span class="n">content</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;detail&quot;</span><span class="p">:</span> <span class="sa">f</span><span class="s2">&quot;Application </span><span class="si">{</span><span class="n">app_id</span><span class="si">}</span><span class="s2"> deleted successfully&quot;</span><span class="p">},</span>
+        <span class="n">status_code</span><span class="o">=</span><span class="n">status</span><span class="o">.</span><span class="n">HTTP_200_OK</span><span class="p">,</span>
+    <span class="p">)</span></div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, Daniel Andersson &lt;d.andersson86@icloud.com&gt;.
+      <span class="lastupdated">Last updated on 2026-06-02.
+      </span></p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -1,0 +1,45 @@
+db.connectors package
+=====================
+
+Submodules
+----------
+
+db.connectors.mongo\_db module
+------------------------------
+
+.. automodule:: db.connectors.mongo_db
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
+db.connectors.mongo\_db\_utils module
+-------------------------------------
+
+.. automodule:: db.connectors.mongo_db_utils
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
+db.connectors.postgres\_db module
+---------------------------------
+
+.. automodule:: db.connectors.postgres_db
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
+db.connectors.sqlite\_db module
+-------------------------------
+
+.. automodule:: db.connectors.sqlite_db
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
+Module contents
+---------------
+
+.. automodule:: db.connectors
+   :members:
+   :show-inheritance:
+   :undoc-members:
