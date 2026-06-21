@@ -1,7 +1,7 @@
 [![Static Badge](https://img.shields.io/badge/Python-v3.11.7-blue)](https://devguide.python.org/versions/)
 [![Poetry](https://img.shields.io/endpoint?url=https://python-poetry.org/badge/v0.json)](https://python-poetry.org/)  
-![Workflow Status](https://github.com/DMoest/fastApi/actions/workflows/ci-python.yml/badge.svg)
-[![Build & deploy documentation to GH-pages](https://github.com/DanneDevOoops/fastApi/actions/workflows/ci-docs.yml/badge.svg)](https://github.com/DanneDevOoops/fastApi/actions/workflows/ci-docs.yml)
+![Workflow Status](https://github.com/DMoest/fastApi/actions/workflows/entry-python-ci.yml/badge.svg)
+[![Build & deploy documentation to GH-pages](https://github.com/DanneDevOoops/fastApi/actions/workflows/entry-docs-ci.yml/badge.svg)](https://github.com/DanneDevOoops/fastApi/actions/workflows/entry-docs-ci.yml)
 
 # Python FastAPI Application
 

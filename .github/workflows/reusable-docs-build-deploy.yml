@@ -99,3 +99,4 @@ jobs:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           publish-dir: ${{ inputs.publish-dir }}
           publish-branch: ${{ inputs.publish-branch }}
+

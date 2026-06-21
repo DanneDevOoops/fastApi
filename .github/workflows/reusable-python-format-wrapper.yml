@@ -41,10 +41,11 @@ on:
 
 jobs:
   format_or_check:
-    uses: ./.github/workflows/python-format-pipeline.yml
+    uses: ./.github/workflows/reusable-python-format.yml
     secrets: inherit
     with:
       venv-artifact-name: ${{ inputs.venv-artifact-name }}
       python-paths: ${{ inputs.python-paths }}
       run-mode: ${{ inputs.run-mode }}
       commit-message: ${{ inputs.commit-message }}
+

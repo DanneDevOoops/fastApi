@@ -76,3 +76,4 @@ jobs:
 
           echo "❌ Unsupported target branch '$TARGET'. Policy is only defined for: dev, test, stage, main."
           exit 1
+

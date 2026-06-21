@@ -19,13 +19,13 @@ env:
 jobs:
   validate_branch_policy:
     if: github.event_name == 'pull_request'
-    uses: ./.github/workflows/branch-merge-policy.yml
+    uses: ./.github/workflows/reusable-branch-merge-policy.yml
     secrets: inherit
 
   python-ci:
     needs: [validate_branch_policy]
     if: ${{ always() && (github.event_name != 'pull_request' || needs.validate_branch_policy.result == 'success') }}
-    uses: ./.github/workflows/ci-pipeline-build-lint-n-test-code.yml
+    uses: ./.github/workflows/reusable-python-build-lint-test.yml
     secrets: inherit
     with:
       python-version: "3.13.12"
@@ -43,7 +43,7 @@ jobs:
   format_on_merge:
     needs: [python-ci]
     if: github.event_name == 'push' && github.ref == 'refs/heads/main'
-    uses: ./.github/workflows/python-format-pipeline.yml
+    uses: ./.github/workflows/reusable-python-format.yml
     secrets: inherit
     with:
       venv-artifact-name: python-venv
@@ -54,9 +54,10 @@ jobs:
   check_format_for_forks:
     needs: [python-ci]
     if: github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name != github.repository
-    uses: ./.github/workflows/python-format-pipeline.yml
+    uses: ./.github/workflows/reusable-python-format.yml
     secrets: inherit
     with:
       venv-artifact-name: python-venv
       python-paths: src
       run-mode: check
+

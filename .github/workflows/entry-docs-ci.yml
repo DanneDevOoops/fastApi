@@ -10,15 +10,15 @@ on:
       - ".github/actions/build-sphinx/**"
       - ".github/actions/deploy-gh-pages/**"
       - ".github/actions/setup-python-poetry/**"
-      - ".github/workflows/ci-docs.yml"
-      - ".github/workflows/docs-pipeline.yml"
+      - ".github/workflows/entry-docs-ci.yml"
+      - ".github/workflows/reusable-docs-build-deploy.yml"
       - "pyproject.toml"
       - "poetry.lock"
   workflow_dispatch:
 
 jobs:
   docs:
-    uses: ./.github/workflows/docs-pipeline.yml
+    uses: ./.github/workflows/reusable-docs-build-deploy.yml
     secrets: inherit
     with:
       python-version: "3.13.12"
@@ -27,3 +27,4 @@ jobs:
       docs-artifact-name: sphinx-docs
       publish-dir: ./gh-pages
       publish-branch: gh-pages
+
