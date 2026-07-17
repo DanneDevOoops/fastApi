@@ -1,0 +1,111 @@
+# Nginx Namespace
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: nginx
+
+---
+
+# Nginx Deployment
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx-deployment
+  namespace: nginx
+spec:
+  replicas: 2
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 1
+      maxSurge: 1
+  selector:
+    matchLabels:
+      app: nginx
+  template:
+    metadata:
+      labels:
+        app: nginx
+    spec:
+      securityContext:
+        fsGroup: 2001
+        fsGroupChangePolicy: "OnRootMismatch"
+      initContainers:
+      - name: seed-nginx-config
+        image: nginx:stable
+        command: ["/bin/sh","-c"]
+        args:
+          - |
+            set -eux
+            mkdir -p /mnt/www /mnt/conf.d
+            [ -f /mnt/nginx.conf ] || cp /etc/nginx/nginx.conf /mnt/nginx.conf
+            [ "$(ls -A /mnt/conf.d || true)" ] || cp -r /etc/nginx/conf.d/* /mnt/conf.d/ || true
+            [ "$(ls -A /mnt/www || true)" ] || cp -r /usr/share/nginx/html/* /mnt/www/ || true
+        securityContext:
+          allowPrivilegeEscalation: false
+          capabilities:
+            drop: ["ALL"]
+            add: ["CHOWN", "FOWNER"]
+        resources:
+          requests:
+            cpu: 10m
+            memory: 32Mi
+          limits:
+            cpu: 200m
+            memory: 128Mi
+        volumeMounts:
+          - name: nginx-storage-volume
+            mountPath: /mnt
+      containers:
+      - name: nginx
+        image: nginx:stable
+        securityContext:
+          allowPrivilegeEscalation: false
+          capabilities:
+            drop: ["ALL"]
+            add: ["CHOWN", "SETUID", "SETGID", "NET_BIND_SERVICE"]
+        resources:
+          requests:
+            cpu: 20m
+            memory: 32Mi
+          limits:
+            cpu: 500m
+            memory: 128Mi
+        ports:
+          - name: http
+            containerPort: 80
+          - name: healthcheck
+            containerPort: 8080
+        startupProbe:
+          httpGet:
+            path: /healthcheck
+            port: healthcheck
+          failureThreshold: 30
+          periodSeconds: 1
+        readinessProbe:
+          httpGet:
+            path: /healthcheck
+            port: healthcheck
+          periodSeconds: 5
+        livenessProbe:
+          httpGet:
+            path: /healthcheck
+            port: healthcheck
+          initialDelaySeconds: 5
+          periodSeconds: 10
+        volumeMounts:
+          - name: nginx-storage-volume
+            mountPath: /usr/share/nginx/html
+            subPath: www
+          - name: nginx-storage-volume
+            mountPath: /etc/nginx/nginx.conf
+            subPath: nginx.conf
+            readOnly: true
+          - name: nginx-storage-volume
+            mountPath: /etc/nginx/conf.d
+            subPath: conf.d
+            readOnly: true
+      volumes:
+        - name: nginx-storage-volume
+          persistentVolumeClaim:
+            claimName: nginx-data
