@@ -1,0 +1,50 @@
+apiVersion: traefik.io/v1alpha1
+kind: IngressRoute
+metadata:
+  name: nginx-ingressroute-danne-dev-prod  # Set: IngressRoute name here.
+  namespace: nginx
+  annotations:
+    kubernetes.io/ingress.class: traefik-external
+  labels:
+    app: nginx
+spec:
+  entryPoints:
+    - websecure
+  routes:
+    - kind: Rule
+      match: Host(`danne.dev`) || Host(`www.danne.dev`) || Host(`nginx.danne.dev`)
+      priority: 100
+      middlewares:
+        - name: default-headers
+      services:
+        - name: nginx
+          port: 80
+  tls:
+    secretName: nginx-certificate-secret-danne-dev-prod  # Referencing to: Certificate.secretName here!
+
+---
+
+# EXAMPLE: Second sub domain level
+#   add specific subdomains like app.danne.dev or api.danne.dev
+#   DON'T FORGET TO CREATE A NEW SECRET FOR THE second level sub domain!
+#
+#
+#
+# apiVersion: traefik.io/v1alpha1
+# kind: IngressRoute
+# metadata:
+#   name: nginx-ingressroute-apps
+#   namespace: nginx
+#   annotations:
+#     kubernetes.io/ingress.class: traefik-external
+# spec:
+#   entryPoints:
+#     - websecure
+#   routes:
+#     - kind: Rule
+#       match: HostRegexp(`{sub:[a-z0-9-]+}.apps.danne.dev`) || HostRegexp(`{sub1:[a-z0-9-]+}.{sub2:[a-z0-9-]+}.apps.danne.dev`)
+#       services:
+#         - name: nginx
+#           port: 80
+#   tls:
+#     secretName: apps-wildcard-tls-secret   # cert must include *.apps.danne.dev (and optionally *.*.apps.danne.dev is NOT possible)
