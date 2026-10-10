@@ -1,0 +1,29 @@
+db.schemas package
+==================
+
+Subpackages
+-----------
+
+.. toctree::
+   :maxdepth: 3
+
+   db.schemas.v1_schemas
+
+Submodules
+----------
+
+db.schemas.schema\_config module
+--------------------------------
+
+.. automodule:: db.schemas.schema_config
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
+Module contents
+---------------
+
+.. automodule:: db.schemas
+   :members:
+   :show-inheritance:
+   :undoc-members:

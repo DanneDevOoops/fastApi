@@ -1,0 +1,18 @@
+db.serializers package
+======================
+
+Subpackages
+-----------
+
+.. toctree::
+   :maxdepth: 3
+
+   db.serializers.v2_serializers
+
+Module contents
+---------------
+
+.. automodule:: db.serializers
+   :members:
+   :show-inheritance:
+   :undoc-members:

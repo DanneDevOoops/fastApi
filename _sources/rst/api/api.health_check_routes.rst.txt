@@ -1,0 +1,29 @@
+api.health\_check\_routes package
+=================================
+
+Submodules
+----------
+
+api.health\_check\_routes.check\_routes module
+----------------------------------------------
+
+.. automodule:: api.health_check_routes.check_routes
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
+api.health\_check\_routes.info\_routes module
+---------------------------------------------
+
+.. automodule:: api.health_check_routes.info_routes
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
+Module contents
+---------------
+
+.. automodule:: api.health_check_routes
+   :members:
+   :show-inheritance:
+   :undoc-members:

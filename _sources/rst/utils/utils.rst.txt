@@ -1,0 +1,45 @@
+utils package
+=============
+
+Submodules
+----------
+
+utils.app\_constants module
+---------------------------
+
+.. automodule:: utils.app_constants
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
+utils.generate\_v1\_application\_auth module
+--------------------------------------------
+
+.. automodule:: utils.generate_v1_application_auth
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
+utils.nano\_id module
+---------------------
+
+.. automodule:: utils.nano_id
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
+utils.web\_socket\_connection\_manager module
+---------------------------------------------
+
+.. automodule:: utils.web_socket_connection_manager
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
+Module contents
+---------------
+
+.. automodule:: utils
+   :members:
+   :show-inheritance:
+   :undoc-members:
