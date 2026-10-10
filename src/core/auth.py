@@ -21,10 +21,9 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from src.core.env_config import get_settings
 from src.db.connectors.postgres_db import get_pg_db
-
 # Postgres models
-from src.db.models.v1_models.applications_model_v1 import Application as ApplicationV1
-
+from src.db.models.v1_models.applications_model_v1 import \
+    Application as ApplicationV1
 # MongiDB models
 from src.db.models.v2_models.application_model_v2 import Application as ApplicationV2
 
@@ -271,7 +270,8 @@ async def get_health_check_api_key(
     """
     raw_api_key = _get_supplied_api_key(api_key_header, api_key_query)
     expected_api_key = (
-        os.getenv("APP_HEALTH_CHECK_API_KEY") or settings.app_health_check_api_key
+            os.getenv("APP_HEALTH_CHECK_API_KEY")
+            or settings.app_health_check_api_key
     )
 
     if expected_api_key and raw_api_key == expected_api_key:
@@ -368,15 +368,14 @@ async def get_api_key_v2(
 
     raw_api_key = _get_supplied_api_key(api_key_header, api_key_query)
     token_payload = decode_application_access_token(raw_api_key)
+    service_details = await ApplicationV2.find_one({
+        "_id": token_payload.get("id"),
+        "deleted_at": None,
+    })
 
-    service_details = await ApplicationV2.find_one(
-        ApplicationV2.id == token_payload.get("id"), ApplicationV2.deleted_at == None
-    )
-    if (
-        service_details
-        and service_details.api_key
-        and verify_password_v2(raw_api_key, service_details.api_key)
-    ):
+    if service_details and service_details.api_key and verify_password_v2(
+            raw_api_key, service_details.api_key):
+
         return raw_api_key
 
     logger.warning(

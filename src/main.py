@@ -54,7 +54,6 @@ from src.utils.app_constants import REQUEST_HEADERS, REQUEST_METHODS, REQUEST_OR
 
 settings = get_settings()
 logger = init_logger(settings.app_logger_name)
-
 app = FastAPI(
     title="FastAPI application",
     description="This is a description... write something better",
@@ -100,7 +99,7 @@ app.include_router(
 
 app.include_router(api_v2_router, dependencies=[Depends(get_api_key_v2)])
 
-app.include_router(api_ws_router, dependencies=[Depends(get_api_key_v1)])
+app.include_router(api_ws_router, dependencies=[Depends(get_api_key_v2)])
 
 if __name__ == "__main__":
     import uvicorn
