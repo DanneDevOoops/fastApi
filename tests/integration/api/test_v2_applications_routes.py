@@ -110,6 +110,7 @@ def test_v2_application_routes(client, monkeypatch):
     assert response.status_code == 200
     assert "deleted successfully" in response.json()["detail"]
 
+
 def test_v2_application_options_route(client):
     response = client.options("/api/v2/applications")
     assert response.status_code == 204
